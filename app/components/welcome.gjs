@@ -66,7 +66,7 @@ console.log(charList);
 // Trigger special character insert elements
 for (let i=0; i<charList.length; i++) {
   // eslint-disable-next-line no-console
-  console.log('"' + charList[i].innerHTML + '"');
+  //console.log('"' + charList[i].innerHTML + '"');
   charList[i].addEventListener('mouseup', copyToClipboard(charList[i].innerHTML));
 }
 
@@ -77,35 +77,38 @@ document.querySelector('.xd-button.texts.close').addEventListener('click', close
 document.querySelector('.xd-button.texts.notes').addEventListener('click', openNotes);
 document.querySelector('.xd-button.texts.keywords').addEventListener('click', openKeywords);
 
+// NOTE: Arrow functions cannot be used as callbacks!
 // Functions for this dialog:
 
-function saveTexts() { // => not allowed
+function saveTexts() {
+  // eslint-disable-next-line no-console
+  console.log('This is dialog dialogTexts: ', dialogTexts.id);
   // eslint-disable-next-line no-console
   console.log('saveTexts');
 }
 
-function saveTextsClose() { // => not allowed
+function saveTextsClose() {
   saveTexts();
   closeTexts();
 }
 
-function closeTexts() { // => not allowed
+function closeTexts() {
   // eslint-disable-next-line no-console
   console.log(' closeTexts');
   dialogTexts.hide();
 }
 
-function openNotes() { // => not allowed
+function openNotes() {
   // eslint-disable-next-line no-console
-  console.log('openNotes ' + dialogTexts.id);
+  console.log('openNotes');
 }
 
-function openKeywords() { // => not allowed
+function openKeywords() {
   // eslint-disable-next-line no-console
-  console.log('openKeywords ' + dialogTexts.id);
+  console.log('openKeywords');
 }
 
-function openTexts() { // => not allowed
+function openTexts() {
   // eslint-disable-next-line no-console
   console.log('openTexts');
   dialogTexts.show();
@@ -114,7 +117,6 @@ function openTexts() { // => not allowed
 // eslint-disable-next-line no-unused-vars
 function copyToClipboard (str) {   // Copies a filename (below mini-pic) to the clipboard
   // eslint-disable-next-line no-console
-  console.log('"' + str + '"*');
   var ae = document.activeElement; // Don't move focus from the active element but save and restore it
   setTimeout (function () {
     ae.focus ();
