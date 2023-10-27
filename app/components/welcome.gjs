@@ -1,24 +1,108 @@
-import { on } from '@ember/modifier'
+import { on } from '@ember/modifier';
+
+import { Modal } from 'ember-primitives';
+import { cell } from 'ember-resources';
 
 import { Clock } from './clock';
 import { Excite } from './excite';
 
 const Welcome = <template>
     <Header />
-    <Opener />
+    <DialogText />
 </template>;
 
 export default Welcome;
 
 const Header = <template>
-    <h1>Welcome to Mish, Polaris revision<Excite /></h1>
-    The time is <span>{{Clock}}</span>
+    <h1>Welcome to Mish, Polaris revision</h1>
+    <Excite />
+
+    <p>Package <b>ember-primitives</b> added 2023-10-25 with pnpm
+    </p>
+
+    <p>The time is <span>{{Clock}}</span></p>
+
 </template>;
 
-const Opener = <template>
-    <p class="dialog-texts" {{on "click" openTexts}}>Open texts dialog</p>
+const returnValue = cell('');
+
+
+
+
+const DialogText = <template>
+  <Modal @onClose={{returnValue.set}} as |m|>
+    <button {{on 'click' m.open}}>Open Modal</button>
+
+    <br><br>
+    isOpen: {{m.isOpen}}<br>
+    return: {{returnValue.current}}
+
+    <m.Dialog>
+      <div>
+        <header>
+          <h2>Example Modal</h2>
+
+          <button {{on 'click' m.close}}>×</button>
+        </header>
+
+        <form method="dialog">
+          <main>
+            Modal content here
+            <br>
+
+           Texten står härTexten står härTexten står härTexten står härTexten står härTexten står härTexten står härTexten står här
+          </main>
+
+          <footer>
+            <button type="submit" value="confirm">Confirm</button>
+            <button type="submit" value="create">Create</button>
+            <button type="reset" value="close" {{on 'click' m.close}}>Reset</button>
+          </footer>
+        </form>
+      </div>
+    </m.Dialog>
+  </Modal>
+
+
+  <style>
+    dialog {
+      border-width: 2px;
+      border-color: #999;
+      border-radius: 4px;
+    }
+    dialog > div {
+      display: grid;
+      gap: 2rem;
+    }
+    dialog::backdrop {
+      backdrop-filter: blur(1px);
+    }
+    dialog header {
+      display: flex;
+      justify-content: space-between;
+    }
+    dialog h2 {
+      margin: 0;
+    }
+
+    dialog main {
+      max-width: 333px;
+    }
+    form {
+      display: grid;
+      gap: 1rem;
+    }
+    footer {
+      text-align: center;
+    }
+  </style>
 </template>
 
+
+/* Experimens with xdialog.3.4.0.js
+const Opener = <template>
+    <p class="dialog-texts" {{on "click" openTexts}}>Open texts dialog</p>
+</template>;
 
 var charText = "<span style='float:left;margin:0.2em'>" +
   "&nbsp;<b class='insertChar' style='cursor:pointer'>’</b>" +
@@ -45,7 +129,7 @@ var param = {
   effect: null,
   listenEnterKey: false,
   buttons: [
-    '<button class="xd-button texts save" style="background:#555">Spara</button>',
+    '<button class="xd-button texts save" style="background:#555" {{on "click" saveTexts}}>Spara</button>',
     '<button class="xd-button texts saveclose" style="background:#090">Spara och stäng</button>',
     '<button class="xd-button texts close" style="background:#555">Stäng</button>',
     '<button class="xd-button texts notes">Anteckningar</button>',
@@ -149,4 +233,4 @@ function copyToClipboard (str) {   // Copies a filename (below mini-pic) to the 
     document.getSelection().removeAllRanges();    // Unselect everything on the HTML document
     document.getSelection().addRange(selected);   // Restore the original selection
   }
-}
+} */
