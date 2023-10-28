@@ -37,6 +37,7 @@ specifiers:
   ember-cli-sri: ^2.1.1
   ember-cli-terser: ^4.0.2
   ember-context-menu: ^0.5.2
+  ember-focus-trap: ^1.1.0
   ember-load-initializers: ^2.1.2
   ember-modifier: ^4.1.0
   ember-page-title: ^8.0.0
@@ -104,6 +105,7 @@ devDependencies:
   ember-cli-sri: 2.1.1
   ember-cli-terser: 4.0.2
   ember-context-menu: 0.5.2
+  ember-focus-trap: 1.1.0_ember-source@5.3.0
   ember-load-initializers: 2.1.2_@babel+core@7.23.2
   ember-page-title: 8.0.0
   ember-qunit: 8.0.1_wku3piaphu2vt4y7qwdkxxpn2e
@@ -6277,6 +6279,19 @@ packages:
       - supports-color
     dev: false
 
+  /ember-focus-trap/1.1.0_ember-source@5.3.0:
+    resolution: {integrity: sha512-KxbCKpAJaBVZm+bW4tHPoBJAZThmxa6pI+WQusL+bj0RtAnGUNkWsVy6UBMZ5QqTQzf4EvGHkCVACVp5lbAWMQ==}
+    engines: {node: 12.* || >= 14}
+    peerDependencies:
+      ember-source: ^4.0.0 || ^5.0.0
+    dependencies:
+      '@embroider/addon-shim': 1.8.6
+      ember-source: 5.3.0_2gp2gps24tadyqu4rg6n5gbw2a
+      focus-trap: 6.9.4
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /ember-font-awesome/3.1.1:
     resolution: {integrity: sha512-wJqTUEyldMZ54m3KhTHq6GQt9zjkLOBVEsrrMLrmo14ZxgLonWP2vM+C6mynm9dYPM45vqEXsegK+6/Yg7aIXA==}
     engines: {node: ^4.5 || 6.* || >= 7.*}
@@ -7726,6 +7741,12 @@ packages:
 
   /flatted/3.2.9:
     resolution: {integrity: sha512-36yxDn5H7OFZQla0/jFJmbIKTdZAQHngCedGxiMmpNfEZM0sdEeT+WczLQrjK6D7o2aiyLYDnkw0R3JK0Qv1RQ==}
+    dev: true
+
+  /focus-trap/6.9.4:
+    resolution: {integrity: sha512-v2NTsZe2FF59Y+sDykKY+XjqZ0cPfhq/hikWVL88BqLivnNiEffAsac6rP6H45ff9wG9LL5ToiDqrLEP9GX9mw==}
+    dependencies:
+      tabbable: 5.3.3
     dev: true
 
   /follow-redirects/1.15.3:
@@ -11819,6 +11840,10 @@ packages:
     dependencies:
       '@pkgr/utils': 2.4.2
       tslib: 2.6.2
+    dev: true
+
+  /tabbable/5.3.3:
+    resolution: {integrity: sha512-QD9qKY3StfbZqWOPLp0++pOrAVb/HbUi5xCc8cUo4XjP19808oaMiDzn0leBY5mCespIBM0CIZePzZjgzR83kA==}
     dev: true
 
   /table/6.8.1:

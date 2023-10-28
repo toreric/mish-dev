@@ -1,5 +1,6 @@
 import { on } from '@ember/modifier';
 
+import focusTrap from 'ember-focus-trap/modifiers/focus-trap';
 import { Modal } from 'ember-primitives';
 import { cell } from 'ember-resources';
 
@@ -37,7 +38,7 @@ const DialogText = <template>
     isOpen: {{m.isOpen}}<br>
     return: {{returnValue.current}}
 
-    <m.Dialog>
+    <m.Dialog {{focusTrap isActive=m.isOpen}}>
       <div>
         <header>
           <h2>Example Modal</h2>
@@ -50,7 +51,7 @@ const DialogText = <template>
             Modal content here
             <br>
 
-           Texten står härTexten står härTexten står härTexten står härTexten står härTexten står härTexten står härTexten står här
+           This is a text This is a text This is a text This is a text This is a text This is a text This is a text This is a text This is a text This is a text This is a text This is a text This is a text This is a text This is a text This is a text This is a text
           </main>
 
           <footer>
