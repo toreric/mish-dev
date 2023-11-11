@@ -1,3 +1,4 @@
+/* stylelint-disable rule-empty-line-before */
 * {
   font-family: Georgia, 'Times New Roman', Times, serif;
   font-size: 1em;
@@ -360,7 +361,7 @@ button.ui-dialog-titlebar-close {
   margin: 0!important;
   text-indent: 0!important;
 }
-button.ui-dialog-titlebar-close:hover {
+button.close:hover {
   color: black;
   background: deeppink;
 }
@@ -377,9 +378,10 @@ button.mainMenuClose.ui-dialog-titlebar-close:hover {
   background: deeppink;
 }
 .insertChar {
-  font-size: 106%;
+  font-size: 83%;
   padding: 0 0.4em;
-  border: 0.4px solid rgb(0, 0, 255);
+  border: 1px solid rgb(0, 0, 255);
+  border-radius: 3px;
 }
 .insertChar:hover {
   border: 2px solid rgb(93, 171, 223);

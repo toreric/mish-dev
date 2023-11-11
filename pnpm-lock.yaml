@@ -28,6 +28,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^6.2.0
   broccoli-asset-rev: ^3.0.0
   concurrently: ^8.2.0
+  dialog-draggable: ^0.1.5
   ember-auto-import: ^2.6.3
   ember-cli: ~5.2.1
   ember-cli-babel: ^7.26.11
@@ -68,6 +69,7 @@ specifiers:
   webpack: ^5.88.2
 
 dependencies:
+  dialog-draggable: 0.1.5
   ember-modifier: 4.1.0_ember-source@5.3.0
   ember-primitives: 0.8.1_4dl4tn6q6ggbhs3fklunxy6jhy
   ember-resources: 6.4.2_fa2tjxn5c2dunw76hsmqnjmphu
@@ -5700,6 +5702,10 @@ packages:
     resolution: {integrity: sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==}
     engines: {node: '>=8'}
     dev: true
+
+  /dialog-draggable/0.1.5:
+    resolution: {integrity: sha512-fXeDAaZpI+DPuMSPzG8ERInqYHYGUGcqmbrdg2yf8T/6hor2AKjBPuxu2YrrwKJ0E3fHgIfjcMr/c7o2X1DPeA==}
+    dev: false
 
   /diff/5.1.0:
     resolution: {integrity: sha512-D+mk+qE8VC/PAUrlAU34N+VfXev0ghe5ywmpqrawphmVZc1bEfn56uo9qpyGp1p4xpzOHkSW4ztBd6L7Xx4ACw==}

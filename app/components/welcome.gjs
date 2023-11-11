@@ -1,5 +1,6 @@
 import { on } from '@ember/modifier';
 
+import { makeDialogDraggable } from 'dialog-draggable';
 import focusTrap from 'ember-focus-trap/modifiers/focus-trap';
 import { Modal } from 'ember-primitives';
 import { cell } from 'ember-resources';
@@ -7,9 +8,14 @@ import { cell } from 'ember-resources';
 import { Clock } from './clock';
 import { Excite } from './excite';
 
+const returnValue = cell('');
+
+makeDialogDraggable();
+
 const Welcome = <template>
     <Header />
     <DialogText />
+    <DialogText0 />
 </template>;
 
 export default Welcome;
@@ -17,20 +23,13 @@ export default Welcome;
 const Header = <template>
     <h1>Welcome to Mish, Polaris revision</h1>
     <Excite />
-
-    <p>Package <b>ember-primitives</b> added 2023-10-25 with pnpm
-    </p>
-
     <p>The time is <span>{{Clock}}</span></p>
 
 </template>;
 
-const returnValue = cell('');
+//Experiments with Modal from ember-primitives
+const DialogText0 = <template>
 
-
-
-
-const DialogText = <template>
   <Modal @onClose={{returnValue.set}} as |m|>
     <button {{on 'click' m.open}}>Open Modal</button>
 
@@ -41,7 +40,7 @@ const DialogText = <template>
     <m.Dialog {{focusTrap isActive=m.isOpen}}>
       <div>
         <header>
-          <h2>Example Modal</h2>
+          <h3>Example Modal</h3>
 
           <button {{on 'click' m.close}}>×</button>
         </header>
@@ -64,40 +63,141 @@ const DialogText = <template>
     </m.Dialog>
   </Modal>
 
-
   <style>
-    dialog {
-      border-width: 2px;
-      border-color: #999;
-      border-radius: 4px;
-    }
-    dialog > div {
-      display: grid;
-      gap: 2rem;
-    }
-    dialog::backdrop {
-      backdrop-filter: blur(1px);
-    }
-    dialog header {
-      display: flex;
-      justify-content: space-between;
-    }
-    dialog h2 {
+    dialog h3 {
       margin: 0;
     }
-
-    dialog main {
-      max-width: 333px;
-    }
-    form {
-      display: grid;
-      gap: 1rem;
-    }
-    footer {
-      text-align: center;
-    }
   </style>
+
 </template>
+
+// Experimens with <dialog> tag
+const DialogText = <template>
+
+<dialog id="dialogText" {{focusTrap}} open="">
+  <div>
+  <header id="dialogTextHeader" data-dialog-draggable>
+    <p>&nbsp;</p>
+    <p>Legends for <span>IMG_1234a</span></p>
+    <button class="close">×</button>
+  </header>
+    <form method="dialog">
+      <main>
+        <div class="diaMess"><span class="" style='float:left;margin:0.2em'>
+          &nbsp;<b class='insertChar' style='cursor:pointer' {{on 'click' insert}}>’</b>
+          &nbsp;<b class='insertChar' style='cursor:pointer' {{on 'click' insert}}>–</b>
+          &nbsp;<b class='insertChar' style='cursor:pointer' {{on 'click' insert}}>×</b>
+          &nbsp;<b class='insertChar' style='cursor:pointer' {{on 'click' insert}}>°</b>
+          &nbsp;<b class='insertChar' style='cursor:pointer' {{on 'click' insert}}>—</b>
+          &nbsp;<b class='insertChar' style='cursor:pointer' {{on 'click' insert}}>”</b>
+          <i> &larr; extra</i>
+        </span></div>
+        <textarea id="dialogTextDescription" name="description" rows="6" placeholder="Skriv bildtext: När var vad vilka (för Xmp.dc.description)" {{on 'mouseleave' onMouseLeave}} /><br>
+        <textarea id="dialogTextCreator" name="creator" rows="1" placeholder="Skriv ursprung: Foto upphov källa (för Xmp.dc.creator)" {{on 'mouseleave' onMouseLeave}} />
+      </main>
+      <footer id="dialogTextFooter">
+        <button id="dialogTextButton1">Save</button>&nbsp;
+        <button id="dialogTextButton2">Save and close</button>&nbsp;
+        <button id="dialogTextButton3">Close</button>&nbsp;
+        <button id="dialogTextButton4">Notes</button>&nbsp;
+        <button id="dialogTextButton5">Keywords</button>&nbsp;
+      </footer>
+    </form>
+  </div>
+</dialog>
+
+<style>
+  dialog {
+    border-width: 1px;
+    border-color: white;
+    border-radius: 4px;
+    padding: 0.1rem;
+  }
+  dialog > div {
+    display: grid;
+    gap: 0rem;
+  }
+  dialog::backdrop {
+    backdrop-filter: blur(1px);
+  }
+  dialog header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem;
+    background: #adadad;
+    cursor: move;
+  }
+  dialog p {
+    margin: 0;
+  }
+  dialog p span {
+    color: blue;
+  }
+
+  dialog main {
+    background: #ddd;
+    width: 668px;
+  }
+  dialog textarea {
+    display:;
+    width: 660px;
+    border-radius: 4px;
+    font: normal 1.05rem/1.2rem Georgia, 'Times New Roman', Times, serif;
+    background: #eee;
+  }
+  footer {
+    display: flex;
+    padding: 0.1rem;
+    justify-content: center;
+  }
+</style>
+</template>
+
+var textArea = '';
+var insertInto = '';
+
+  function onMouseLeave(e) {
+    textArea = document.activeElement;
+    insertInto = textArea.id;
+    // eslint-disable-next-line no-console
+    // console.log(insertInto, textArea.tagName)
+  }
+
+  function insert(e) {
+    // eslint-disable-next-line no-console
+    // console.log(insertInto, textArea.tagName)
+    if (!insertInto) return;
+
+    textArea = document.getElementById(insertInto);
+
+    let textValue = textArea.value;
+
+    if (textValue === undefined) return;
+
+    let beforeInsert = textValue.substring(
+      0, textArea.selectionStart);
+    let afterInsert = textValue.substring(
+      textArea.selectionStart, textArea.length); // thus avoit delete any selected
+    // let afterInsert = textValue.substring(
+    //   textArea.selectionEnd, textArea.length);
+    // selectedText = textValue.substring(
+    //   textArea.selectionStart, textArea.selectionEnd);
+
+    beforeInsert += e.target.innerHTML;
+    textValue = beforeInsert + afterInsert;
+    document.getElementById(insertInto).value = textValue;
+    document.getElementById(insertInto).focus();
+
+    let i = beforeInsert.length;
+
+    textArea.setSelectionRange(i, i);
+    beforeInsert = textValue.substring(
+      0, textArea.selectionStart);
+    afterInsert = textValue.substring(
+      textArea.selectionEnd, textArea.length);
+  }
+
+
 
 
 /* Experimens with xdialog.3.4.0.js
