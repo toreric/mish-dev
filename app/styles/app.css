@@ -10,6 +10,52 @@ body {
  width: 99%!important;
  margin-left: 1.5em;
 }
+
+dialog {
+  border-width: 1px;
+  border-color: white;
+  border-radius: 4px;
+  padding: 0.1rem;
+}
+dialog > div {
+  display: grid;
+  gap: 0rem;
+}
+dialog::backdrop {
+  backdrop-filter: blur(1px);
+}
+dialog header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem;
+  background: #adadad;
+  cursor: move;
+}
+dialog p {
+  margin: 0;
+}
+dialog p span {
+  color: blue;
+}
+
+dialog main {
+  background: #ddd;
+  width: 668px;
+}
+dialog textarea {
+  display:;
+  width: 660px;
+  border-radius: 4px;
+  font: normal 1.05rem/1.2rem Georgia, 'Times New Roman', Times, serif;
+  background: #eee;
+}
+footer {
+  display: flex;
+  padding: 0.1rem;
+  justify-content: center;
+}
+
+
 @media print {
   html, #wrap_pad {
     page-break-after: avoid!important;
@@ -43,6 +89,7 @@ iframe {
   z-index: 0;
 }
 span.ui-dialog-title b, i {background: transparent;}
+
 /* Correcting these tags against the introduced
 spacing when they occur in inserted picture texts! */
 .img_txt1 a, .img_txt1 b, .img_txt1 strong, .img_txt1 i, .img_txt1 em, .img_txt1 u {
