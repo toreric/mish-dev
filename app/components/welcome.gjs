@@ -69,8 +69,6 @@ const DialogText = <template>
 </div>
 </template>
 
-//const dialog = document.getElementById(dialogId);
-
 function openDia() {
   openDialog(dialogId);
 }

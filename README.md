@@ -10,4 +10,4 @@ The present intention is not to work with neither Ember Data (ED), Typescript (T
 
 ## Dialogs
 
-The first task will be to replace the Jquery remedies, where its dialog utility is most important. The first attempt focuses on the possibility to use the JS `xdialog` for that purpose.
+The first task will be to replace the Jquery remedies, where its dialog utility is most important. The first attempt focused on the possibility to use the JS `xdialog` for that purpose. This was soon abandoned for testing Ember's `modal` prepared utility. For mostly customization reasons, the HTML `dialog` tag was next in test, and so far in November 2023 the most promising.
