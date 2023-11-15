@@ -1,10 +1,12 @@
 import { cell, resource } from 'ember-resources';
 
-const usDateTime = new Intl.DateTimeFormat('en-US', {
+const aTime = new Intl.DateTimeFormat('sv-SE', {
   hour: 'numeric',
   minute: 'numeric',
   second: 'numeric',
   hour12: false,
+  timeZone: "Europe/Stockholm",
+  timeZoneName: "long",
 });
 
 export const Clock = resource(({ on }) => {
@@ -13,5 +15,5 @@ export const Clock = resource(({ on }) => {
 
   on.cleanup(() => clearInterval(interval));
 
-  return () => usDateTime.format(time.current);
+  return () => aTime.format(time.current);
 });

@@ -1,67 +1,121 @@
+// eslint-disable-next-line no-unused-vars
+import Component from '@glimmer/component';
 import { on } from '@ember/modifier';
 
 import { makeDialogDraggable } from 'dialog-draggable';
 import focusTrap from 'ember-focus-trap/modifiers/focus-trap';
+// eslint-disable-next-line no-unused-vars
 import { Modal } from 'ember-primitives';
 import { cell } from 'ember-resources';
 
 import { Clock } from './clock';
 import { Excite } from './excite';
 
+// eslint-disable-next-line no-unused-vars
 const returnValue = cell('');
 
 makeDialogDraggable();
 
 const Welcome = <template>
-    <Header />
-    <DialogText />
+  <Header />
+  <DialogText />
 </template>;
 
 export default Welcome;
 
 const Header = <template>
-    <h1>Welcome to Mish, Polaris revision</h1>
-    <Excite />
-    <p>The time is <span>{{Clock}}</span></p>
-
+  <h1>Welcome to Mish, Polaris revision</h1>
+  <Excite />
+  <p>The time is <span>{{Clock}}</span></p>
+  <button {{on 'click' openDia}}>Open text dialog</button>
 </template>;
 
 // Experimens with <dialog> tag
-const DialogText = <template>
+const dialogId = 'dialogText';
+const imageId = 'IMG_1234a'; // dummy
 
-<dialog id="dialogText" {{focusTrap}} open="">
-  <div>
+const DialogText = <template>
+<div style="display:flex; align-items:center; justify-content:center; height:50%;">
+<dialog id={{dialogId}} {{focusTrap}} open="">
   <header id="dialogTextHeader" data-dialog-draggable>
     <p>&nbsp;</p>
-    <p>Legends for <span>IMG_1234a</span></p>
-    <button class="close">×</button>
+    <p>Legends for <span>{{imageId}}</span></p>
+    <button class="close" {{on 'click' closeDia}}>×</button>
   </header>
     <form method="dialog">
       <main>
         <div class="diaMess">
           <div class="" style='padding:0.1em'>
-            &nbsp;<b class='insertChar' style='cursor:pointer' {{on 'click' insert}}>’</b>
-            &nbsp;<b class='insertChar' style='cursor:pointer' {{on 'click' insert}}>–</b>
-            &nbsp;<b class='insertChar' style='cursor:pointer' {{on 'click' insert}}>×</b>
-            &nbsp;<b class='insertChar' style='cursor:pointer' {{on 'click' insert}}>°</b>
-            &nbsp;<b class='insertChar' style='cursor:pointer' {{on 'click' insert}}>—</b>
-            &nbsp;<b class='insertChar' style='cursor:pointer' {{on 'click' insert}}>”</b>
+            &nbsp;<b class='insertChar' {{on 'click' insert}}>’</b>
+            &nbsp;<b class='insertChar' {{on 'click' insert}}>–</b>
+            &nbsp;<b class='insertChar' {{on 'click' insert}}>×</b>
+            &nbsp;<b class='insertChar' {{on 'click' insert}}>°</b>
+            &nbsp;<b class='insertChar' {{on 'click' insert}}>—</b>
+            &nbsp;<b class='insertChar' {{on 'click' insert}}>”</b>
           </div>
         </div>
         <textarea id="dialogTextDescription" name="description" rows="6" placeholder="Skriv bildtext: När var vad vilka (för Xmp.dc.description)" {{on 'mouseleave' onMouseLeave}} /><br>
         <textarea id="dialogTextCreator" name="creator" rows="1" placeholder="Skriv ursprung: Foto upphov källa (för Xmp.dc.creator)" {{on 'mouseleave' onMouseLeave}} />
       </main>
       <footer id="dialogTextFooter">
-        <button id="dialogTextButton1">Save</button>&nbsp;
-        <button id="dialogTextButton2">Save and close</button>&nbsp;
-        <button id="dialogTextButton3">Close</button>&nbsp;
-        <button id="dialogTextButton4">Notes</button>&nbsp;
-        <button id="dialogTextButton5">Keywords</button>&nbsp;
+        <button id="dialogTextButton1" {{on 'click' saveDia}}>Save</button>&nbsp;
+        <button id="dialogTextButton2" {{on 'click' saveCloseDia}}>Save and close</button>&nbsp;
+        <button id="dialogTextButton3" {{on 'click' closeDia}}>Close</button>&nbsp;
+        <button id="dialogTextButton4" {{on 'click' notesDia}}>Notes</button>&nbsp;
+        <button id="dialogTextButton5" {{on 'click' keysDia}}>Keywords</button>&nbsp;
       </footer>
     </form>
-  </div>
 </dialog>
+</div>
 </template>
+
+//const dialog = document.getElementById(dialogId);
+
+function openDia() {
+  openDialog(dialogId);
+}
+
+function saveDia() {
+  saveDialog(dialogId);
+}
+
+function saveCloseDia() {
+  saveDialog(dialogId);
+  closeDialog(dialogId);
+}
+
+function closeDia() {
+  closeDialog(dialogId);
+}
+
+function notesDia() {
+  // eslint-disable-next-line no-console
+  console.log('The Notes modal window for ' + imageId + ' to be opened');
+}
+
+function keysDia() {
+  // eslint-disable-next-line no-console
+  console.log('The Keywords modal window for ' + imageId + ' to to be opened');
+}
+
+
+// Secondary button actions
+function openDialog(dialogId) {
+  // eslint-disable-next-line no-console
+  console.log('The ' + dialogId + ' window was opened');
+}
+
+function saveDialog(dialogId) {
+  // eslint-disable-next-line no-console
+  console.log('The image legends from ' + dialogId + ' are saved');
+}
+
+function closeDialog(dialogId) {
+  document.getElementById(dialogId).close();
+  // eslint-disable-next-line no-console
+  console.log('The ' + dialogId + ' window was closed');
+}
+
 
 var textArea = '';
 var insertInto = '';
@@ -69,13 +123,9 @@ var insertInto = '';
 function onMouseLeave(e) {
   textArea = document.activeElement;
   insertInto = textArea.id;
-  // eslint-disable-next-line no-console
-  // console.log(insertInto, textArea.tagName)
 }
 
 function insert(e) {
-  // eslint-disable-next-line no-console
-  // console.log(insertInto, textArea.tagName)
   if (!insertInto) return;
 
   textArea = document.getElementById(insertInto);
