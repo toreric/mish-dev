@@ -1,9 +1,11 @@
 // eslint-disable-next-line no-unused-vars
 import Component from '@glimmer/component';
+// eslint-disable-next-line no-unused-vars
+import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 
 import { makeDialogDraggable } from 'dialog-draggable';
-import focusTrap from 'ember-focus-trap/modifiers/focus-trap';
+//import focusTrap from 'ember-focus-trap/modifiers/focus-trap';
 // eslint-disable-next-line no-unused-vars
 import { Modal } from 'ember-primitives';
 import { cell } from 'ember-resources';
@@ -27,20 +29,36 @@ const Header = <template>
   <h1>Welcome to Mish, Polaris revision</h1>
   <Excite />
   <p>The time is <span>{{Clock}}</span></p>
-  <button {{on 'click' openDia}}>Open text dialog</button>
+  <p><button type="button" {{on 'click' (fn openDialog dialogId 0)}}>Open text dialog</button><button type="button" {{on 'click' (fn openDialog dialogId 1)}}>... in original position</button>
+  &nbsp;
+  <button type="button" {{on 'click' (fn toggleDialog dialogId 1)}}>Toggle text dialog</button>
+  &nbsp;
+  <button type="button" {{on 'click' (fn openModalDialog dialogId 1)}}>Open modal text dialog</button>
+  </p>
 </template>;
 
-// Experimens with <dialog> tag
-const dialogId = 'dialogText';
-const imageId = 'IMG_1234a'; // dummy
+var dialogId = 'dialogText';
+var imageId = 'IMG_1234a_2023_november_19'; // dummy
+    imageId = 'IMG_1234a'; // dummy
+
+//== Dialog with <dialog> tag
+
+document.addEventListener ('keydown', detectEsc, false);
+
+function detectEsc(e) {
+  if (e.keyCode === 27) { // ESC key
+    closeDialog(dialogId);
+  }
+}
 
 const DialogText = <template>
 <div style="display:flex; align-items:center; justify-content:center; height:50%;">
-<dialog id={{dialogId}} {{focusTrap}} open="">
-  <header id="dialogTextHeader" data-dialog-draggable>
+
+<dialog id='dialogText'>
+  <header data-dialog-draggable>
     <p>&nbsp;</p>
     <p>Legends for <span>{{imageId}}</span></p>
-    <button class="close" {{on 'click' closeDia}}>×</button>
+    <button class="close" type="button" {{on 'click' (fn closeDialog dialogId)}}>×</button>
   </header>
     <form method="dialog">
       <main>
@@ -54,66 +72,110 @@ const DialogText = <template>
             &nbsp;<b class='insertChar' {{on 'click' insert}}>”</b>
           </div>
         </div>
-        <textarea id="dialogTextDescription" name="description" rows="6" placeholder="Skriv bildtext: När var vad vilka (för Xmp.dc.description)" {{on 'mouseleave' onMouseLeave}} /><br>
-        <textarea id="dialogTextCreator" name="creator" rows="1" placeholder="Skriv ursprung: Foto upphov källa (för Xmp.dc.creator)" {{on 'mouseleave' onMouseLeave}} />
+        <textarea id="dialogTextDescription" name="description" rows="6" placeholder="Skriv bildtext: När var vad vilka (för Xmp.dc.description)" {{on 'mouseleave' onMouseLeave}}></textarea><br>
+        <textarea id="dialogTextCreator" name="creator" rows="1" placeholder="Skriv ursprung: Foto upphov källa (för Xmp.dc.creator)" {{on 'mouseleave' onMouseLeave}}></textarea>
       </main>
-      <footer id="dialogTextFooter">
-        <button id="dialogTextButton1" {{on 'click' saveDia}}>Save</button>&nbsp;
-        <button id="dialogTextButton2" {{on 'click' saveCloseDia}}>Save and close</button>&nbsp;
-        <button id="dialogTextButton3" {{on 'click' closeDia}}>Close</button>&nbsp;
-        <button id="dialogTextButton4" {{on 'click' notesDia}}>Notes</button>&nbsp;
-        <button id="dialogTextButton5" {{on 'click' keysDia}}>Keywords</button>&nbsp;
+      <footer>
+        <button id="dialogTextButton1" type="button" {{on 'click' (fn saveDialog dialogId)}}>Save</button>&nbsp;
+        <button id="dialogTextButton2" type="button" {{on 'click' (fn saveCloseDialog dialogId)}}>Save and close</button>&nbsp;
+        <button id="dialogTextButton3" type="button" {{on 'click' (fn closeDialog dialogId)}}>Close</button>&nbsp;
+        <button id="dialogTextButton4" type="button" {{on 'click' (fn notesDialog dialogId)}}>Notes</button>&nbsp;
+        <button id="dialogTextButton5" type="button" {{on 'click' (fn keysDialog 'dialogTextKeywords')}}>Keywords</button>&nbsp;
       </footer>
     </form>
 </dialog>
+
+<dialog id="dialogTextKeywords" style="width:20%">
+  <header data-dialog-draggable>
+    <p>&nbsp;</p>
+    <p>Keywords for <span>{{imageId}}</span></p>
+    <button class="close" type="button" {{on 'click' (fn closeDialog 'dialogTextKeywords')}}>×</button>
+  </header>
+  <main style="padding:0.5rem;text-align:center">
+    <div class="diaMess">
+      Planerat framtida tillägg:<br>
+      Ord lagrade som metadata<br>
+      för användning som<br>
+      särskilda sökbegrepp
+    </div>
+  </main>
+  <footer>
+    <button type="button" {{on 'click' (fn closeDialog 'dialogTextKeywords')}}>Ok</button>&nbsp;
+  </footer>
+</dialog>
+
 </div>
 </template>
 
-function openDia() {
-  openDialog(dialogId);
-}
 
-function saveDia() {
-  saveDialog(dialogId);
-}
+//== Dialog open/toggle
 
-function saveCloseDia() {
-  saveDialog(dialogId);
-  closeDialog(dialogId);
-}
+function openDialog(dialogId, origPos) {
+  let diaObj = document.getElementById(dialogId);
 
-function closeDia() {
-  closeDialog(dialogId);
-}
-
-function notesDia() {
+  diaObj.show();
+  if (origPos) diaObj.style = '';
   // eslint-disable-next-line no-console
-  console.log('The Notes modal window for ' + imageId + ' to be opened');
+  console.log(dialogId + ' opened');
 }
 
-function keysDia() {
+function toggleDialog(dialogId, origPos) {
+  let diaObj = document.getElementById(dialogId);
+  let what = ' closed';
+
+  if (diaObj.hasAttribute("open")) {
+    diaObj.close();
+  } else {
+    what = ' opened';
+    if (origPos) diaObj.style = '';
+    diaObj.show();
+  }
+
   // eslint-disable-next-line no-console
-  console.log('The Keywords modal window for ' + imageId + ' to to be opened');
+  console.log(dialogId + what);
 }
 
+function openModalDialog(dialogId, origPos) {
+  let diaObj = document.getElementById(dialogId);
 
-// Secondary button actions
-function openDialog(dialogId) {
+  if (origPos) diaObj.style = '';
+  diaObj.showModal();
   // eslint-disable-next-line no-console
-  console.log('The ' + dialogId + ' window was opened');
+  console.log(dialogId + ' opened (modal)');
 }
+
+
+//== Dialog buttons
 
 function saveDialog(dialogId) {
   // eslint-disable-next-line no-console
-  console.log('The image legends from ' + dialogId + ' are saved');
+  console.log(dialogId + ' image legends saved');
+}
+
+function saveCloseDialog(dialogId) {
+  saveDialog(dialogId);
+  closeDialog(dialogId);
 }
 
 function closeDialog(dialogId) {
   document.getElementById(dialogId).close();
   // eslint-disable-next-line no-console
-  console.log('The ' + dialogId + ' window was closed');
+  console.log(dialogId + ' closed');
 }
 
+function notesDialog() {
+  // eslint-disable-next-line no-console
+  console.log('The Notes modal for ' + imageId + ' to be opened');
+}
+
+function keysDialog(dialogId) {
+  // eslint-disable-next-line no-console
+  console.log('The Keywords modal for ' + imageId + ' to be opened');
+  openModalDialog(dialogId, 1)
+}
+
+
+//== Insert from virtual keys
 
 var textArea = '';
 var insertInto = '';
