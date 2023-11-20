@@ -31,7 +31,7 @@ const Header = <template>
   <p>The time is <span>{{Clock}}</span></p>
   <p><button type="button" {{on 'click' (fn openDialog dialogId 0)}}>Open text dialog</button><button type="button" {{on 'click' (fn openDialog dialogId 1)}}>... in original position</button>
   &nbsp;
-  <button type="button" {{on 'click' (fn toggleDialog dialogId 1)}}>Toggle text dialog</button>
+  <button type="button" {{on 'click' (fn toggleDialog dialogId 0)}}>Toggle text dialog</button>
   &nbsp;
   <button type="button" {{on 'click' (fn openModalDialog dialogId 1)}}>Open modal text dialog</button>
   </p>
@@ -41,7 +41,7 @@ var dialogId = 'dialogText';
 var imageId = 'IMG_1234a_2023_november_19'; // dummy
     imageId = 'IMG_1234a'; // dummy
 
-//== Dialog with <dialog> tag
+//== Dialogs with <dialog> tag
 
 document.addEventListener ('keydown', detectEsc, false);
 
@@ -60,29 +60,53 @@ const DialogText = <template>
     <p>Legends for <span>{{imageId}}</span></p>
     <button class="close" type="button" {{on 'click' (fn closeDialog dialogId)}}>×</button>
   </header>
-    <form method="dialog">
-      <main>
-        <div class="diaMess">
-          <div class="" style='padding:0.1em'>
-            &nbsp;<b class='insertChar' {{on 'click' insert}}>’</b>
-            &nbsp;<b class='insertChar' {{on 'click' insert}}>–</b>
-            &nbsp;<b class='insertChar' {{on 'click' insert}}>×</b>
-            &nbsp;<b class='insertChar' {{on 'click' insert}}>°</b>
-            &nbsp;<b class='insertChar' {{on 'click' insert}}>—</b>
-            &nbsp;<b class='insertChar' {{on 'click' insert}}>”</b>
-          </div>
+    <main>
+      <div class="diaMess">
+        <div class="" style='padding:0.1em'>
+          &nbsp;<b class='insertChar' {{on 'click' insert}}>’</b>
+          &nbsp;<b class='insertChar' {{on 'click' insert}}>–</b>
+          &nbsp;<b class='insertChar' {{on 'click' insert}}>×</b>
+          &nbsp;<b class='insertChar' {{on 'click' insert}}>°</b>
+          &nbsp;<b class='insertChar' {{on 'click' insert}}>—</b>
+          &nbsp;<b class='insertChar' {{on 'click' insert}}>”</b>
         </div>
-        <textarea id="dialogTextDescription" name="description" rows="6" placeholder="Skriv bildtext: När var vad vilka (för Xmp.dc.description)" {{on 'mouseleave' onMouseLeave}}></textarea><br>
-        <textarea id="dialogTextCreator" name="creator" rows="1" placeholder="Skriv ursprung: Foto upphov källa (för Xmp.dc.creator)" {{on 'mouseleave' onMouseLeave}}></textarea>
-      </main>
-      <footer>
-        <button id="dialogTextButton1" type="button" {{on 'click' (fn saveDialog dialogId)}}>Save</button>&nbsp;
-        <button id="dialogTextButton2" type="button" {{on 'click' (fn saveCloseDialog dialogId)}}>Save and close</button>&nbsp;
-        <button id="dialogTextButton3" type="button" {{on 'click' (fn closeDialog dialogId)}}>Close</button>&nbsp;
-        <button id="dialogTextButton4" type="button" {{on 'click' (fn notesDialog dialogId)}}>Notes</button>&nbsp;
-        <button id="dialogTextButton5" type="button" {{on 'click' (fn keysDialog 'dialogTextKeywords')}}>Keywords</button>&nbsp;
-      </footer>
-    </form>
+      </div>
+      <textarea id="dialogTextDescription" name="description" rows="6" placeholder="Skriv bildtext: När var vad vilka (för Xmp.dc.description)" {{on 'mouseleave' onMouseLeave}}></textarea><br>
+      <textarea id="dialogTextCreator" name="creator" rows="1" placeholder="Skriv ursprung: Foto upphov källa (för Xmp.dc.creator)" {{on 'mouseleave' onMouseLeave}}></textarea>
+    </main>
+    <footer>
+      <button id="dialogTextButton1" type="button" {{on 'click' (fn saveDialog dialogId)}}>Save</button>&nbsp;
+      <button id="dialogTextButton2" type="button" {{on 'click' (fn saveCloseDialog dialogId)}}>Save and close</button>&nbsp;
+      <button id="dialogTextButton3" type="button" {{on 'click' (fn closeDialog dialogId)}}>Close</button>&nbsp;
+      <button id="dialogTextButton4" type="button" {{on 'click' (fn notesDialog 'dialogTextNotes')}}>Notes</button>&nbsp;
+      <button id="dialogTextButton5" type="button" {{on 'click' (fn keysDialog 'dialogTextKeywords')}}>Keywords</button>&nbsp;
+    </footer>
+</dialog>
+
+<dialog id='dialogTextNotes'>
+  <header data-dialog-draggable>
+    <p>&nbsp;</p>
+    <p>Notes for <span>{{imageId}}</span></p>
+    <button class="close" type="button" {{on 'click' (fn closeDialog 'dialogTextNotes')}}>×</button>
+  </header>
+    <main>
+      <div class="diaMess">
+        <div class="" style='padding:0.1em'>
+          &nbsp;<b class='insertChar' {{on 'click' insert}}>’</b>
+          &nbsp;<b class='insertChar' {{on 'click' insert}}>–</b>
+          &nbsp;<b class='insertChar' {{on 'click' insert}}>×</b>
+          &nbsp;<b class='insertChar' {{on 'click' insert}}>°</b>
+          &nbsp;<b class='insertChar' {{on 'click' insert}}>—</b>
+          &nbsp;<b class='insertChar' {{on 'click' insert}}>”</b>
+        </div>
+      </div>
+      <textarea id="dialogTextInfo" name="description" rows="8" placeholder="Anteckningar (för Xmp.dc.source) som inte visas med bilden" {{on 'mouseleave' onMouseLeave}}></textarea><br>
+    </main>
+    <footer>
+      <button type="button" {{on 'click' (fn saveDialog 'dialogTextNotes')}}>Save</button>&nbsp;
+      <button type="button" {{on 'click' (fn saveCloseDialog 'dialogTextNotes')}}>Save and close</button>&nbsp;
+      <button type="button" {{on 'click' (fn closeDialog 'dialogTextNotes')}}>Close</button>
+    </footer>
 </dialog>
 
 <dialog id="dialogTextKeywords" style="width:20%">
@@ -138,10 +162,12 @@ function toggleDialog(dialogId, origPos) {
 function openModalDialog(dialogId, origPos) {
   let diaObj = document.getElementById(dialogId);
 
-  if (origPos) diaObj.style = '';
-  diaObj.showModal();
-  // eslint-disable-next-line no-console
-  console.log(dialogId + ' opened (modal)');
+  if (!diaObj.open) {
+    if (origPos) diaObj.style = '';
+    diaObj.showModal();
+    // eslint-disable-next-line no-console
+    console.log(dialogId + ' opened (modal)');
+  }
 }
 
 
@@ -149,7 +175,7 @@ function openModalDialog(dialogId, origPos) {
 
 function saveDialog(dialogId) {
   // eslint-disable-next-line no-console
-  console.log(dialogId + ' image legends saved');
+  console.log(dialogId + ' image text(s) saved');
 }
 
 function saveCloseDialog(dialogId) {
@@ -163,9 +189,10 @@ function closeDialog(dialogId) {
   console.log(dialogId + ' closed');
 }
 
-function notesDialog() {
+function notesDialog(dialogId) {
   // eslint-disable-next-line no-console
   console.log('The Notes modal for ' + imageId + ' to be opened');
+  openModalDialog(dialogId, 1)
 }
 
 function keysDialog(dialogId) {
