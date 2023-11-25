@@ -11,12 +11,16 @@ import { Modal } from 'ember-primitives';
 import { cell } from 'ember-resources';
 
 import { Clock } from './clock';
+import { DialogText, dialogTextId, openModalDialog } from './dialog-text';
 import { Excite } from './excite';
 
 // eslint-disable-next-line no-unused-vars
 const returnValue = cell('');
 
 makeDialogDraggable();
+
+export var imageId = 'IMG_1234a_2023_november_19'; // dummy
+//imageId = 'IMG_1234a'; // dummy
 
 const Welcome = <template>
   <Header />
@@ -29,122 +33,28 @@ const Header = <template>
   <h1>Welcome to Mish, Polaris revision</h1>
   <Excite />
   <p>The time is <span>{{Clock}}</span></p>
-  <p><button type="button" {{on 'click' (fn openDialog dialogId 0)}}>Open text dialog</button><button type="button" {{on 'click' (fn openDialog dialogId 1)}}>... in original position</button>
+  <p><button type="button" {{on 'click' (fn openDialog dialogTextId 0)}}>Open text dialog</button><button type="button" {{on 'click' (fn openDialog dialogTextId 1)}}>... in original position</button>
   &nbsp;
-  <button type="button" {{on 'click' (fn toggleDialog dialogId 0)}}>Toggle text dialog</button>
+  <button type="button" {{on 'click' (fn toggleDialog dialogTextId 0)}}>Toggle text dialog</button>
   &nbsp;
-  <button type="button" {{on 'click' (fn openModalDialog dialogId 1)}}>Open modal text dialog</button>
+  <button type="button" {{on 'click' (fn openModalDialog dialogTextId 1)}}>Open modal text dialog</button>
   </p>
 </template>;
-
-var dialogId = 'dialogText';
-var imageId = 'IMG_1234a_2023_november_19'; // dummy
-    imageId = 'IMG_1234a'; // dummy
-
-//== Dialogs with <dialog> tag
-
-document.addEventListener ('keydown', detectEsc, false);
-
-function detectEsc(e) {
-  if (e.keyCode === 27) { // ESC key
-    closeDialog(dialogId);
-  }
-}
-
-const DialogText = <template>
-<div style="display:flex; align-items:center; justify-content:center; height:50%;">
-
-<dialog id='dialogText'>
-  <header data-dialog-draggable>
-    <p>&nbsp;</p>
-    <p>Legends for <span>{{imageId}}</span></p>
-    <button class="close" type="button" {{on 'click' (fn closeDialog dialogId)}}>×</button>
-  </header>
-    <main>
-      <div class="diaMess">
-        <div class="" style='padding:0.1em'>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>’</b>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>–</b>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>×</b>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>°</b>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>—</b>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>”</b>
-        </div>
-      </div>
-      <textarea id="dialogTextDescription" name="description" rows="6" placeholder="Skriv bildtext: När var vad vilka (för Xmp.dc.description)" {{on 'mouseleave' onMouseLeave}}></textarea><br>
-      <textarea id="dialogTextCreator" name="creator" rows="1" placeholder="Skriv ursprung: Foto upphov källa (för Xmp.dc.creator)" {{on 'mouseleave' onMouseLeave}}></textarea>
-    </main>
-    <footer>
-      <button id="dialogTextButton1" type="button" {{on 'click' (fn saveDialog dialogId)}}>Save</button>&nbsp;
-      <button id="dialogTextButton2" type="button" {{on 'click' (fn saveCloseDialog dialogId)}}>Save and close</button>&nbsp;
-      <button id="dialogTextButton3" type="button" {{on 'click' (fn closeDialog dialogId)}}>Close</button>&nbsp;
-      <button id="dialogTextButton4" type="button" {{on 'click' (fn notesDialog 'dialogTextNotes')}}>Notes</button>&nbsp;
-      <button id="dialogTextButton5" type="button" {{on 'click' (fn keysDialog 'dialogTextKeywords')}}>Keywords</button>&nbsp;
-    </footer>
-</dialog>
-
-<dialog id='dialogTextNotes'>
-  <header data-dialog-draggable>
-    <p>&nbsp;</p>
-    <p>Notes for <span>{{imageId}}</span></p>
-    <button class="close" type="button" {{on 'click' (fn closeDialog 'dialogTextNotes')}}>×</button>
-  </header>
-    <main>
-      <div class="diaMess">
-        <div class="" style='padding:0.1em'>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>’</b>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>–</b>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>×</b>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>°</b>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>—</b>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>”</b>
-        </div>
-      </div>
-      <textarea id="dialogTextInfo" name="description" rows="8" placeholder="Anteckningar (för Xmp.dc.source) som inte visas med bilden" {{on 'mouseleave' onMouseLeave}}></textarea><br>
-    </main>
-    <footer>
-      <button type="button" {{on 'click' (fn saveDialog 'dialogTextNotes')}}>Save</button>&nbsp;
-      <button type="button" {{on 'click' (fn saveCloseDialog 'dialogTextNotes')}}>Save and close</button>&nbsp;
-      <button type="button" {{on 'click' (fn closeDialog 'dialogTextNotes')}}>Close</button>
-    </footer>
-</dialog>
-
-<dialog id="dialogTextKeywords" style="width:20%">
-  <header data-dialog-draggable>
-    <p>&nbsp;</p>
-    <p>Keywords for <span>{{imageId}}</span></p>
-    <button class="close" type="button" {{on 'click' (fn closeDialog 'dialogTextKeywords')}}>×</button>
-  </header>
-  <main style="padding:0.5rem;text-align:center">
-    <div class="diaMess">
-      Planerat framtida tillägg:<br>
-      Ord lagrade som metadata<br>
-      för användning som<br>
-      särskilda sökbegrepp
-    </div>
-  </main>
-  <footer>
-    <button type="button" {{on 'click' (fn closeDialog 'dialogTextKeywords')}}>Ok</button>&nbsp;
-  </footer>
-</dialog>
-
-</div>
-</template>
 
 
 //== Dialog open/toggle
 
-function openDialog(dialogId, origPos) {
-  let diaObj = document.getElementById(dialogId);
+function openDialog(dialogTextId, origPos) {
+  let diaObj = document.getElementById(dialogTextId);
 
   diaObj.show();
   if (origPos) diaObj.style = '';
   // eslint-disable-next-line no-console
-  console.log(dialogId + ' opened');
+  console.log(dialogTextId + ' opened');
 }
 
-function toggleDialog(dialogId, origPos) {
-  let diaObj = document.getElementById(dialogId);
+function toggleDialog(dialogTextId, origPos) {
+  let diaObj = document.getElementById(dialogTextId);
   let what = ' closed';
 
   if (diaObj.hasAttribute("open")) {
@@ -156,91 +66,5 @@ function toggleDialog(dialogId, origPos) {
   }
 
   // eslint-disable-next-line no-console
-  console.log(dialogId + what);
+  console.log(dialogTextId + what);
 }
-
-function openModalDialog(dialogId, origPos) {
-  let diaObj = document.getElementById(dialogId);
-
-  if (!diaObj.open) {
-    if (origPos) diaObj.style = '';
-    diaObj.showModal();
-    // eslint-disable-next-line no-console
-    console.log(dialogId + ' opened (modal)');
-  }
-}
-
-
-//== Dialog buttons
-
-function saveDialog(dialogId) {
-  // eslint-disable-next-line no-console
-  console.log(dialogId + ' image text(s) saved');
-}
-
-function saveCloseDialog(dialogId) {
-  saveDialog(dialogId);
-  closeDialog(dialogId);
-}
-
-function closeDialog(dialogId) {
-  document.getElementById(dialogId).close();
-  // eslint-disable-next-line no-console
-  console.log(dialogId + ' closed');
-}
-
-function notesDialog(dialogId) {
-  // eslint-disable-next-line no-console
-  console.log('The Notes modal for ' + imageId + ' to be opened');
-  openModalDialog(dialogId, 1)
-}
-
-function keysDialog(dialogId) {
-  // eslint-disable-next-line no-console
-  console.log('The Keywords modal for ' + imageId + ' to be opened');
-  openModalDialog(dialogId, 1)
-}
-
-
-//== Insert from virtual keys
-
-var textArea = '';
-var insertInto = '';
-
-function onMouseLeave(e) {
-  textArea = document.activeElement;
-  insertInto = textArea.id;
-}
-
-function insert(e) {
-  if (!insertInto) return;
-
-  textArea = document.getElementById(insertInto);
-
-  let textValue = textArea.value;
-
-  if (textValue === undefined) return;
-
-  let beforeInsert = textValue.substring(
-    0, textArea.selectionStart);
-  let afterInsert = textValue.substring(
-    textArea.selectionStart, textArea.length); // thus avoid delete any selected, cannot undo!
-  // let afterInsert = textValue.substring(
-  //   textArea.selectionEnd, textArea.length);
-  // selectedText = textValue.substring(
-  //   textArea.selectionStart, textArea.selectionEnd);
-
-  beforeInsert += e.target.innerHTML;
-  textValue = beforeInsert + afterInsert;
-  document.getElementById(insertInto).value = textValue;
-  document.getElementById(insertInto).focus();
-
-  let i = beforeInsert.length;
-
-  textArea.setSelectionRange(i, i);
-  beforeInsert = textValue.substring(
-    0, textArea.selectionStart);
-  afterInsert = textValue.substring(
-    textArea.selectionEnd, textArea.length);
-}
-
