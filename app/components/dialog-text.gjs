@@ -2,39 +2,9 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 
 import { imageId } from './welcome';
+
+
 //== Dialogs with <dialog> tag
-
-document.addEventListener ('keydown', detectEsc, false);
-
-async function detectEsc(e) {
-  if (e.keyCode === 27) { // ESC key
-    // eslint-disable-next-line no-undef
-    let tmp1 = document.getElementById('dialogTextNotes');
-    let tmp2 = document.getElementById('dialogTextKeywords');
-
-    if (tmp1.open) {
-      closeDialog(tmp1.id);
-      await new Promise (z => setTimeout (z, 5)); // Allow next
-      openModalDialog(dialogTextId, 0); // Close of modal closes parent
-    } else if (tmp2.open) {
-      closeDialog(tmp2.id);
-      await new Promise (z => setTimeout (z, 5)); // Allow next
-      openModalDialog(dialogTextId, 0); // Close of modal closes parent
-    } else {
-      closeDialog(dialogTextId);
-    }
-  }
-}
-
-document.addEventListener ('click', detectClickOutside, false);
-
-function detectClickOutside(e) {
-  let tgt = e.target.id;
-
-  if (tgt === dialogTextId || tgt === 'dialogTextNotes' || tgt === 'dialogTextKeywords') { // Outside a modal dialog, else not!
-    closeDialog(tgt);
-  }
-}
 
 export const dialogTextId = 'dialogText';
 
@@ -119,7 +89,49 @@ export const DialogText = <template>
 </template>
 
 
-//== Dialog buttons
+//== Dialog open/toggle
+
+export function openDialog(dialogTextId, origPos) {
+  let diaObj = document.getElementById(dialogTextId);
+
+  diaObj.show();
+  if (origPos) diaObj.style = '';
+  // eslint-disable-next-line no-console
+  console.log(dialogTextId + ' opened');
+}
+
+export function toggleDialog(dialogTextId, origPos) {
+  let diaObj = document.getElementById(dialogTextId);
+  let what = ' closed';
+
+  if (diaObj.hasAttribute("open")) {
+    diaObj.close();
+  } else {
+    what = ' opened';
+    if (origPos) diaObj.style = '';
+    diaObj.show();
+  }
+
+  // eslint-disable-next-line no-console
+  console.log(dialogTextId + what);
+}
+
+
+//== Open modal dialog function, also a dialog button function
+
+export function openModalDialog(dialogTextId, origPos) {
+  let diaObj = document.getElementById(dialogTextId);
+
+  if (!diaObj.open) {
+    if (origPos) diaObj.style = '';
+    diaObj.showModal();
+    // eslint-disable-next-line no-console
+    console.log(dialogTextId + ' opened (modal)');
+  }
+}
+
+
+//== Dialog button functions
 
 function saveDialog(dialogTextId) {
   // eslint-disable-next-line no-console
@@ -149,14 +161,39 @@ function keysDialog(dialogTextId) {
   openModalDialog(dialogTextId, 0);
 }
 
-export function openModalDialog(dialogTextId, origPos) {
-  let diaObj = document.getElementById(dialogTextId);
 
-  if (!diaObj.open) {
-    if (origPos) diaObj.style = '';
-    diaObj.showModal();
-    // eslint-disable-next-line no-console
-    console.log(dialogTextId + ' opened (modal)');
+//== Detect closing Esc key
+
+document.addEventListener ('keydown', detectEsc, false);
+
+async function detectEsc(e) {
+  if (e.keyCode === 27) { // Esc key
+    let tmp1 = document.getElementById('dialogTextNotes');
+    let tmp2 = document.getElementById('dialogTextKeywords');
+
+    if (tmp1.open) {
+      closeDialog(tmp1.id);
+      await new Promise (z => setTimeout (z, 5)); // Allow next
+      openModalDialog(dialogTextId, 0); // Close of modal closes parent
+    } else if (tmp2.open) {
+      closeDialog(tmp2.id);
+      await new Promise (z => setTimeout (z, 5)); // Allow next
+      openModalDialog(dialogTextId, 0); // Close of modal closes parent
+    } else {
+      closeDialog(dialogTextId);
+    }
+  }
+}
+
+//== Detect closing click outside modal dialog
+
+document.addEventListener ('click', detectClickOutside, false);
+
+function detectClickOutside(e) {
+  let tgt = e.target.id;
+
+  if (tgt === dialogTextId || tgt === 'dialogTextNotes' || tgt === 'dialogTextKeywords') { // Outside a modal dialog, else not!
+    closeDialog(tgt);
   }
 }
 
