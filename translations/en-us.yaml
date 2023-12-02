@@ -1,0 +1,7 @@
+price_banner: The {product} costs {price, number, ::currency/USD}
+
+intlcode: en-us
+clocktime: The time is
+hello:
+  friend: Hello dear friend!
+  world: Hello World!

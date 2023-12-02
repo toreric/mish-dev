@@ -1,6 +1,13 @@
+import Controller from '@ember/controller';
+import { service } from '@ember/service';
+
 import { cell, resource } from 'ember-resources';
 
-const aTime = new Intl.DateTimeFormat('sv-SE', {
+export default class MyController extends Controller {
+  @service intl;
+}
+
+const aTime = new Intl.DateTimeFormat(this.intl.t('intlcode'), {
   hour: 'numeric',
   minute: 'numeric',
   second: 'numeric',

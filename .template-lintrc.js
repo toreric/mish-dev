@@ -11,5 +11,6 @@ module.exports = {
     ],
     // Stylistic
     'no-inline-styles': false,
+    'no-bare-strings': true,
   },
 };
