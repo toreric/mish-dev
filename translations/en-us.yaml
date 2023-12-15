@@ -1,7 +1,27 @@
-price_banner: The {product} costs {price, number, ::currency/USD}
-
+price_banner: "{product} costs {price, number, ::currency/EUR}"
 intlcode: en-us
-clocktime: The time is
+
+button:
+  close:     Close
+  keywords:  Keywords
+  notes:     Notes
+  save:      Save
+  saveclose: Save and close
+dialog:
+  text:
+    header: Captions for
+    toggle: Toggle text dialog
+    open:
+      origpos: ... in original position
+      modal:   Open modal text dialog
+header: Mish with Polaris
 hello:
   friend: Hello dear friend!
-  world: Hello World!
+  world:  Hello World!
+time:
+  text: The time is
+write:
+  creator: 'From, how: Photo Origin Source'
+  description: 'Caption: When Where What Who'
+  keywords: "Information about planned future addition: Keywords being stored as metadata for search key use"
+  notes: Notes not shown with the picture

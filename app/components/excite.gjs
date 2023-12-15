@@ -14,7 +14,7 @@ const intensify = modifier(element => {
 });
 
 export const Excite = <template>
-  <div {{intensify}} style="top: 1rem; left: 1rem;">
+  <div {{intensify}} style="top: 1rem; left: 1rem;display:inline-block">
     🥳
   </div>
 </template>;

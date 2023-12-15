@@ -1,6 +1,8 @@
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 
+import t from 'ember-intl/helpers/t';
+
 import { imageId } from './welcome';
 
 
@@ -14,7 +16,7 @@ export const DialogText = <template>
 <dialog id='dialogText'>
   <header data-dialog-draggable>
     <p>&nbsp;</p>
-    <p>Legends for <span>{{imageId}}</span></p>
+    <p>{{t 'dialog.text.header'}} <span>{{imageId}}</span></p>
     <button class="close" type="button" {{on 'click' (fn closeDialog dialogTextId)}}>×</button>
   </header>
     <main>
@@ -28,15 +30,17 @@ export const DialogText = <template>
           &nbsp;<b class='insertChar' {{on 'click' insert}}>”</b>
         </div>
       </div>
-      <textarea id="dialogTextDescription" name="description" rows="6" placeholder="Skriv bildtext: När var vad vilka (för Xmp.dc.description)" {{on 'mouseleave' onMouseLeave}}></textarea><br>
-      <textarea id="dialogTextCreator" name="creator" rows="1" placeholder="Skriv ursprung: Foto upphov källa (för Xmp.dc.creator)" {{on 'mouseleave' onMouseLeave}}></textarea>
+      <textarea id="dialogTextDescription" name="description" rows="6" placeholder="{{t "write.description"}} (Xmp.dc.description)" {{on 'mouseleave' onMouseLeave}}></textarea><br>
+      <!--textarea id="dialogTextDescription" name="description" rows="6" placeholder="Skriv bildtext: När var vad vilka (för Xmp.dc.description)" {{on 'mouseleave' onMouseLeave}}></textarea><br-->
+      <textarea id="dialogTextCreator" name="creator" rows="1" placeholder="{{t "write.creator"}} (Xmp.dc.creator)" {{on 'mouseleave' onMouseLeave}}></textarea>
+      <!--textarea id="dialogTextCreator" name="creator" rows="1" placeholder="Skriv ursprung: Foto upphov källa (för Xmp.dc.creator)" {{on 'mouseleave' onMouseLeave}}></textarea-->
     </main>
     <footer>
-      <button id="dialogTextButton1" type="button" {{on 'click' (fn saveDialog dialogTextId)}}>Save</button>&nbsp;
-      <button id="dialogTextButton2" type="button" {{on 'click' (fn saveCloseDialog dialogTextId)}}>Save and close</button>&nbsp;
-      <button id="dialogTextButton3" type="button" {{on 'click' (fn closeDialog dialogTextId)}}>Close</button>&nbsp;
-      <button id="dialogTextButton4" type="button" {{on 'click' (fn notesDialog 'dialogTextNotes')}}>Notes</button>&nbsp;
-      <button id="dialogTextButton5" type="button" {{on 'click' (fn keysDialog 'dialogTextKeywords')}}>Keywords</button>&nbsp;
+      <button id="dialogTextButton1" type="button" {{on 'click' (fn saveDialog dialogTextId)}}>{{t 'button.save'}}</button>&nbsp;
+      <button id="dialogTextButton2" type="button" {{on 'click' (fn saveCloseDialog dialogTextId)}}>{{t 'button.saveclose'}}</button>&nbsp;
+      <button id="dialogTextButton3" type="button" {{on 'click' (fn closeDialog dialogTextId)}}>{{t 'button.close'}}</button>&nbsp;
+      <button id="dialogTextButton4" type="button" {{on 'click' (fn notesDialog 'dialogTextNotes')}}>{{t 'button.notes'}}</button>&nbsp;
+      <button id="dialogTextButton5" type="button" {{on 'click' (fn keysDialog 'dialogTextKeywords')}}>{{t 'button.keywords'}}</button>&nbsp;
     </footer>
 </dialog>
 
@@ -46,38 +50,37 @@ export const DialogText = <template>
     <p>Notes for <span>{{imageId}}</span></p>
     <button class="close" type="button" {{on 'click' (fn closeDialog 'dialogTextNotes')}}>×</button>
   </header>
-    <main>
-      <div class="diaMess">
-        <div class="" style='padding:0.1em'>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>’</b>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>–</b>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>×</b>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>°</b>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>—</b>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>”</b>
-        </div>
+  <main>
+    <div class="diaMess">
+      <div class="" style='padding:0.1em'>
+        &nbsp;<b class='insertChar' {{on 'click' insert}}>’</b>
+        &nbsp;<b class='insertChar' {{on 'click' insert}}>–</b>
+        &nbsp;<b class='insertChar' {{on 'click' insert}}>×</b>
+        &nbsp;<b class='insertChar' {{on 'click' insert}}>°</b>
+        &nbsp;<b class='insertChar' {{on 'click' insert}}>—</b>
+        &nbsp;<b class='insertChar' {{on 'click' insert}}>”</b>
       </div>
-      <textarea id="dialogTextInfo" name="description" rows="8" placeholder="Anteckningar (för Xmp.dc.source) som inte visas med bilden" {{on 'mouseleave' onMouseLeave}}></textarea><br>
-    </main>
-    <footer>
-      <button type="button" {{on 'click' (fn saveDialog 'dialogTextNotes')}}>Save</button>&nbsp;
-      <button type="button" {{on 'click' (fn saveCloseDialog 'dialogTextNotes')}}>Save and close</button>&nbsp;
-      <button type="button" {{on 'click' (fn closeDialog 'dialogTextNotes')}}>Close</button>
-    </footer>
+    </div>
+    <textarea id="dialogTextInfo" name="description" rows="8" placeholder="{{t 'write.notes'}} (Xmp.dc.source)" {{on 'mouseleave' onMouseLeave}}></textarea><br>
+  </main>
+  <footer>
+    <button type="button" {{on 'click' (fn saveDialog 'dialogTextNotes')}}>Save</button>&nbsp;
+    <button type="button" {{on 'click' (fn saveCloseDialog 'dialogTextNotes')}}>Save and close</button>&nbsp;
+    <button type="button" {{on 'click' (fn closeDialog 'dialogTextNotes')}}>Close</button>
+  </footer>
 </dialog>
 
-<!-- Special styling 1 in this dialog -->
+<!-- Temporary special styling 1 in this dialog -->
 <dialog id="dialogTextKeywords" style="width:max(20%, 20rem)">
   <header data-dialog-draggable>
     <p>&nbsp;</p>
     <p>Keywords for <span>{{imageId}}</span></p>
     <button class="close" type="button" {{on 'click' (fn closeDialog 'dialogTextKeywords')}}>×</button>
   </header>
-  <!-- Special styling 2 in this dialog -->
+  <!-- Temporary special styling 2 in this dialog -->
   <main style="padding:0.5rem;text-align:center">
     <div class="diaMess">
-      Information om planerat framtida tillägg:<br>
-      Ord lagrade som metadata för användning som särskilda sökbegrepp
+      {{t 'write.keywords'}}
     </div>
   </main>
   <footer>
@@ -203,7 +206,8 @@ function detectClickOutside(e) {
 var textArea = '';
 var insertInto = '';
 
-function onMouseLeave(e) {
+function onMouseLeave(/*e*/) {
+  //textArea = e.target;
   textArea = document.activeElement;
   insertInto = textArea.id;
 }
@@ -233,9 +237,11 @@ function insert(e) {
 
   let i = beforeInsert.length;
 
-  textArea.setSelectionRange(i, i);
-  beforeInsert = textValue.substring(
-    0, textArea.selectionStart);
-  afterInsert = textValue.substring(
-    textArea.selectionEnd, textArea.length);
+  if (textArea.setSelectionRange) { // avoid error e.g. after save
+    textArea.setSelectionRange(i, i);
+    beforeInsert = textValue.substring(
+      0, textArea.selectionStart);
+    afterInsert = textValue.substring(
+      textArea.selectionEnd, textArea.length);
+  }
 }

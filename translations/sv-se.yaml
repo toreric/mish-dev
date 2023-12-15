@@ -1,5 +1,28 @@
+price_banner: "{product} kostar {price, number, ::currency/EUR}"
 intlcode: sv-se
-clocktime: Klockan är
+
+button:
+  close:     Stäng
+  keywords:  Nyckelord
+  notes:     Anteckningar
+  save:      Spara
+  saveclose: Spara och stäng
+dialog:
+  text:
+    header: Bildtexter för
+    toggle: Öppna/stäng textfönster
+    open:
+      origpos: ... på originalplats
+      modal: Öppna modalt textfönster
+header: Det här är Mish med Polaris
 hello:
   friend: Hej käre vän!
   world: Goddag hela världen!
+time:
+  text: Klockan är
+write:
+  creator: "Ursprung: Foto upphov källa"
+  description: "Beskrivning; När var vad vilka"
+  keywords: "Information om planerat framtida tillägg:
+Ord lagrade som metadata för användning som särskilda sökbegrepp"
+  notes: Anteckningar som ej visas med bilden

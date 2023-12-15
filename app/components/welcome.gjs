@@ -8,7 +8,8 @@ import { makeDialogDraggable } from 'dialog-draggable';
 //import { Modal } from 'ember-primitives';
 import { cell } from 'ember-resources';
 
-import { DialogText, dialogTextId, openModalDialog } from './dialog-text';
+//import { DialogText, dialogTextId, openModalDialog } from './dialog-text';
+import { DialogText } from './dialog-text';
 import { Header } from './header'
 
 // eslint-disable-next-line no-unused-vars
