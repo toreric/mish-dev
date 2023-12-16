@@ -10,7 +10,7 @@ import { cell } from 'ember-resources';
 
 //import { DialogText, dialogTextId, openModalDialog } from './dialog-text';
 import { DialogText } from './dialog-text';
-import { Header } from './header'
+import { default as Header } from './header'
 
 // eslint-disable-next-line no-unused-vars
 const returnValue = cell('');
