@@ -11,7 +11,7 @@ import { imageId } from './welcome';
 export const dialogTextId = 'dialogText';
 
 export const DialogText = <template>
-<div style="display:flex; align-items:center; justify-content:center; height:80%;">
+<div style="display:flex; align-items:center; justify-content:center;">
 
 <dialog id='dialogText'>
   <header data-dialog-draggable>
@@ -19,29 +19,27 @@ export const DialogText = <template>
     <p>{{t 'dialog.text.header'}} <span>{{imageId}}</span></p>
     <button class="close" type="button" {{on 'click' (fn closeDialog dialogTextId)}}>×</button>
   </header>
-    <main>
-      <div class="diaMess">
-        <div class="" style='padding:0.1em'>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>’</b>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>–</b>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>×</b>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>°</b>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>—</b>
-          &nbsp;<b class='insertChar' {{on 'click' insert}}>”</b>
-        </div>
+  <main>
+    <div class="diaMess">
+      <div class="" style='padding:0.1em'>
+        &nbsp;<b class='insertChar' {{on 'click' insert}}>’</b>
+        &nbsp;<b class='insertChar' {{on 'click' insert}}>–</b>
+        &nbsp;<b class='insertChar' {{on 'click' insert}}>×</b>
+        &nbsp;<b class='insertChar' {{on 'click' insert}}>°</b>
+        &nbsp;<b class='insertChar' {{on 'click' insert}}>—</b>
+        &nbsp;<b class='insertChar' {{on 'click' insert}}>”</b>
       </div>
-      <textarea id="dialogTextDescription" name="description" rows="6" placeholder="{{t "write.description"}} (Xmp.dc.description)" {{on 'mouseleave' onMouseLeave}}></textarea><br>
-      <!--textarea id="dialogTextDescription" name="description" rows="6" placeholder="Skriv bildtext: När var vad vilka (för Xmp.dc.description)" {{on 'mouseleave' onMouseLeave}}></textarea><br-->
-      <textarea id="dialogTextCreator" name="creator" rows="1" placeholder="{{t "write.creator"}} (Xmp.dc.creator)" {{on 'mouseleave' onMouseLeave}}></textarea>
-      <!--textarea id="dialogTextCreator" name="creator" rows="1" placeholder="Skriv ursprung: Foto upphov källa (för Xmp.dc.creator)" {{on 'mouseleave' onMouseLeave}}></textarea-->
-    </main>
-    <footer>
-      <button id="dialogTextButton1" type="button" {{on 'click' (fn saveDialog dialogTextId)}}>{{t 'button.save'}}</button>&nbsp;
-      <button id="dialogTextButton2" type="button" {{on 'click' (fn saveCloseDialog dialogTextId)}}>{{t 'button.saveclose'}}</button>&nbsp;
-      <button id="dialogTextButton3" type="button" {{on 'click' (fn closeDialog dialogTextId)}}>{{t 'button.close'}}</button>&nbsp;
-      <button id="dialogTextButton4" type="button" {{on 'click' (fn notesDialog 'dialogTextNotes')}}>{{t 'button.notes'}}</button>&nbsp;
-      <button id="dialogTextButton5" type="button" {{on 'click' (fn keysDialog 'dialogTextKeywords')}}>{{t 'button.keywords'}}</button>&nbsp;
-    </footer>
+    </div>
+    <textarea id="dialogTextDescription" name="description" rows="6" placeholder="{{t "write.description"}} (Xmp.dc.description)" {{on 'mouseleave' onMouseLeave}}></textarea><br>
+    <textarea id="dialogTextCreator" name="creator" rows="2" placeholder="{{t "write.creator"}} (Xmp.dc.creator)" {{on 'mouseleave' onMouseLeave}}></textarea>
+  </main>
+  <footer>
+    <button id="dialogTextButton1" type="button" {{on 'click' (fn saveDialog dialogTextId)}}>{{t 'button.save'}}</button>&nbsp;
+    <button id="dialogTextButton2" type="button" {{on 'click' (fn saveCloseDialog dialogTextId)}}>{{t 'button.saveclose'}}</button>&nbsp;
+    <button id="dialogTextButton3" type="button" {{on 'click' (fn closeDialog dialogTextId)}}>{{t 'button.close'}}</button>&nbsp;
+    <button id="dialogTextButton4" type="button" {{on 'click' (fn notesDialog 'dialogTextNotes')}}>{{t 'button.notes'}}</button>&nbsp;
+    <button id="dialogTextButton5" type="button" {{on 'click' (fn keysDialog 'dialogTextKeywords')}}>{{t 'button.keywords'}}</button>&nbsp;
+  </footer>
 </dialog>
 
 <dialog id='dialogTextNotes'>
@@ -237,11 +235,11 @@ function insert(e) {
 
   let i = beforeInsert.length;
 
-  if (textArea.setSelectionRange) { // avoid error e.g. after save
+  //if (textArea.setSelectionRange) { // avoid error e.g. after save
     textArea.setSelectionRange(i, i);
     beforeInsert = textValue.substring(
       0, textArea.selectionStart);
     afterInsert = textValue.substring(
       textArea.selectionEnd, textArea.length);
-  }
+  //}
 }

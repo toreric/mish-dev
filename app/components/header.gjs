@@ -1,30 +1,44 @@
-//import action from '../controllers/application';
+//== Mish header Component
+// eslint-disable-next-line no-console
+//console.log(XXX);
+// eslint-disable-next-line no-console
+//console.log(this.changeLocale);
+//import { action } from '@ember/object';
+//import { inject as service } from '@ember/service';
+import '../controllers/intl-shift';
+
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
+import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
 
 import t from 'ember-intl/helpers/t';
 
-import changeLocale from '../controllers/intl-shift';
-import selections from '../controllers/intl-shift';
-import * as XXX from '../controllers/intl-shift';
+//import changeLocale from '../controllers/intl-shift';
+//import selections from '../controllers/intl-shift';
+//import * as XXX from '../controllers/intl-shift';
 import { Clock } from './clock';
 import { dialogTextId, openDialog, openModalDialog, toggleDialog }
   from './dialog-text';
 import { Excite } from './excite';
 
-//== Mish header Component
+export default class ApplicationController {
+  @service intl;
+  selections = this.intl.locales;
 
-// eslint-disable-next-line no-console
-console.log(XXX);
-// eslint-disable-next-line no-console
-//console.log(this.changeLocale);
+  @action
+  changeLocale(locale) {
+    this.intl.set('locale', locale);
+  }
+}
 
 export const Header = <template>
   <h1>{{t "header"}}</h1>
 
   <div>
-    {{#each selections as |model|}}
-    <button class={{if model.active "active"}} {{on "click" (fn changeLocale model.locale)}}>
+    {{#each this.selections as |model|}}
+      {{model.name}}&nbsp;
+      <button class={{if model.active "active"}} {{on "click" (fn this.changeLocale model.locale)}}>
         {{model.locale}}
       </button>
     {{/each}}
