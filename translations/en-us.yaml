@@ -9,11 +9,13 @@ button:
   saveclose: Save and close
 dialog:
   text:
-    header: Captions for
-    toggle: Toggle text dialog
+    header:   Captions for
+    keywords: Keywords for
+    notes:    Notes for
     open:
       origpos: ... in original position
       modal:   Open modal text dialog
+    toggle: Toggle text dialog
 header: Mish with Polaris
 hello:
   friend: Hello dear friend!

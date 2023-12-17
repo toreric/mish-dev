@@ -25,11 +25,12 @@ import { Excite } from './excite';
 
 export default class Header extends Component {
   @service intl;
-  @tracked selections = this.intl.get('locales');
-  @tracked locale = this.intl.get('locale');
+  //@tracked locale = this.intl.get('locale');
+  // 'selections' is set @tracked by 'intl'
+  selections = this.intl.get('locales');
   @action
-  changeLocale(locale) {
-    this.intl.set('locale', locale);
+  changeLocale(newLoc) {
+    this.intl.set('locale', newLoc);
   }
 
   <template>
@@ -37,12 +38,12 @@ export default class Header extends Component {
 
     <p>
 
-      {{this.intl.locale}} {{this.locale}} {{this.selections}} {{this.selections.length}} <br><br>
+      {{this.intl.locale}} {{this.selections}} {{this.selections.length}} <br><br>
 
       {{#each this.selections as |model|}}
-        {{model}} {{this.locale.active}}?&nbsp;
+        {{model.active}}?&nbsp;
         <button class={{if model.active "active"}} {{on "click" (fn this.changeLocale model)}}>
-          «{{model}}»
+          {{model}}
         </button>
       {{/each}}
     </p>

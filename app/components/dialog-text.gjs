@@ -21,17 +21,10 @@ export const DialogText = <template>
   </header>
   <main>
     <div class="diaMess">
-      <div class="" style='padding:0.1em'>
-        &nbsp;<b class='insertChar' {{on 'click' insert}}>’</b>
-        &nbsp;<b class='insertChar' {{on 'click' insert}}>–</b>
-        &nbsp;<b class='insertChar' {{on 'click' insert}}>×</b>
-        &nbsp;<b class='insertChar' {{on 'click' insert}}>°</b>
-        &nbsp;<b class='insertChar' {{on 'click' insert}}>—</b>
-        &nbsp;<b class='insertChar' {{on 'click' insert}}>”</b>
-      </div>
+      <VirtualKeys />
     </div>
-    <textarea id="dialogTextDescription" name="description" rows="6" placeholder="{{t "write.description"}} (Xmp.dc.description)" {{on 'mouseleave' onMouseLeave}}></textarea><br>
-    <textarea id="dialogTextCreator" name="creator" rows="2" placeholder="{{t "write.creator"}} (Xmp.dc.creator)" {{on 'mouseleave' onMouseLeave}}></textarea>
+    <textarea id="dialogTextDescription" name="description" rows="6" placeholder="{{t "write.description"}} (Xmp.dc.description)" {{on 'mouseleave' onMouseLeaveTextarea}}></textarea><br>
+    <textarea id="dialogTextCreator" name="creator" rows="2" placeholder="{{t "write.creator"}} (Xmp.dc.creator)" {{on 'mouseleave' onMouseLeaveTextarea}}></textarea>
   </main>
   <footer>
     <button id="dialogTextButton1" type="button" {{on 'click' (fn saveDialog dialogTextId)}}>{{t 'button.save'}}</button>&nbsp;
@@ -45,44 +38,37 @@ export const DialogText = <template>
 <dialog id='dialogTextNotes'>
   <header data-dialog-draggable>
     <p>&nbsp;</p>
-    <p>Notes for <span>{{imageId}}</span></p>
+    <p>{{t 'dialog.text.notes'}} <span>{{imageId}}</span></p>
     <button class="close" type="button" {{on 'click' (fn closeDialog 'dialogTextNotes')}}>×</button>
   </header>
   <main>
     <div class="diaMess">
-      <div class="" style='padding:0.1em'>
-        &nbsp;<b class='insertChar' {{on 'click' insert}}>’</b>
-        &nbsp;<b class='insertChar' {{on 'click' insert}}>–</b>
-        &nbsp;<b class='insertChar' {{on 'click' insert}}>×</b>
-        &nbsp;<b class='insertChar' {{on 'click' insert}}>°</b>
-        &nbsp;<b class='insertChar' {{on 'click' insert}}>—</b>
-        &nbsp;<b class='insertChar' {{on 'click' insert}}>”</b>
-      </div>
+      <VirtualKeys />
     </div>
-    <textarea id="dialogTextInfo" name="description" rows="8" placeholder="{{t 'write.notes'}} (Xmp.dc.source)" {{on 'mouseleave' onMouseLeave}}></textarea><br>
+    <textarea id="dialogTextInfo" name="description" rows="8" placeholder="{{t 'write.notes'}} (Xmp.dc.source)" {{on 'mouseleave' onMouseLeaveTextarea}}></textarea><br>
   </main>
   <footer>
-    <button type="button" {{on 'click' (fn saveDialog 'dialogTextNotes')}}>Save</button>&nbsp;
-    <button type="button" {{on 'click' (fn saveCloseDialog 'dialogTextNotes')}}>Save and close</button>&nbsp;
-    <button type="button" {{on 'click' (fn closeDialog 'dialogTextNotes')}}>Close</button>
+    <button type="button" {{on 'click' (fn saveDialog 'dialogTextNotes')}}>{{t 'button.save'}}</button>&nbsp;
+    <button type="button" {{on 'click' (fn saveCloseDialog 'dialogTextNotes')}}>{{t 'button.saveclose'}}</button>&nbsp;
+    <button type="button" {{on 'click' (fn closeDialog 'dialogTextNotes')}}>{{t 'button.close'}}</button>
   </footer>
 </dialog>
 
-<!-- Temporary special styling 1 in this dialog -->
+<!-- Temporary special styling 1 in this dialog stub -->
 <dialog id="dialogTextKeywords" style="width:max(20%, 20rem)">
   <header data-dialog-draggable>
     <p>&nbsp;</p>
-    <p>Keywords for <span>{{imageId}}</span></p>
+    <p>{{t 'dialog.text.keywords'}} <span>{{imageId}}</span></p>
     <button class="close" type="button" {{on 'click' (fn closeDialog 'dialogTextKeywords')}}>×</button>
   </header>
-  <!-- Temporary special styling 2 in this dialog -->
+  <!-- Temporary special styling 2 in this dialog stub -->
   <main style="padding:0.5rem;text-align:center">
     <div class="diaMess">
       {{t 'write.keywords'}}
     </div>
   </main>
   <footer>
-    <button type="button" {{on 'click' (fn closeDialog 'dialogTextKeywords')}}>Ok</button>&nbsp;
+    <button type="button" {{on 'click' (fn closeDialog 'dialogTextKeywords')}}>{{t 'button.close'}}</button>&nbsp;
   </footer>
 </dialog>
 
@@ -198,19 +184,33 @@ function detectClickOutside(e) {
   }
 }
 
+//== Virtual keys for some missing on keyboards
 
-//== Insert from virtual minikeyboard
+const VirtualKeys = <template>
+  <div class="" style='padding:0.1em'>
+    &nbsp;<b class='insertChar' {{on 'click' insert}}>’</b>
+    &nbsp;<b class='insertChar' {{on 'click' insert}}>–</b>
+    &nbsp;<b class='insertChar' {{on 'click' insert}}>×</b>
+    &nbsp;<b class='insertChar' {{on 'click' insert}}>°</b>
+    &nbsp;<b class='insertChar' {{on 'click' insert}}>—</b>
+    &nbsp;<b class='insertChar' {{on 'click' insert}}>”</b>
+  </div>
+</template>
 
 var textArea = '';
 var insertInto = '';
 
-function onMouseLeave(/*e*/) {
+// Detect last active textarea
+
+function onMouseLeaveTextarea(/*e*/) {
   //textArea = e.target;
   textArea = document.activeElement;
   insertInto = textArea.id;
 }
 
-function insert(e) {
+// Insert from VirtualKeys, non-replacing(!)
+
+export function insert(e) {
   if (!insertInto) return;
 
   textArea = document.getElementById(insertInto);
@@ -222,7 +222,8 @@ function insert(e) {
   let beforeInsert = textValue.substring(
     0, textArea.selectionStart);
   let afterInsert = textValue.substring(
-    textArea.selectionStart, textArea.length); // thus avoid delete any selected, cannot undo!
+    textArea.selectionStart, textArea.length);
+  // Avoid 'delete selected', cannot undo!
   // let afterInsert = textValue.substring(
   //   textArea.selectionEnd, textArea.length);
   // selectedText = textValue.substring(
@@ -235,11 +236,11 @@ function insert(e) {
 
   let i = beforeInsert.length;
 
-  //if (textArea.setSelectionRange) { // avoid error e.g. after save
+  if (textArea.setSelectionRange) { // avoid error in some special cases
     textArea.setSelectionRange(i, i);
     beforeInsert = textValue.substring(
       0, textArea.selectionStart);
     afterInsert = textValue.substring(
       textArea.selectionEnd, textArea.length);
-  //}
+  }
 }

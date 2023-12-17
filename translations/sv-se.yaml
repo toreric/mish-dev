@@ -9,11 +9,13 @@ button:
   saveclose: Spara och stäng
 dialog:
   text:
-    header: Bildtexter för
-    toggle: Öppna/stäng textfönster
+    header:   Bildtexter för
+    keywords: Nyckelord för
+    notes:    Anteckningar för
     open:
       origpos: ... på originalplats
       modal: Öppna modalt textfönster
+    toggle: Öppna/stäng textfönster
 header: Det här är Mish med Polaris
 hello:
   friend: Hej käre vän!
