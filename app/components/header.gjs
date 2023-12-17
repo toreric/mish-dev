@@ -24,9 +24,9 @@ import { dialogTextId, openDialog, openModalDialog, toggleDialog }
 import { Excite } from './excite';
 
 export default class Header extends Component {
-  @tracked locale = this.intl.locale;
   @service intl;
-  selections = this.intl.locales;
+  @tracked selections = this.intl.get('locales');
+  @tracked locale = this.intl.get('locale');
   @action
   changeLocale(locale) {
     this.intl.set('locale', locale);
@@ -36,10 +36,13 @@ export default class Header extends Component {
     <h1>{{t "header"}}</h1>
 
     <p>
+
+      {{this.intl.locale}} {{this.locale}} {{this.selections}} {{this.selections.length}} <br><br>
+
       {{#each this.selections as |model|}}
-        {{model.name}}&nbsp;
-        <button class={{if model.active "active"}} {{on "click" (fn this.changeLocale model.locale)}}>
-          «{{model.locale}}»
+        {{model}} {{this.locale.active}}?&nbsp;
+        <button class={{if model.active "active"}} {{on "click" (fn this.changeLocale model)}}>
+          «{{model}}»
         </button>
       {{/each}}
     </p>
