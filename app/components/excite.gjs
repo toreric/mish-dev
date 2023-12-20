@@ -1,3 +1,5 @@
+//== Experimental
+
 import { modifier } from 'ember-modifier';
 
 const intensify = modifier(element => {

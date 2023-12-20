@@ -76,6 +76,9 @@ dialog button {
 dialog button:hover {
   background-color: #b0c4deaa;
 }
+button.active {
+  background-color: #7df;
+}
 button.close {
   background-color: #ddd;
   padding: 0 0.4rem 0.15rem 0.4rem;

@@ -1,4 +1,5 @@
-// app/components/clock.gjs
+//== Mish local-time component, used by Header
+//   app/components/clock.gjs
 
 import { cell, resource, resourceFactory } from 'ember-resources';
 

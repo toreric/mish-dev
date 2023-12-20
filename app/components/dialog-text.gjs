@@ -1,3 +1,5 @@
+//== Mish component for image captions etc. dialogs
+
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 
@@ -76,7 +78,8 @@ export const DialogText = <template>
 </template>
 
 
-//== Dialog open/toggle
+//== Dialog open/toggle/modal, in original position
+//   if origpos is true. May be imported by Header.
 
 export function openDialog(dialogTextId, origPos) {
   let diaObj = document.getElementById(dialogTextId);
@@ -102,9 +105,6 @@ export function toggleDialog(dialogTextId, origPos) {
   // eslint-disable-next-line no-console
   console.log(dialogTextId + what);
 }
-
-
-//== Open modal dialog function, also a dialog button function
 
 export function openModalDialog(dialogTextId, origPos) {
   let diaObj = document.getElementById(dialogTextId);
@@ -201,6 +201,7 @@ var textArea = '';
 var insertInto = '';
 
 // Detect last active textarea
+// Used when a VirtualKeys key is clicked
 
 function onMouseLeaveTextarea(/*e*/) {
   //textArea = e.target;
