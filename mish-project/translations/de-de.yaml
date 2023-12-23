@@ -1,0 +1,30 @@
+price_banner: "{product} kostet {price, number, ::currency/EUR}"
+intlcode: de-de
+
+button:
+  close:     Schließen
+  keywords:  Stichwörter
+  notes:     Anmerkungen
+  save:      Speichern
+  saveclose: Speichern und schließen
+dialog:
+  text:
+    header:   Beschreibung für
+    keywords: Stichwörter für
+    notes:    Anmerkungen für
+    open:
+      origpos: ... auf Originalplatz
+      modal: Modales Textfenster öffnen
+    toggle: Textfenster öffnen/schließen
+header: Hier ist Mish mit Polaris
+hello:
+  friend: Hallo lieber Freund!
+  world:  Guten Tag, Welt!
+time:
+  text: "Zeitangabe:"
+write:
+  creator: "Herkunft: Foto Ursprung Quelle"
+  description: "Beschreibung: Wann wo was welche"
+  keywords: "Information von geplante zukünftige Ergänzung: Wörter
+  als Metadaten gespeichert zur Verwendung als Suchbegriffe"
+  notes: Anmerkungen die nicht mit dem Bild erscheinen
