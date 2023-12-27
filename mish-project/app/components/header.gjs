@@ -1,7 +1,7 @@
 //== Mish header component
 
 import Component from '@glimmer/component';
-//import { tracked } from '@glimmer/tracking';
+import { tracked } from '@glimmer/tracking';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 //import { action } from '@ember/object';
@@ -18,22 +18,38 @@ export default class Header extends Component {
   @service intl;
   selections = this.intl.get('locales');
   changeLocale = (newLoc) => {
+    new Promise (z => setTimeout (z, 200));
     this.intl.set('locale', newLoc);
   }
-  isActive = (model) => {
-    // eslint-disable-next-line no-console
-    //console.log(this.intl.locale, model);
-
-    return this.intl.locale[0] === model;
+  changeLanguage = (event) => {
+    new Promise (z => setTimeout (z, 200));
+    this.intl.set('locale', event.target.value);
   }
+  isActive = (locale) => {
+    new Promise (z => setTimeout (z, 200));
+    return this.intl.locale[0] === locale;
+    }
+  langText = (locale) => {
+    new Promise (z => setTimeout (z, 200));
+    return this.intl.lookup("select.languagetext", locale);
+    }
+
   <template>
     <h1>{{t "header"}}</h1>
 
-    {{! Choose-language buttons }}
+    {{! Choose language }}
     <p>
-      {{#each this.selections as |model|}}
-        <button class={{if (this.isActive model) "active" ""}} {{on "click" (fn this.changeLocale model)}}>
-          {{model}}
+      <span style="font-size:85%">{{t "select.language"}}</span><br>
+
+      <select id="selectLanguage" {{on "change" this.changeLanguage}}>
+      {{#each this.selections as |tongue|}}
+        <option {{on "click" (fn this.changeLocale tongue)}} value={{tongue}} selected={{if (this.isActive tongue) true}}>{{(this.langText tongue)}}</option>
+      {{/each}}
+      </select>
+
+      {{#each this.selections as |tongue|}}
+        <button class={{if (this.isActive tongue) "active"}}>
+          {{tongue}}
         </button>
       {{/each}}
     </p>

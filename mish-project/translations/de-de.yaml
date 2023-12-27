@@ -20,6 +20,9 @@ header: Hier ist Mish mit Polaris
 hello:
   friend: Hallo lieber Freund!
   world:  Guten Tag, Welt!
+select:
+  language: Sprache wählen
+  languagetext: Deutsch
 time:
   text: "Zeitangabe:"
 write:

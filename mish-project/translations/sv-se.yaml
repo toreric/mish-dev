@@ -20,6 +20,9 @@ header: Det här är Mish med Polaris
 hello:
   friend: Hej käre vän!
   world:  Goddag hela världen!
+select:
+  language: Välj språk
+  languagetext: Svenska
 time:
   text: Klockan är
 write:

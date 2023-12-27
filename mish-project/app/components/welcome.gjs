@@ -1,6 +1,6 @@
 //== Mish main component Welcome
 
-//import Component from '@glimmer/component';
+import Component from '@glimmer/component';
 //import { fn } from '@ember/helper';
 //import { on } from '@ember/modifier';
 import { makeDialogDraggable } from 'dialog-draggable';
@@ -15,7 +15,7 @@ const returnValue = cell('');
 makeDialogDraggable();
 
 export var imageId = 'IMG_1234a_2023_november_19'; // dummy
-//imageId = 'IMG_1234a'; // dummy
+imageId = 'IMG_1234a'; // dummy
 
 const Welcome = <template>
   <Header />

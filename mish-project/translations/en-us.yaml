@@ -20,6 +20,9 @@ header: Mish with Polaris
 hello:
   friend: Hello dear friend!
   world:  Hello World!
+select:
+  language: Select language
+  languagetext: English
 time:
   text: The time is
 write:
