@@ -834,9 +834,8 @@ div[aria-describedby='textareas'] {
 }
 #smallButtons a.smBu:hover {
   text-decoration: none;
-  color: lightgray;
   animation-name: bluefade;
-  animation-duration: 4s; /* for touchs */
+  animation-duration:0.4s; /* for toutchs */
 }
 #smallButtons a#goTop, #goTop0 {
   background-color: #444;

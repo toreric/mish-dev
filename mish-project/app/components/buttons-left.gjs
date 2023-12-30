@@ -20,7 +20,7 @@ export const ButtonsLeft = <template>
 
     <a id="reFr" {{on "click" (fn someFuntion 'refresh')}} title="NOTE: refresh was reLd" style="display:none"></a>
 
-    <a id="reLd" class="smBu" title={{t 'buttons.left.reload'}} draggable="false" ondragstart="return false" {{on "click" (fn someFuntion 'reload')}} src="images/reload.png"></a>
+    <a id="reLd" class="smBu" title={{t 'buttons.left.reload'}} draggable="false" ondragstart="return false" {{on "click" (fn someFuntion 'reload')}} src="/images/reload.png"></a>
 
     <a id="toggleName" class="smBu" title={{t 'buttons.left.name'}} draggable="false" ondragstart="return false" style="display:" {{on "click" (fn someFuntion 'toggleNameView')}}>N</a>
 
@@ -28,7 +28,7 @@ export const ButtonsLeft = <template>
 
     <a id="saveOrder" class="smBu" title={{t 'buttons.left.save'}} draggable="false" ondragstart="return false" {{on "click" (fn someFuntion 'saveOrder(true)')}}>S</a>
 
-    <a id="do_mail" class="smBu" title={{t 'buttons.left.mail'}} {{on "click" (fn someFuntion 'doMail')}} src="images/mail.svg" style="display:"></a>
+    <a id="do_mail" class="smBu" title={{t 'buttons.left.mail'}} {{on "click" (fn someFuntion 'doMail')}} src="/images/mail.svg" style="display:"></a>
 
     <a class="smBu" draggable="false" ondragstart="return false" title={{t 'buttons.left.up'}} style="font:bold 190% sans-serif;line-height:90%" onclick="window.scrollTo(0,0)">↑</a>
 

@@ -10,28 +10,32 @@ button:
 buttons:
   left:
     main: Öppna menyn
-    help: Användarhand-
-          ledning [F1]
-    reload: Ladda om albumet
-            (återställ osparade ändringar)
+
+    help: "Användarhand-\n
+           ledning [F1]"
+
+    reload: "Ladda om albumet\n
+             (återställ osparade ändringar)"
+
     name: Visa/dölj bildnamnen
     hide: Visa/dölj gömda bilder
     save: Spara ändringar
-    mail: "Fråga om något
-          eller skicka ett
-          meddelande med
-          rättelser eller
-          andra upplysningar"
-    up: Gå upp (visa
-        översta raden)
-        [pgUp]
-    meet: "Möte: Här ses
-          vi på Internet
-          (i nytt fönster).
-          Kom överens med
-          de(n) du vill träffa.
-          Ingen annan inbjudan
-          – klicka bara här!"
+    mail: "Mejla gärna en fråga\n
+           eller skicka andra\n
+           upplysningar (eller\n
+           kanske en rättelse!)"
+
+    up: "Gå upp (visa\n
+         översta raden)\n
+         [pgUp]"
+
+    meet: "Möte: Här ses man på\n
+           Internet (i nytt fönster).\n
+           Kom överens med de(n)\n
+           du vill träffa. Det behövs\n
+           inga inbjudningar – ni\n
+           bara klickar här!"
+
 dialog:
   text:
     header:   Bildtexter för
@@ -53,6 +57,5 @@ time:
 write:
   creator: "Ursprung: Foto upphov källa"
   description: "Beskrivning: När var vad vilka"
-  keywords: "Information om planerat framtida tillägg: Ord
-  lagrade som metadata för användning som särskilda sökbegrepp"
+  keywords: "Information om planerat framtida tillägg: Ord lagrade som metadata för användning som särskilda sökbegrepp"
   notes: Anteckningar som ej visas med bilden
