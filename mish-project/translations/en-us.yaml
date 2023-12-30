@@ -7,6 +7,30 @@ button:
   notes:     Notes
   save:      Save
   saveclose: Save and close
+buttons:
+  left:
+    main: Öppna menyn
+    help: Användarhand-
+          ledning [F1]
+    reload: Ladda om albumet
+            (återställ osparade ändringar)
+    name: Visa/dölj bildnamnen
+    hide: Visa/dölj gömda bilder
+    save: Spara ändringar
+    mail: Please mail a question
+          or send a message with
+          additional information
+          (or corrections!)
+    up: Gå upp (visa
+        översta raden)
+        [pgUp]
+    meet: "Möte: Här ses
+          vi på Internet
+          (i nytt fönster).
+          Kom överens med
+          de(n) du vill träffa.
+          Ingen annan inbjudan
+          – klicka bara här!"
 dialog:
   text:
     header:   Captions for
@@ -28,5 +52,6 @@ time:
 write:
   creator: 'From, how: Photo Origin Source'
   description: 'Caption: When Where What Who'
-  keywords: "Information about planned future addition: Keywords being stored as metadata for search key use"
+  keywords: "Information about planned future addition:
+             Keywords being stored as metadata for search key use"
   notes: Notes not shown with the picture

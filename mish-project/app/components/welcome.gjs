@@ -6,8 +6,11 @@ import Component from '@glimmer/component';
 import { makeDialogDraggable } from 'dialog-draggable';
 import { cell } from 'ember-resources';
 
-import { DialogText } from './dialog-text';
 import { default as Header } from './header'
+
+import { ButtonsLeft } from './buttons-left';
+import { MainMenu } from './main-menu';
+import { DialogText } from './dialog-text';
 
 // eslint-disable-next-line no-unused-vars
 const returnValue = cell('');
@@ -19,6 +22,8 @@ imageId = 'IMG_1234a'; // dummy
 
 const Welcome = <template>
   <Header />
+  <ButtonsLeft />
+  <MainMenu />
   <DialogText />
 </template>;
 

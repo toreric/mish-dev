@@ -7,6 +7,31 @@ button:
   notes:     Anteckningar
   save:      Spara
   saveclose: Spara och stäng
+buttons:
+  left:
+    main: Öppna menyn
+    help: Användarhand-
+          ledning [F1]
+    reload: Ladda om albumet
+            (återställ osparade ändringar)
+    name: Visa/dölj bildnamnen
+    hide: Visa/dölj gömda bilder
+    save: Spara ändringar
+    mail: "Fråga om något
+          eller skicka ett
+          meddelande med
+          rättelser eller
+          andra upplysningar"
+    up: Gå upp (visa
+        översta raden)
+        [pgUp]
+    meet: "Möte: Här ses
+          vi på Internet
+          (i nytt fönster).
+          Kom överens med
+          de(n) du vill träffa.
+          Ingen annan inbjudan
+          – klicka bara här!"
 dialog:
   text:
     header:   Bildtexter för

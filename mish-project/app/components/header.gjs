@@ -1,7 +1,7 @@
 //== Mish header component
 
 import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
+//import { tracked } from '@glimmer/tracking';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 //import { action } from '@ember/object';
@@ -34,7 +34,7 @@ export default class Header extends Component {
     return this.intl.lookup("select.languagetext", locale);
     }
 
-  <template>
+  <template><div style="margin:0 0 0 4rem;padding:0">
     <h1>{{t "header"}}</h1>
 
     {{! Choose language }}
@@ -48,7 +48,7 @@ export default class Header extends Component {
       </select>
 
       {{#each this.selections as |tongue|}}
-        <button class={{if (this.isActive tongue) "active"}}>
+        <button class={{if (this.isActive tongue) "active"}} {{on "click" (fn this.changeLocale tongue)}}>
           {{tongue}}
         </button>
       {{/each}}
@@ -56,7 +56,7 @@ export default class Header extends Component {
 
     {{! Testing ember-intl }}
     <Excite />
-    {{t "intlcode"}} {{t "price_banner" product="A" price=76.5}}
+    {{t "intlcode"}} {{t "price_banner" product='A (1)' price=76.5}}
     <p>{{t "time.text"}} <span><Clock @locale={{t "intlcode"}} /></span></p>
 
     {{! Dialog-testing buttons }}
@@ -65,5 +65,5 @@ export default class Header extends Component {
       &nbsp;
       <button type="button" {{on 'click' (fn openModalDialog dialogTextId 0)}}>{{t 'dialog.text.open.modal'}}</button>
     </p>
-  </template>;
+  </div></template>;
 }

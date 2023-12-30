@@ -1,4 +1,4 @@
-//== Mish component for image captions etc. dialogs
+//== Mish dialogs for image texts (captions etc.)
 
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';

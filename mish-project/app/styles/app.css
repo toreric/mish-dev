@@ -10,8 +10,8 @@
 }
 body {
   background: #ccc;
-  padding: 0 0 0 1rem;
-  margin: 0 0 8px 0;
+  padding: 0;
+  margin: 0;
 }
 
 dialog {
@@ -530,7 +530,7 @@ button.mainMenuClose.ui-dialog-titlebar-close:hover {
   font-weight: bold;
   position: relative;
   top: 0;
-  margin: -8px 0 -12px -8px;
+  margin: 2px 0 0 0.4rem;
   padding: 0;
 }
 #title {
@@ -872,13 +872,29 @@ div[aria-describedby='textareas'] {
 #smallButtons a#menuButton {
   background-color: #0085ff;
 }
-#smallButtons.mainMenu p * {
+.mainMenu {
+  position: fixed;
+  top: 3.2em;
+  left: 2px;
+  min-width: 16em;
+  margin: 0 0 0 4px;
+  padding: 0 2px 0 2px;
+  border: 1px solid gray;
+  border-radius: 2px;
+  text-align: left;
+  background: inherit;
+  opacity: 0.9;
+  line-height: 0;
+  z-index: 12;
+}
+.mainMenu p {
+  margin:0.3em 0.2em 0 -0.2em;
+  position: relative;
   display: inline;
   width: auto;
   height: auto;
   background: inherit;
   color: inherit;
-  margin: 0;
   padding: 0;
   /* Prevent highlighting: */
   -khtml-user-select: none;
@@ -886,6 +902,35 @@ div[aria-describedby='textareas'] {
   -moz-user-select: none;
   -webkit-user-select: none;
   user-select: none;
+}
+.mainMenu p, .mainMenu p a {
+  display:inline-block;
+  white-space:nowrap;
+  width: 99.4%;
+}
+.mainMenu p a {
+  text-decoration: none;
+  font-weight: bold;
+  opacity: 0.9;
+  font-size: 90%;
+  border: 0.5px solid lightgray;
+  border-radius: 0 4px 4px 0;
+  background: #555;
+  line-height: 1.2em;
+  margin: -0.4em 0 0 0;
+  padding: 0.6em 0.4em 0.6em 0.4em;
+  color: white;
+}
+.mainMenu p a.rootQuest {
+  width: auto;
+  border-radius: 4px;
+  padding: 0;
+  margin-left: 0.5em;
+  font-size: 125%;
+}
+.mainMenu p a:hover {
+  color: #7df;
+  opacity: 1;
 }
 .btn-std {
   font-weight: bold;
@@ -1581,54 +1626,6 @@ select {
 .modal-body {
   margin-top: 38px;
   padding: 5px;
-}
-.mainMenu {
-  position: fixed;
-  top: 3.2em;
-  left: 2px;
-  min-width: 16em;
-  margin: 0 0 0 4px;
-  padding: 0 2px 0 2px;
-  border: 1px solid gray;
-  border-radius: 2px;
-  text-align: left;
-  background: inherit;
-  opacity: 0.9;
-  line-height: 0;
-  z-index: 12;
-}
-.mainMenu p {
-  margin:0.3em 0.2em 0 -0.2em;
-  position: relative;
-}
-.mainMenu p, .mainMenu p a {
-  display:inline-block;
-  white-space:nowrap;
-  width: 99.4%;
-}
-.mainMenu p a {
-  text-decoration: none;
-  font-weight: bold;
-  opacity: 0.9;
-  font-size: 90%;
-  border: 0.5px solid lightgray;
-  border-radius: 0 4px 4px 0;
-  background: #555;
-  line-height: 1.2em;
-  margin: -0.4em 0 0 0;
-  padding: 0.6em 0.4em 0.6em 0.4em;
-  color: white;
-}
-.mainMenu p a.rootQuest {
-  width: auto;
-  border-radius: 4px;
-  padding: 0;
-  margin-left: 0.5em;
-  font-size: 125%;
-}
-.mainMenu p a:hover {
-  color: #7df;
-  opacity: 1;
 }
 .jstreeAlbumSelect {
   border: 1px solid gray;
