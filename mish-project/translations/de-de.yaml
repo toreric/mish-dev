@@ -9,29 +9,33 @@ button:
   saveclose: Speichern und schließen
 buttons:
   left:
-    main: Öppna menyn
-    help: Användarhand-
-          ledning [F1]
-    reload: Ladda om albumet
-            (återställ osparade ändringar)
-    name: Visa/dölj bildnamnen
-    hide: Visa/dölj gömda bilder
-    save: Spara ändringar
-    mail: "Fråga om något
-          eller skicka ett
-          meddelande med
-          rättelser eller
-          andra upplysningar"
-    up: Gå upp (visa
-        översta raden)
-        [pgUp]
-    meet: "Möte: Här ses
-          vi på Internet
-          (i nytt fönster).
-          Kom överens med
-          de(n) du vill träffa.
-          Ingen annan inbjudan
-          – klicka bara här!"
+    main: Menü öffnen
+
+    help: "Anweisungen\n
+          [F1]"
+
+    reload: "Album neuladen (ungespeicherte\n
+            Änderungen zurücksetzen)"
+
+    name: Bildnamen Zeigen/verbergen
+    hide: Versteckte Bilder Zeigen/verbergen
+    save: Änderungen speichern
+    mail: "Bitte Fragen mailen oder\n
+          Nachricht mit weitere\n
+          Informationen (oder\n
+          Korrekturen!)"
+
+    up: "Nach oben (erste\n
+        Zeile zeigen)\n
+        [pgUp]"
+
+    meet: "Meeting: Wir sehen uns im\n
+          Internet (im neuen Fenster).\n
+          Bitte stimmen dem/denen zu\n
+          die getroffen werden. Dann ist\n
+          keine Einladung erforderlich\n
+          – einfach hier klicken!"
+
 dialog:
   text:
     header:   Beschreibung für

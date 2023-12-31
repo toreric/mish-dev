@@ -12,29 +12,29 @@ buttons:
     main: Öppna menyn
 
     help: "Användarhand-\n
-           ledning [F1]"
+          ledning [F1]"
 
     reload: "Ladda om albumet\n
-             (återställ osparade ändringar)"
+            (återställ osparade ändringar)"
 
     name: Visa/dölj bildnamnen
     hide: Visa/dölj gömda bilder
     save: Spara ändringar
     mail: "Mejla gärna en fråga\n
-           eller skicka andra\n
-           upplysningar (eller\n
-           kanske en rättelse!)"
+          eller skicka andra\n
+          upplysningar (eller\n
+          kanske en rättelse!)"
 
     up: "Gå upp (visa\n
-         översta raden)\n
-         [pgUp]"
+        översta raden)\n
+        [pgUp]"
 
     meet: "Möte: Här ses man på\n
-           Internet (i nytt fönster).\n
-           Kom överens med de(n)\n
-           du vill träffa. Det behövs\n
-           inga inbjudningar – ni\n
-           bara klickar här!"
+          Internet (i nytt fönster).\n
+          Kom överens med de(n)\n
+          du vill träffa. Det behövs\n
+          inga inbjudningar – ni\n
+          bara klickar här!"
 
 dialog:
   text:
