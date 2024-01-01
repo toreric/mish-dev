@@ -20,9 +20,9 @@ buttons:
     name: Bildnamen Zeigen/verbergen
     hide: Versteckte Bilder Zeigen/verbergen
     save: Änderungen speichern
-    mail: "Bitte Fragen mailen oder\n
+    mail: "Bitte Frage(n) mailen, oder\n
           Nachricht mit weitere\n
-          Informationen (oder\n
+          Informationen (vielleicht\n
           Korrekturen!)"
 
     up: "Nach oben (erste\n
@@ -58,5 +58,5 @@ write:
   creator: "Herkunft: Foto Ursprung Quelle"
   description: "Beschreibung: Wann wo was welche"
   keywords: "Information von geplante zukünftige Ergänzung: Wörter
-  als Metadaten gespeichert zur Verwendung als Suchbegriffe"
+            als Metadaten gespeichert zur Verwendung als Suchbegriffe"
   notes: Anmerkungen die nicht mit dem Bild erscheinen

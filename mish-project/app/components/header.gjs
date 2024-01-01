@@ -38,20 +38,18 @@ export default class Header extends Component {
     <h1>{{t "header"}}</h1>
 
     {{! Choose language }}
-    <p>
+    <p class="buttons">
       <span style="font-size:85%">{{t "select.language"}}</span><br>
+
+      {{#each this.selections as |tongue|}}
+        <span class={{if (this.isActive tongue) "active"}} {{on "click" (fn this.changeLocale tongue)}} style="padding:0;margin:0"><img src="/images/{{tongue}}.svg" alt={{tongue}}></span>
+      {{/each}}
 
       <select id="selectLanguage" {{on "change" this.changeLanguage}}>
       {{#each this.selections as |tongue|}}
         <option {{on "click" (fn this.changeLocale tongue)}} value={{tongue}} selected={{if (this.isActive tongue) true}}>{{(this.langText tongue)}}</option>
       {{/each}}
       </select>
-
-      {{#each this.selections as |tongue|}}
-        <button class={{if (this.isActive tongue) "active"}} {{on "click" (fn this.changeLocale tongue)}}>
-          {{tongue}}
-        </button>
-      {{/each}}
     </p>
 
     {{! Testing ember-intl }}
@@ -65,5 +63,5 @@ export default class Header extends Component {
       &nbsp;
       <button type="button" {{on 'click' (fn openModalDialog dialogTextId 0)}}>{{t 'dialog.text.open.modal'}}</button>
     </p>
-  </div></template>;
+  </div></template>
 }

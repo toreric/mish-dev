@@ -871,6 +871,20 @@ div[aria-describedby='textareas'] {
 #smallButtons a#menuButton {
   background-color: #0085ff;
 }
+/* maily for the language flag buttons */
+p.buttons span img {
+  cursor: pointer;
+  height: 1rem;
+  padding:0;
+  margin: 0 0 -0.2rem 0;
+  opacity: 0.5;
+  border: 1px solid darkgray;
+  border-radius: 2px;
+}
+p.buttons span.active img {
+  opacity: 1;
+  border-color: #333;
+}
 .mainMenu {
   position: fixed;
   top: 3.2em;
