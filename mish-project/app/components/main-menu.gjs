@@ -1,4 +1,6 @@
-//== Mish main menu, select image root directoriy, jstree
+//== Mish main menu, select image root directoriy, jstree to be displaued
+
+// Is so far only roughly outlined, waiting for server service ...
 
 import { eq } from 'ember-truth-helpers';
 import { fn } from '@ember/helper';

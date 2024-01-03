@@ -6,12 +6,14 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 //import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+//import { openDialog, toggleDialo, openModalDialog, saveDialog, closeDialog, saveCloseDialog } from 'dialog-functions';
 
 import t from 'ember-intl/helpers/t';
 
 import { Clock } from './clock';
-import { dialogTextId, openDialog, openModalDialog, toggleDialog }
-  from './dialog-text';
+import { toggleDialog, openDialog, openModalDialog }
+  from './dialog-functions';
+import { dialogTextId } from 'dialog-text';
 import { Excite } from './excite';
 
 export default class Header extends Component {
