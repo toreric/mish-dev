@@ -9,8 +9,10 @@ import t from 'ember-intl/helpers/t';
 
 const someFuntion = (param) => console.log(param);
 
-export const MainMenu = <template>
-  <div class="mainMenu BACKG" onclick="return false" draggable="false" ondragstart="return false" style="display:none">
+export const menuMainId = "menuMain"
+
+export const MenuMain = <template>
+  <div id="menuMain" class="mainMenu BACKG" onclick="return false" draggable="false" ondragstart="return false" style="display:none">
 
     <p onclick="return false" draggable="false" ondragstart="return false" title="Sökning">
       <a class="search" {{on "click" (fn someFuntion 'findText')}}>Finn bilder <span style="font:normal 1em monospace!important">[F]</span></a>

@@ -742,12 +742,9 @@ div.settings a:hover {
   z-index: 1500;
   opacity: 0.65;
 }
-#helpText {
+#dialogHelp {
   padding: 1.0em;
   z-index: 15;
-}
-.helpText {
-  display: none;
 }
 .large {
   font-size: 114%;

@@ -4,11 +4,13 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 import { imageId } from './welcome';
+import { closeDialog, openModalDialog, saveCloseDialog, saveDialog } from './dialog-functions';
 
 //== Dialogs with <dialog> tag
 
+// NOTE: 'dialog-functions' needs 'dialogId':
 export const dialogTextId = 'dialogText';
-const dialogId = 'dialogText';
+const dialogId = dialogTextId;
 
 export const DialogText = <template>
 <div style="display:flex; align-items:center; justify-content:center;">

@@ -3,23 +3,25 @@
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
-import { openDialog, toggleDialo, openModalDialog, saveDialog, closeDialog, saveCloseDialog } from 'dialog-functions';
+//import { openDialog, toggleDialog, openModalDialog, saveDialog, closeDialog, saveCloseDialog } from 'dialog-functions';
+import { closeDialog, toggleDialog } from './dialog-functions'
 
 //== Dialog with <dialog> tag, this dialog is worked on
 
-const DialgHelpId = "dialogHelp";
+export const dialogHelpId = "dialogHelp";
+const dialogId = "dialogHelp";
 
 export const DialogHelp = <template>
 <div style="display:flex; align-items:center; justify-content:center;">
 
-<dialog id='dialogHelp'>
+<dialog id="dialogHelp">
   <header data-dialog-draggable>
     <p>&nbsp;</p>
-    <p>{{t 'dialog.help.header'}} <span>{{imageId}}</span></p>
-    <button class="close" type="button" {{on 'click' (fn closeDialog dialogId)}}>×</button>
+    <p>{{t 'dialog.help.header'}} <span></span></p>
+    <button class="close" type="button" {{on 'click' (fn toggleDialog dialogId)}}>×</button>
   </header>
   <main>
-    <div id="helpHelp" style="display:none">
+    <div id="helpHelp">
       <p style="text-align:left;margin-left:1.5em;margin-top:-1em;line-height:1.7em" draggable="false" ondragstart="return false"><br>
 
         <span style="font-size:0.95em"><b>Bilderna har högerklick-menyer</b> med kommandon/funktioner

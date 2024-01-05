@@ -37,6 +37,9 @@ buttons:
           bara klickar här!"
 
 dialog:
+  help:
+    header: "Användarhandledning\n
+            (främst för dator med tangentbord eller pekplatta)"
   text:
     header:   Bildtexter för
     keywords: Nyckelord för

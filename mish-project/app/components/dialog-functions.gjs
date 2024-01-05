@@ -4,8 +4,8 @@
 // openDialog, toggleDialo, openModalDialog, saveDialog, closeDialog, saveCloseDialog;
 // that is, openDialog(id, op), toggleDialog(id, op), openModalDialog(id, op),
 // saveDialog(id), closeDialog(id), and saveCloseDialog(id) (= save then close),
-// where id = `dialogId` and op = 'original position'. If op is true then it is
-// opened in the original position -- else where it was left at last close.
+// where id = `dialogId` and op = 'original position'. If op is `true` then the dialog
+// is opened in the original position -- else opened where it was left at last close.
 
 export function openDialog(dialogId, origPos) {
   let diaObj = document.getElementById(dialogId);
@@ -60,3 +60,7 @@ export function closeDialog(dialogId) {
   // eslint-disable-next-line no-console
   console.log(dialogId + ' closed');
 }
+
+<template>
+  <span></span>
+</template>

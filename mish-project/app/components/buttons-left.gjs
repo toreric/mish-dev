@@ -5,6 +5,11 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
+import { closeDialog, toggleDialog } from './dialog-functions'
+
+import { menuMainId } from './menu-main'
+import { dialogHelpId } from './dialog-help';
+
 const someFuntion = (param) => console.log(param);
 
 // Left buttons, most without href attribute
@@ -16,7 +21,7 @@ export const ButtonsLeft = <template>
 
     <a id="menuButton" class="smBu" title={{t 'buttons.left.main'}} draggable="false" ondragstart="return false" {{on "click" (fn someFuntion 'toggleMainMenu(imdbRoot)')}} style="z-index:16;font-family: Comic Sans MS;width:1.25em;line-height:80%">☰</a>
 
-    <a id="questionMark" class="smBu" title={{t 'buttons.left.help'}} draggable="false" ondragstart="return false" {{on "click" (fn someFuntion 'toggleHelp')}}>?</a>
+    <a id="questionMark" class="smBu" title={{t 'buttons.left.help'}} draggable="false" ondragstart="return false" {{on "click" (fn toggleDialog dialogHelpId)}}>?</a>
 
     <a id="reFr" {{on "click" (fn someFuntion 'refresh')}} title="NOTE: refresh was reLd" style="display:none"></a>
 
