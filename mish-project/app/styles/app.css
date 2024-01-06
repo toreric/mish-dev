@@ -743,8 +743,9 @@ div.settings a:hover {
   opacity: 0.65;
 }
 #dialogHelp {
-  padding: 1.0em;
   z-index: 15;
+  width: 50%;
+  min-width: 300px;
 }
 .large {
   font-size: 114%;

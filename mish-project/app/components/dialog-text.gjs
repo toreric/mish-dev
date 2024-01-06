@@ -13,7 +13,7 @@ export const dialogTextId = 'dialogText';
 const dialogId = dialogTextId;
 
 export const DialogText = <template>
-<div style="display:flex; align-items:center; justify-content:center;">
+<div style="display:flex">
 
 <dialog id='dialogText'>
   <header data-dialog-draggable>

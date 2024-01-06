@@ -12,7 +12,7 @@ export const dialogHelpId = "dialogHelp";
 const dialogId = "dialogHelp";
 
 export const DialogHelp = <template>
-<div style="display:flex; align-items:center; justify-content:center;">
+<div style="display:flex">
 
 <dialog id="dialogHelp">
   <header data-dialog-draggable>
