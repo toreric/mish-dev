@@ -9,7 +9,7 @@ button:
   saveclose: Save and close
 buttons:
   left:
-    main: Open menu
+    main: Main menu
 
     help: "User guide\n
           [F1]"
@@ -37,6 +37,13 @@ buttons:
           – you just click here!"
 
 dialog:
+  help:
+    header: User guide
+    header1: (mainly for computers with keyboard or touchpad)
+    ihrcm: Each image has a right-click menu
+    flebu: First the left hand buttons
+    wviva: which ones visible varies
+    mmenu: "Main menu: Choose album, search, favorites, album overview..."
   text:
     header:   Captions for
     keywords: Keywords for

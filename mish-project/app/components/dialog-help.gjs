@@ -11,20 +11,29 @@ import { closeDialog, toggleDialog } from './dialog-functions'
 export const dialogHelpId = "dialogHelp";
 const dialogId = "dialogHelp";
 
-export const DialogHelp = <template>
-<div style="display:flex">
+//== Detect closing Esc key
 
-<dialog id="dialogHelp">
+document.addEventListener ('keydown', detectEsc, false);
+
+async function detectEsc(e) {
+  if (e.keyCode === 27) { // Esc key
+    closeDialog(dialogId);
+  }
+}
+export const DialogHelp = <template>
+
+<dialog id="dialogHelp" style="displau:flex">
   <header data-dialog-draggable>
-    <p>&nbsp;</p>
-    <p>{{t 'dialog.help.header'}} <span></span></p>
-    <button class="close" type="button" {{on 'click' (fn toggleDialog dialogId)}}>×</button>
+    <div style="width:99%">
+      <p>{{t 'dialog.help.header'}}<br>{{t 'dialog.help.header1'}}<span></span></p>
+    </div><div>
+      <button class="close" type="button" {{on 'click' (fn toggleDialog dialogId)}}>×</button>
+    </div>
   </header>
   <main>
-    <div id="helpHelp">
-      <p style="text-align:left;margin-left:1.5em;margin-top:-1em;line-height:1.7em" draggable="false" ondragstart="return false"><br>
+      <p style="text-align:left;margin:-0.9rem 0 0 1.5rem;line-height:1.7em" draggable="false" ondragstart="return false"><br>
 
-        <span style="font-size:0.95em"><b>Bilderna har högerklick-menyer</b> med kommandon/funktioner
+        <span style="font-size:0.95em"><b>{{t 'dialog.help.ihrcm'}}</b> med kommandon/funktioner
         (<b>Ctrl + klick</b> kan användas i stället för högerklick)<br>
 
         <b>Skifttangent + klick på en miniatyrbild</b> markerar/avmarkerar den<br>
@@ -33,14 +42,14 @@ export const DialogHelp = <template>
 
         <b style="color:#0b0">En bild med grön underkant är länkad</b> från annat album – gå till originalbilden med klick på den gröna <span style="color:white;background:#0b0">&nbsp;Gå till </span>-länken</span>
       </p>
-      <p style="text-align:left;margin-left:1.5em;line-height:1.7em" draggable="false" ondragstart="return false">
-        <b>Se först knapparna till vänster</b> (vilka som syns varierar):<br>
+      <p style="text-align:left;margin-left:1.5rem;line-height:1.7rem" draggable="false" ondragstart="return false">
+        <b>{{t 'dialog.help.flebu'}}</b> ({{t 'dialog.help.wviva'}}):<br>
 
-        <a id="albSel" class="helpIcon">☰</a> Huvudmeny: Välj album, sökning, favoriter, albumöversikt ...<br>
+        <a id="albSel" class="helpIcon">☰</a> {{t 'dialog.help.mmenu'}}<br>
 
         <a id="questionMark0" class="helpIcon">?</a> Visa/dölj den här användarhandledningen<br>
 
-        <a id="reFr0" class="helpIcon"><img draggable="false" ondragstart="return false" src="/images/reload.png"></a> Ladda om albumet, återställ eventuella osparade ändringar¹² (’ångerknapp’, men avser ej textändringar)<br>
+        <a id="reFr0" class="helpIcon"><img draggable="false" ondragstart="return false" src="/images/reload.png"></a> Ladda om albumet, återställ eventuella osparade ändringar (’ångerknapp’ men <span>avser ej textändringar</span>)¹ ²<br>
 
         <a id="toggleName0" class="helpIcon">N</a> Visa/dölj namn på bilden (filnamn utan .filtyp)<br>
 
@@ -65,7 +74,7 @@ export const DialogHelp = <template>
 
         <b>F1</b> visar/döljer den här användarhandledningen<br>
 
-        <b>Ctrl</b>+<b class="large">+</b> och <b>Ctrl</b>+<b class="large">&minus;</b> ökar respektive minskar bildstorleken och <b>Ctrl</b>+<b class="large">0</b> återställer<br>
+        <b>Ctrl</b>+<b class="large">+</b> och <b>Ctrl</b>+<b class="large">&minus;</b> ökar respektive minskar bildstorleken och <b>Ctrl</b>+<b class="large">0</b> (noll) återställer<br>
 
         <b>F11</b> används för att börja eller avbryta helskärmsvisning<br>
 
@@ -78,9 +87,10 @@ export const DialogHelp = <template>
         <b>Esc</b> är avslutnings- och avbrottstangent för bildväxling, informationsfönster m.m.<br>
 
         <b>F5</b> eller <b>Ctrl</b>+<b>R</b> används för att börja om från början, till exempel om bildväxlingen kommit i oordning</p>
-    </div>
   </main>
+  <footer data-dialog-draggable>
+    <button type="button" {{on 'click' (fn closeDialog dialogId)}}>{{t 'button.close'}}</button>&nbsp;
+  </footer>
 </dialog>
 
-</div>
 </template>

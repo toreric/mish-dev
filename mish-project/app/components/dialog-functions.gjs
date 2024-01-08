@@ -3,7 +3,7 @@
 // Should be imported as soon as a dialog is going to be opened and used. Contains:
 // openDialog, toggleDialo, openModalDialog, saveDialog, closeDialog, saveCloseDialog;
 // that is, openDialog(id, op), toggleDialog(id, op), openModalDialog(id, op),
-// saveDialog(id), closeDialog(id), and saveCloseDialog(id) (= save then close),
+// saveDialog(id), closeDialog(id, op), and saveCloseDialog(id) (= save then close),
 // where id = `dialogId` and op = 'original position'. If op is `true` then the dialog
 // is opened in the original position -- else opened where it was left at last close.
 

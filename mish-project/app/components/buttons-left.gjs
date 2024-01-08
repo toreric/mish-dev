@@ -21,7 +21,7 @@ export const ButtonsLeft = <template>
 
     <a id="menuButton" class="smBu" title={{t 'buttons.left.main'}} draggable="false" ondragstart="return false" {{on "click" (fn someFuntion 'toggleMainMenu(imdbRoot)')}} style="z-index:16;font-family: Comic Sans MS;width:1.25em;line-height:80%">☰</a>
 
-    <a id="questionMark" class="smBu" title={{t 'buttons.left.help'}} draggable="false" ondragstart="return false" {{on "click" (fn toggleDialog dialogHelpId)}}>?</a>
+    <a id="questionMark" class="smBu" title={{t 'buttons.left.help'}} draggable="false" ondragstart="return false" {{on "click" (fn toggleDialog dialogHelpId false)}}>?</a>
 
     <a id="reFr" {{on "click" (fn someFuntion 'refresh')}} title="NOTE: refresh was reLd" style="display:none"></a>
 

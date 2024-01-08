@@ -28,14 +28,26 @@ dialog::backdrop {
 }
 dialog header {
   display: flex;
+  border-bottom: 1px solid white;
   justify-content: space-between;
+  text-align: center;
   padding: 0.4rem;
   background: #adadad;
   cursor: grabbing;
+  width: 98.2%;
 }
-dialog p {
+dialog footer {
+  display: flex;
+  flex-wrap: wrap;
+  border-top: 1px solid white;
+  padding: 0.1rem;
+  justify-content: center;
+  background-color: #ddd;
+  cursor: grabbing;
+  width: 99.6%;
+}
+header p {
   margin: 0;
-  padding-top: 0.2rem;
 }
 dialog p span {
   color: blue;
@@ -52,21 +64,16 @@ dialog .insertChar:hover {
   border: 2px solid #5dabdf;
 }
 dialog main {
-  background: #ddd;
   width: auto;
+  height: auto;
+  overflow-y: auto;
+  background: #ddd;
 }
 dialog textarea {
   width: min(calc(100vw - 1rem), 660px);
   border-radius: 4px;
   font: normal 1.05rem/1.2rem Georgia, "Times New Roman", Times, serif;
   background: #eee;
-}
-dialog footer {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0.1rem;
-  justify-content: center;
-  background-color: #ddd;
 }
 dialog button {
   background-color: #bbb;
@@ -75,6 +82,17 @@ dialog button {
 }
 dialog button:hover {
   background-color: #b0c4deaa;
+}
+#dialogHelp {
+  top: 0;
+  z-index: 0;
+  width: 80%;
+  min-width: 300px;
+  height: 500px;
+}
+#dialogHelp main {
+  height: 25.7rem;
+  /* matches #dialogHelp height:500px  */
 }
 button.active {
   background-color: #7df;
@@ -741,11 +759,6 @@ div.settings a:hover {
   background-color: transparent;
   z-index: 1500;
   opacity: 0.65;
-}
-#dialogHelp {
-  z-index: 15;
-  width: 50%;
-  min-width: 300px;
 }
 .large {
   font-size: 114%;

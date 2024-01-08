@@ -19,7 +19,7 @@ const returnValue = cell('');
 makeDialogDraggable();
 
 export var imageId = 'IMG_1234a_2023_november_19'; // dummy
-imageId = 'IMG_1234a'; // dummy
+//imageId = 'IMG_1234a'; // dummy
 
 const Welcome = <template>
   <Header />

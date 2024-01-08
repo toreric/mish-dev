@@ -36,6 +36,7 @@ export default class Header extends Component {
     }
 
   <template><div style="margin:0 0 0 4rem;padding:0">
+
     <h1>{{t "header"}}</h1>
 
     {{! Choose language }}
@@ -64,5 +65,6 @@ export default class Header extends Component {
       &nbsp;
       <button type="button" {{on 'click' (fn openModalDialog dialogTextId 0)}}>{{t 'dialog.text.open.modal'}}</button>
     </p>
+
   </div></template>
 }

@@ -28,7 +28,7 @@ export const DialogText = <template>
     <textarea id="dialogTextDescription" name="description" rows="6" placeholder="{{t "write.description"}} (Xmp.dc.description)" {{on 'mouseleave' onMouseLeaveTextarea}}></textarea><br>
     <textarea id="dialogTextCreator" name="creator" rows="2" placeholder="{{t "write.creator"}} (Xmp.dc.creator)" {{on 'mouseleave' onMouseLeaveTextarea}}></textarea>
   </main>
-  <footer>
+  <footer data-dialog-draggable>
     <button id="dialogTextButton1" type="button" {{on 'click' (fn saveDialog dialogTextId)}}>{{t 'button.save'}}</button>&nbsp;
     <button id="dialogTextButton2" type="button" {{on 'click' (fn saveCloseDialog dialogTextId)}}>{{t 'button.saveclose'}}</button>&nbsp;
     <button id="dialogTextButton3" type="button" {{on 'click' (fn closeDialog dialogTextId)}}>{{t 'button.close'}}</button>&nbsp;
@@ -49,7 +49,7 @@ export const DialogText = <template>
     </div>
     <textarea id="dialogTextInfo" name="description" rows="8" placeholder="{{t 'write.notes'}} (Xmp.dc.source)" {{on 'mouseleave' onMouseLeaveTextarea}}></textarea><br>
   </main>
-  <footer>
+  <footer data-dialog-draggable>
     <button type="button" {{on 'click' (fn saveDialog 'dialogTextNotes')}}>{{t 'button.save'}}</button>&nbsp;
     <button type="button" {{on 'click' (fn saveCloseDialog 'dialogTextNotes')}}>{{t 'button.saveclose'}}</button>&nbsp;
     <button type="button" {{on 'click' (fn closeDialog 'dialogTextNotes')}}>{{t 'button.close'}}</button>
@@ -69,7 +69,7 @@ export const DialogText = <template>
       {{t 'write.keywords'}}
     </div>
   </main>
-  <footer>
+  <footer data-dialog-draggable>
     <button type="button" {{on 'click' (fn closeDialog 'dialogTextKeywords')}}>{{t 'button.close'}}</button>&nbsp;
   </footer>
 </dialog>

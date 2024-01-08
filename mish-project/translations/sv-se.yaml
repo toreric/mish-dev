@@ -9,7 +9,7 @@ button:
   saveclose: Spara och stäng
 buttons:
   left:
-    main: Öppna menyn
+    main: Huvudmeny
 
     help: "Användarhand-\n
           ledning [F1]"
@@ -38,8 +38,12 @@ buttons:
 
 dialog:
   help:
-    header: "Användarhandledning\n
-            (främst för dator med tangentbord eller pekplatta)"
+    header: Användarhandledning
+    header1: (främst för dator med tangentbord eller pekplatta)
+    ihrcm: Varje bild har en högerklick-meny
+    flebu: Först knapparna till vänster
+    wviva: vilka som är synliga varierar
+    mmenu: "Huvudmeny: Välj album, sökning, favoriter, albumöversikt ..."
   text:
     header:   Bildtexter för
     keywords: Nyckelord för

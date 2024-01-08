@@ -9,7 +9,7 @@ button:
   saveclose: Speichern und schließen
 buttons:
   left:
-    main: Menü öffnen
+    main: Hauptmenü
 
     help: "Anweisungen\n
           [F1]"
@@ -37,6 +37,13 @@ buttons:
           – einfach hier klicken!"
 
 dialog:
+  help:
+    header: Benutzeranweisung
+    header1: (vor allem für Computers mit Tastatur oder Touchpad)
+    ihrcm: Jedes Bild hat ein Rechtsklick-Menü
+    flebu: Zuerst die linken Tasten
+    wviva: welche sichtbar sind, variiert
+    mmenu: "Im Hauptmenü wählen: Album, Suche, Favoriten, Albumübersicht ..."
   text:
     header:   Beschreibung für
     keywords: Stichwörter für
