@@ -9,11 +9,12 @@
 
 export function openDialog(dialogId, origPos) {
   let diaObj = document.getElementById(dialogId);
-
-  diaObj.show();
-  if (origPos) diaObj.style = '';
-  // eslint-disable-next-line no-console
-  console.log(dialogId + ' opened');
+  if (!diaObj.open) {
+    diaObj.show();
+    if (origPos) diaObj.style = '';
+    // eslint-disable-next-line no-console
+    console.log(dialogId + ' opened');
+  }
 }
 
 export function toggleDialog(dialogId, origPos) {
@@ -56,9 +57,12 @@ export function saveCloseDialog(dialogId) {
 }
 
 export function closeDialog(dialogId) {
-  document.getElementById(dialogId).close();
-  // eslint-disable-next-line no-console
-  console.log(dialogId + ' closed');
+  let diaObj = document.getElementById(dialogId);
+  if (diaObj.open) {
+    diaObj.close();
+    // eslint-disable-next-line no-console
+    console.log(dialogId + ' closed');
+  }
 }
 
 <template>

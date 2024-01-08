@@ -18,6 +18,7 @@ const returnValue = cell('');
 
 makeDialogDraggable();
 
+export var userName = 'tore';
 export var imageId = 'IMG_1234a_2023_november_19'; // dummy
 //imageId = 'IMG_1234a'; // dummy
 
