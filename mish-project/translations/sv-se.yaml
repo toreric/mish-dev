@@ -54,13 +54,13 @@ dialog:
     toggle: Öppna/stäng textfönster
 header: Det här är Mish med Polaris
 hello:
-  friend: Hej käre vän!
   world:  Goddag hela världen!
 select:
   language: Välj språk
   languagetext: Svenska
 time:
   text: Klockan är
+  buildstamp: Ember development server
 write:
   creator: "Ursprung: Foto upphov källa"
   description: "Beskrivning: När var vad vilka"

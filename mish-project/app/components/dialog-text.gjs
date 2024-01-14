@@ -78,14 +78,10 @@ export const DialogText = <template>
 </template>
 
 function notesDialog(dialogId) {
-  // eslint-disable-next-line no-console
-  console.log('The Notes modal for ' + imageId + ' to be opened');
   openModalDialog(dialogId, 0);
 }
 
 function keysDialog(dialogId) {
-  // eslint-disable-next-line no-console
-  console.log('The Keywords modal for ' + imageId + ' to be opened');
   openModalDialog(dialogId, 0);
 }
 

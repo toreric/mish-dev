@@ -1,0 +1,39 @@
+#!/bin/bash
+
+#" Remember to set the project durectory: "
+#project=/home/tore/Arbeten/mish
+project=/home/tore/Arbeten/mish-dev
+echo $project
+# Remove code lines causing (drag-)drop minipic error
+#sed -i~ '/sortEndAction/,+2d' ${project}/mish-project/node_modules/ember-drag-drop/addon/components/sortable-objects.js
+
+port=3000
+# Kill the process (if any) already listening to this port
+prid=`lsof -t -i:$port`
+if [ $prid ]; then
+  echo "Port $port occupied by pid $prid"
+  sudo kill $prid
+fi
+
+# Make the script usable from any directory
+cd $project
+
+#IMDB_HOME=/mnt/sda2
+IMDB_HOME=/mnt/koofrwebdav
+IMDB_HOME=/home/tore
+#IMDB_ROOT=MISH
+IMDB_ROOT=Framkallning_2019
+IMDB_ROOT=Album-1
+IMDB_ROOT='""' # Empty argument (must be '""') to be passed
+################# correctly positioned into '.../node .../server.js'
+if [[ $1 ]]; then
+  IMDB_HOME=$1
+  if [[ $2 ]]; then
+    IMDB_ROOT=$2
+  fi
+fi
+echo IMDB_HOME = $IMDB_HOME
+echo IMDB_ROOT = $IMDB_ROOT
+echo -n "##### Starting the Node server "`date`
+# Note that Node may be installed as either 'node', 'nodejs', or both:
+node server.js $IMDB_HOME $IMDB_ROOT $port

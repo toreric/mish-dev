@@ -1,26 +1,26 @@
 {
-  "name": "mish",
+  "name": "mish-dev",
   "version": "0.0.0",
   "description": "Photo galleries",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/toreric/mish.git"
+    "url": "git+https://github.com/toreric/mish-dev.git"
   },
   "main": "server.js",
   "author": "toreric <tore.ericsson@tores.se>",
   "license": "MIT",
   "dependencies": {
-    "better-sqlite3": "^7.4.1",
-    "bluebird": "^3.7.1",
-    "express": "^4.17.1",
-    "multer": "^1.4.2",
-    "tar": "^6.1.11"
+    "better-sqlite3": "^9.2.2",
+    "bluebird": "^3.7.2",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "tar": "^6.2.0"
   },
   "scripts": {
     "start": "node server.js"
   },
   "bugs": {
-    "url": "https://github.com/toreric/mish/issues"
+    "url": "https://github.com/toreric/mish-dev/issues"
   },
-  "homepage": "https://github.com/toreric/mish#readme"
+  "homepage": "https://github.com/toreric/mish-dev#readme"
 }

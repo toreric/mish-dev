@@ -54,13 +54,13 @@ dialog:
     toggle: Toggle text dialog
 header: Mish with Polaris
 hello:
-  friend: Hello dear friend!
   world:  Hello World!
 select:
   language: Select language
   languagetext: English
 time:
   text: The time is
+  buildstamp: Ember development server
 write:
   creator: 'From, how: Photo Origin Source'
   description: 'Caption: When Where What Who'

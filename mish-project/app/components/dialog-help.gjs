@@ -6,6 +6,8 @@ import t from 'ember-intl/helpers/t';
 //import { openDialog, toggleDialog, openModalDialog, saveDialog, closeDialog, saveCloseDialog } from 'dialog-functions';
 import { closeDialog, toggleDialog } from './dialog-functions'
 
+import { loli } from './welcome';
+
 //== Dialog with <dialog> tag, this dialog is worked on
 
 export const dialogHelpId = "dialogHelp";
@@ -15,14 +17,14 @@ const dialogId = "dialogHelp";
 
 document.addEventListener ('keydown', detectEsc, false);
 
-async function detectEsc(e) {
+function detectEsc(e) {
   if (e.keyCode === 27) { // Esc key
-    closeDialog(dialogId);
+    if (document.getElementById(dialogId).open) closeDialog(dialogId);
   }
 }
 export const DialogHelp = <template>
 
-<dialog id="dialogHelp" style="displau:flex">
+<dialog id="dialogHelp">
   <header data-dialog-draggable>
     <div style="width:99%">
       <p>{{t 'dialog.help.header'}}<br>{{t 'dialog.help.header1'}}<span></span></p>

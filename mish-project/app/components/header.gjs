@@ -15,6 +15,8 @@ import { toggleDialog, openDialog, openModalDialog }
 import { dialogTextId } from './dialog-text';
 import { Excite } from './excite';
 
+import { loli } from './welcome';
+
 export default class Header extends Component {
   @service intl;
   selections = this.intl.get('locales');
@@ -36,8 +38,6 @@ export default class Header extends Component {
     }
 
   <template><div style="margin:0 0 0 4rem;padding:0">
-
-    <h1>{{t "header"}}</h1>
 
     {{! Choose language }}
     <p class="buttons">

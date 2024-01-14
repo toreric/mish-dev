@@ -7,30 +7,28 @@
 // where id = `dialogId` and op = 'original position'. If op is `true` then the dialog
 // is opened in the original position -- else opened where it was left at last close.
 
+import { loli } from './welcome';
+
 export function openDialog(dialogId, origPos) {
   let diaObj = document.getElementById(dialogId);
   if (!diaObj.open) {
     diaObj.show();
     if (origPos) diaObj.style = '';
-    // eslint-disable-next-line no-console
-    console.log(dialogId + ' opened');
+    loli('opened ' + dialogId);
   }
 }
 
 export function toggleDialog(dialogId, origPos) {
   let diaObj = document.getElementById(dialogId);
-  let what = ' closed';
-
+  let what = 'closed ';
   if (diaObj.hasAttribute("open")) {
     diaObj.close();
   } else {
-    what = ' opened';
+    what = 'opened ';
     if (origPos) diaObj.style = '';
     diaObj.show();
   }
-
-  // eslint-disable-next-line no-console
-  console.log(dialogId + what);
+  loli(what + dialogId);
 }
 
 export function openModalDialog(dialogId, origPos) {
@@ -39,16 +37,14 @@ export function openModalDialog(dialogId, origPos) {
   if (!diaObj.open) {
     if (origPos) diaObj.style = '';
     diaObj.showModal();
-    // eslint-disable-next-line no-console
-    console.log(dialogId + ' opened (modal)');
+    loli('opened ' + dialogId + ' (modal)');
   }
 }
 
 //== May also be used as dialog button functions:
 
 export function saveDialog(dialogId) {
-  // eslint-disable-next-line no-console
-  console.log(dialogId + ' image text(s) saved');
+  loli('saved ' + dialogId);
 }
 
 export function saveCloseDialog(dialogId) {
@@ -60,11 +56,6 @@ export function closeDialog(dialogId) {
   let diaObj = document.getElementById(dialogId);
   if (diaObj.open) {
     diaObj.close();
-    // eslint-disable-next-line no-console
-    console.log(dialogId + ' closed');
+    loli('closed ' + dialogId);
   }
 }
-
-<template>
-  <span></span>
-</template>

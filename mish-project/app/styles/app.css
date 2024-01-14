@@ -542,7 +542,7 @@ button.mainMenuClose.ui-dialog-titlebar-close:hover {
   /*for IE10*/
   display: none;
 }
-#timeStamp { /* scripted into index.html */
+#buildStamp { /* scripted into index.html */
   font-family: Verdana, Geneva, Tahoma, sans-serif !important;
   font-size: 0.5em;
   font-weight: bold;
