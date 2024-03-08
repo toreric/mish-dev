@@ -52,6 +52,15 @@ export default class Header extends Component {
         <option {{on "click" (fn this.changeLocale tongue)}} value={{tongue}} selected={{if (this.isActive tongue) true}}>{{(this.langText tongue)}}</option>
       {{/each}}
       </select>
+
+      {{! Selection example }}
+      <span>&nbsp; &nbsp; &nbsp; Testing: </span>
+      <select>
+        <option value="" selected disabled hidden>Select</option>
+        <option value="0" style="color:red">Red</option>
+        <option value="1" style="color:green">Green</option>
+        <option value="2" style="color:blue">Blue</option>
+      </select>
     </p>
 
     {{! Testing ember-intl }}

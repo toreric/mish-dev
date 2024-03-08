@@ -34,7 +34,6 @@ dialog header {
   padding: 0.4rem;
   background: #adadad;
   cursor: grabbing;
-  width: 98.2%;
 }
 dialog footer {
   display: flex;
