@@ -40,8 +40,18 @@ dialog:
   help:
     header: Benutzeranweisung
     header1: (vor allem für Computers mit Tastatur oder Touchpad)
-    ihrcm: Jedes Bild hat ein Rechtsklick-Menü
-    flebu: Zuerst die linken Tasten
+    ihrcm0: Jedes Bild hat ein Rechtsklick-Menü
+    ihrcm1: mit Kommandos/Funktionen (
+    ctrlclick: Ctrl + klicken
+    ihrcm2: kann rechtsklicken ersetzen)
+    shift0: Shift + klicken auf einem Vorschaubild
+    shift1: macht markieren/ausmarkieren
+    login0: Wenn Sie als Gastbenutzer (guest) angemeldet sind
+    login1: haben Sie nur wenige Rechte (Vorschaubilder verstecken, markieren und mit drag & drop bewegen; zum Originalbild gehen). Mit dem persönlichen Login erhalten Sie weitere Rechte (zum beispiel, Bildunterschriften ändern und speichern)
+    green0: Ein Bild mit einem grünen unteren Rand
+    green1: ist aus einem anderen Album verlinkt – gehen Sie zum Originalbild mit dem grünen Link
+    green2: ""
+    flebu: Erstens, die linken Tasten
     wviva: welche sichtbar sind, variiert
     mmenu: "Im Hauptmenü wählen: Album, Suche, Favoriten, Albumübersicht ..."
   text:
@@ -52,6 +62,7 @@ dialog:
       origpos: ... auf Originalplatz
       modal: Modales Textfenster öffnen
     toggle: Textfenster öffnen/schließen
+goto: Gehe zu
 header: Hier ist Mish mit Polaris
 hello:
   world:  Guten Tag, Welt!

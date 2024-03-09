@@ -35,14 +35,13 @@ export const DialogHelp = <template>
   <main>
       <p style="text-align:left;margin:-0.9rem 0 0 1.5rem;line-height:1.7em" draggable="false" ondragstart="return false"><br>
 
-        <span style="font-size:0.95em"><b>{{t 'dialog.help.ihrcm'}}</b> med kommandon/funktioner
-        (<b>Ctrl + klick</b> kan användas i stället för högerklick)<br>
+        <span style="font-size:0.95em"><b>{{t 'dialog.help.ihrcm0'}}</b> {{t 'dialog.help.ihrcm1'}}<b>{{t 'dialog.help.ctrlclick'}}</b> {{t 'dialog.help.ihrcm2'}}<br>
 
-        <b>Skifttangent + klick på en miniatyrbild</b> markerar/avmarkerar den<br>
+        <b>{{t 'dialog.help.shift0'}}</b> {{t 'dialog.help.shift1'}}<br>
 
-        <b>Då du är inloggad som gäst</b> har du bara vissa rättigheter (gömma, markera och flytta miniatyrer med dra + släpp, gå till originalbild). Med personlig inloggning kan du få fler rättigheter (till exempel göra bildtextändringar och och spara dem)<br>
+        <b>{{t 'dialog.help.login0'}}</b> {{t 'dialog.help.login1'}}<br>
 
-        <b style="color:#0b0">En bild med grön underkant är länkad</b> från annat album – gå till originalbilden med klick på den gröna <span style="color:white;background:#0b0">&nbsp;Gå till </span>-länken</span>
+        <b style="color:#0b0">{{t 'dialog.help.green0'}}</b> {{t 'dialog.help.green1'}} <span style="color:white;background:#0b0">&nbsp;{{t 'goto'}}&nbsp;</span>{{t 'dialog.help.green2'}}</span>
       </p>
       <p style="text-align:left;margin-left:1.5rem;line-height:1.7rem" draggable="false" ondragstart="return false">
         <b>{{t 'dialog.help.flebu'}}</b> ({{t 'dialog.help.wviva'}}):<br>

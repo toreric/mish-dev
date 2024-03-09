@@ -61,6 +61,8 @@ export default class Header extends Component {
         <option value="1" style="color:green">Green</option>
         <option value="2" style="color:blue">Blue</option>
       </select>
+
+      <span style="font-size:85%">&nbsp; &nbsp; &nbsp; Default laguage is set in <strong style="font-size:85%">routes/application.js</strong></span>
     </p>
 
     {{! Testing ember-intl }}

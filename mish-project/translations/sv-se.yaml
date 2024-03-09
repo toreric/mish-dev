@@ -40,8 +40,18 @@ dialog:
   help:
     header: Användarhandledning
     header1: (främst för dator med tangentbord eller pekplatta)
-    ihrcm: Varje bild har en högerklick-meny
-    flebu: Först knapparna till vänster
+    ihrcm0: Varje bild har en högerklick-meny
+    ihrcm1: med kommandon/funktioner (
+    ctrlclick: Ctrl + klick
+    ihrcm2: kan användas i stället för högerklick)
+    shift0: Skifttangent + klick på en miniatyrbild
+    shift1: markerar/avmarkerar den
+    login0: Då du är inloggad som gäst
+    login1: har du bara vissa rättigheter (gömma, markera och flytta miniatyrer med dra + släpp; gå till originalbild). Med personlig inloggning kan du få fler rättigheter (till exempel göra bildtextändringar och och spara dem)
+    green0: En bild med grön underkant är länkad
+    green1: från annat album – gå till originalbilden med klick på den gröna
+    green2: -länken
+    flebu: Först, knapparna till vänster
     wviva: vilka som är synliga varierar
     mmenu: "Huvudmeny: Välj album, sökning, favoriter, albumöversikt ..."
   text:
@@ -52,6 +62,7 @@ dialog:
       origpos: ... på originalplats
       modal: Öppna modalt textfönster
     toggle: Öppna/stäng textfönster
+goto: Gå till
 header: Det här är Mish med Polaris
 hello:
   world:  Goddag hela världen!

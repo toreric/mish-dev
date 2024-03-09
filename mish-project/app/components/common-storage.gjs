@@ -78,9 +78,9 @@ var allowance = [ // 'allow' order
   "textEdit"      // +  " edit image texts (metadata)
 ];
 var allowSV = [ // Ordered as 'allow', IMPORTANT!
-  "Får göra vadsomhelst",
-  "göra/radera album",
-  "(arbeta med bilagor +4)",
+  "Får göra vadsomhelst (+ gömda album)", // {{t 'adminAll'}}
+  "göra/radera album",                    // {{t 'albumEdit'}}
+  "(arbeta med bilagor +4)",                     // etc.?
   "(se bilagor)",
   "flytta till annat album, göra/radera länkar",
   "radera bilder +5",

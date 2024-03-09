@@ -1,4 +1,4 @@
-//== Msh choose language
+//== Mish choose language
 
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';

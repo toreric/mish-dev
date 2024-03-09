@@ -40,8 +40,18 @@ dialog:
   help:
     header: User guide
     header1: (mainly for computers with keyboard or touchpad)
-    ihrcm: Each image has a right-click menu
-    flebu: First the left hand buttons
+    ihrcm0: Each image has a right-click menu
+    ihrcm1: with commands/functions (
+    ctrlclick: Ctrl + click
+    ihrcm2: may replace right-click)
+    shift0: Shift + click a thumbnail image
+    shift1: selects/deselects it
+    login0: When logged in as 'guest'
+    login1: you only have certain rights (hide, select, and move thumbnails by drag'n-drop; go to original image). You can get more rights with a personal login (for example, make and save caption changes)
+    green0: An image with a green bottom border
+    green1: is linked from another album – go to the original image by clicking the green
+    green2: " link"
+    flebu: First, the left hand buttons
     wviva: which ones visible varies
     mmenu: "Main menu: Choose album, search, favorites, album overview..."
   text:
@@ -52,6 +62,7 @@ dialog:
       origpos: ... in original position
       modal:   Open modal text dialog
     toggle: Toggle text dialog
+goto: Go to
 header: Mish with Polaris
 hello:
   world:  Hello World!
