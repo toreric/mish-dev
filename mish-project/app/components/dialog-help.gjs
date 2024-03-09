@@ -22,6 +22,7 @@ function detectEsc(e) {
     if (document.getElementById(dialogId).open) closeDialog(dialogId);
   }
 }
+
 export const DialogHelp = <template>
 
 <dialog id="dialogHelp">

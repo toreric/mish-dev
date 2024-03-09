@@ -97,12 +97,12 @@ async function detectEsc(e) {
 
     if (tmp1.open) {
       closeDialog(tmp1.id);
-      await new Promise (z => setTimeout (z, 5)); // Allow next
-      openModalDialog(dialogId, 0); // Close of modal closes parent
+      await new Promise (z => setTimeout (z, 5)); // Soon allow next
+      openModalDialog(dialogId, 0); // Close of modal closed its parent
     } else if (tmp2.open) {
       closeDialog(tmp2.id);
-      await new Promise (z => setTimeout (z, 5)); // Allow next
-      openModalDialog(dialogId, 0); // Close of modal closes parent
+      await new Promise (z => setTimeout (z, 5)); // Soon allow next
+      openModalDialog(dialogId, 0); // Close of modal closed its parent
     } else {
       closeDialog(dialogId);
     }

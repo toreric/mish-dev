@@ -16,17 +16,27 @@ import { loli } from './welcome';
 const someFuntion = (param) => loli(param);
 
 export const menuMainId = "menuMain"
-// NOTE: As regards the erronous "{{on "cnange" (fn someFuntion 'selectRoot')}} value='target.value'"
-// part below: SEE @Glime ai-bot explanations!
+// NOTE: As regards the erronous "{{on "cnange" (fn someFuntion 'selectRoot')}}"
+// value='target.value' part below: SEE @Glime ai-bot explanations!
 
 export function toggleMainMenu() {
-  menuMain = document.getElementById("menuMain");
+  var menuMain = document.getElementById("menuMain");
   if (menuMain.style.display === "none") {
     menuMain.style.display = "";
     loli('opened main menu');
   } else {
     menuMain.style.display = "none";
     loli('closed main menu');
+  }
+}
+
+//== Detect closing Esc key
+
+document.addEventListener ('keydown', detectEsc, false);
+
+function detectEsc(e) {
+  if (e.keyCode === 27) { // Esc key
+    if (document.getElementById("menuMain").style.display !== "none") toggleMainMenu();
   }
 }
 
