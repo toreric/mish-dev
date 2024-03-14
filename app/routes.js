@@ -57,6 +57,7 @@ module.exports = function (app) {
         picFound = req.get('picfound')
         // Remove all too old picFound files, NOTE the added random <.01yz>
         let cmd = 'find -L ' + IMDB + ' -type d -name "' + picFound + '*" -amin +' + toold + ' | xargs rm -rf'
+        console.log(cmd)
         await cmdasync(cmd)
       }
     }
@@ -84,8 +85,9 @@ module.exports = function (app) {
   })
 
   // ##### #0.6 Return user credentials
-  app.get('/login/:user', (req, res) => {
-    var name = req.params.user
+  app.get('/login/', (req, res) => {
+    var name = decodeURIComponent( req.get('user') )
+    //var name = req.params.user
     var password = ""
     var status = "viewer"
     var allow = "?"

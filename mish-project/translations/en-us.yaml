@@ -5,6 +5,7 @@ albumcol: Album collection (or album root)
 button:
   close:     Close
   keywords:  Keywords
+  login:     Login/out
   notes:     Notes
   save:      Save
   saveclose: Save and close
@@ -55,6 +56,8 @@ dialog:
     flebu: First, the left hand buttons
     wviva: which ones visible varies
     mmenu: "Main menu: Choose album, search, favorites, album overview..."
+  login:
+    header: Log out or in
   text:
     header:   Captions for
     keywords: Keywords for

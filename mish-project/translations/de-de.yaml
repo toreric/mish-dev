@@ -5,6 +5,7 @@ albumcol: Albumsammlung (oder Albumstamm)
 button:
   close:     Schließen
   keywords:  Stichwörter
+  login:     Anmeldung
   notes:     Anmerkungen
   save:      Speichern
   saveclose: Speichern und schließen
@@ -55,6 +56,8 @@ dialog:
     flebu: Erstens, die linken Tasten
     wviva: welche sichtbar sind, variiert
     mmenu: "Im Hauptmenü wählen: Album, Suche, Favoriten, Albumübersicht ..."
+  login:
+    header: Abmelden oder anmelden
   text:
     header:   Beschreibung für
     keywords: Stichwörter für

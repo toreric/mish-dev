@@ -11,7 +11,7 @@ var imdbDir = "/album";
 export function logIn() {
   return new Promise(resolve => {
     getCredentials(userName).then(credentials => {
-      console.log('credentials', credentials);
+      console.log('credentials:\n' + credentials);
       var cred = credentials.split("\n");
       var password = cred [0];
       status = cred [1];
@@ -29,8 +29,9 @@ function getCredentials(user) {
   return new Promise((resolve, reject) => {
     // ===== XMLHttpRequest checking 'usr'
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'login/' + user, true, null, null);
-    setReqHdr(xhr, 7);
+    xhr.open('GET', 'login', true, null, null);
+    setReqHdr(xhr, 999);
+    xhr.setRequestHeader("user", encodeURIComponent(user));
     xhr.onload = function() {
       resolve(xhr.response);
     }

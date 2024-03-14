@@ -8,8 +8,6 @@ import { closeDialog, toggleDialog } from './dialog-functions'
 
 import { loli } from './welcome';
 
-//== Dialog with <dialog> tag, this dialog is worked on
-
 export const dialogHelpId = "dialogHelp";
 const dialogId = "dialogHelp";
 
