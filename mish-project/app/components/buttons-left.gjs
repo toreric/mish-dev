@@ -9,7 +9,7 @@ import { loli } from './welcome';
 
 import { closeDialog, toggleDialog } from './dialog-functions'
 
-import { menuMainId } from './menu-main'
+//import { menuMainId } from './menu-main'
 import { dialogHelpId } from './dialog-help';
 
 const someFuntion = (param) => loli(param);

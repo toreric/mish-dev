@@ -1,7 +1,7 @@
 //== Dialog open/toggle/modal, in original position if origpos is true.
 
 // Should be imported as soon as a dialog is going to be opened and used. Contains:
-// openDialog, toggleDialo, openModalDialog, saveDialog, closeDialog, saveCloseDialog;
+// openDialog, toggleDialog, openModalDialog, saveDialog, closeDialog, saveCloseDialog;
 // that is, openDialog(id, op), toggleDialog(id, op), openModalDialog(id, op),
 // saveDialog(id), closeDialog(id, op), and saveCloseDialog(id) (= save then close),
 // where id = `dialogId` and op = 'original position'. If op is `true` then the dialog

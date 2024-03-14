@@ -11,7 +11,7 @@ tmp
 
 # misc
 rln
-*~
+*~*
 
 /.vscode/
 /.env*

@@ -1,6 +1,7 @@
 price_banner: "{product} kostar {price, number, ::currency/EUR}"
 intlcode: sv-se
 
+albumcol: Albumsamling (eller albumrot)
 button:
   close:     Stäng
   keywords:  Nyckelord
@@ -66,6 +67,7 @@ goto: Gå till
 header: Det här är Mish med Polaris
 hello:
   world:  Goddag hela världen!
+selalbumcol: Välj albumsamling
 select:
   language: Välj språk
   languagetext: Svenska

@@ -1,30 +1,59 @@
 
+import { loli } from './welcome';
+import { userName } from './welcome';
 
-export function getCredentials(user) {
-  return new Promise ( (resolve, reject) => {
+let rnd = "." + Math.random().toString(36).substr(2,4);
+//rnd = ".000";
+export var picFound = "Funna_bilder" + rnd;
+var imdbRoot = "MISH";
+var imdbDir = "/album";
+
+export function logIn() {
+  return new Promise(resolve => {
+    getCredentials(userName).then(credentials => {
+      console.log('credentials', credentials);
+      var cred = credentials.split("\n");
+      var password = cred [0];
+      status = cred [1];
+      var allval = cred [2];
+      let pwd = "TORE_tore";
+      if (pwd !== password) {
+        zeroSet(); // Important!
+        status = "viewer";
+      }
+    });
+  });
+}
+
+function getCredentials(user) {
+  return new Promise((resolve, reject) => {
     // ===== XMLHttpRequest checking 'usr'
-    var xhr = new XMLHttpRequest ();
-    xhr.open ('GET', 'login/' + user, true, null, null);
-    setReqHdr (xhr, 7);
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'login/' + user, true, null, null);
+    setReqHdr(xhr, 7);
     xhr.onload = function() {
-      resolve (xhr.response);
+      resolve(xhr.response);
     }
     xhr.onerror = function() {
-      reject ({
+      reject({
         status: that.status,
         statusText: xhr.statusText
       });
     }
-    xhr.send ();
-  }).catch (error => {
+    xhr.send();
+  }).catch(error => {
     console.error(error.message);
   });
+
+function setReqHdr(xhr, id) { !id; // id was used only as a debug identity
+  xhr.setRequestHeader("imdbroot", encodeURIComponent(imdbRoot));
+  xhr.setRequestHeader("imdbdir", encodeURIComponent(imdbDir));
+  xhr.setRequestHeader("picfound", picFound); // All 'wihtin 255' characters
 }
 
-loli(await getCredentials("tore"));
+//loli(await getCredentials("tore"));
 
-<template>
-  <div id="allowValue" title="permissions" style="display:none"></div>
+/* export const CommonStorage = <template>
   <div id="backImg" style="display:none"></div>
   <div id="bkgrColor" style="display:none">rgb(59, 59, 59)</div>
   <div id="chkPaths" style="display:none" title="for update SQlite DB"></div>
@@ -58,6 +87,7 @@ loli(await getCredentials("tore"));
   <div id="uploadNames" title="last uploaded" style="display:none"></div>
   <div id="userDir" title="user's home or choice where album roots should be found" style="display:none"></div>
 </template>
+*/
 
 var allowance = [ // 'allow' order
   "adminAll",     // + allow EVERYTHING
@@ -76,8 +106,9 @@ var allowance = [ // 'allow' order
   "saveChanges",  // +  " save order/changes (= saveOrder)
   "setSetting",   // +  " change settings
   "textEdit"      // +  " edit image texts (metadata)
-];
-var allowSV = [ // Ordered as 'allow', IMPORTANT!
+];                // + is used
+                  // o is not yet used
+var allowtxt = [  // Ordered as 'allow', IMPORTANT!
   "Får göra vadsomhelst (+ gömda album)", // {{t 'adminAll'}}
   "göra/radera album",                    // {{t 'albumEdit'}}
   "(arbeta med bilagor +4)",                     // etc.?
@@ -86,7 +117,7 @@ var allowSV = [ // Ordered as 'allow', IMPORTANT!
   "radera bilder +5",
   "(redigera bilder)",
   "gömma/visa bilder",
-  "se högupplösta bilder",
+  "se högupplösta bilder *",
   "flytta om bilder inom album",
   "ladda upp originalbilder till album",
   "redigera/spara anteckningar +13",
@@ -95,4 +126,34 @@ var allowSV = [ // Ordered as 'allow', IMPORTANT!
   "ändra inställningar",
   "redigera/spara bildtexter, gömda album"
 ];
-var allowvalue = "0".repeat (allowance.length);
+var allowvalue = "0".repeat(allowance.length);
+var allow = {};
+
+function zeroSet() { // Called at logout
+  allowvalue = "0".repeat(allowance.length);  // 0 or 1
+}
+
+function allowFunc() { // Called from setAllow (called from logIn, toggleSettings,..)
+  for (var i=0; i<allowance.length; i++) {
+    allow [allowance [i]] = Number(allowvalue [i]);
+    //console.log(allowance[i], allow [allowance [i]]);
+  }
+  if (allow.deleteImg) {  // NOTE *  If ...
+    allow.delcreLink = 1; // NOTE *  then set this too
+    i = allowance.indexOf("delcreLink");
+    allowvalue = allowvalue.slice(0, i - allowvalue.length) + "1" + allowvalue.slice(i + 1 - allowvalue.length); // Also set the source value since:
+    // allowvalue [i] = "1"; Gives a weird compiler error: "4 is read-only" if i=4
+  }
+  if (allow.notesEdit) { // NOTE *  If ...
+    allow.notesView = 1; // NOTE *  then set this too
+    i = allowance.indexOf("notesView");
+    allowvalue = allowvalue.slice(0, i - allowvalue.length) + "1" + allowvalue.slice(i + 1 - allowvalue.length);
+  }
+  // Hide smallbuttons we don't need:
+  if (allow.adminAll || allow.saveChanges) {
+    document.getElementById("saveOrder").style.display = ""; // CSS sets
+  } else {
+    document.getElementById("saveOrder").style.display = "none"; // CSS overridden
+  }
+  //console.log(allow);
+}

@@ -7,9 +7,9 @@ som är "biblioteket" för albumsystemet. Det kan vara en katalog hos
 användaren eller på annat ställe i datorns filsystem där aktuell
 användare har fullständiga åtkomsträttigheter.
 
-Katalogstrukturen är enkel. Tillverka en katalog (IMDB_ROOT)
-dit bildkataloger (IMDB) kan flyttas. Varje sådan katalog
-blir en bilddatabas (ett album). Så här till exempel:
+Tillverka en katalog (IMDB_ROOT) dit bildkataloger (IMDB) kan
+flyttas. Varje sådan katalog blir en bilddatabas (ett album).
+Så här till exempel:
 
 IMDB_HOME  IMDB_ROOT IMDB = bilddatabas = album
 –––––––––– ––––––––– ––––––––––––––––––––––––––––––––

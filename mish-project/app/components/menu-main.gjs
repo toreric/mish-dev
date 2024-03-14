@@ -15,7 +15,7 @@ import { loli } from './welcome';
 
 const someFuntion = (param) => loli(param);
 
-export const menuMainId = "menuMain"
+export const menuMainId = "menuMain";
 // NOTE: As regards the erronous "{{on "cnange" (fn someFuntion 'selectRoot')}}"
 // value='target.value' part below: SEE @Glime ai-bot explanations!
 
@@ -42,7 +42,7 @@ function detectEsc(e) {
 
 export class MenuMain extends Component {
   @tracked imdbRoot;
-  imdbRoots = ['Välj albumsamling', 'root1', 'root2', 'root3'];
+  imdbRoots = ['root1', 'root2', 'root3'];
 
   @action
   selectRoot(event) {
@@ -64,7 +64,8 @@ export class MenuMain extends Component {
       <p onclick="return false" draggable="false" ondragstart="return false">
         <a class="" style="color: white;cursor: default">
 
-          <select id="rootSel" title="Albumsamling (eller albumrot)" {{on "change" this.selectRoot}}>
+          <select id="rootSel" title={{t 'albumcol'}} {{on "change" this.selectRoot}}>
+            <option value="" selected disabled hidden>{{t 'selalbumcol'}}</option>
             {{#each this.imdbRoots as |rootChoice|}}
               <option value={{rootChoice}} selected={{eq this.imdbRoot rootChoice}}>{{rootChoice}}</option>
             {{/each}}

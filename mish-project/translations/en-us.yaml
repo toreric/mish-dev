@@ -1,6 +1,7 @@
 price_banner: "{product} costs {price, number, ::currency/EUR}"
 intlcode: en-us
 
+albumcol: Album collection (or album root)
 button:
   close:     Close
   keywords:  Keywords
@@ -66,6 +67,7 @@ goto: Go to
 header: Mish with Polaris
 hello:
   world:  Hello World!
+selalbumcol: Choose album collection
 select:
   language: Select language
   languagetext: English

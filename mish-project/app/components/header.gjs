@@ -1,4 +1,4 @@
-//== Mish header component
+//== Mish Header component
 
 import Component from '@glimmer/component';
 //import { tracked } from '@glimmer/tracking';
@@ -10,12 +10,11 @@ import { inject as service } from '@ember/service';
 import t from 'ember-intl/helpers/t';
 
 import { Clock } from './clock';
-import { toggleDialog, openDialog, openModalDialog }
-  from './dialog-functions';
+import { toggleDialog, openDialog, openModalDialog } from './dialog-functions';
 import { dialogTextId } from './dialog-text';
 import { Excite } from './excite';
 
-import { loli } from './welcome';
+//import { loli } from './welcome';
 
 export default class Header extends Component {
   @service intl;

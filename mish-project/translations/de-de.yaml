@@ -1,6 +1,7 @@
 price_banner: "{product} kostet {price, number, ::currency/EUR}"
 intlcode: de-de
 
+albumcol: Albumsammlung (oder Albumstamm)
 button:
   close:     Schließen
   keywords:  Stichwörter
@@ -41,7 +42,7 @@ dialog:
     header: Benutzeranweisung
     header1: (vor allem für Computers mit Tastatur oder Touchpad)
     ihrcm0: Jedes Bild hat ein Rechtsklick-Menü
-    ihrcm1: mit Kommandos/Funktionen (
+    ihrcm1: mit Befehlen/Funktionen (
     ctrlclick: Ctrl + klicken
     ihrcm2: kann rechtsklicken ersetzen)
     shift0: Shift + klicken auf einem Vorschaubild
@@ -66,6 +67,7 @@ goto: Gehe zu
 header: Hier ist Mish mit Polaris
 hello:
   world:  Guten Tag, Welt!
+selalbumcol: Albumsammlung wählen
 select:
   language: Sprache wählen
   languagetext: Deutsch

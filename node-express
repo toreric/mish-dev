@@ -35,5 +35,7 @@ fi
 echo IMDB_HOME = $IMDB_HOME
 echo IMDB_ROOT = $IMDB_ROOT
 echo -n "##### Starting the Node server "`date`
-# Note that Node may be installed as either 'node', 'nodejs', or both:
+
+# Note that Node may be installed as either 'node', 'nodejs', or both
+# Start the Express server [server.js contains "... require ('express')"]
 node server.js $IMDB_HOME $IMDB_ROOT $port

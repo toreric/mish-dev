@@ -37,6 +37,13 @@ module.exports = function (app) {
   // ----- For debug data(base) directories
   let show_imagedir = true // for debugging
 
+  // ===== Make a shell command 'asyncronous' (cf. execP)
+  let cmdasync = async (cmd) => {return execSync (cmd)}
+  // `execP` provides a non-blocking, promise-based approach to executing commands, which is generally preferred in Node.js applications for better performance and easier asynchronous handling.
+  // `cmdasync`, using `execSync`, offers a synchronous alternative that blocks the event loop, which might be useful in specific scenarios but is generally not recommended for most use cases due to its blocking nature.
+  // In summary, while `await cmdasync(cmd)` and `a = execSync(cmd)` achieve the same end result of executing a command synchronously, their usage differs based on the context (asynchronous with `await` for `cmdasync` versus direct synchronous call for `execSync`). The choice between them depends on whether you're working within an asynchronous function and your preference for error handling and code style.
+
+
   // ##### R O U T I N G  E N T R I E S
   // Check 'Express route tester'!
   // ##### #0. General passing point
@@ -110,6 +117,7 @@ module.exports = function (app) {
     return IMDB_HOME
   }
 
-
 }
+// End module.exports
+
 
