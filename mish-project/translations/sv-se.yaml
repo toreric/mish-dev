@@ -69,6 +69,7 @@ dialog:
       origpos: ... på originalplats
       modal: Öppna modalt textfönster
     toggle: Öppna/stäng textfönster
+erase: radera
 goto: Gå till
 header: Det här är Mish med Polaris
 hello:

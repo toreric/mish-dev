@@ -57,9 +57,9 @@ dialog:
     wviva: welche sichtbar sind, variiert
     mmenu: "Im Hauptmenü wählen: Album, Suche, Favoriten, Albumübersicht ..."
   login:
-    header: Anmeldung
-    user: Benutzer
-    name: Namen
+    header:   Anmeldung
+    user:     Benutzer
+    name:     Namen
     password: Passwort
   text:
     header:   Beschreibung für
@@ -69,6 +69,7 @@ dialog:
       origpos: ... auf Originalplatz
       modal: Modales Textfenster öffnen
     toggle: Textfenster öffnen/schließen
+erase: löschen
 goto: Gehe zu
 header: Hier ist Mish mit Polaris
 hello:

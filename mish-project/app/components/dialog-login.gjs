@@ -35,8 +35,13 @@ export const DialogLogin = <template>
     <form action="">
       <br>
       <div style="text-align:right">
-        &nbsp; {{t 'dialog.login.user'}}: <input size="10" title={{t 'dialog.login.user'}} placeholder={{t 'dialog.login.name'}} type="text"> &nbsp;<br>
-        &nbsp; {{t 'dialog.login.password'}}: <input size="10" title={{t 'dialog.login.password'}} placeholder={{t 'dialog.login.password'}} type="password"> &nbsp;
+
+        <br>&nbsp; {{t 'dialog.login.user'}}:
+        <input size="10" title={{t 'dialog.login.user'}} placeholder={{t 'dialog.login.name'}} type="text"><a title={{t 'erase'}}> × </a> &nbsp;
+
+        <br>&nbsp; {{t 'dialog.login.password'}}:
+        <input size="10" title={{t 'dialog.login.password'}} placeholder={{t 'dialog.login.password'}} type="password"><a title={{t 'erase'}}> × </a> &nbsp;
+
       </div>
       <br>
     </form>

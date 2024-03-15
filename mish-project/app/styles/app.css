@@ -23,7 +23,7 @@ dialog > div {
   display: grid;
   gap: 0.001rem;
 }
-dialog::backdrop {
+dialog::backdrop, #menuMain::backdrop {
   backdrop-filter: blur(1px);
 }
 dialog header {

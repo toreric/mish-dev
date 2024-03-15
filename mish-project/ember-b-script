@@ -1,5 +1,7 @@
 #! /bin/bash
 
+rm -rf dist/ # preventive
+
 # Build production catalog
 prodcat="../public/"
 ember b -prod --output-path=$prodcat

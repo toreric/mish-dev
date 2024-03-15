@@ -16,7 +16,9 @@ import { DialogLogin } from './dialog-login'
 import { DialogText } from './dialog-text';
 import { MenuMain } from './menu-main';
 
+import { openDialog } from './dialog-functions'
 import { openModalDialog } from './dialog-functions'
+import { toggleDialog } from './dialog-functions'
 import { dialogLoginId } from './dialog-login';
 //import { logIn } from './common-storage';
 
@@ -36,7 +38,7 @@ const Welcome = <template>
   {{! Html inserted here will appear beneath the buildStamp div }}
   <h1 style="margin:0 0 0 4rem;display:inline">{{t "header"}}</h1>
 
-  <button type="button" {{on 'click' (fn openModalDialog dialogLoginId 0)}}>{{t 'button.login'}}</button>
+  <button type="button" {{on 'click' (fn toggleDialog dialogLoginId 0)}}>{{t 'button.login'}}</button>
 
   <!--CommonStorage /-->
   <Header />
