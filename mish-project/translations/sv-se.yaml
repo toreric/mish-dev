@@ -57,7 +57,10 @@ dialog:
     wviva: vilka som är synliga varierar
     mmenu: "Huvudmeny: Välj album, sökning, favoriter, albumöversikt ..."
   login:
-    header: Ut- eller inloggning
+    header:   Inloggning
+    user:     Användare
+    name:     Namn
+    password: Nyckelord
   text:
     header:   Bildtexter för
     keywords: Nyckelord för

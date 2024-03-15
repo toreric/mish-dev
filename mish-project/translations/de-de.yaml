@@ -57,7 +57,10 @@ dialog:
     wviva: welche sichtbar sind, variiert
     mmenu: "Im Hauptmenü wählen: Album, Suche, Favoriten, Albumübersicht ..."
   login:
-    header: Abmelden oder anmelden
+    header: Anmeldung
+    user: Benutzer
+    name: Namen
+    password: Passwort
   text:
     header:   Beschreibung für
     keywords: Stichwörter für

@@ -9,14 +9,16 @@ import { cell } from 'ember-resources';
 
 import { default as Header } from './header';
 
-import { CommonStorage } from './common-storage';
 import { ButtonsLeft } from './buttons-left';
-import { MenuMain } from './menu-main';
-import { DialogText } from './dialog-text';
+import { CommonStorage } from './common-storage';
 import { DialogHelp } from './dialog-help';
+import { DialogLogin } from './dialog-login'
+import { DialogText } from './dialog-text';
+import { MenuMain } from './menu-main';
+
 import { openModalDialog } from './dialog-functions'
 import { dialogLoginId } from './dialog-login';
-import { logIn } from './common-storage';
+//import { logIn } from './common-storage';
 
 // eslint-disable-next-line no-unused-vars
 const returnValue = cell('');
@@ -38,6 +40,7 @@ const Welcome = <template>
 
   <!--CommonStorage /-->
   <Header />
+  <DialogLogin />
   <MenuMain />
   <ButtonsLeft />
   <DialogHelp />
@@ -45,4 +48,3 @@ const Welcome = <template>
 </template>;
 
 export default Welcome;
-logIn();

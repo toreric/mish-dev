@@ -5,7 +5,7 @@ albumcol: Album collection (or album root)
 button:
   close:     Close
   keywords:  Keywords
-  login:     Login/out
+  login:     Login
   notes:     Notes
   save:      Save
   saveclose: Save and close
@@ -57,7 +57,10 @@ dialog:
     wviva: which ones visible varies
     mmenu: "Main menu: Choose album, search, favorites, album overview..."
   login:
-    header: Log out or in
+    header:   Login
+    user:     User
+    name:     Name
+    password: Password
   text:
     header:   Captions for
     keywords: Keywords for
