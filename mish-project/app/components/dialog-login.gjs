@@ -21,34 +21,46 @@ function detectEsc(e) {
   }
 }
 
+function clearInput(cls) {
+  loli("clearInput called");
+  // loli(document.querySelector("input." + cls));
+  document.querySelector("input." + cls).value = '';
+  document.querySelector("input." + cls).focus({ focusVisible: true });
+}
+
 export const DialogLogin = <template>
 
 <dialog id="dialogLogin">
   <header data-dialog-draggable>
     <div style="width:99%">
-      <p>{{t 'dialog.login.header'}}<span></span></p>
-    </div><div>
+      <p>{{t 'dialog.login.header'}}<span>{{null}}</span></p>
+    </div>{{null}}<div>
       <button class="close" type="button" {{on 'click' (fn toggleDialog dialogId)}}>×</button>
     </div>
   </header>
-  <main>
+  <main style="text-align:center">
     <form action="">
-      <br>
-      <div style="text-align:right">
-
-        <br>&nbsp; {{t 'dialog.login.user'}}:
-        <input size="10" title={{t 'dialog.login.user'}} placeholder={{t 'dialog.login.name'}} type="text"><a title={{t 'erase'}}> × </a> &nbsp;
-
-        <br>&nbsp; {{t 'dialog.login.password'}}:
-        <input size="10" title={{t 'dialog.login.password'}} placeholder={{t 'dialog.login.password'}} type="password"><a title={{t 'erase'}}> × </a> &nbsp;
-
+      <p>
+        Du är nu inloggad som <span></span>
+        med [<span></span>]-rättigheter.
+        <br>
+        Om du vill byta gör du det här:
+      </p>
+      <div class="show-inline" style="text-align:right;width:fit-content">
+        {{t 'dialog.login.user'}}:
+        <input class="user_" size="10" title={{t 'dialog.login.user'}} placeholder={{t 'dialog.login.name'}} type="text"><a title={{t 'erase'}} {{on 'click' (fn clearInput 'user_')}}> × </a>
+        <br>
+        {{t 'dialog.login.password'}}:
+        <input class="password_" size="10" title={{t 'dialog.login.password'}} placeholder={{t 'dialog.login.password'}} type="password"><a title={{t 'erase'}} {{on 'click' (fn clearInput 'password_')}}> × </a>
       </div>
-      <br>
     </form>
+      <br>
   </main>
   <footer data-dialog-draggable>
     <button type="button" {{on 'click' (fn closeDialog dialogId)}}>{{t 'button.close'}}</button>&nbsp;
   </footer>
 </dialog>
+{{! This script has no effect: }}
+<script>document.querySelector("input.user_").focus({ focusVisible: true });</script>
 
 </template>

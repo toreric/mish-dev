@@ -38,7 +38,7 @@ const Welcome = <template>
   {{! Html inserted here will appear beneath the buildStamp div }}
   <h1 style="margin:0 0 0 4rem;display:inline">{{t "header"}}</h1>
 
-  <button type="button" {{on 'click' (fn toggleDialog dialogLoginId 0)}}>{{t 'button.login'}}</button>
+  <button type="button" {{on 'click' (fn openModalDialog dialogLoginId 0)}}>{{t 'button.login'}}</button>
 
   <!--CommonStorage /-->
   <Header />

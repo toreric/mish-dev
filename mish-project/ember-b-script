@@ -4,7 +4,7 @@ rm -rf dist/ # preventive
 
 # Build production catalog
 prodcat="../public/"
-ember b -prod --output-path=$prodcat
+ember b -prod --output-path=$prodcat --watch true
 
 # Insert a message line into index.html
 echo "Inserting build timestamp ..."
