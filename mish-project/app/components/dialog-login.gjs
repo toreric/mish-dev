@@ -6,7 +6,7 @@ import t from 'ember-intl/helpers/t';
 //import { openDialog, toggleDialog, openModalDialog, saveDialog, closeDialog, saveCloseDialog } from 'dialog-functions';
 import { closeDialog, toggleDialog } from './dialog-functions'
 
-import { loli } from './welcome';
+import { loli } from './common-functions';
 
 export const dialogLoginId = "dialogLogin";
 const dialogId = "dialogLogin";

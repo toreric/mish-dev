@@ -27,13 +27,6 @@ const returnValue = cell('');
 
 makeDialogDraggable();
 
-export var userName = 'tore';
-export function loli(text) { // loli = log list
-  console.log(userName, text);
-}
-export var imageId = 'IMG_1234a_2023_november_19'; // dummy
-//imageId = 'IMG_1234a'; // dummy
-
 const Welcome = <template>
   {{! Html inserted here will appear beneath the buildStamp div }}
   <h1 style="margin:0 0 0 4rem;display:inline">{{t "header"}}</h1>

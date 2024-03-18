@@ -14,7 +14,7 @@ import { toggleDialog, openDialog, openModalDialog } from './dialog-functions';
 import { dialogTextId } from './dialog-text';
 import { Excite } from './excite';
 
-//import { loli } from './welcome';
+//import { loli } from './common-functions';
 
 export default class Header extends Component {
   @service intl;
