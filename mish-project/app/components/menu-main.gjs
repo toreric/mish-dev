@@ -12,6 +12,7 @@ import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
 import { loli } from './common-functions';
+import { imdbRoot } from './common-storage'
 
 const someFuntion = (param) => loli(param);
 

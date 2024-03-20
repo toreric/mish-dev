@@ -1,5 +1,10 @@
 //== Mish common export function storage
 
+import { imdbDir } from './common-storage'
+import { imdbRoot } from './common-storage'
+import { picFound } from './common-storage'
+import { userName } from './common-storage';
+
 export function loli(text) { // loli = log list
   console.log(userName, text);
 }
@@ -12,8 +17,9 @@ export function logIn() {
       var password = cred [0];
       status = cred [1];
       var allval = cred [2];
-      let pwd = "TORE_tore";
-      if (pwd !== password) {
+      let pawd = "TORE_tore";
+      if (pawd !== password) {
+        userName = '';
         zeroSet(); // Important!
         status = "viewer";
       }
@@ -41,11 +47,11 @@ export function getCredentials(user) {
   }).catch(error => {
     console.error(error.message);
   });
+}
 
-export function getCredentials(user) {
- function setReqHdr(xhr, id) { !id; // id was used only as a debug identity
-  xhr.setRequestHeader("imdbroot", encodeURIComponent(imdbRoot));
+export function setReqHdr(xhr, id) { !id; // id was used only as a debug identity
   xhr.setRequestHeader("imdbdir", encodeURIComponent(imdbDir));
+  xhr.setRequestHeader("imdbroot", encodeURIComponent(imdbRoot));
   xhr.setRequestHeader("picfound", picFound); // All 'wihtin 255' characters
 }
 

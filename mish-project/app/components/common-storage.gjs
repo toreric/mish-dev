@@ -1,14 +1,27 @@
 //== Mish common variable storage
 
+//import { getCredentials } from './common-functions';
+import { logIn } from './common-functions';
+
 import { loli } from './common-functions';
-import { userName } from './welcome';
 
 let rnd = "." + Math.random().toString(36).substr(2,4);
 //rnd = ".000";
+export var imageId = 'IMG_1234a_2023_november_19'; // dummy
+export var imdbDir = "/album";
+export var imdbRoot = "MISH";
 export var picFound = "Funna_bilder" + rnd;
-var imdbRoot = "MISH";
-var imdbDir = "/album";
+export var userName = 'tore';
+//imageId = 'IMG_1234a'; // dummy
 
+export class CommonStorage extends Component {
+  // @tracked imageId = 'IMG_1234a_2023_november_19'; // dummy
+  // @tracked imdbDir = "/album";
+  // @tracked imdbRoot = "MISH";
+  // @tracked picFound = "Funna_bilder" + rnd;
+  // @tracked userName = 'guest';
+
+}
 /* export const CommonStorage = <template>
   <div id="backImg" style="display:none"></div>
   <div id="bkgrColor" style="display:none">rgb(59, 59, 59)</div>
@@ -82,6 +95,8 @@ var allowtxt = [  // Ordered as 'allow', IMPORTANT!
   "ändra inställningar",
   "redigera/spara bildtexter, gömda album"
 ];
+
+
 var allowvalue = "0".repeat(allowance.length);
 var allow = {};
 

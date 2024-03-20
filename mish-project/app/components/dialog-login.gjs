@@ -7,6 +7,27 @@ import t from 'ember-intl/helpers/t';
 import { closeDialog, toggleDialog } from './dialog-functions'
 
 import { loli } from './common-functions';
+import { userName } from './common-storage';
+
+var password = '';
+var status = '';
+var allval = '';
+
+function userCheck() {
+  return new Promise(resolve => {
+    getCredentials(userName).then(credentials => {
+      //console.log('credentials:\n' + credentials);
+      var cred = credentials.split("\n");
+      password = cred [0];
+      status = cred [1];
+      allval = cred [2];
+      if (status === "viewer") userName = "";
+      console.log(userName, cred);
+    });
+  });
+}
+
+userCheck();
 
 export const dialogLoginId = "dialogLogin";
 const dialogId = "dialogLogin";
@@ -28,7 +49,9 @@ function clearInput(cls) {
   document.querySelector("input." + cls).focus({ focusVisible: true });
 }
 
-export const DialogLogin = <template>
+export class DialogLogin extends Component {
+
+<template>
 
 <dialog id="dialogLogin">
   <header data-dialog-draggable>
@@ -41,8 +64,8 @@ export const DialogLogin = <template>
   <main style="text-align:center">
     <form action="">
       <p>
-        Du är nu inloggad som <span></span>
-        med [<span></span>]-rättigheter.
+        Du är nu inloggad som <span>{{userName}}</span>
+        med [<span>{{status}}</span>]-rättigheter.
         <br>
         Om du vill byta gör du det här:
       </p>
@@ -58,9 +81,11 @@ export const DialogLogin = <template>
   </main>
   <footer data-dialog-draggable>
     <button type="button" {{on 'click' (fn closeDialog dialogId)}}>{{t 'button.close'}}</button>&nbsp;
+    <button type="button" {{on 'click' (fn closeDialog dialogId)}}>{{t 'button.login'}}</button>&nbsp;
   </footer>
 </dialog>
 {{! This script has no effect: }}
 <script>document.querySelector("input.user_").focus({ focusVisible: true });</script>
 
 </template>
+}

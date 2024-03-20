@@ -20,9 +20,7 @@ import { openDialog } from './dialog-functions'
 import { openModalDialog } from './dialog-functions'
 import { toggleDialog } from './dialog-functions'
 import { dialogLoginId } from './dialog-login';
-//import { logIn } from './common-storage';
 
-// eslint-disable-next-line no-unused-vars
 const returnValue = cell('');
 
 makeDialogDraggable();

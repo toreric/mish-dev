@@ -3,7 +3,8 @@
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
-import { imageId } from './welcome';
+
+import { imageId } from './common-storage';
 import { closeDialog, openModalDialog, saveCloseDialog, saveDialog }
   from './dialog-functions';
 
