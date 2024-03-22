@@ -1,5 +1,5 @@
 * {
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: Georgia, "Times New Roman", Times, serif;
   font-size: 1em;
 }
 body {
@@ -17,7 +17,9 @@ body {
   height: 0.7em;
   border: 0.2em solid rgb(176, 240, 255);
   border-radius: 1em;
-  font: bold 2em Arial, sans-serif;
+  font:
+    bold 2em Arial,
+    sans-serif;
   line-height: 0.7em;
   text-align: center;
   padding: 0.2em;
@@ -26,7 +28,8 @@ body {
 #GO a:hover {
   border-color: white;
 }
-.dzclose { /* NEARLY like in app.css */
+.dzclose {
+  /* NEARLY like in app.css */
   position: fixed;
   top: 0.4em;
   left: 0.4em;
@@ -41,7 +44,8 @@ body {
   color: black;
   background-color: deeppink;
 }
-h2, h2 span {
+h2,
+h2 span {
   display: block;
   font-family: Arial, Helvetica, sans, sans-serif;
 }
@@ -53,10 +57,12 @@ h2 span {
   letter-spacing: 0.025em;
   font-size: 100%;
 }
-h3, p {
+h3,
+p {
   display: inline-block;
 }
-h3, h3 b {
+h3,
+h3 b {
   font-family: Arial, Helvetica, sans, sans-serif;
   font-size: 120%;
   letter-spacing: 0px;
@@ -71,7 +77,12 @@ a {
   text-decoration: none;
   outline: 0;
 }
-a:hover, a:active, a:focus, a.intro:hover, a.intro:active, a.intro:focus {
+a:hover,
+a:active,
+a:focus,
+a.intro:hover,
+a.intro:active,
+a.intro:focus {
   color: #6cf !important;
   border-color: white;
   cursor: pointer;
@@ -91,7 +102,8 @@ a.border0 {
   border: 0;
   padding: 0;
 }
-.wrap0, .wrap1 {
+.wrap0,
+.wrap1 {
   display: inline-block;
   vertical-align: top;
   margin: 0 1em 0 0;
@@ -100,7 +112,7 @@ a.border0 {
   display: inline-block;
   vertical-align: top;
   width: 7em;
-    margin: 0 0.5em 0.5em 0.5em;
+  margin: 0 0.5em 0.5em 0.5em;
 }
 .wrap1 .lef img {
   display: inline-block;
@@ -108,7 +120,8 @@ a.border0 {
 .wrap1 .mid {
   text-align: left;
 }
-.wrap0 .mid a, .wrap1 .mid a {
+.wrap0 .mid a,
+.wrap1 .mid a {
   display: inline-block;
   margin: 0.4em 0;
 }

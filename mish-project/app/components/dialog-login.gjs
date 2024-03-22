@@ -1,5 +1,6 @@
 //== Mish login dialog
 
+import Component from '@glimmer/component';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
@@ -8,6 +9,7 @@ import { closeDialog, toggleDialog } from './dialog-functions'
 
 import { loli } from './common-functions';
 import { userName } from './common-storage';
+import { getCredentials } from './common-functions';
 
 var password = '';
 var status = '';
@@ -47,6 +49,18 @@ function clearInput(cls) {
   // loli(document.querySelector("input." + cls));
   document.querySelector("input." + cls).value = '';
   document.querySelector("input." + cls).focus({ focusVisible: true });
+}
+
+//== Detect closing click outside modal dialog
+
+document.addEventListener ('click', detectClickOutside, false);
+
+function detectClickOutside(e) {
+  let tgt = e.target.id;
+
+  if (tgt === dialogId) { // Outside a modal dialog, else not!
+    closeDialog(tgt);
+  }
 }
 
 export class DialogLogin extends Component {
