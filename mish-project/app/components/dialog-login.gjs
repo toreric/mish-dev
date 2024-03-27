@@ -18,6 +18,8 @@ var password = '';
 var status = '';
 var allval = '';
 
+loli('imageId:');
+
 export const dialogLoginId = "dialogLogin";
 const dialogId = "dialogLogin";
 
@@ -32,9 +34,28 @@ export class DialogLogin extends Component {
     return this.z.imageId;
   }
 
-
   // setImageId('IMG_1234a');
-  this.z.setUserName('mish');
+  // this.z.setUserName('mish');
+  @action setUserName(newUser) {
+    this.z.setUserName(newUser);
+  }
+
+  @action userCheck() {
+    return new Promise(resolve => {
+      getCredentials(this.z.userName).then(credentials => {
+        //console.log('credentials:\n' + credentials);
+        var cred = credentials.split("\n");
+        password = cred [0];
+        status = cred [1];
+        allval = cred [2];
+        if (status === "viewer") this.setUserName('');
+        console.log(this.z.userName, cred);
+      });
+    });
+  }
+
+  // setUserName('mish');
+  userCheck();
 
   <template>
     <!--button>{{on 'click' (fn setUserName 'mish')}}</button-->
@@ -75,22 +96,6 @@ export class DialogLogin extends Component {
   </template>
 }
 
-function userCheck() {
-  return new Promise(resolve => {
-    getCredentials(userName).then(credentials => {
-      //console.log('credentials:\n' + credentials);
-      var cred = credentials.split("\n");
-      password = cred [0];
-      status = cred [1];
-      allval = cred [2];
-      if (status === "viewer") userName = "";
-      console.log(userName, cred);
-    });
-  });
-}
-
-userCheck();
-
 //== Detect closing Esc key
 
 document.addEventListener ('keydown', detectEsc, false);
@@ -102,7 +107,7 @@ function detectEsc(e) {
 }
 
 function clearInput(inputClass) {
-  loli("clearInput called");
+  loli('clearInput (' + inputClass + ')');
   // loli(document.querySelector("input." + inputClass));
   document.querySelector("input." + inputClass).value = '';
   document.querySelector("input." + inputClass).focus({ focusVisible: true });
