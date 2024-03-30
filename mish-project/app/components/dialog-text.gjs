@@ -4,12 +4,14 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
-import { imageId } from './common-storage';
+// import { imageId } from './common-storage';
 import { closeDialog, openModalDialog, saveCloseDialog, saveDialog }
   from './dialog-functions';
 
 //== Dialogs with <dialog> tag
 
+var imageId = 'IMG_1234a_2023_november_19';
+imageId = 'IMG_1234a' + '0';
 // NOTE: 'dialog-functions' needs 'dialogId':
 export const dialogTextId = 'dialogText';
 const dialogId = dialogTextId;

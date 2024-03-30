@@ -7,7 +7,10 @@
 // where id = `dialogId` and op = 'original position'. If op is `true` then the dialog
 // is opened in the original position -- else opened where it was left at last close.
 
-import { loli } from './common-functions';
+function loli(text) { // loli = log list
+  console.log('userName', text);
+}
+// import { loli } from './common-functions';
 
 export function openDialog(dialogId, origPos) {
   let diaObj = document.getElementById(dialogId);

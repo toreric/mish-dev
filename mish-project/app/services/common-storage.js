@@ -14,8 +14,13 @@ export default class CommonStorageService extends Service {
 
   @tracked   userName = 'tore';
 
-  setUserName(newId) { this.userName = newId; }
+  setUserName(newId) {
+    this.userName = newId;
+  }
 
+  setImageId(newId) {
+    this.imageId = newId;
+  }
 
 
 

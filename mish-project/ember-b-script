@@ -1,6 +1,6 @@
 #! /bin/bash
 
-rm -rf dist/ # preventive
+#rm -rf dist/ # preventive
 
 # Build production catalog
 prodcat="../public/"

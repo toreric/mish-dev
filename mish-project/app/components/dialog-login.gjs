@@ -11,7 +11,7 @@ import t from 'ember-intl/helpers/t';
 import { closeDialog, toggleDialog } from './dialog-functions'
 
 import { loli } from './common-functions';
-// import { userName } from './common-storage';
+// import {    } from './common-storage';
 import { getCredentials } from './common-functions';
 
 var password = '';
@@ -26,19 +26,21 @@ const dialogId = "dialogLogin";
 export class DialogLogin extends Component {
   @service('common-storage') z;
 
-  @action setImageId(newId) {
-    this.z.imageId = newId;
-  }
+  // @action setImageId(newId) {
+  //   this.z.imageId = newId;
+  // }
 
-  get imageId() {
-    return this.z.imageId;
-  }
+  // get imageId() {
+  //   return this.z.imageId;
+  // }
 
-  // setImageId('IMG_1234a');
   // this.z.setUserName('mish');
-  @action setUserName(newUser) {
-    this.z.setUserName(newUser);
-  }
+  // @action setUserName(newUser) {
+  //   this.z.setUserName(newUser);
+  // }
+
+  z.setImageId('IMG_1234a');
+  z.setUserName('mish');
 
   @action userCheck() {
     return new Promise(resolve => {
@@ -56,7 +58,7 @@ export class DialogLogin extends Component {
 
   // setUserName('mish');
   userCheck();
-
+  loli()
   <template>
     <!--button>{{on 'click' (fn setUserName 'mish')}}</button-->
     <dialog id="dialogLogin">

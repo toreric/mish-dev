@@ -10,7 +10,7 @@ import { cell } from 'ember-resources';
 import { default as Header } from './header';
 
 import { ButtonsLeft } from './buttons-left';
-import { CommonStorage } from './common-storage';
+// import { CommonStorage } from './common-storage';
 import { DialogHelp } from './dialog-help';
 import { DialogLogin } from './dialog-login'
 import { DialogText } from './dialog-text';
