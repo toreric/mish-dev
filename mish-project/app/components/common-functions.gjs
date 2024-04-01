@@ -11,7 +11,8 @@ let picFound = '';
 let userName = '';
 
 export function loli(text) { // loli = log list
-  console.log(userName, text);
+  userName = document.getElementById("userName").innerHTML;
+  console.log(userName + ':', text);
 }
 
 export function logIn() {

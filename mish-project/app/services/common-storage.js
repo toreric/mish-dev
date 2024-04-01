@@ -12,10 +12,11 @@ export default class CommonStorageService extends Service {
   @tracked picFound = "Funna_bilder" + rnd;
   @tracked credentials = '';
 
-  @tracked   userName = 'tore';
+  @tracked   userName = '';
 
   setUserName(newId) {
     this.userName = newId;
+    document.getElementById("userName").innerHTML = newId;
   }
 
   setImageId(newId) {

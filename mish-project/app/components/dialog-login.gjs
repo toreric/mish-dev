@@ -18,8 +18,6 @@ var password = '';
 var status = '';
 var allval = '';
 
-loli('imageId:');
-
 export const dialogLoginId = "dialogLogin";
 const dialogId = "dialogLogin";
 
@@ -30,35 +28,32 @@ export class DialogLogin extends Component {
   //   this.z.imageId = newId;
   // }
 
-  // get imageId() {
-  //   return this.z.imageId;
-  // }
+  get imageId() {
+    return this.z.imageId;
+  }
 
   // this.z.setUserName('mish');
-  // @action setUserName(newUser) {
-  //   this.z.setUserName(newUser);
-  // }
+  setUserName(newUser) {
+    this.z.setUserName(newUser);
+  }
 
-  z.setImageId('IMG_1234a');
-  z.setUserName('mish');
+  // z.setImageId('IMG_1234a');
+  // setUserName('mish');
 
   @action userCheck() {
     return new Promise(resolve => {
       getCredentials(this.z.userName).then(credentials => {
-        //console.log('credentials:\n' + credentials);
         var cred = credentials.split("\n");
         password = cred [0];
         status = cred [1];
         allval = cred [2];
         if (status === "viewer") this.setUserName('');
         console.log(this.z.userName, cred);
+        // console.log('mish', cred);
       });
     });
   }
 
-  // setUserName('mish');
-  userCheck();
-  loli()
   <template>
     <!--button>{{on 'click' (fn setUserName 'mish')}}</button-->
     <dialog id="dialogLogin">
@@ -74,27 +69,25 @@ export class DialogLogin extends Component {
           <p>{{this.imageId}}</p>
           <p>
             Du är nu inloggad som <span>{{this.z.userName}}</span>
-            med [<span>{{this.z.status}}</span>]-rättigheter.
+            med [<span>{{status}}</span>]-rättigheter.
             <br>
             Om du vill byta gör du det här:
           </p>
           <div class="show-inline" style="text-align:right;width:fit-content">
             {{t 'dialog.login.user'}}:
-            <input class="user_" size="10" title={{t 'dialog.login.user'}} placeholder={{t 'dialog.login.name'}} type="text"><a title={{t 'erase'}} {{on 'click' (fn clearInput 'user_')}}> × </a>
+            <input class="user_" size="10" title={{t 'dialog.login.user'}} placeholder={{t 'dialog.login.name'}} type="text"><a title={{t 'erase'}} {{on 'click' (fn clearInput 'user_')}}> ×&nbsp;</a>
             <br>
             {{t 'dialog.login.password'}}:
-            <input class="password_" size="10" title={{t 'dialog.login.password'}} placeholder={{t 'dialog.login.password'}} type="password"><a title={{t 'erase'}} {{on 'click' (fn clearInput 'password_')}}> × </a>
+            <input class="password_" size="10" title={{t 'dialog.login.password'}} placeholder={{t 'dialog.login.password'}} type="password"><a title={{t 'erase'}} {{on 'click' (fn clearInput 'password_')}}> ×&nbsp;</a>
           </div>
         </form>
         <br>
       </main>
       <footer data-dialog-draggable>
         <button type="button" {{on 'click' (fn closeDialog dialogId)}}>{{t 'button.close'}}</button>&nbsp;
-        <button type="button" {{on 'click' (fn closeDialog dialogId)}}>{{t 'button.login'}}</button>&nbsp;
+        <button type="button" {{on 'click' (fn this.userCheck)}}>{{t 'button.login'}}</button>&nbsp;
       </footer>
     </dialog>
-    {{! This script has no effect: }}
-    <script>document.querySelector("input.user_").focus({ focusVisible: true });</script>
   </template>
 }
 
@@ -108,13 +101,6 @@ function detectEsc(e) {
   }
 }
 
-function clearInput(inputClass) {
-  loli('clearInput (' + inputClass + ')');
-  // loli(document.querySelector("input." + inputClass));
-  document.querySelector("input." + inputClass).value = '';
-  document.querySelector("input." + inputClass).focus({ focusVisible: true });
-}
-
 //== Detect closing click outside modal dialog
 
 document.addEventListener ('click', detectClickOutside, false);
@@ -125,4 +111,13 @@ function detectClickOutside(e) {
   if (tgt === dialogId) { // Outside a modal dialog, else not!
     closeDialog(tgt);
   }
+}
+
+//== Clear input field, user or password
+
+function clearInput(inputClass) {
+  loli('clearInput (' + inputClass + ')');
+  // loli(document.querySelector("input." + inputClass));
+  document.querySelector("input." + inputClass).value = '';
+  document.querySelector("input." + inputClass).focus({ focusVisible: true });
 }
