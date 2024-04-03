@@ -66,7 +66,7 @@ export class DialogLogin extends Component {
       </header>
       <main style="text-align:center">
         <form action="">
-          <p>{{this.imageId}}</p>
+          <p>{{this.z.imageId}}</p>
           <p>
             Du är nu inloggad som <span>{{this.z.userName}}</span>
             med [<span>{{status}}</span>]-rättigheter.

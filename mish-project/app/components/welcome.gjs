@@ -34,20 +34,30 @@ class Welcome extends Component {
   @service('common-storage') z;
   @action init(user) {
     if (user) {
-      this.z.setUserName(user);
+      this.z.userName = 'guest';
     }
+    this.z.loli(this.z.userName);
     openModalDialog(dialogLoginId, 0);
-    loli(this.z.picFound);
+    this.z.loli('(btw)', this.z.picFound);
+  }
+  @action toggleBackg() {
+    if (this.z.bkgrColor === '#cbcbcb') {
+      this.z.bkgrColor = '#000';
+    } else {
+      this.z.bkgrColor = '#cbcbcb';
+    }
+    this.z.loli(this.z.bkgrColor);
   }
 
-
 <template>
-  <div id="userName" style="display:none"> </div>
+  <div id="userName" style="display:none">*</div>
   {{! Html inserted here will appear beneath the buildStamp div }}
   <h1 style="margin:0 0 0 4rem;display:inline">{{t "header"}}</h1>
+
+  <a class="proid toggbkg" style="margin:0.5em 0 0 0.7em" title="" {{on 'click' (fn this.toggleBackg)}}><small>MÖRK/LJUS</small></a>
+
   <button type="button" {{on 'click' (fn this.init 'guest')}}>{{t 'button.login'}}</button>
 
-  <!--CommonStorage /-->
   <Header />
   <DialogLogin />
   <MenuMain />
