@@ -7,55 +7,55 @@
 // where id = `dialogId` and op = 'original position'. If op is `true` then the dialog
 // is opened in the original position -- else opened where it was left at last close.
 
-import { loli } from './common-functions';
+// import { loli } from './common-functions';
 
-export function openDialog(dialogId, origPos) {
-  let diaObj = document.getElementById(dialogId);
-  if (!diaObj.open) {
-    diaObj.show();
-    if (origPos) diaObj.style = '';
-    loli('opened ' + dialogId);
-  }
-}
+// export function openDialog(dialogId, origPos) {
+//   let diaObj = document.getElementById(dialogId);
+//   if (!diaObj.open) {
+//     diaObj.show();
+//     if (origPos) diaObj.style = '';
+//     loli('opened ' + dialogId);
+//   }
+// }
 
-export function toggleDialog(dialogId, origPos) {
-  let diaObj = document.getElementById(dialogId);
-  let what = 'closed ';
-  if (diaObj.hasAttribute("open")) {
-    diaObj.close();
-  } else {
-    what = 'opened ';
-    if (origPos) diaObj.style = '';
-    diaObj.show();
-  }
-  loli(what + dialogId);
-}
+// export function toggleDialog(dialogId, origPos) {
+//   let diaObj = document.getElementById(dialogId);
+//   let what = 'closed ';
+//   if (diaObj.hasAttribute("open")) {
+//     diaObj.close();
+//   } else {
+//     what = 'opened ';
+//     if (origPos) diaObj.style = '';
+//     diaObj.show();
+//   }
+//   loli(what + dialogId);
+// }
 
-export function openModalDialog(dialogId, origPos) {
-  let diaObj = document.getElementById(dialogId);
+// export function openModalDialog(dialogId, origPos) {
+//   let diaObj = document.getElementById(dialogId);
 
-  if (!diaObj.open) {
-    if (origPos) diaObj.style = '';
-    diaObj.showModal();
-    loli('opened ' + dialogId + ' (modal)');
-  }
-}
+//   if (!diaObj.open) {
+//     if (origPos) diaObj.style = '';
+//     diaObj.showModal();
+//     loli('opened ' + dialogId + ' (modal)');
+//   }
+// }
 
-//== May also be used as dialog button functions:
+// //== May also be used as dialog button functions:
 
-export function saveDialog(dialogId) {
-  loli('saved ' + dialogId);
-}
+// export function saveDialog(dialogId) {
+//   loli('saved ' + dialogId);
+// }
 
-export function saveCloseDialog(dialogId) {
-  saveDialog(dialogId);
-  closeDialog(dialogId);
-}
+// export function saveCloseDialog(dialogId) {
+//   saveDialog(dialogId);
+//   closeDialog(dialogId);
+// }
 
-export function closeDialog(dialogId) {
-  let diaObj = document.getElementById(dialogId);
-  if (diaObj.open) {
-    diaObj.close();
-    loli('closed ' + dialogId);
-  }
-}
+// export function closeDialog(dialogId) {
+//   let diaObj = document.getElementById(dialogId);
+//   if (diaObj.open) {
+//     diaObj.close();
+//     loli('closed ' + dialogId);
+//   }
+// }

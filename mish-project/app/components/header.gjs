@@ -1,22 +1,23 @@
 //== Mish Header component
 
 import Component from '@glimmer/component';
-//import { tracked } from '@glimmer/tracking';
+// import { tracked } from '@glimmer/tracking';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
-//import { action } from '@ember/object';
+// import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 import t from 'ember-intl/helpers/t';
 
 import { Clock } from './clock';
-import { toggleDialog, openDialog, openModalDialog } from './dialog-functions';
+// import { toggleDialog, openDialog, openModalDialog } from './dialog-functions';
 import { dialogTextId } from './dialog-text';
 import { Excite } from './excite';
 
 //import { loli } from './common-functions';
 
 export default class Header extends Component {
+  @service('common-storage') z;
   @service intl;
   selections = this.intl.get('locales');
   changeLocale = (newLoc) => {
@@ -71,9 +72,9 @@ export default class Header extends Component {
 
     {{! Dialog-testing buttons }}
     <p>
-      <button type="button" {{on 'click' (fn toggleDialog dialogTextId 0)}}>{{t 'dialog.text.toggle'}}</button><button type="button" {{on 'click' (fn openDialog dialogTextId 1)}}>{{t 'dialog.text.open.origpos'}}</button>
+      <button type="button" {{on 'click' (fn this.z.toggleDialog dialogTextId 0)}}>{{t 'dialog.text.toggle'}}</button><button type="button" {{on 'click' (fn this.z.openDialog dialogTextId 1)}}>{{t 'dialog.text.open.origpos'}}</button>
       &nbsp;
-      <button type="button" {{on 'click' (fn openModalDialog dialogTextId 0)}}>{{t 'dialog.text.open.modal'}}</button>
+      <button type="button" {{on 'click' (fn this.z.openModalDialog dialogTextId 0)}}>{{t 'dialog.text.open.modal'}}</button>
     </p>
 
   </div></template>

@@ -18,9 +18,9 @@ import { DialogLogin } from './dialog-login'
 import { DialogText } from './dialog-text';
 import { MenuMain } from './menu-main';
 
-import { openDialog } from './dialog-functions'
-import { openModalDialog } from './dialog-functions'
-import { toggleDialog } from './dialog-functions'
+// import { openDialog } from './dialog-functions'
+// import { openModalDialog } from './dialog-functions'
+// import { toggleDialog } from './dialog-functions'
 import { dialogLoginId } from './dialog-login';
 import { loli } from './common-functions';
 
@@ -50,7 +50,6 @@ class Welcome extends Component {
   }
 
 <template>
-  <div id="userName" style="display:none">*</div>
   {{! Html inserted here will appear beneath the buildStamp div }}
   <h1 style="margin:0 0 0 4rem;display:inline">{{t "header"}}</h1>
 

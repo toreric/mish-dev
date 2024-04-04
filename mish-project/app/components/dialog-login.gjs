@@ -10,7 +10,7 @@ import t from 'ember-intl/helpers/t';
 // import { openDialog, toggleDialog, openModalDialog, saveDialog, closeDialog, saveCloseDialog } from 'dialog-functions';
 import { closeDialog, toggleDialog } from './dialog-functions'
 
-import { loli } from './common-functions';
+// import { loli } from './common-functions';
 // import {    } from './common-storage';
 import { getCredentials } from './common-functions';
 
@@ -24,23 +24,15 @@ const dialogId = "dialogLogin";
 export class DialogLogin extends Component {
   @service('common-storage') z;
 
-  // @action setImageId(newId) {
-  //   this.z.imageId = newId;
-  // }
-
   get imageId() {
     return this.z.imageId;
   }
 
-  // this.z.setUserName('mish');
   setUserName(newUser) {
     this.z.setUserName(newUser);
   }
 
-  // z.setImageId('IMG_1234a');
-  // setUserName('mish');
-
-  @action userCheck() {
+  userCheck = () => {
     return new Promise(resolve => {
       getCredentials(this.z.userName).then(credentials => {
         var cred = credentials.split("\n");
@@ -61,7 +53,7 @@ export class DialogLogin extends Component {
         <div style="width:99%">
           <p>{{t 'dialog.login.header'}}<span>{{null}}</span></p>
         </div>{{null}}<div>
-          <button class="close" type="button" {{on 'click' (fn toggleDialog dialogId)}}>×</button>
+          <button class="close" type="button" {{on 'click' (fn this.z.toggleDialog dialogId)}}>×</button>
         </div>
       </header>
       <main style="text-align:center">
@@ -84,7 +76,7 @@ export class DialogLogin extends Component {
         <br>
       </main>
       <footer data-dialog-draggable>
-        <button type="button" {{on 'click' (fn closeDialog dialogId)}}>{{t 'button.close'}}</button>&nbsp;
+        <button type="button" {{on 'click' (fn this.z.closeDialog dialogId)}}>{{t 'button.close'}}</button>&nbsp;
         <button type="button" {{on 'click' (fn this.userCheck)}}>{{t 'button.login'}}</button>&nbsp;
       </footer>
     </dialog>
@@ -93,13 +85,13 @@ export class DialogLogin extends Component {
 
 //== Detect closing Esc key
 
-document.addEventListener ('keydown', detectEsc, false);
+// document.addEventListener ('keydown', detectEsc, false);
 
-function detectEsc(e) {
-  if (e.keyCode === 27) { // Esc key
-    if (document.getElementById(dialogId).open) closeDialog(dialogId);
-  }
-}
+// function detectEsc(e) {
+//   if (e.keyCode === 27) { // Esc key
+//     if (document.getElementById(dialogId).open) closeDialog(dialogId);
+//   }
+// }
 
 //== Detect closing click outside modal dialog
 
@@ -109,14 +101,14 @@ function detectClickOutside(e) {
   let tgt = e.target.id;
 
   if (tgt === dialogId) { // Outside a modal dialog, else not!
-    closeDialog(tgt);
+    this.z.closeDialog(tgt);
   }
 }
 
 //== Clear input field, user or password
 
 function clearInput(inputClass) {
-  loli('clearInput (' + inputClass + ')');
+  this.z.loli('clearInput (' + inputClass + ')');
   // loli(document.querySelector("input." + inputClass));
   document.querySelector("input." + inputClass).value = '';
   document.querySelector("input." + inputClass).focus({ focusVisible: true });

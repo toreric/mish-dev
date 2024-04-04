@@ -92,26 +92,26 @@ function keysDialog(dialogId) {
 
 //== Detect closing Esc key
 
-document.addEventListener ('keydown', detectEsc, false);
+// document.addEventListener ('keydown', detectEsc, false);
 
-async function detectEsc(e) {
-  if (e.keyCode === 27) { // Esc key
-    let tmp1 = document.getElementById('dialogTextNotes');
-    let tmp2 = document.getElementById('dialogTextKeywords');
+// async function detectEsc(e) {
+//   if (e.keyCode === 27) { // Esc key
+//     let tmp1 = document.getElementById('dialogTextNotes');
+//     let tmp2 = document.getElementById('dialogTextKeywords');
 
-    if (tmp1.open) {
-      closeDialog(tmp1.id);
-      await new Promise (z => setTimeout (z, 5)); // Soon allow next
-      openModalDialog(dialogId, 0); // Close of modal closed its parent
-    } else if (tmp2.open) {
-      closeDialog(tmp2.id);
-      await new Promise (z => setTimeout (z, 5)); // Soon allow next
-      openModalDialog(dialogId, 0); // Close of modal closed its parent
-    } else {
-      closeDialog(dialogId);
-    }
-  }
-}
+//     if (tmp1.open) {
+//       closeDialog(tmp1.id);
+//       await new Promise (z => setTimeout (z, 5)); // Soon allow next
+//       openModalDialog(dialogId, 0); // Close of modal closed its parent
+//     } else if (tmp2.open) {
+//       closeDialog(tmp2.id);
+//       await new Promise (z => setTimeout (z, 5)); // Soon allow next
+//       openModalDialog(dialogId, 0); // Close of modal closed its parent
+//     } else {
+//       closeDialog(dialogId);
+//     }
+//   }
+// }
 
 //== Detect closing click outside modal dialog
 

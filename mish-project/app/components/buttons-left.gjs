@@ -1,48 +1,54 @@
 //== Mish left vertical buttons
 
+import Component from '@glimmer/component';
+import { inject as service } from '@ember/service';
 import { eq } from 'ember-truth-helpers';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
-import { loli } from './common-functions';
+// import { loli } from './common-functions';
 
-import { closeDialog, toggleDialog } from './dialog-functions'
+// import { closeDialog, toggleDialog } from './dialog-functions'
 
-//import { menuMainId } from './menu-main'
+// import { menuMainId } from './menu-main'
 import { dialogHelpId } from './dialog-help';
 
-const someFuntion = (param) => loli(param);
-
-import { toggleMainMenu } from './menu-main';
+// import { toggleMainMenu } from './menu-main';
 
 // Left buttons, most without href attribute
-export const ButtonsLeft = <template>
-  <!-- Start "home" page: the Information page-->
-  <iframe class="intro" src="start.html" style="display:none"></iframe>
+export class ButtonsLeft extends Component {
+  @service('common-storage') z;
 
-  <div id="smallButtons" draggable="false" ondragstart="return false">
+  someFuntion = (param) => this.z.loli(param);
 
-    <a id="menuButton" class="smBu" title={{t 'buttons.left.main'}} draggable="false" ondragstart="return false" {{on "click" (fn toggleMainMenu)}} style="z-index:16;font-family: Comic Sans MS;width:1.25em;line-height:80%">☰</a>
+  <template>
+    <!-- Start "home" page: the Information page-->
+    <iframe class="intro" src="start.html" style="display:none"></iframe>
 
-    <a id="questionMark" class="smBu" title={{t 'buttons.left.help'}} draggable="false" ondragstart="return false" {{on "click" (fn toggleDialog dialogHelpId false)}}>?</a>
+    <div id="smallButtons" draggable="false" ondragstart="return false">
 
-    <a id="reFr" {{on "click" (fn someFuntion 'refresh')}} title="NOTE: refresh was reLd" style="display:none"></a>
+      <a id="menuButton" class="smBu" title={{t 'buttons.left.main'}} draggable="false" ondragstart="return false" {{on "click" (fn this.z.toggleMainMenu)}} style="z-index:16;font-family: Comic Sans MS;width:1.25em;line-height:80%">☰</a>
 
-    <a id="reLd" class="smBu" title={{t 'buttons.left.reload'}} draggable="false" ondragstart="return false" {{on "click" (fn someFuntion 'reload')}} src="/images/reload.png"></a>
+      <a id="questionMark" class="smBu" title={{t 'buttons.left.help'}} draggable="false" ondragstart="return false" {{on "click" (fn this.z.toggleDialog dialogHelpId false)}}>?</a>
 
-    <a id="toggleName" class="smBu" title={{t 'buttons.left.name'}} draggable="false" ondragstart="return false" style="display:" {{on "click" (fn someFuntion 'toggleNameView')}}>N</a>
+      <a id="reFr" {{on "click" (fn this.someFuntion 'refresh')}} title="NOTE: refresh was reLd" style="display:none"></a>
 
-    <a id="toggleHide" class="smBu" title={{t 'buttons.left.hide'}} draggable="false" ondragstart="return false" style="display:" {{on "click" (fn someFuntion 'toggleHideFlagged')}}></a>
+      <a id="reLd" class="smBu" title={{t 'buttons.left.reload'}} draggable="false" ondragstart="return false" {{on "click" (fn this.someFuntion 'reload')}} src="/images/reload.png"></a>
 
-    <a id="saveOrder" class="smBu" title={{t 'buttons.left.save'}} draggable="false" ondragstart="return false" {{on "click" (fn someFuntion 'saveOrder(true)')}}>S</a>
+      <a id="toggleName" class="smBu" title={{t 'buttons.left.name'}} draggable="false" ondragstart="return false" style="display:" {{on "click" (fn this.someFuntion 'toggleNameView')}}>N</a>
 
-    <a id="do_mail" class="smBu" title={{t 'buttons.left.mail'}} {{on "click" (fn someFuntion 'doMail')}} src="/images/mail.svg" style="display:"></a>
+      <a id="toggleHide" class="smBu" title={{t 'buttons.left.hide'}} draggable="false" ondragstart="return false" style="display:" {{on "click" (fn this.someFuntion 'toggleHideFlagged')}}></a>
 
-    <a class="smBu" draggable="false" ondragstart="return false" title={{t 'buttons.left.up'}} style="font:bold 190% sans-serif;line-height:90%" onclick="window.scrollTo(0,0)">↑</a>
+      <a id="saveOrder" class="smBu" title={{t 'buttons.left.save'}} draggable="false" ondragstart="return false" {{on "click" (fn this.someFuntion 'saveOrder(true)')}}>S</a>
 
-    <a id="netMeeting" class="smBu" title={{t 'buttons.left.meet'}}
-    href="https://meet.jit.si/Minnenfr%C3%A5nS%C3%A4var%C3%A5dalenochHolm%C3%B6n" target="jitsi_window" draggable="false" ondragstart="return false" style="display:;padding:0 0.25em 0.2em 0.125em;line-height:1.25em" onclick="this.hide">▣</a>
+      <a id="do_mail" class="smBu" title={{t 'buttons.left.mail'}} {{on "click" (fn this.someFuntion 'doMail')}} src="/images/mail.svg" style="display:"></a>
 
-  </div>
-</template>
+      <a class="smBu" draggable="false" ondragstart="return false" title={{t 'buttons.left.up'}} style="font:bold 190% sans-serif;line-height:90%" onclick="window.scrollTo(0,0)">↑</a>
+
+      <a id="netMeeting" class="smBu" title={{t 'buttons.left.meet'}}
+      href="https://meet.jit.si/Minnenfr%C3%A5nS%C3%A4var%C3%A5dalenochHolm%C3%B6n" target="jitsi_window" draggable="false" ondragstart="return false" style="display:;padding:0 0.25em 0.2em 0.125em;line-height:1.25em" onclick="this.hide">▣</a>
+
+    </div>
+  </template>
+}
