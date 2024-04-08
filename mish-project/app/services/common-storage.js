@@ -18,12 +18,6 @@ export default class CommonStorageService extends Service {
     console.log(this.userName + ':', text);
   }
 
-  // detectEsc = (e) => {
-  //   if (e.keyCode === 27) { // Esc key
-  //     if (document.getElementById("menuMain").style.display !== "none") this.toggleMainMenu();
-  //   }
-  // }
-
   toggleMainMenu = () => {
     var menuMain = document.getElementById("menuMain");
     if (menuMain.style.display === "none") {
@@ -35,7 +29,7 @@ export default class CommonStorageService extends Service {
     }
   }
 
- //== Dialog methods
+  //== Dialog methods
   // openDialog(id, op), toggleDialog(id, op), openModalDialog(id, op),
   // saveDialog(id), closeDialog(id, op), and saveCloseDialog(id) (= save then close),
   // where id = `dialogId` and op = 'original position'. If op is `true` then the dialog

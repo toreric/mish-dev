@@ -46,6 +46,26 @@ export class DialogLogin extends Component {
     });
   }
 
+  //== Detect closing click outside modal dialog
+
+  // document.addEventListener ('click', detectClickOutside, false);
+
+  // detectClickOutside = (e) => {
+  //   let tgt = e.target.id;
+  //   if (tgt === dialogId) { // Outside a modal dialog, else not!
+  //     this.z.closeDialog(tgt);
+  //   }
+  // }
+
+  //== Clear input field, user or password
+
+  clearInput = (inputClass) => {
+    this.z.loli('clearInput (' + inputClass + ')');
+    // loli(document.querySelector("input." + inputClass));
+    document.querySelector("input." + inputClass).value = '';
+    document.querySelector("input." + inputClass).focus({ focusVisible: true });
+  }
+
   <template>
     <!--button>{{on 'click' (fn setUserName 'mish')}}</button-->
     <dialog id="dialogLogin">
@@ -67,10 +87,10 @@ export class DialogLogin extends Component {
           </p>
           <div class="show-inline" style="text-align:right;width:fit-content">
             {{t 'dialog.login.user'}}:
-            <input class="user_" size="10" title={{t 'dialog.login.user'}} placeholder={{t 'dialog.login.name'}} type="text"><a title={{t 'erase'}} {{on 'click' (fn clearInput 'user_')}}> ×&nbsp;</a>
+            <input class="user_" size="10" title={{t 'dialog.login.user'}} placeholder={{t 'dialog.login.name'}} type="text"><a title={{t 'erase'}} {{on 'click' (fn this.clearInput 'user_')}}> ×&nbsp;</a>
             <br>
             {{t 'dialog.login.password'}}:
-            <input class="password_" size="10" title={{t 'dialog.login.password'}} placeholder={{t 'dialog.login.password'}} type="password"><a title={{t 'erase'}} {{on 'click' (fn clearInput 'password_')}}> ×&nbsp;</a>
+            <input class="password_" size="10" title={{t 'dialog.login.password'}} placeholder={{t 'dialog.login.password'}} type="password"><a title={{t 'erase'}} {{on 'click' (fn this.clearInput 'password_')}}> ×&nbsp;</a>
           </div>
         </form>
         <br>
@@ -95,21 +115,21 @@ export class DialogLogin extends Component {
 
 //== Detect closing click outside modal dialog
 
-document.addEventListener ('click', detectClickOutside, false);
+// document.addEventListener ('click', detectClickOutside, false);
 
-function detectClickOutside(e) {
-  let tgt = e.target.id;
+// function detectClickOutside(e) {
+//   let tgt = e.target.id;
 
-  if (tgt === dialogId) { // Outside a modal dialog, else not!
-    this.z.closeDialog(tgt);
-  }
-}
+//   if (tgt === dialogId) { // Outside a modal dialog, else not!
+//     this.z.closeDialog(tgt);
+//   }
+// }
 
 //== Clear input field, user or password
 
-function clearInput(inputClass) {
-  this.z.loli('clearInput (' + inputClass + ')');
-  // loli(document.querySelector("input." + inputClass));
-  document.querySelector("input." + inputClass).value = '';
-  document.querySelector("input." + inputClass).focus({ focusVisible: true });
-}
+// function clearInput(inputClass) {
+//   this.z.loli('clearInput (' + inputClass + ')');
+//   // loli(document.querySelector("input." + inputClass));
+//   document.querySelector("input." + inputClass).value = '';
+//   document.querySelector("input." + inputClass).focus({ focusVisible: true });
+// }

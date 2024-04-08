@@ -1,5 +1,7 @@
 //== Mish dialogs for image texts (captions etc.)
 
+import Component from '@glimmer/component';
+import { inject as service } from '@ember/service';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
@@ -16,14 +18,25 @@ imageId = 'IMG_1234a' + '0';
 export const dialogTextId = 'dialogText';
 const dialogId = dialogTextId;
 
-export const DialogText = <template>
+export class DialogText extends Component {
+  @service('common-storage') z;
+
+  notesDialog = (dialogId) => {
+    this.z.openModalDialog(dialogId, 0);
+  }
+
+  keysDialog = (dialogId) => {
+    this.z.openModalDialog(dialogId, 0);
+  }
+
+<template>
 <div style="display:flex">
 
 <dialog id='dialogText'>
   <header data-dialog-draggable>
     <p>&nbsp;</p>
     <p>{{t 'dialog.text.header'}} <span>{{imageId}}</span></p>
-    <button class="close" type="button" {{on 'click' (fn closeDialog dialogTextId)}}>×</button>
+    <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogTextId)}}>×</button>
   </header>
   <main>
     <div class="diaMess">
@@ -33,11 +46,11 @@ export const DialogText = <template>
     <textarea id="dialogTextCreator" name="creator" rows="2" placeholder="{{t "write.creator"}} (Xmp.dc.creator)" {{on 'mouseleave' onMouseLeaveTextarea}}></textarea>
   </main>
   <footer data-dialog-draggable>
-    <button id="dialogTextButton1" type="button" {{on 'click' (fn saveDialog dialogTextId)}}>{{t 'button.save'}}</button>&nbsp;
-    <button id="dialogTextButton2" type="button" {{on 'click' (fn saveCloseDialog dialogTextId)}}>{{t 'button.saveclose'}}</button>&nbsp;
-    <button id="dialogTextButton3" type="button" {{on 'click' (fn closeDialog dialogTextId)}}>{{t 'button.close'}}</button>&nbsp;
-    <button id="dialogTextButton4" type="button" {{on 'click' (fn notesDialog 'dialogTextNotes')}}>{{t 'button.notes'}}</button>&nbsp;
-    <button id="dialogTextButton5" type="button" {{on 'click' (fn keysDialog 'dialogTextKeywords')}}>{{t 'button.keywords'}}</button>&nbsp;
+    <button id="dialogTextButton1" type="button" {{on 'click' (fn this.z.saveDialog dialogTextId)}}>{{t 'button.save'}}</button>&nbsp;
+    <button id="dialogTextButton2" type="button" {{on 'click' (fn this.z.saveCloseDialog dialogTextId)}}>{{t 'button.saveclose'}}</button>&nbsp;
+    <button id="dialogTextButton3" type="button" {{on 'click' (fn this.z.closeDialog dialogTextId)}}>{{t 'button.close'}}</button>&nbsp;
+    <button id="dialogTextButton4" type="button" {{on 'click' (fn this.notesDialog 'dialogTextNotes')}}>{{t 'button.notes'}}</button>&nbsp;
+    <button id="dialogTextButton5" type="button" {{on 'click' (fn this.keysDialog 'dialogTextKeywords')}}>{{t 'button.keywords'}}</button>&nbsp;
   </footer>
 </dialog>
 
@@ -45,7 +58,7 @@ export const DialogText = <template>
   <header data-dialog-draggable>
     <p>&nbsp;</p>
     <p>{{t 'dialog.text.notes'}} <span>{{imageId}}</span></p>
-    <button class="close" type="button" {{on 'click' (fn closeDialog 'dialogTextNotes')}}>×</button>
+    <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogTextNotes')}}>×</button>
   </header>
   <main>
     <div class="diaMess">
@@ -54,9 +67,9 @@ export const DialogText = <template>
     <textarea id="dialogTextInfo" name="description" rows="8" placeholder="{{t 'write.notes'}} (Xmp.dc.source)" {{on 'mouseleave' onMouseLeaveTextarea}}></textarea><br>
   </main>
   <footer data-dialog-draggable>
-    <button type="button" {{on 'click' (fn saveDialog 'dialogTextNotes')}}>{{t 'button.save'}}</button>&nbsp;
-    <button type="button" {{on 'click' (fn saveCloseDialog 'dialogTextNotes')}}>{{t 'button.saveclose'}}</button>&nbsp;
-    <button type="button" {{on 'click' (fn closeDialog 'dialogTextNotes')}}>{{t 'button.close'}}</button>
+    <button type="button" {{on 'click' (fn this.z.saveDialog 'dialogTextNotes')}}>{{t 'button.save'}}</button>&nbsp;
+    <button type="button" {{on 'click' (fn this.z.saveCloseDialog 'dialogTextNotes')}}>{{t 'button.saveclose'}}</button>&nbsp;
+    <button type="button" {{on 'click' (fn this.z.closeDialog 'dialogTextNotes')}}>{{t 'button.close'}}</button>
   </footer>
 </dialog>
 
@@ -65,7 +78,7 @@ export const DialogText = <template>
   <header data-dialog-draggable>
     <p>&nbsp;</p>
     <p>{{t 'dialog.text.keywords'}} <span>{{imageId}}</span></p>
-    <button class="close" type="button" {{on 'click' (fn closeDialog 'dialogTextKeywords')}}>×</button>
+    <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogTextKeywords')}}>×</button>
   </header>
   <!-- Temporary special styling 2 in this dialog stub -->
   <main style="padding:0.5rem;text-align:center">
@@ -74,44 +87,37 @@ export const DialogText = <template>
     </div>
   </main>
   <footer data-dialog-draggable>
-    <button type="button" {{on 'click' (fn closeDialog 'dialogTextKeywords')}}>{{t 'button.close'}}</button>&nbsp;
+    <button type="button" {{on 'click' (fn this.z.closeDialog 'dialogTextKeywords')}}>{{t 'button.close'}}</button>&nbsp;
   </footer>
 </dialog>
 
 </div>
 </template>
 
-function notesDialog(dialogId) {
-  openModalDialog(dialogId, 0);
 }
-
-function keysDialog(dialogId) {
-  openModalDialog(dialogId, 0);
-}
-
 
 //== Detect closing Esc key
 
-// document.addEventListener ('keydown', detectEsc, false);
+document.addEventListener ('keydown', detectEsc, false);
 
-// async function detectEsc(e) {
-//   if (e.keyCode === 27) { // Esc key
-//     let tmp1 = document.getElementById('dialogTextNotes');
-//     let tmp2 = document.getElementById('dialogTextKeywords');
+async function detectEsc(e) {
+  if (e.keyCode === 27) { // Esc key
+    let tmp1 = document.getElementById('dialogTextNotes');
+    let tmp2 = document.getElementById('dialogTextKeywords');
 
-//     if (tmp1.open) {
-//       closeDialog(tmp1.id);
-//       await new Promise (z => setTimeout (z, 5)); // Soon allow next
-//       openModalDialog(dialogId, 0); // Close of modal closed its parent
-//     } else if (tmp2.open) {
-//       closeDialog(tmp2.id);
-//       await new Promise (z => setTimeout (z, 5)); // Soon allow next
-//       openModalDialog(dialogId, 0); // Close of modal closed its parent
-//     } else {
-//       closeDialog(dialogId);
-//     }
-//   }
-// }
+    if (tmp1.open) {
+      closeDialog(tmp1.id);
+      await new Promise (z => setTimeout (z, 5)); // Soon allow next
+      openModalDialog(dialogId, 0); // Close of modal closed its parent
+    } else if (tmp2.open) {
+      closeDialog(tmp2.id);
+      await new Promise (z => setTimeout (z, 5)); // Soon allow next
+      openModalDialog(dialogId, 0); // Close of modal closed its parent
+    } else {
+      closeDialog(dialogId);
+    }
+  }
+}
 
 //== Detect closing click outside modal dialog
 

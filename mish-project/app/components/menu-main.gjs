@@ -14,14 +14,18 @@ import { imdbRoot } from './common-storage'
 
 export const menuMainId = "menuMain";
 
-//== Detect closing Esc key
-
-// document.addEventListener ('keydown', detectEsc, false);
-
 export class MenuMain extends Component {
   @service('common-storage') z;
   @tracked imdbRoot;
   imdbRoots = ['root1', 'root2', 'root3'];
+
+  // //== Detect closing Esc key
+  // document.addEventListener ('keydown', this.detectEsc, false);
+  // detectEsc = (e) => {
+  //   if (e.keyCode === 27) { // Esc key
+  //     if (document.getElementById("menuMain").style.display !== "none") this.z.toggleMainMenu();
+  //   }
+  // }
 
   selectRoot = (event) => {
     this.imdbRoot = event.target.value;

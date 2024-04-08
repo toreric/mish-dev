@@ -32,12 +32,13 @@ makeDialogDraggable();
 // export class Welcome extends Component {
 class Welcome extends Component {
   @service('common-storage') z;
-  @action init(user) {
+  @action async init(user) {
     if (user) {
-      this.z.userName = 'guest';
+      this.z.userName = user;
     }
     this.z.loli(this.z.userName);
-    openModalDialog(dialogLoginId, 0);
+    this.z.openModalDialog(dialogLoginId, 0);
+    await new Promise (z => setTimeout (z, 50));
     this.z.loli('(btw)', this.z.picFound);
   }
   @action toggleBackg() {

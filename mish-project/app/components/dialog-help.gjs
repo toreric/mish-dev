@@ -1,5 +1,7 @@
 //== Mish dialog with help text
 
+import Component from '@glimmer/component';
+import { inject as service } from '@ember/service';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
@@ -21,14 +23,17 @@ function detectEsc(e) {
   }
 }
 
-export const DialogHelp = <template>
+export class DialogHelp extends Component {
+  @service('common-storage') z;
+
+<template>
 
 <dialog id="dialogHelp">
   <header data-dialog-draggable>
     <div style="width:99%">
       <p>{{t 'dialog.help.header'}}<br>{{t 'dialog.help.header1'}}<span></span></p>
     </div><div>
-      <button class="close" type="button" {{on 'click' (fn toggleDialog dialogId)}}>×</button>
+      <button class="close" type="button" {{on 'click' (fn this.z.toggleDialog dialogId)}}>×</button>
     </div>
   </header>
   <main>
@@ -89,7 +94,7 @@ export const DialogHelp = <template>
         <b>F5</b> eller <b>Ctrl</b>+<b>R</b> används för att börja om från början, till exempel om bildväxlingen kommit i oordning</p>
   </main>
   <footer data-dialog-draggable>
-    <button type="button" {{on 'click' (fn closeDialog dialogId)}}>{{t 'button.close'}}</button>&nbsp;
+    <button type="button" {{on 'click' (fn this.z.closeDialog dialogId)}}>{{t 'button.close'}}</button>&nbsp;
   </footer>
 </dialog>
 

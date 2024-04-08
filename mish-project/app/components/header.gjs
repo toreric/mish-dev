@@ -31,11 +31,11 @@ export default class Header extends Component {
   isActive = (locale) => {
     new Promise (z => setTimeout (z, 200));
     return this.intl.locale[0] === locale;
-    }
+  }
   langText = (locale) => {
     new Promise (z => setTimeout (z, 200));
     return this.intl.lookup("select.languagetext", locale);
-    }
+  }
 
   <template><div style="margin:0 0 0 4rem;padding:0">
 
