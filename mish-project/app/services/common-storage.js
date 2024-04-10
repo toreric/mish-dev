@@ -29,6 +29,7 @@ export default class CommonStorageService extends Service {
     }
   }
 
+  //#region Dialogs
   //== Dialog methods
   // openDialog(id, op), toggleDialog(id, op), openModalDialog(id, op),
   // saveDialog(id), closeDialog(id, op), and saveCloseDialog(id) (= save then close),
@@ -67,6 +68,7 @@ export default class CommonStorageService extends Service {
     }
   }
 
+  //#region Buttons
   //== May also be used in the buttons of the dialogs:
 
   saveDialog = (dialogId) => {
@@ -85,5 +87,5 @@ export default class CommonStorageService extends Service {
       this.loli('closed ' + dialogId);
     }
   }
-
+  //#endregion
 }

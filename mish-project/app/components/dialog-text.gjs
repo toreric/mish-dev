@@ -2,21 +2,23 @@
 
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
 // import { imageId } from './common-storage';
-import { closeDialog, openModalDialog, saveCloseDialog, saveDialog }
-  from './dialog-functions';
-
-//== Dialogs with <dialog> tag
+// import { closeDialog, openModalDialog, saveCloseDialog, saveDialog }
+//   from './dialog-functions';
 
 var imageId = 'IMG_1234a_2023_november_19';
 imageId = 'IMG_1234a' + '0';
-// NOTE: 'dialog-functions' needs 'dialogId':
+// Ntoe: 'dialog-functions' needs 'dialogId':
 export const dialogTextId = 'dialogText';
 const dialogId = dialogTextId;
+
+//== Component DialogText with <dialog> tags
+//== Note: 'data-dialog-draggable' is triggered with makeDialogDraggable() in welcome.gjs
 
 export class DialogText extends Component {
   @service('common-storage') z;
@@ -29,8 +31,33 @@ export class DialogText extends Component {
     this.z.openModalDialog(dialogId, 0);
   }
 
+  // Detect closing Esc key
+  // @action
+  // registerListener(element) {
+  //   element.addEventListener('keydown', this.detectEsc);
+  // }
+  @action
+  async detectEsc(e) {
+    if (e.keyCode === 27) { // Esc key
+      let tmp1 = document.getElementById('dialogTextNotes');
+      let tmp2 = document.getElementById('dialogTextKeywords');
+
+      if (tmp1.open) {
+        this.z.closeDialog(tmp1.id);
+        await new Promise (z => setTimeout (z, 5)); // Soon allow next
+        this.z.openModalDialog(dialogId, 0); // Close of modal closed its parent
+      } else if (tmp2.open) {
+        this.z.closeDialog(tmp2.id);
+        await new Promise (z => setTimeout (z, 5)); // Soon allow next
+        openModalDialog(dialogId, 0); // Close of modal closed its parent
+      } else {
+        this.z.closeDialog(dialogId);
+      }
+    }
+  }
+
 <template>
-<div style="display:flex">
+<div style="display:flex" {{on 'keydown' this.detectEsc}}>
 
 <dialog id='dialogText'>
   <header data-dialog-draggable>
@@ -96,40 +123,17 @@ export class DialogText extends Component {
 
 }
 
-//== Detect closing Esc key
+// //== Detect closing click outside modal dialog
 
-document.addEventListener ('keydown', detectEsc, false);
+// document.addEventListener ('click', detectClickOutside, false);
 
-async function detectEsc(e) {
-  if (e.keyCode === 27) { // Esc key
-    let tmp1 = document.getElementById('dialogTextNotes');
-    let tmp2 = document.getElementById('dialogTextKeywords');
+// function detectClickOutside(e) {
+//   let tgt = e.target.id;
 
-    if (tmp1.open) {
-      closeDialog(tmp1.id);
-      await new Promise (z => setTimeout (z, 5)); // Soon allow next
-      openModalDialog(dialogId, 0); // Close of modal closed its parent
-    } else if (tmp2.open) {
-      closeDialog(tmp2.id);
-      await new Promise (z => setTimeout (z, 5)); // Soon allow next
-      openModalDialog(dialogId, 0); // Close of modal closed its parent
-    } else {
-      closeDialog(dialogId);
-    }
-  }
-}
-
-//== Detect closing click outside modal dialog
-
-document.addEventListener ('click', detectClickOutside, false);
-
-function detectClickOutside(e) {
-  let tgt = e.target.id;
-
-  if (tgt === dialogId || tgt === 'dialogTextNotes' || tgt === 'dialogTextKeywords') { // Outside a modal dialog, else not!
-    closeDialog(tgt);
-  }
-}
+//   if (tgt === dialogId || tgt === 'dialogTextNotes' || tgt === 'dialogTextKeywords') { // Outside a modal dialog, else not!
+//     closeDialog(tgt);
+//   }
+// }
 
 //== Virtual keys for some missing on keyboards
 
