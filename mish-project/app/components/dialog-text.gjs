@@ -13,7 +13,7 @@ import t from 'ember-intl/helpers/t';
 
 var imageId = 'IMG_1234a_2023_november_19';
 imageId = 'IMG_1234a' + '0';
-// Ntoe: 'dialog-functions' needs 'dialogId':
+// Note: 'dialog-functions' needs 'dialogId':
 export const dialogTextId = 'dialogText';
 const dialogId = dialogTextId;
 
@@ -23,103 +23,102 @@ const dialogId = dialogTextId;
 export class DialogText extends Component {
   @service('common-storage') z;
 
-  notesDialog = (dialogId) => {
-    this.z.openModalDialog(dialogId, 0);
+  // Child dialog open button is pressed
+
+  childDialog = (diaId) => {
+    this.z.openModalDialog(diaId, 0);
   }
 
-  keysDialog = (dialogId) => {
-    this.z.openModalDialog(dialogId, 0);
-  }
-
-  // Detect closing Esc key
-  // @action
-  // registerListener(element) {
-  //   element.addEventListener('keydown', this.detectEsc);
-  // }
+  // Detect closing Esc key and handle (child) dialogs
   @action
-  async detectEsc(e) {
+  async detectEscClose(e) {
+    // this.z.loli('detectEscClose VISITED');
     if (e.keyCode === 27) { // Esc key
       let tmp1 = document.getElementById('dialogTextNotes');
       let tmp2 = document.getElementById('dialogTextKeywords');
 
       if (tmp1.open) {
         this.z.closeDialog(tmp1.id);
-        await new Promise (z => setTimeout (z, 5)); // Soon allow next
-        this.z.openModalDialog(dialogId, 0); // Close of modal closed its parent
+        await new Promise (z => setTimeout (z, 55)); // Soon allow next
+        // Close of modal closes its parent if it also is modal. Else,
+        // the parent is alreaady open and openModalDialog doesn't work
+        this.z.openModalDialog(dialogId, 0);
       } else if (tmp2.open) {
         this.z.closeDialog(tmp2.id);
-        await new Promise (z => setTimeout (z, 5)); // Soon allow next
-        openModalDialog(dialogId, 0); // Close of modal closed its parent
+        await new Promise (z => setTimeout (z, 55)); // Soon allow next
+        // Close of modal closes its parent if it also is modal. Else,
+        // the parent is alreaady open and openModalDialog doesn't work
+        this.z.openModalDialog(dialogId, 0);
       } else {
         this.z.closeDialog(dialogId);
       }
     }
   }
 
-<template>
-<div style="display:flex" {{on 'keydown' this.detectEsc}}>
+  <template>
+    <div style="display:flex" {{on 'keydown' this.detectEscClose}}>
 
-<dialog id='dialogText'>
-  <header data-dialog-draggable>
-    <p>&nbsp;</p>
-    <p>{{t 'dialog.text.header'}} <span>{{imageId}}</span></p>
-    <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogTextId)}}>×</button>
-  </header>
-  <main>
-    <div class="diaMess">
-      <VirtualKeys />
+      <dialog id='dialogText'>
+        <header data-dialog-draggable>
+          <p>&nbsp;</p>
+          <p>{{t 'dialog.text.header'}} <span>{{imageId}}</span></p>
+          <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogTextId)}}>×</button>
+        </header>
+        <main>
+          <div class="diaMess">
+            <VirtualKeys />
+          </div>
+          <textarea id="dialogTextDescription" name="description" rows="6" placeholder="{{t "write.description"}} (Xmp.dc.description)" {{on 'mouseleave' onMouseLeaveTextarea}}></textarea><br>
+          <textarea id="dialogTextCreator" name="creator" rows="2" placeholder="{{t "write.creator"}} (Xmp.dc.creator)" {{on 'mouseleave' onMouseLeaveTextarea}}></textarea>
+        </main>
+        <footer data-dialog-draggable>
+          <button id="dialogTextButton1" type="button" {{on 'click' (fn this.z.saveDialog dialogTextId)}}>{{t 'button.save'}}</button>&nbsp;
+          <button id="dialogTextButton2" type="button" {{on 'click' (fn this.z.saveCloseDialog dialogTextId)}}>{{t 'button.saveclose'}}</button>&nbsp;
+          <button id="dialogTextButton3" type="button" {{on 'click' (fn this.z.closeDialog dialogTextId)}}>{{t 'button.close'}}</button>&nbsp;
+          <button id="dialogTextButton4" type="button" {{on 'click' (fn this.childDialog 'dialogTextNotes')}}>{{t 'button.notes'}}</button>&nbsp;
+          <button id="dialogTextButton5" type="button" {{on 'click' (fn this.childDialog 'dialogTextKeywords')}}>{{t 'button.keywords'}}</button>&nbsp;
+        </footer>
+      </dialog>
+
+      <dialog id='dialogTextNotes'>
+        <header data-dialog-draggable>
+          <p>&nbsp;</p>
+          <p>{{t 'dialog.text.notes'}} <span>{{imageId}}</span></p>
+          <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogTextNotes')}}>×</button>
+        </header>
+        <main>
+          <div class="diaMess">
+            <VirtualKeys />
+          </div>
+          <textarea id="dialogTextInfo" name="description" rows="8" placeholder="{{t 'write.notes'}} (Xmp.dc.source)" {{on 'mouseleave' onMouseLeaveTextarea}}></textarea><br>
+        </main>
+        <footer data-dialog-draggable>
+          <button type="button" {{on 'click' (fn this.z.saveDialog 'dialogTextNotes')}}>{{t 'button.save'}}</button>&nbsp;
+          <button type="button" {{on 'click' (fn this.z.saveCloseDialog 'dialogTextNotes')}}>{{t 'button.saveclose'}}</button>&nbsp;
+          <button type="button" {{on 'click' (fn this.z.closeDialog 'dialogTextNotes')}}>{{t 'button.close'}}</button>
+        </footer>
+      </dialog>
+
+      <!-- Temporary special styling 1 in this dialog stub -->
+      <dialog id="dialogTextKeywords" style="width:max(20%, 20rem)">
+        <header data-dialog-draggable>
+          <p>&nbsp;</p>
+          <p>{{t 'dialog.text.keywords'}} <span>{{imageId}}</span></p>
+          <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogTextKeywords')}}>×</button>
+        </header>
+        <!-- Temporary special styling 2 in this dialog stub -->
+        <main style="padding:0.5rem;text-align:center">
+          <div class="diaMess">
+            {{t 'write.keywords'}}
+          </div>
+        </main>
+        <footer data-dialog-draggable>
+          <button type="button" {{on 'click' (fn this.z.closeDialog 'dialogTextKeywords')}}>{{t 'button.close'}}</button>&nbsp;
+        </footer>
+      </dialog>
+
     </div>
-    <textarea id="dialogTextDescription" name="description" rows="6" placeholder="{{t "write.description"}} (Xmp.dc.description)" {{on 'mouseleave' onMouseLeaveTextarea}}></textarea><br>
-    <textarea id="dialogTextCreator" name="creator" rows="2" placeholder="{{t "write.creator"}} (Xmp.dc.creator)" {{on 'mouseleave' onMouseLeaveTextarea}}></textarea>
-  </main>
-  <footer data-dialog-draggable>
-    <button id="dialogTextButton1" type="button" {{on 'click' (fn this.z.saveDialog dialogTextId)}}>{{t 'button.save'}}</button>&nbsp;
-    <button id="dialogTextButton2" type="button" {{on 'click' (fn this.z.saveCloseDialog dialogTextId)}}>{{t 'button.saveclose'}}</button>&nbsp;
-    <button id="dialogTextButton3" type="button" {{on 'click' (fn this.z.closeDialog dialogTextId)}}>{{t 'button.close'}}</button>&nbsp;
-    <button id="dialogTextButton4" type="button" {{on 'click' (fn this.notesDialog 'dialogTextNotes')}}>{{t 'button.notes'}}</button>&nbsp;
-    <button id="dialogTextButton5" type="button" {{on 'click' (fn this.keysDialog 'dialogTextKeywords')}}>{{t 'button.keywords'}}</button>&nbsp;
-  </footer>
-</dialog>
-
-<dialog id='dialogTextNotes'>
-  <header data-dialog-draggable>
-    <p>&nbsp;</p>
-    <p>{{t 'dialog.text.notes'}} <span>{{imageId}}</span></p>
-    <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogTextNotes')}}>×</button>
-  </header>
-  <main>
-    <div class="diaMess">
-      <VirtualKeys />
-    </div>
-    <textarea id="dialogTextInfo" name="description" rows="8" placeholder="{{t 'write.notes'}} (Xmp.dc.source)" {{on 'mouseleave' onMouseLeaveTextarea}}></textarea><br>
-  </main>
-  <footer data-dialog-draggable>
-    <button type="button" {{on 'click' (fn this.z.saveDialog 'dialogTextNotes')}}>{{t 'button.save'}}</button>&nbsp;
-    <button type="button" {{on 'click' (fn this.z.saveCloseDialog 'dialogTextNotes')}}>{{t 'button.saveclose'}}</button>&nbsp;
-    <button type="button" {{on 'click' (fn this.z.closeDialog 'dialogTextNotes')}}>{{t 'button.close'}}</button>
-  </footer>
-</dialog>
-
-<!-- Temporary special styling 1 in this dialog stub -->
-<dialog id="dialogTextKeywords" style="width:max(20%, 20rem)">
-  <header data-dialog-draggable>
-    <p>&nbsp;</p>
-    <p>{{t 'dialog.text.keywords'}} <span>{{imageId}}</span></p>
-    <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogTextKeywords')}}>×</button>
-  </header>
-  <!-- Temporary special styling 2 in this dialog stub -->
-  <main style="padding:0.5rem;text-align:center">
-    <div class="diaMess">
-      {{t 'write.keywords'}}
-    </div>
-  </main>
-  <footer data-dialog-draggable>
-    <button type="button" {{on 'click' (fn this.z.closeDialog 'dialogTextKeywords')}}>{{t 'button.close'}}</button>&nbsp;
-  </footer>
-</dialog>
-
-</div>
-</template>
+  </template>
 
 }
 

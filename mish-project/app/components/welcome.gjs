@@ -39,7 +39,6 @@ class Welcome extends Component {
     this.z.loli(this.z.userName);
     this.z.openModalDialog(dialogLoginId, 0);
     await new Promise (z => setTimeout (z, 50));
-    this.z.loli('(btw)', this.z.picFound);
   }
   @action toggleBackg() {
     if (this.z.bkgrColor === '#cbcbcb') {

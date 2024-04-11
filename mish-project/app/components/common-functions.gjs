@@ -10,11 +10,6 @@ let imdbRoot = '';
 let picFound = '';
 let userName = '';
 
-// export function loli(text) { // loli = log list
-//   let userName = document.getElementById("userName").innerHTML;
-//   console.log(userName + ':', text);
-// }
-
 export function logIn() {
   return new Promise(resolve => {
     getCredentials(userName).then(credentials => {

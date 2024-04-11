@@ -1,8 +1,6 @@
 import Service from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
-let rnd = "." + Math.random().toString(36).substring(2,6);
-
 export default class CommonStorageService extends Service {
 
   @tracked bkgrColor = '#cbcbcb';
@@ -10,8 +8,7 @@ export default class CommonStorageService extends Service {
   @tracked imageId = 'IMG_1234a_2023_november_19';
   @tracked imdbDir = "/album";
   @tracked imdbRoot = "MISH";
-  @tracked picFound = "Funna_bilder" + rnd;
-  @tracked credentials = '';
+           picFound = "Funna_bilder." + Math.random().toString(36).substring(2,6);
   @tracked userName = 'viewer';
 
   loli = (text) => { // loli = log list
@@ -72,6 +69,7 @@ export default class CommonStorageService extends Service {
   //== May also be used in the buttons of the dialogs:
 
   saveDialog = (dialogId) => {
+    // save code here
     this.loli('saved ' + dialogId);
   }
 

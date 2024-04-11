@@ -8,7 +8,7 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 // import { openDialog, toggleDialog, openModalDialog, saveDialog, closeDialog, saveCloseDialog } from 'dialog-functions';
-import { closeDialog, toggleDialog } from './dialog-functions'
+// import { closeDialog, toggleDialog } from './dialog-functions'
 
 // import { loli } from './common-functions';
 // import {    } from './common-storage';

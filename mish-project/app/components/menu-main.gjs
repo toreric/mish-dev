@@ -3,38 +3,39 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-
+import { action } from '@ember/object';
 import { eq } from 'ember-truth-helpers';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
-import { loli } from './common-functions';
-import { imdbRoot } from './common-storage'
-
 export const menuMainId = "menuMain";
 
 export class MenuMain extends Component {
   @service('common-storage') z;
+  //*** imdbRoot(s) to common-storage ***
   @tracked imdbRoot;
   imdbRoots = ['root1', 'root2', 'root3'];
 
   // //== Detect closing Esc key
   // document.addEventListener ('keydown', this.detectEsc, false);
-  // detectEsc = (e) => {
-  //   if (e.keyCode === 27) { // Esc key
-  //     if (document.getElementById("menuMain").style.display !== "none") this.z.toggleMainMenu();
-  //   }
-  // }
+
+  detectEscClose = (event) => {
+    // this.z.loli('detectEscClose VISITED');
+    if (event.keyCode === 27) { // Esc key
+      if (document.getElementById("menuMain").style.display !== "none") this.z.toggleMainMenu();
+    }
+  }
 
   selectRoot = (event) => {
     this.imdbRoot = event.target.value;
     this.z.loli('selected IMDB_ROOT: ' + this.imdbRoot);
   }
 
-  someFunction = (param) => this.z.loli(param);
+  someFunction = (param) => {this.z.loli(param);}
 
   <template>
+    <div {{on 'keydown' this.detectEscClose}}>
     <div id="menuMain" class="mainMenu BACKG" onclick="return false" draggable="false" ondragstart="return false" style="display:none">
 
       <p onclick="return false" draggable="false" ondragstart="return false" title="Sökning">
@@ -73,6 +74,7 @@ export class MenuMain extends Component {
           eventDidSelectNode='{{this.someFunction("selAlb")}}'
         }}
       </div-->
+    </div>
     </div>
   </template>
 }
