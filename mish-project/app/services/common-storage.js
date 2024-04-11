@@ -74,8 +74,8 @@ export default class CommonStorageService extends Service {
   }
 
   saveCloseDialog = (dialogId) => {
-    saveDialog(dialogId);
-    closeDialog(dialogId);
+    this.saveDialog(dialogId);
+    this.closeDialog(dialogId);
   }
 
   closeDialog = (dialogId) => {

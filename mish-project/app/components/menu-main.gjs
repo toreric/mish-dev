@@ -18,10 +18,8 @@ export class MenuMain extends Component {
   imdbRoots = ['root1', 'root2', 'root3'];
 
   // //== Detect closing Esc key
-  // document.addEventListener ('keydown', this.detectEsc, false);
 
   detectEscClose = (event) => {
-    // this.z.loli('detectEscClose VISITED');
     if (event.keyCode === 27) { // Esc key
       if (document.getElementById("menuMain").style.display !== "none") this.z.toggleMainMenu();
     }

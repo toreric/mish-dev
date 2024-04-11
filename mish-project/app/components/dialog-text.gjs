@@ -7,10 +7,6 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
-// import { imageId } from './common-storage';
-// import { closeDialog, openModalDialog, saveCloseDialog, saveDialog }
-//   from './dialog-functions';
-
 var imageId = 'IMG_1234a_2023_november_19';
 imageId = 'IMG_1234a' + '0';
 // Note: 'dialog-functions' needs 'dialogId':
@@ -36,16 +32,16 @@ export class DialogText extends Component {
     if (e.keyCode === 27) { // Esc key
       let tmp1 = document.getElementById('dialogTextNotes');
       let tmp2 = document.getElementById('dialogTextKeywords');
-
+      // There are 2 child dialogs
       if (tmp1.open) {
         this.z.closeDialog(tmp1.id);
-        await new Promise (z => setTimeout (z, 55)); // Soon allow next
+        await new Promise (z => setTimeout (z, 5)); // Soon allow next
         // Close of modal closes its parent if it also is modal. Else,
         // the parent is alreaady open and openModalDialog doesn't work
         this.z.openModalDialog(dialogId, 0);
       } else if (tmp2.open) {
         this.z.closeDialog(tmp2.id);
-        await new Promise (z => setTimeout (z, 55)); // Soon allow next
+        await new Promise (z => setTimeout (z, 5)); // Soon allow next
         // Close of modal closes its parent if it also is modal. Else,
         // the parent is alreaady open and openModalDialog doesn't work
         this.z.openModalDialog(dialogId, 0);
@@ -61,7 +57,7 @@ export class DialogText extends Component {
       <dialog id='dialogText'>
         <header data-dialog-draggable>
           <p>&nbsp;</p>
-          <p>{{t 'dialog.text.header'}} <span>{{imageId}}</span></p>
+          <p>{{t 'dialog.text.header'}} <span>{{this.z.imageId}}</span></p>
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogTextId)}}>×</button>
         </header>
         <main>
@@ -83,7 +79,7 @@ export class DialogText extends Component {
       <dialog id='dialogTextNotes'>
         <header data-dialog-draggable>
           <p>&nbsp;</p>
-          <p>{{t 'dialog.text.notes'}} <span>{{imageId}}</span></p>
+          <p>{{t 'dialog.text.notes'}} <span>{{this.z.imageId}}</span></p>
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogTextNotes')}}>×</button>
         </header>
         <main>
@@ -103,7 +99,7 @@ export class DialogText extends Component {
       <dialog id="dialogTextKeywords" style="width:max(20%, 20rem)">
         <header data-dialog-draggable>
           <p>&nbsp;</p>
-          <p>{{t 'dialog.text.keywords'}} <span>{{imageId}}</span></p>
+          <p>{{t 'dialog.text.keywords'}} <span>{{this.z.imageId}}</span></p>
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogTextKeywords')}}>×</button>
         </header>
         <!-- Temporary special styling 2 in this dialog stub -->
