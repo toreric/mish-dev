@@ -1,10 +1,5 @@
 //== Mish common export function storage
 
-// import { imdbDir } from './common-storage';
-// import { imdbRoot } from './common-storage';
-// import { picFound } from './common-storage';
-// import { userName } from './common-storage';
-
 let imdbDir = '';
 let imdbRoot = '';
 let picFound = '';

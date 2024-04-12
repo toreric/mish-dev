@@ -12,17 +12,12 @@ import { cell } from 'ember-resources';
 import { default as Header } from './header';
 
 import { ButtonsLeft } from './buttons-left';
-// import { CommonStorage } from './common-storage';
 import { DialogHelp } from './dialog-help';
 import { DialogLogin } from './dialog-login'
 import { DialogText } from './dialog-text';
 import { MenuMain } from './menu-main';
 
-// import { openDialog } from './dialog-functions'
-// import { openModalDialog } from './dialog-functions'
-// import { toggleDialog } from './dialog-functions'
 import { dialogLoginId } from './dialog-login';
-import { loli } from './common-functions';
 
 const returnValue = cell('');
 

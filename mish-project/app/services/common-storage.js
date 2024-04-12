@@ -4,13 +4,16 @@ import { action } from '@ember/object';
 
 export default class CommonStorageService extends Service {
 
-  @tracked bkgrColor = '#cbcbcb';
-  @tracked credentials = '';
-  @tracked imageId = 'IMG_1234a_2023_november_19';
+  @tracked allowvalue; //the source of the 'allow' property values
+  @tracked bkgrColor = '#cbcbcb'; //common background color
+  @tracked credentials = ''; //user credentials \n-string
   @tracked imdbDir = "/album";
   @tracked imdbRoot = "MISH";
-           picFound = "Funna_bilder." + Math.random().toString(36).substring(2,6);
+  @tracked imdbRoots = ['root1', 'root2', 'root3'];
+  /*!trk*/ picFound = "Funna_bilder." + Math.random().toString(36).substring(2,6); //found pics
+  @tracked picName = 'IMG_1234a_2023_november_19'; //current image name
   @tracked userName = 'viewer';
+  @tracked userStatus = 'viewer';
 
   loli = (text) => { // loli = log list
     console.log(this.userName + ':', text);

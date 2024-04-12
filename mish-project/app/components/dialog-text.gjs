@@ -55,7 +55,7 @@ export class DialogText extends Component {
       <dialog id='dialogText'>
         <header data-dialog-draggable>
           <p>&nbsp;</p>
-          <p>{{t 'dialog.text.header'}} <span>{{this.z.imageId}}</span></p>
+          <p>{{t 'dialog.text.header'}} <span>{{this.z.picName}}</span></p>
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogTextId)}}>×</button>
         </header>
         <main>
@@ -77,7 +77,7 @@ export class DialogText extends Component {
       <dialog id='dialogTextNotes'>
         <header data-dialog-draggable>
           <p>&nbsp;</p>
-          <p>{{t 'dialog.text.notes'}} <span>{{this.z.imageId}}</span></p>
+          <p>{{t 'dialog.text.notes'}} <span>{{this.z.picName}}</span></p>
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogTextNotes')}}>×</button>
         </header>
         <main>
@@ -97,7 +97,7 @@ export class DialogText extends Component {
       <dialog id="dialogTextKeywords" style="width:max(20%, 20rem)">
         <header data-dialog-draggable>
           <p>&nbsp;</p>
-          <p>{{t 'dialog.text.keywords'}} <span>{{this.z.imageId}}</span></p>
+          <p>{{t 'dialog.text.keywords'}} <span>{{this.z.picName}}</span></p>
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogTextKeywordsId)}}>×</button>
         </header>
         <!-- Temporary special styling 2 in this dialog stub -->

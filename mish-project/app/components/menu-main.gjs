@@ -13,9 +13,6 @@ export const menuMainId = "menuMain";
 
 export class MenuMain extends Component {
   @service('common-storage') z;
-  //*** imdbRoot(s) to common-storage ***
-  @tracked imdbRoot;
-  imdbRoots = ['root1', 'root2', 'root3'];
 
   // //== Detect closing Esc key
 
@@ -26,8 +23,8 @@ export class MenuMain extends Component {
   }
 
   selectRoot = (event) => {
-    this.imdbRoot = event.target.value;
-    this.z.loli('selected IMDB_ROOT: ' + this.imdbRoot);
+    this.z.imdbRoot = event.target.value;
+    this.z.loli('selected IMDB_ROOT: ' + this.z.imdbRoot);
   }
 
   someFunction = (param) => {this.z.loli(param);}
@@ -49,8 +46,8 @@ export class MenuMain extends Component {
 
           <select id="rootSel" title={{t 'albumcol'}} {{on "change" this.selectRoot}}>
             <option value="" selected disabled hidden>{{t 'selalbumcol'}}</option>
-            {{#each this.imdbRoots as |rootChoice|}}
-              <option value={{rootChoice}} selected={{eq this.imdbRoot rootChoice}}>{{rootChoice}}</option>
+            {{#each this.z.imdbRoots as |rootChoice|}}
+              <option value={{rootChoice}} selected={{eq this.z.imdbRoot rootChoice}}>{{rootChoice}}</option>
             {{/each}}
           </select>
 

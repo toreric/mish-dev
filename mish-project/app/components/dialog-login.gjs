@@ -10,18 +10,15 @@ import t from 'ember-intl/helpers/t';
 import { getCredentials } from './common-functions';
 
 var password = '';
-var status = '';
-var allval = '';
 
 // Note: Dialog function in Welcome needs dialogLoginId:
 export const dialogLoginId = "dialogLogin";
-const dialogId = "dialogLogin";
 
 export class DialogLogin extends Component {
   @service('common-storage') z;
 
-  get imageId() {
-    return this.z.imageId;
+  get picName() {
+    return this.z.picName;
   }
 
   setUserName(newUser) {
@@ -33,11 +30,10 @@ export class DialogLogin extends Component {
       getCredentials(this.z.userName).then(credentials => {
         var cred = credentials.split("\n");
         password = cred [0];
-        status = cred [1];
-        allval = cred [2];
+        this.z.userStatus = cred [1];
+        this.z.allowvalue = cred [2];
         if (status === "viewer") this.setUserName('');
-        console.log(this.z.userName, cred);
-        // console.log('mish', cred);
+        this.z.loli(this.z.userName + '[' + this.z.userStatus + ']' + this.z.allowvalue);
       });
     });
   }
@@ -56,15 +52,15 @@ export class DialogLogin extends Component {
         <div style="width:99%">
           <p>{{t 'dialog.login.header'}}<span>{{null}}</span></p>
         </div>{{null}}<div>
-          <button class="close" type="button" {{on 'click' (fn this.z.toggleDialog dialogId)}}>×</button>
+          <button class="close" type="button" {{on 'click' (fn this.z.toggleDialog dialogLoginId)}}>×</button>
         </div>
       </header>
       <main style="text-align:center">
         <form action="">
-          <p>{{this.z.imageId}}</p>
+          <p>{{this.z.picName}}</p>
           <p>
             Du är nu inloggad som <span>{{this.z.userName}}</span>
-            med [<span>{{status}}</span>]-rättigheter.
+            med [<span>{{this.z.userStatus}}</span>]-rättigheter.
             <br>
             Om du vill byta gör du det här:
           </p>
@@ -79,7 +75,7 @@ export class DialogLogin extends Component {
         <br>
       </main>
       <footer data-dialog-draggable>
-        <button type="button" {{on 'click' (fn this.z.closeDialog dialogId)}}>{{t 'button.close'}}</button>&nbsp;
+        <button type="button" {{on 'click' (fn this.z.closeDialog dialogLoginId)}}>{{t 'button.close'}}</button>&nbsp;
         <button type="button" {{on 'click' (fn this.userCheck)}}>{{t 'button.login'}}</button>&nbsp;
       </footer>
     </dialog>
@@ -93,7 +89,7 @@ export class DialogLogin extends Component {
 // function detectClickOutside(e) {
 //   let tgt = e.target.id;
 
-//   if (tgt === dialogId) { // Outside a modal dialog, else not!
+//   if (tgt === dialogLoginId) { // Outside a modal dialog, else not!
 //     this.z.closeDialog(tgt);
 //   }
 // }
