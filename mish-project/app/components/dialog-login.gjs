@@ -7,17 +7,13 @@ import { action } from '@ember/object';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
-// import { openDialog, toggleDialog, openModalDialog, saveDialog, closeDialog, saveCloseDialog } from 'dialog-functions';
-// import { closeDialog, toggleDialog } from './dialog-functions'
-
-// import { loli } from './common-functions';
-// import {    } from './common-storage';
 import { getCredentials } from './common-functions';
 
 var password = '';
 var status = '';
 var allval = '';
 
+// Note: Dialog function in Welcome needs dialogLoginId:
 export const dialogLoginId = "dialogLogin";
 const dialogId = "dialogLogin";
 
@@ -46,28 +42,15 @@ export class DialogLogin extends Component {
     });
   }
 
-  //== Detect closing click outside modal dialog
-
-  // document.addEventListener ('click', detectClickOutside, false);
-
-  // detectClickOutside = (e) => {
-  //   let tgt = e.target.id;
-  //   if (tgt === dialogId) { // Outside a modal dialog, else not!
-  //     this.z.closeDialog(tgt);
-  //   }
-  // }
-
-  //== Clear input field, user or password
+  // Clear input field, user or password
 
   clearInput = (inputClass) => {
     this.z.loli('clearInput (' + inputClass + ')');
-    // loli(document.querySelector("input." + inputClass));
     document.querySelector("input." + inputClass).value = '';
     document.querySelector("input." + inputClass).focus({ focusVisible: true });
   }
 
   <template>
-    <!--button>{{on 'click' (fn setUserName 'mish')}}</button-->
     <dialog id="dialogLogin">
       <header data-dialog-draggable>
         <div style="width:99%">
@@ -103,16 +86,6 @@ export class DialogLogin extends Component {
   </template>
 }
 
-//== Detect closing Esc key
-
-// document.addEventListener ('keydown', detectEsc, false);
-
-// function detectEsc(e) {
-//   if (e.keyCode === 27) { // Esc key
-//     if (document.getElementById(dialogId).open) closeDialog(dialogId);
-//   }
-// }
-
 //== Detect closing click outside modal dialog
 
 // document.addEventListener ('click', detectClickOutside, false);
@@ -123,13 +96,4 @@ export class DialogLogin extends Component {
 //   if (tgt === dialogId) { // Outside a modal dialog, else not!
 //     this.z.closeDialog(tgt);
 //   }
-// }
-
-//== Clear input field, user or password
-
-// function clearInput(inputClass) {
-//   this.z.loli('clearInput (' + inputClass + ')');
-//   // loli(document.querySelector("input." + inputClass));
-//   document.querySelector("input." + inputClass).value = '';
-//   document.querySelector("input." + inputClass).focus({ focusVisible: true });
 // }

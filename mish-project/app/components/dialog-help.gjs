@@ -2,38 +2,33 @@
 
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
-//import { openDialog, toggleDialog, openModalDialog, saveDialog, closeDialog, saveCloseDialog } from 'dialog-functions';
-import { closeDialog, toggleDialog } from './dialog-functions'
 
-import { loli } from './common-functions';
-
+// Note: Dialog functions in ButtonsLeft needs dialogHelpId:
 export const dialogHelpId = "dialogHelp";
-const dialogId = "dialogHelp";
-
-//== Detect closing Esc key
-
-document.addEventListener ('keydown', detectEsc, false);
-
-function detectEsc(e) {
-  if (e.keyCode === 27) { // Esc key
-    if (document.getElementById(dialogId).open) closeDialog(dialogId);
-  }
-}
 
 export class DialogHelp extends Component {
   @service('common-storage') z;
 
+  // Detect closing Esc key
+  @action
+  detectEscClose(e) {
+    if (e.keyCode === 27) { // Esc key
+      if (document.getElementById(dialogHelpId).open) this.z.closeDialog(dialogHelpId);
+    }
+  }
+
 <template>
 
-<dialog id="dialogHelp">
+<dialog id="dialogHelp" {{on 'keydown' this.detectEscClose}}>
   <header data-dialog-draggable>
     <div style="width:99%">
       <p>{{t 'dialog.help.header'}}<br>{{t 'dialog.help.header1'}}<span></span></p>
     </div><div>
-      <button class="close" type="button" {{on 'click' (fn this.z.toggleDialog dialogId)}}>×</button>
+      <button class="close" type="button" {{on 'click' (fn this.z.toggleDialog dialogHelpId)}}>×</button>
     </div>
   </header>
   <main>
@@ -94,8 +89,9 @@ export class DialogHelp extends Component {
         <b>F5</b> eller <b>Ctrl</b>+<b>R</b> används för att börja om från början, till exempel om bildväxlingen kommit i oordning</p>
   </main>
   <footer data-dialog-draggable>
-    <button type="button" {{on 'click' (fn this.z.closeDialog dialogId)}}>{{t 'button.close'}}</button>&nbsp;
+    <button type="button" {{on 'click' (fn this.z.closeDialog dialogHelpId)}}>{{t 'button.close'}}</button>&nbsp;
   </footer>
 </dialog>
 
 </template>
+}

@@ -7,11 +7,10 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
-var imageId = 'IMG_1234a_2023_november_19';
-imageId = 'IMG_1234a' + '0';
-// Note: 'dialog-functions' needs 'dialogId':
+// Note: Dialog-functions in Header needs dialogTextId:
 export const dialogTextId = 'dialogText';
-const dialogId = dialogTextId;
+const dialogTextNotesId = 'dialogTextNotes';
+const dialogTextKeywordsId = 'dialogTextKeywords';
 
 //== Component DialogText with <dialog> tags
 //== Note: 'data-dialog-draggable' is triggered with makeDialogDraggable() in welcome.gjs
@@ -28,25 +27,24 @@ export class DialogText extends Component {
   // Detect closing Esc key and handle (child) dialogs
   @action
   async detectEscClose(e) {
-    // this.z.loli('detectEscClose VISITED');
-    if (e.keyCode === 27) { // Esc key
-      let tmp1 = document.getElementById('dialogTextNotes');
-      let tmp2 = document.getElementById('dialogTextKeywords');
+   if (e.keyCode === 27) { // Esc key
+      let tmp1 = document.getElementById(dialogTextNotesId);
+      let tmp2 = document.getElementById(dialogTextKeywordsId);
       // There are 2 child dialogs
       if (tmp1.open) {
         this.z.closeDialog(tmp1.id);
         await new Promise (z => setTimeout (z, 5)); // Soon allow next
         // Close of modal closes its parent if it also is modal. Else,
-        // the parent is alreaady open and openModalDialog doesn't work
-        this.z.openModalDialog(dialogId, 0);
+        // the parent is alreaady open and openModalDialog won't harm
+        this.z.openModalDialog(dialogTextId, 0);
       } else if (tmp2.open) {
         this.z.closeDialog(tmp2.id);
         await new Promise (z => setTimeout (z, 5)); // Soon allow next
         // Close of modal closes its parent if it also is modal. Else,
-        // the parent is alreaady open and openModalDialog doesn't work
-        this.z.openModalDialog(dialogId, 0);
+        // the parent is alreaady open and openModalDialog won't harm
+        this.z.openModalDialog(dialogTextId, 0);
       } else {
-        this.z.closeDialog(dialogId);
+        this.z.closeDialog(dialogTextId);
       }
     }
   }
@@ -89,9 +87,9 @@ export class DialogText extends Component {
           <textarea id="dialogTextInfo" name="description" rows="8" placeholder="{{t 'write.notes'}} (Xmp.dc.source)" {{on 'mouseleave' onMouseLeaveTextarea}}></textarea><br>
         </main>
         <footer data-dialog-draggable>
-          <button type="button" {{on 'click' (fn this.z.saveDialog 'dialogTextNotes')}}>{{t 'button.save'}}</button>&nbsp;
-          <button type="button" {{on 'click' (fn this.z.saveCloseDialog 'dialogTextNotes')}}>{{t 'button.saveclose'}}</button>&nbsp;
-          <button type="button" {{on 'click' (fn this.z.closeDialog 'dialogTextNotes')}}>{{t 'button.close'}}</button>
+          <button type="button" {{on 'click' (fn this.z.saveDialog dialogTextNotesId)}}>{{t 'button.save'}}</button>&nbsp;
+          <button type="button" {{on 'click' (fn this.z.saveCloseDialog dialogTextNotesId)}}>{{t 'button.saveclose'}}</button>&nbsp;
+          <button type="button" {{on 'click' (fn this.z.closeDialog dialogTextNotesId)}}>{{t 'button.close'}}</button>
         </footer>
       </dialog>
 
@@ -100,7 +98,7 @@ export class DialogText extends Component {
         <header data-dialog-draggable>
           <p>&nbsp;</p>
           <p>{{t 'dialog.text.keywords'}} <span>{{this.z.imageId}}</span></p>
-          <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogTextKeywords')}}>×</button>
+          <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogTextKeywordsId)}}>×</button>
         </header>
         <!-- Temporary special styling 2 in this dialog stub -->
         <main style="padding:0.5rem;text-align:center">
@@ -109,7 +107,7 @@ export class DialogText extends Component {
           </div>
         </main>
         <footer data-dialog-draggable>
-          <button type="button" {{on 'click' (fn this.z.closeDialog 'dialogTextKeywords')}}>{{t 'button.close'}}</button>&nbsp;
+          <button type="button" {{on 'click' (fn this.z.closeDialog dialogTextKeywordsId)}}>{{t 'button.close'}}</button>&nbsp;
         </footer>
       </dialog>
 
@@ -125,7 +123,7 @@ export class DialogText extends Component {
 // function detectClickOutside(e) {
 //   let tgt = e.target.id;
 
-//   if (tgt === dialogId || tgt === 'dialogTextNotes' || tgt === 'dialogTextKeywords') { // Outside a modal dialog, else not!
+//   if (tgt === dialogTextId || tgt === dialogTextNotesId || tgt === dialogTextKeywordsId) { // Outside a modal dialog, else not!
 //     closeDialog(tgt);
 //   }
 // }
