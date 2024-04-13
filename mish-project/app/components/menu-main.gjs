@@ -9,7 +9,7 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
-export const menuMainId = "menuMain";
+export const menuMainId = 'menuMain';
 
 export class MenuMain extends Component {
   @service('common-storage') z;
@@ -21,17 +21,9 @@ export class MenuMain extends Component {
 
   someFunction = (param) => {this.z.loli(param);}
 
-  // Detect closing Esc key
-  //@action // With @action: Build error. Without: Doesn't detect keydown
-  detectEscClose = (event) => {
-    if (event.keyCode === 27) { // Esc key
-      if (document.getElementById("menuMain").style.display !== "none") this.z.toggleMainMenu();
-    }
-  }
-
   <template>
 
-    <div id="menuMain" class="mainMenu BACKG" onclick="return false" draggable="false" ondragstart="return false" style="display:none" {{on 'keydown' this.detectEscClose}}>
+    <div id="menuMain" class="mainMenu BACKG" onclick="return false" draggable="false" ondragstart="return false" style="display:none">
 
       <p onclick="return false" draggable="false" ondragstart="return false" title="Sökning">
         <a class="search" {{on "click" (fn this.someFunction 'findText')}}>Finn bilder <span style="font:normal 1em monospace!important">[F]</span></a>

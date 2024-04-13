@@ -23,10 +23,18 @@ const returnValue = cell('');
 
 makeDialogDraggable();
 
-// const Welcome =
-// export class Welcome extends Component {
+// Detect closing Esc key for menuMain
+const detectEsc = (event) => {
+  if (event.keyCode === 27) { // Esc key
+    document.getElementById("menuMain").style.display = 'none';
+  } // NOTE: means not logged since toggleMainMenu is not used
+}
+
+document.addEventListener ('keydown', detectEsc, false);
+
 class Welcome extends Component {
   @service('common-storage') z;
+
   @action async init(user) {
     if (user) {
       this.z.userName = user;
@@ -35,6 +43,7 @@ class Welcome extends Component {
     this.z.openModalDialog(dialogLoginId, 0);
     await new Promise (z => setTimeout (z, 50));
   }
+
   @action toggleBackg() {
     if (this.z.bkgrColor === '#cbcbcb') {
       this.z.bkgrColor = '#000';
@@ -44,20 +53,20 @@ class Welcome extends Component {
     this.z.loli(this.z.bkgrColor);
   }
 
-<template>
-  {{! Html inserted here will appear beneath the buildStamp div }}
-  <h1 style="margin:0 0 0 4rem;display:inline">{{t "header"}}</h1>
+  <template>
+    {{! Html inserted here will appear beneath the buildStamp div }}
+    <h1 style="margin:0 0 0 4rem;display:inline">{{t "header"}}</h1>
 
-  <a class="proid toggbkg" style="margin:0.5em 0 0 0.7em" title="" {{on 'click' (fn this.toggleBackg)}}><small>MÖRK/LJUS</small></a>
+    <a class="proid toggbkg" style="margin:0.5em 0 0 0.7em" title="" {{on 'click' (fn this.toggleBackg)}}><small>MÖRK/LJUS</small></a>
 
-  <button type="button" {{on 'click' (fn this.init 'guest')}}>{{t 'button.login'}}</button>
+    <button type="button" {{on 'click' (fn this.init 'guest')}}>{{t 'button.login'}}</button>
 
-  <Header />
-  <DialogLogin />
-  <MenuMain />
-  <ButtonsLeft />
-  <DialogHelp />
-  <DialogText />
-</template>;
+    <Header />
+    <DialogLogin />
+    <MenuMain />
+    <ButtonsLeft />
+    <DialogHelp />
+    <DialogText />
+  </template>;
 }
 export default Welcome;

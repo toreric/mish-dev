@@ -1,6 +1,5 @@
 import Service from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
 
 export default class CommonStorageService extends Service {
 
@@ -19,7 +18,7 @@ export default class CommonStorageService extends Service {
     console.log(this.userName + ':', text);
   }
 
-  toggleMainMenu = () => {
+  toggleMainMenu = async () => {
     var menuMain = document.getElementById("menuMain");
     if (menuMain.style.display === "none") {
       menuMain.style.display = "";

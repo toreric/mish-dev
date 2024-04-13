@@ -42,8 +42,8 @@ export class DialogLogin extends Component {
 
   clearInput = (inputClass) => {
     this.z.loli('clearInput (' + inputClass + ')');
-    document.querySelector("input." + inputClass).value = '';
-    document.querySelector("input." + inputClass).focus({ focusVisible: true });
+    document.querySelector('input.' + inputClass).value = '';
+    document.querySelector('input.' + inputClass).focus({ focusVisible: true });
   }
 
   // Detect closing Esc key and handle dialog
