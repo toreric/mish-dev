@@ -49,8 +49,18 @@ export class DialogText extends Component {
     }
   }
 
+  // Detect closing click outside modal dialog
+  @action
+  detectClickOutside(e) {
+    let tgt = e.target.id;
+    if (tgt === dialogTextId || tgt === dialogTextNotesId || tgt === dialogTextKeywordsId) {
+      // Outside a modal dialog, else not!
+      this.z.closeDialog(tgt);
+    }
+  }
+
   <template>
-    <div style="display:flex" {{on 'keydown' this.detectEscClose}}>
+    <div style="display:flex" {{on 'keydown' this.detectEscClose}} {{on 'click' this.detectClickOutside}}>
 
       <dialog id='dialogText'>
         <header data-dialog-draggable>
@@ -116,19 +126,8 @@ export class DialogText extends Component {
 
 }
 
-// //== Detect closing click outside modal dialog
-
-// document.addEventListener ('click', detectClickOutside, false);
-
-// function detectClickOutside(e) {
-//   let tgt = e.target.id;
-
-//   if (tgt === dialogTextId || tgt === dialogTextNotesId || tgt === dialogTextKeywordsId) { // Outside a modal dialog, else not!
-//     closeDialog(tgt);
-//   }
-// }
-
-//== Virtual keys for some missing on keyboards
+//== Virtual keys for some missing characters on common keyboards
+// (Should this be i18nd? Or extended to include all needs for langages offered?)
 
 const VirtualKeys = <template>
   <div class="" style='padding:0.1em'>

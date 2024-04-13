@@ -14,14 +14,6 @@ export const menuMainId = "menuMain";
 export class MenuMain extends Component {
   @service('common-storage') z;
 
-  // //== Detect closing Esc key
-
-  detectEscClose = (event) => {
-    if (event.keyCode === 27) { // Esc key
-      if (document.getElementById("menuMain").style.display !== "none") this.z.toggleMainMenu();
-    }
-  }
-
   selectRoot = (event) => {
     this.z.imdbRoot = event.target.value;
     this.z.loli('selected IMDB_ROOT: ' + this.z.imdbRoot);
@@ -29,9 +21,17 @@ export class MenuMain extends Component {
 
   someFunction = (param) => {this.z.loli(param);}
 
+  // Detect closing Esc key
+  //@action // With @action: Build error. Without: Doesn't detect keydown
+  detectEscClose = (event) => {
+    if (event.keyCode === 27) { // Esc key
+      if (document.getElementById("menuMain").style.display !== "none") this.z.toggleMainMenu();
+    }
+  }
+
   <template>
-    <div {{on 'keydown' this.detectEscClose}}>
-    <div id="menuMain" class="mainMenu BACKG" onclick="return false" draggable="false" ondragstart="return false" style="display:none">
+
+    <div id="menuMain" class="mainMenu BACKG" onclick="return false" draggable="false" ondragstart="return false" style="display:none" {{on 'keydown' this.detectEscClose}}>
 
       <p onclick="return false" draggable="false" ondragstart="return false" title="Sökning">
         <a class="search" {{on "click" (fn this.someFunction 'findText')}}>Finn bilder <span style="font:normal 1em monospace!important">[F]</span></a>
@@ -70,6 +70,6 @@ export class MenuMain extends Component {
         }}
       </div-->
     </div>
-    </div>
+
   </template>
 }

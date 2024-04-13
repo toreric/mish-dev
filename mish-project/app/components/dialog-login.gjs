@@ -17,7 +17,7 @@ export const dialogLoginId = "dialogLogin";
 export class DialogLogin extends Component {
   @service('common-storage') z;
 
-  get picName() {
+  get picName() { // this.picName may replace this.z.picName! An example.
     return this.z.picName;
   }
 
@@ -46,8 +46,23 @@ export class DialogLogin extends Component {
     document.querySelector("input." + inputClass).focus({ focusVisible: true });
   }
 
+  // Detect closing Esc key and handle dialog
+  // @action
+  // async detectEscClose(e) {
+  // ... unnecessary since DialogText seems to provide this service!?!?
+
+  // Detect closing click outside modal dialog
+  @action
+  detectClickOutside(e) {
+    let tgt = e.target.id;
+    if (tgt === dialogLoginId) {
+      // Outside a modal dialog, else not!
+      this.z.closeDialog(tgt);
+    }
+  }
+
   <template>
-    <dialog id="dialogLogin">
+    <dialog id="dialogLogin" {{on 'click' this.detectClickOutside}}>
       <header data-dialog-draggable>
         <div style="width:99%">
           <p>{{t 'dialog.login.header'}}<span>{{null}}</span></p>
