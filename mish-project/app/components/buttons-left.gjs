@@ -28,7 +28,7 @@ export class ButtonsLeft extends Component {
 
     <div id="smallButtons" draggable="false" ondragstart="return false">
 
-      <a id="menuButton" class="smBu" title={{t 'buttons.left.main'}} draggable="false" ondragstart="return false" {{on "click" (fn this.z.toggleMainMenu)}} style="z-index:16;font-family: Comic Sans MS;width:1.25em;line-height:80%">☰</a>
+      <a id="menuButton" class="smBu" title={{t 'buttons.left.main'}} draggable="false" ondragstart="return false" {{on "click" (fn this.z.toggleMainMenu)}} style="z-index:16;font-family: Comic Sans MS;width:2rem;line-height:80%"><span class="menu">☰</span></a>
 
       <a id="questionMark" class="smBu" title={{t 'buttons.left.help'}} draggable="false" ondragstart="return false" {{on "click" (fn this.z.toggleDialog dialogHelpId false)}}>?</a>
 

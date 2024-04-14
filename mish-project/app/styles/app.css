@@ -851,7 +851,7 @@ div[aria-describedby="textareas"] {
   position: fixed;
   top: 15px;
   left: 5px;
-  width: 10px;
+  width: 1rem;
   background: transparent;
   z-index: 2;
 }
@@ -932,6 +932,9 @@ div[aria-describedby="textareas"] {
 }
 #smallButtons a#menuButton {
   background-color: #0085ff;
+}
+#menuButton span.menu {
+  font-size: 2.25rem;
 }
 /* maily for the language flag buttons */
 p.buttons span img {

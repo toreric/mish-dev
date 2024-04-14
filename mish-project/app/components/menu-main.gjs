@@ -14,9 +14,11 @@ export const menuMainId = 'menuMain';
 // Detect closing Esc key for menuMain
 const detectEsc = (event) => {
   if (event.keyCode === 27) { // Esc key
-    var tmp = document.getElementById("menuMain");
-    if (tmp.style.display !== 'none') {
-      tmp.style.display = 'none';
+    var tmp0 = document.getElementById("menuButton");
+    var tmp1 = document.getElementById("menuMain");
+    if (tmp1.style.display !== 'none') {
+      tmp1.style.display = 'none';
+      tmp0.innerHTML = '<span class="menu">☰</span>';
       console.log('?: closed main menu');
     }
     // this.z.toggleMainMenu() useless, since {{on 'keydown'... is useless (why?)

@@ -27,8 +27,8 @@ makeDialogDraggable();
 document.addEventListener('mousedown', (event) => {
   var tmp0 = document.getElementById('menuButton');
   var tmp1 = document.getElementById('menuMain');
-  if (tmp1.style.display !== 'none' && event.target !== tmp0 && event.target !== tmp1 && !tmp1.contains(event.target)) {
-    tmp0.innerHTML = '☰';
+  if (tmp1.style.display !== 'none' && event.target !== tmp0 && event.target !== tmp1 && !tmp0.contains(event.target) && !tmp1.contains(event.target)) {
+    tmp0.innerHTML = '<span class="menu">☰</span>';
     tmp1.style.display = 'none';
     console.log('?: closed main menu');
   }

@@ -21,16 +21,20 @@ export default class CommonStorageService extends Service {
   //#region Menus
   //== Menu properties/methods
 
-  toggleMainMenu = () => {
+  toggleMainMenu = async () => {
     var menuMain = document.getElementById("menuMain");
     var menuButton = document.getElementById("menuButton");
     if (menuMain.style.display === "none") {
       menuMain.style.display = "";
-      menuButton.innerHTML = '×';
+      await new Promise (z => setTimeout (z, 9));
+      menuButton.innerHTML = '<span class="menu">×</span>';
+      await new Promise (z => setTimeout (z, 9));
       this.loli('opened main menu');
     } else {
       menuMain.style.display = "none";
-      menuButton.innerHTML = '☰';
+      await new Promise (z => setTimeout (z, 9));
+      menuButton.innerHTML = '<span class="menu">☰</span>';
+      await new Promise (z => setTimeout (z, 9));
       this.loli('closed main menu');
     }
   }
