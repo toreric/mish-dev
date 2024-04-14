@@ -35,7 +35,7 @@ export function getCredentials(user) {
     }
     xhr.onerror = function() {
       reject({
-        status: that.status,
+        status: this.status,
         statusText: xhr.statusText
       });
     }

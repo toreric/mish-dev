@@ -30,8 +30,13 @@ export class DialogLogin extends Component {
       getCredentials(this.z.userName).then(credentials => {
         var cred = credentials.split("\n");
         password = cred [0];
-        this.z.userStatus = cred [1];
-        this.z.allowvalue = cred [2];
+        if (password === '<!DOCTYPE html>') {
+          this.z.userStatus = this.intl.t('value.unavailable');
+          this.z.allowvalue = null;
+        } else {
+          this.z.userStatus = cred [1];
+          this.z.allowvalue = cred [2];
+        }
         if (status === "viewer") this.setUserName('');
         this.z.loli(this.z.userName + '[' + this.z.userStatus + ']' + this.z.allowvalue);
       });
@@ -47,9 +52,12 @@ export class DialogLogin extends Component {
   }
 
   // Detect closing Esc key and handle dialog
-  // @action
-  // async detectEscClose(e) {
-  // ... unnecessary since DialogText seems to provide this service!?!?
+  @action
+  detectEscClose(e) {
+    if (e.keyCode === 27) { // Esc key
+      this.z.closeDialog(dialogLoginId);
+    }
+  }
 
   // Detect closing click outside modal dialog
   @action
@@ -62,7 +70,7 @@ export class DialogLogin extends Component {
   }
 
   <template>
-    <dialog id="dialogLogin" {{on 'click' this.detectClickOutside}}>
+    <dialog id="dialogLogin" {{on 'keydown' this.detectEscClose}} {{on 'click' this.detectClickOutside}}>
       <header data-dialog-draggable>
         <div style="width:99%">
           <p>{{t 'dialog.login.header'}}<span>{{null}}</span></p>

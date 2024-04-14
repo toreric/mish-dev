@@ -37,13 +37,11 @@ document.addEventListener('mousedown', (event) => {
 class Welcome extends Component {
   @service('common-storage') z;
 
-  @action async init(user) {
+  @action init(user) {
     if (user) {
       this.z.userName = user;
     }
-    this.z.loli(this.z.userName);
     this.z.openModalDialog(dialogLoginId, 0);
-    // await new Promise (z => setTimeout (z, 50));
   }
 
   @action toggleBackg() {
