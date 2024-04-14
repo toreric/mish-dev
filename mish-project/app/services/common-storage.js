@@ -18,19 +18,25 @@ export default class CommonStorageService extends Service {
     console.log(this.userName + ':', text);
   }
 
-  toggleMainMenu = async () => {
+  //#region Menus
+  //== Menu properties/methods
+
+  toggleMainMenu = () => {
     var menuMain = document.getElementById("menuMain");
+    var menuButton = document.getElementById("menuButton");
     if (menuMain.style.display === "none") {
       menuMain.style.display = "";
+      menuButton.innerHTML = '×';
       this.loli('opened main menu');
     } else {
       menuMain.style.display = "none";
+      menuButton.innerHTML = '☰';
       this.loli('closed main menu');
     }
   }
 
   //#region Dialogs
-  //== Dialog methods
+  //== Dialog properties/methods
   // openDialog(id, op), toggleDialog(id, op), openModalDialog(id, op),
   // saveDialog(id), closeDialog(id, op), and saveCloseDialog(id) (= save then close),
   // where id = `dialogId` and op = 'original position'. If op is `true` then the dialog

@@ -23,14 +23,16 @@ const returnValue = cell('');
 
 makeDialogDraggable();
 
-// Detect closing Esc key for menuMain
-const detectEsc = (event) => {
-  if (event.keyCode === 27) { // Esc key
-    document.getElementById("menuMain").style.display = 'none';
-  } // NOTE: means not logged since toggleMainMenu is not used
-}
-
-document.addEventListener ('keydown', detectEsc, false);
+// Detect closing Click outside menuMain (tricky case!)
+document.addEventListener('mousedown', (event) => {
+  var tmp0 = document.getElementById('menuButton');
+  var tmp1 = document.getElementById('menuMain');
+  if (tmp1.style.display !== 'none' && event.target !== tmp0 && event.target !== tmp1 && !tmp1.contains(event.target)) {
+    tmp0.innerHTML = '☰';
+    tmp1.style.display = 'none';
+    console.log('?: closed main menu');
+  }
+});
 
 class Welcome extends Component {
   @service('common-storage') z;
@@ -41,7 +43,7 @@ class Welcome extends Component {
     }
     this.z.loli(this.z.userName);
     this.z.openModalDialog(dialogLoginId, 0);
-    await new Promise (z => setTimeout (z, 50));
+    // await new Promise (z => setTimeout (z, 50));
   }
 
   @action toggleBackg() {

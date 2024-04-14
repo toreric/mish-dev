@@ -11,6 +11,20 @@ import t from 'ember-intl/helpers/t';
 
 export const menuMainId = 'menuMain';
 
+// Detect closing Esc key for menuMain
+const detectEsc = (event) => {
+  if (event.keyCode === 27) { // Esc key
+    var tmp = document.getElementById("menuMain");
+    if (tmp.style.display !== 'none') {
+      tmp.style.display = 'none';
+      console.log('?: closed main menu');
+    }
+    // this.z.toggleMainMenu() useless, since {{on 'keydown'... is useless (why?)
+  } // NOTE: Autologged if toggleMainMenu is used
+}
+
+document.addEventListener ('keydown', detectEsc, false);
+
 export class MenuMain extends Component {
   @service('common-storage') z;
 
@@ -21,7 +35,7 @@ export class MenuMain extends Component {
 
   someFunction = (param) => {this.z.loli(param);}
 
-  <template>
+<template>
 
     <div id="menuMain" class="mainMenu BACKG" onclick="return false" draggable="false" ondragstart="return false" style="display:none">
 
