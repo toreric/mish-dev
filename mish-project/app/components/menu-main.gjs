@@ -11,7 +11,7 @@ import t from 'ember-intl/helpers/t';
 
 export const menuMainId = 'menuMain';
 
-// Detect closing Esc key for menuMain
+// Detect closing Esc key for menuMain or open dialogs
 const detectEsc = (event) => {
   if (event.keyCode === 27) { // Esc key
     var tmp0 = document.getElementById("menuButton");
@@ -20,9 +20,20 @@ const detectEsc = (event) => {
       tmp1.style.display = 'none';
       tmp0.innerHTML = '<span class="menu">☰</span>';
       console.log('?: closed main menu');
+      // this.z.toggleMainMenu() useless, since {{on 'keydown'... is useless (why?)
+      // NOTE: Autologged if toggleMainMenu is used
+    } else {
+      // An open <dialog> has an 'open' attribue
+      var tmp = document.querySelectorAll('dialog');
+      for (let i=0; i<tmp.length; i++) {
+        // Check if any open dialog
+        if (tmp[i].hasAttribute("open")) {
+          tmp[i].close();
+          console.log('?: closed ' + tmp[i].id);
+        }
+      }
     }
-    // this.z.toggleMainMenu() useless, since {{on 'keydown'... is useless (why?)
-  } // NOTE: Autologged if toggleMainMenu is used
+  }
 }
 
 document.addEventListener ('keydown', detectEsc, false);
