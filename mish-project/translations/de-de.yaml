@@ -81,6 +81,8 @@ select:
 time:
   text: "Zeitangabe:"
   buildstamp: Ember development server
+value:
+  missing: f e h l t
 write:
   creator: "Herkunft: Foto Ursprung Quelle"
   description: "Beschreibung: Wann wo was welche"

@@ -81,6 +81,8 @@ select:
 time:
   text: Klockan är
   buildstamp: Ember development server
+value:
+  missing: s a k n a s
 write:
   creator: "Ursprung: Foto upphov källa"
   description: "Beskrivning: När var vad vilka"

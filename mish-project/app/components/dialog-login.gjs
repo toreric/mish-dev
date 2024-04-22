@@ -15,29 +15,41 @@ var password = '';
 export const dialogLoginId = "dialogLogin";
 
 export class DialogLogin extends Component {
+// export class DialogLogin extends Controller {
   @service('common-storage') z;
+  @service intl;
 
   get picName() { // this.picName may replace this.z.picName! An example.
     return this.z.picName;
   }
 
-  setUserName(newUser) {
-    this.z.setUserName(newUser);
+  get statusMissing() {
+    return this.intl.t('value.missing');
   }
+
+  // setUserName = async (newUser) => {
+  //   this.z.loli('*****' + newUser);
+  //   await new Promise (z => setTimeout (z, 129));
+  //   this.z.setUserName(newUser);
+  //   await new Promise (z => setTimeout (z, 129));
+  //   this.z.loli('*****' + newUser);
+  // }
 
   userCheck = () => {
     return new Promise(resolve => {
-      getCredentials(this.z.userName).then(credentials => {
+      // Also parameter transfer to the backend server
+      getCredentials(this.z.userName, this.z.imdbDir, this.z.imdbRoot, this.z.picFound)
+      .then((credentials) => {
         var cred = credentials.split("\n");
-        password = cred [0];
+        var password = cred [0];
         if (password === '<!DOCTYPE html>') {
-          this.z.userStatus = this.intl.t('value.unavailable');
+          this.z.userStatus = this.statusMissing();
           this.z.allowvalue = null;
         } else {
           this.z.userStatus = cred [1];
           this.z.allowvalue = cred [2];
         }
-        if (status === "viewer") this.setUserName('');
+        if (this.z.userStatus === "viewer") this.z.userName = 'viewer';
         this.z.loli(this.z.userName + '[' + this.z.userStatus + ']' + this.z.allowvalue);
       });
     });

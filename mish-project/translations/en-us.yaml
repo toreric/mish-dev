@@ -81,6 +81,8 @@ select:
 time:
   text: The time is
   buildstamp: Ember development server
+value:
+  missing: m i s s i n g
 write:
   creator: 'From, how: Photo Origin Source'
   description: 'Caption: When Where What Who'

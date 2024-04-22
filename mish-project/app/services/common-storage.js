@@ -11,8 +11,8 @@ export default class CommonStorageService extends Service {
   @tracked imdbRoots = ['root1', 'root2', 'root3'];
   /*!trk*/ picFound = "Funna_bilder." + Math.random().toString(36).substring(2,6); //found pics
   @tracked picName = 'IMG_1234a_2023_november_19'; //current image name
-  @tracked userName = 'viewer';
-  @tracked userStatus = 'viewer';
+  @tracked userName = 'guest';
+  @tracked userStatus = '';
 
   loli = (text) => { // loli = log list
     console.log(this.userName + ':', text);

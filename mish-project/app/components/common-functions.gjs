@@ -1,35 +1,38 @@
 //== Mish common export function storage
 
-let imdbDir = '';
-let imdbRoot = '';
-let picFound = '';
-let userName = '';
+// let imdbDir = '';
+// let imdbRoot = '';
+// let picFound = '';
+// let userName = '';
 
-export function logIn() {
+export function logIn(username, imdbdir, imdbroot, picfound, password) {
   return new Promise(resolve => {
-    getCredentials(userName).then(credentials => {
+    getCredentials(username, imdbdir, imdbroot, picfound).then(credentials => {
       console.log('credentials:\n' + credentials);
       var cred = credentials.split('\n');
-      var password = cred [0];
-      status = cred [1];
+      var pawd = cred [0];
+      var status = cred [1];
       var allval = cred [2];
-      let pawd = 'TORE_tore';
       if (pawd !== password) {
-        userName = '';
+        username = '';
         zeroSet(); // Important!
         status = 'viewer';
       }
+      resolve (username + '\n' + status);
     });
   });
 }
 
-export function getCredentials(user) {
+export function getCredentials(username, imdbdir, imdbroot, picfound) {
   return new Promise((resolve, reject) => {
     // ===== XMLHttpRequest checking 'usr'
     var xhr = new XMLHttpRequest();
     xhr.open('GET', 'login', true, null, null);
-    setReqHdr(xhr, 999);
-    xhr.setRequestHeader('user', encodeURIComponent(user));
+    // setReqHdr(xhr, 999);
+    xhr.setRequestHeader('username', encodeURIComponent(username));
+    xhr.setRequestHeader('imdbdir', encodeURIComponent(imdbdir));
+    xhr.setRequestHeader('imdbroot', encodeURIComponent(imdbroot));
+    xhr.setRequestHeader('picfound', picfound); // All 'wihtin 255' characters
     xhr.onload = function() {
       resolve(xhr.response);
     }
@@ -45,9 +48,8 @@ export function getCredentials(user) {
   });
 }
 
-export function setReqHdr(xhr, id) { !id; // id was used only as a debug identity
-  xhr.setRequestHeader('imdbdir', encodeURIComponent(imdbDir));
-  xhr.setRequestHeader('imdbroot', encodeURIComponent(imdbRoot));
-  xhr.setRequestHeader('picfound', picFound); // All 'wihtin 255' characters
-}
-
+// export function setReqHdr(xhr, id) { !id; // id was used only as a debug identity
+//   xhr.setRequestHeader('imdbdir', encodeURIComponent(imdbDir));
+//   xhr.setRequestHeader('imdbroot', encodeURIComponent(imdbRoot));
+//   xhr.setRequestHeader('picfound', picFound); // All 'wihtin 255' characters
+// }
