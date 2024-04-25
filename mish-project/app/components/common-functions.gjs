@@ -1,10 +1,5 @@
 //== Mish common export function storage
 
-// let imdbDir = '';
-// let imdbRoot = '';
-// let picFound = '';
-// let userName = '';
-
 export function logIn(username, imdbdir, imdbroot, picfound, password) {
   return new Promise(resolve => {
     getCredentials(username, imdbdir, imdbroot, picfound).then(credentials => {
@@ -47,9 +42,3 @@ export function getCredentials(username, imdbdir, imdbroot, picfound) {
     console.error(error.message);
   });
 }
-
-// export function setReqHdr(xhr, id) { !id; // id was used only as a debug identity
-//   xhr.setRequestHeader('imdbdir', encodeURIComponent(imdbDir));
-//   xhr.setRequestHeader('imdbroot', encodeURIComponent(imdbRoot));
-//   xhr.setRequestHeader('picfound', picFound); // All 'wihtin 255' characters
-// }

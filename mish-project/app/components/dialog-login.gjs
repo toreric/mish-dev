@@ -7,7 +7,7 @@ import { action } from '@ember/object';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
-import { getCredentials } from './common-functions';
+// import { getCredentials } from './common-functions';
 
 var password = '';
 
@@ -36,12 +36,14 @@ export class DialogLogin extends Component {
   // }
 
   userCheck = () => {
-    return new Promise(resolve => {
+    return new Promise(async resolve => {
       // Also parameter transfer to the backend server
-      getCredentials(this.z.userName, this.z.imdbDir, this.z.imdbRoot, this.z.picFound)
+      this.z.getCredentials(this.z.userName) //, this.z.imdbDir, this.z.imdbRoot, this.z.picFound)
       .then((credentials) => {
-        var cred = credentials.split("\n");
-        var password = cred [0];
+        var cred = credentials.split('\n');
+        this.z.loli(cred);
+        var password = cred [0].trim();
+        this.z.loli('password is ”' + password + '”');
         if (password === '<!DOCTYPE html>') {
           this.z.userStatus = this.statusMissing();
           this.z.allowvalue = null;
@@ -55,8 +57,7 @@ export class DialogLogin extends Component {
     });
   }
 
-  // Clear input field, user or password
-
+  // Clear input field: user or password
   clearInput = (inputClass) => {
     this.z.loli('clearInput (' + inputClass + ')');
     document.querySelector('input.' + inputClass).value = '';
@@ -116,15 +117,3 @@ export class DialogLogin extends Component {
     </dialog>
   </template>
 }
-
-//== Detect closing click outside modal dialog
-
-// document.addEventListener ('click', detectClickOutside, false);
-
-// function detectClickOutside(e) {
-//   let tgt = e.target.id;
-
-//   if (tgt === dialogLoginId) { // Outside a modal dialog, else not!
-//     this.z.closeDialog(tgt);
-//   }
-// }

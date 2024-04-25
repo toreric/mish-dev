@@ -1,3 +1,5 @@
+//== Mish common storage service with global properties/methods
+
 import Service from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
@@ -16,6 +18,34 @@ export default class CommonStorageService extends Service {
 
   loli = (text) => { // loli = log list
     console.log(this.userName + ':', text);
+  }
+
+  getCredentials = async (username) => {
+    if (!username) username = this.userName;
+    return new Promise((resolve, reject) => {
+      // ===== XMLHttpRequest checking 'usr'
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', 'login', true, null, null);
+      // setReqHdr(xhr, 999);
+      xhr.setRequestHeader('username', encodeURIComponent(username));
+      xhr.setRequestHeader('imdbdir', encodeURIComponent(this.mdbDir));
+      xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
+      xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
+      xhr.onload = function() {
+        let res = xhr.response.split('/n');
+        this.userStatus = res[1];
+        resolve(xhr.response);
+      }
+      xhr.onerror = function() {
+        reject({
+          status: this.status,
+          statusText: xhr.statusText
+        });
+      }
+      xhr.send();
+    }).catch(error => {
+      console.error(error.message);
+    });
   }
 
   //#region Menus
@@ -75,6 +105,7 @@ export default class CommonStorageService extends Service {
       if (origPos) diaObj.style = '';
       diaObj.showModal();
       this.loli('opened ' + dialogId + ' (modal)');
+
     }
   }
 
