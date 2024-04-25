@@ -4,6 +4,7 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 // import { action } from '@ember/object';
 import { fn } from '@ember/helper';
+import { modifier } from 'ember-modifier';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 import { makeDialogDraggable } from 'dialog-draggable';
@@ -56,27 +57,32 @@ class Welcome extends Component {
   }
 
   getCred = async () => {
-    this.z.loli(await this.z.getCredentials());
+    let cred = (await this.z.getCredentials()).split('\n');
+    this.z.userStatus = cred[1];
   }
 
-  getCred();
+}
 
+const executeOnInsert = modifier((element, [component]) => {
+  component.getCred();
+});
+
+export default class extends Welcome {
   <template>
-    {{! Html inserted here will appear beneath the buildStamp div }}
-    <h1 style="margin:0 0 0 4rem;display:inline">{{t "header"}}</h1>
+    <div {{executeOnInsert this}}>
+      {{! Html inserted here will appear beneath the buildStamp div }}
+      <h1 style="margin:0 0 0 4rem;display:inline">{{t "header"}}</h1>
 
-    <a class="proid toggbkg" style="margin:0.5em 0 0 0.7em" title="" {{on 'click' (fn this.toggleBackg)}}><small>MÖRK/LJUS</small></a>
+      <a class="proid toggbkg" style="margin:0.5em 0 0 0.7em" title="" {{on 'click' (fn this.toggleBackg)}}><small>MÖRK/LJUS</small></a>
 
-    <button type="button" {{on 'click' (fn this.init 'gäst')}}>{{t 'button.login'}}</button>
+      <button type="button" {{on 'click' (fn this.init 'gäst')}}>{{t 'button.login'}}</button>
 
-    {{this.getCred.then}}
-
-    <Header />
-    <DialogLogin />
-    <MenuMain />
-    <ButtonsLeft />
-    <DialogHelp />
-    <DialogText />
+      <Header />
+      <DialogLogin />
+      <MenuMain />
+      <ButtonsLeft />
+      <DialogHelp />
+      <DialogText />
+    </div>
   </template>;
 }
-export default Welcome;

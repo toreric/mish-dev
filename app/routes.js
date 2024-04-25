@@ -35,7 +35,7 @@ module.exports = function (app) {
   // ----- Max lifetime (minutes) after last access of a special (temporary) search result album
   let toold = 60
   // ----- For debug data(base) directories
-  let show_imagedir = true // for debugging
+  let show_imagedir = false // for debugging
 
   // ===== Make a synchronous shell command formally 'asynchronous' (cf. asynchronous execP)
   let cmdasync = async (cmd) => {return execSync (cmd)}
@@ -57,16 +57,15 @@ module.exports = function (app) {
         picFound = req.get('picfound')
         // Remove all too old picFound files, NOTE the added random <.01yz>
         let cmd = 'find -L ' + IMDB + ' -type d -name "' + picFound + '*" -amin +' + toold + ' | xargs rm -rf'
-        console.log(cmd)
+        console.log('\n' + cmd)
         await cmdasync(cmd)
       }
     }
-    console.log('')
     // 30 black, 31 red, 32 green, 33 yellow, 34 blue, 35 magenta, 36 cyan, 37 white, 0 default
     // Add '1;' for bright, e.g. '\x1b[1;33m' is bright yellow, while '\x1b[31m' is red, etc.
     let BYEL = '\x1b[1;33m' // Bright yellow
     let RSET = '\x1b[0m'    // Reset
-    console.log(BYEL + decodeURIComponent(req.originalUrl) + RSET);
+    console.log('\n' + BYEL + decodeURIComponent(req.originalUrl) + RSET);
     console.log('  WWW_ROOT:', WWW_ROOT)
     console.log(' IMDB_HOME:', IMDB_HOME)
     console.log('      IMDB:', IMDB)

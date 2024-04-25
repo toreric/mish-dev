@@ -1,5 +1,8 @@
 price_banner: "{product} kostar {price, number, ::currency/EUR}"
+guest: gäst #NOTE: must exist in the login data base
 intlcode: sv-se
+rights: rättigheter
+with: med
 
 albumcol: Albumsamling (eller albumrot)
 button:
@@ -61,6 +64,8 @@ dialog:
     user:     Användare
     name:     Namn
     password: Nyckelord
+    text1: Du är nu inloggad som
+    text2: "Om du har anledning att byta gör du det här:"
   text:
     header:   Bildtexter för
     keywords: Nyckelord för

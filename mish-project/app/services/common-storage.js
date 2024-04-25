@@ -2,8 +2,10 @@
 
 import Service from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import { inject as service } from '@ember/service';
 
 export default class CommonStorageService extends Service {
+  @service intl;
 
   @tracked allowvalue; //the source of the 'allow' property values
   @tracked bkgrColor = '#cbcbcb'; //common background color
@@ -13,7 +15,7 @@ export default class CommonStorageService extends Service {
   @tracked imdbRoots = ['root1', 'root2', 'root3'];
   /*!trk*/ picFound = "Funna_bilder." + Math.random().toString(36).substring(2,6); //found pics
   @tracked picName = 'IMG_1234a_2023_november_19'; //current image name
-  @tracked userName = 'guest';
+  @tracked userName = this.intl.t('guest');
   @tracked userStatus = '';
 
   loli = (text) => { // loli = log list

@@ -1,5 +1,8 @@
 price_banner: "{product} costs {price, number, ::currency/EUR}"
+guest: guest #NOTE: must exist in the login data base
 intlcode: en-us
+rights: rights
+with: with
 
 albumcol: Album collection (or album root)
 button:
@@ -61,6 +64,8 @@ dialog:
     user:     User
     name:     Name
     password: Password
+    text1: You are now logged in as
+    text2: "If you have reason to change, do it here:"
   text:
     header:   Captions for
     keywords: Keywords for

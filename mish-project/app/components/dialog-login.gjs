@@ -9,8 +9,6 @@ import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 // import { getCredentials } from './common-functions';
 
-var password = '';
-
 // Note: Dialog function in Welcome needs dialogLoginId:
 export const dialogLoginId = "dialogLogin";
 
@@ -95,14 +93,14 @@ export class DialogLogin extends Component {
         <form action="">
           <p>{{this.z.picName}}</p>
           <p>
-            Du är nu inloggad som <span>{{this.z.userName}}</span>
-            med [<span>{{this.z.userStatus}}</span>]-rättigheter.
+            {{t 'dialog.login.text1'}} <span>{{this.z.userName}}</span>
+            {{t 'with'}} [<span>{{this.z.userStatus}}</span>]-{{t 'rights'}}.
             <br>
-            Om du vill byta gör du det här:
+            {{t 'dialog.login.text2'}}
           </p>
           <div class="show-inline" style="text-align:right;width:fit-content">
             {{t 'dialog.login.user'}}:
-            <input class="user_" size="10" title={{t 'dialog.login.user'}} placeholder={{t 'dialog.login.name'}} type="text"><a title={{t 'erase'}} {{on 'click' (fn this.clearInput 'user_')}}> ×&nbsp;</a>
+            <input class="user_" size="10" title={{t 'dialog.login.name'}} placeholder={{t 'dialog.login.name'}} type="text"><a title={{t 'erase'}} {{on 'click' (fn this.clearInput 'user_')}}> ×&nbsp;</a>
             <br>
             {{t 'dialog.login.password'}}:
             <input class="password_" size="10" title={{t 'dialog.login.password'}} placeholder={{t 'dialog.login.password'}} type="password"><a title={{t 'erase'}} {{on 'click' (fn this.clearInput 'password_')}}> ×&nbsp;</a>
