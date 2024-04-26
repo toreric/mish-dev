@@ -35,7 +35,6 @@ export class DialogLogin extends Component {
 
   userCheck = () => {
     return new Promise(async resolve => {
-      // Also parameter transfer to the backend server
       this.z.getCredentials().then((credentials) => {
         var cred = credentials.split('\n');
         this.z.loli(cred);
@@ -44,19 +43,38 @@ export class DialogLogin extends Component {
 
         var usr = document.querySelector('input.user_').value;
         var prd = document.querySelector('input.password_').value;
-        this.z.loli(usr, prd);
+        this.z.loli(usr+'|'+prd);
 
         if (password === '<!DOCTYPE html>') {
           this.z.userStatus = this.statusMissing();
           this.z.allowvalue = null;
         } else {
-          this.z.userStatus = cred [1];
-          this.z.allowvalue = cred [2];
+          this.z.userStatus = cred[1];
+          this.z.allowvalue = cred[2];
         }
         if (this.z.userStatus === "viewer") this.z.userName = 'viewer';
         this.z.loli(this.z.userName + '[' + this.z.userStatus + ']' + this.z.allowvalue);
       });
     });
+  }
+
+  logIn = () => {
+    var usr = document.querySelector('input.user_').value;
+    this.z.getCredentials(usr).then((credentials) => {
+      var cred = credentials.split('\n');
+      var prd = document.querySelector('input.password_').value;
+      if (prd === cred[0]) {
+        this.z.userName = usr;
+        this.z.userStatus = cred[1];
+        this.z.allowvalue = cred[2];
+        document.getElementById('logInError').style.display = 'none';
+        document.querySelector('input.user_').value = '';
+        document.querySelector('input.password_').value = '';
+        this.z.loli('User ' + usr + ' did log in');
+      } else {
+        document.getElementById('logInError').style.display = '';
+      }
+    })
   }
 
   // Clear input field: user or password
@@ -109,12 +127,15 @@ export class DialogLogin extends Component {
             {{t 'dialog.login.password'}}:
             <input class="password_" size="10" title={{t 'dialog.login.password'}} placeholder={{t 'dialog.login.password'}} type="password"><a title={{t 'erase'}} {{on 'click' (fn this.clearInput 'password_')}}> ×&nbsp;</a>
           </div>
+          <p id="logInError" style="margin:1rem;color:red;font-weight:bold;display:none">
+            {{t 'dialog.login.error'}}
+          </p>
         </form>
         <br>
       </main>
       <footer data-dialog-draggable>
         <button type="button" {{on 'click' (fn this.z.closeDialog dialogLoginId)}}>{{t 'button.close'}}</button>&nbsp;
-        <button type="button" {{on 'click' (fn this.userCheck)}}>{{t 'button.login'}}</button>&nbsp;
+        <button type="button" {{on 'click' (fn this.logIn)}}>{{t 'button.login'}}</button>&nbsp;
       </footer>
     </dialog>
   </template>

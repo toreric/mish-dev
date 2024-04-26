@@ -66,8 +66,9 @@ dialog:
     user:     Användare
     name:     Namn
     password: Nyckelord
-    text1: Du är nu inloggad som
+    text1: Du är redan inloggad som
     text2: "Om du har anledning att byta gör du det här:"
+    error: Fel användarnamn eller nyckelord, försök igen!
   text:
     header:   Bildtexter för
     keywords: Nyckelord för

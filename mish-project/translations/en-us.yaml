@@ -66,8 +66,9 @@ dialog:
     user:     User
     name:     Name
     password: Password
-    text1: You are now logged in as
+    text1: You are already logged in as
     text2: "If you have reason to change, do it here:"
+    error: Wrong user name or password, try again!
   text:
     header:   Captions for
     keywords: Keywords for

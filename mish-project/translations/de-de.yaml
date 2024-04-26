@@ -66,8 +66,9 @@ dialog:
     user:     Benutzer
     name:     Name
     password: Passwort
-    text1: Jetzt eingemeldet als
+    text1: Schon eingemeldet als
     text2: "Wenn es einen Grund für Änderung gibt, hier machen:"
+    error: Falscher Benutzername oder Passwort, erneut versuchen!
   text:
     header:   Beschreibung für
     keywords: Stichwörter für
