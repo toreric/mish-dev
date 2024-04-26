@@ -32,18 +32,14 @@ document.addEventListener('mousedown', (event) => {
   if (tmp1.style.display !== 'none' && event.target !== tmp0 && event.target !== tmp1 && !tmp0.contains(event.target) && !tmp1.contains(event.target)) {
     tmp0.innerHTML = '<span class="menu">☰</span>';
     tmp1.style.display = 'none';
-    console.log('?: closed main menu');
+    console.log('-"-: closed main menu');
   }
 });
 
 class Welcome extends Component {
   @service('common-storage') z;
 
-  init = async (user) => {
-    if (user) {
-      this.z.userName = user;
-      await new Promise (z => setTimeout (z, 129));
-    }
+  init = () => {
     this.z.openModalDialog(dialogLoginId, 0);
   }
 
@@ -73,9 +69,9 @@ export default class extends Welcome {
       {{! Html inserted here will appear beneath the buildStamp div }}
       <h1 style="margin:0 0 0 4rem;display:inline">{{t "header"}}</h1>
 
-      <a class="proid toggbkg" style="margin:0.5em 0 0 0.7em" title="" {{on 'click' (fn this.toggleBackg)}}><small>MÖRK/LJUS</small></a>
+      <a class="proid toggbkg" style="margin:0.5em 0 0 0.7em" title="" {{on 'click' (fn this.toggleBackg)}}>{{t 'dark'}}/{{t 'light'}}</a>
 
-      <button type="button" {{on 'click' (fn this.init 'gäst')}}>{{t 'button.login'}}</button>
+      <button type="button" {{on 'click' (fn this.init)}}>{{t 'button.login'}}</button>
 
       <Header />
       <DialogLogin />

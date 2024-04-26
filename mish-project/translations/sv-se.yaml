@@ -1,6 +1,8 @@
 price_banner: "{product} kostar {price, number, ::currency/EUR}"
-guest: gäst #NOTE: must exist in the login data base
+dark: mörk
+guest: gäst #NOTE: must exist in the _imdb_settings.sqlite user table
 intlcode: sv-se
+light: ljus
 rights: rättigheter
 with: med
 

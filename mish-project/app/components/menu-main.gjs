@@ -19,7 +19,7 @@ const detectEsc = (event) => {
     if (tmp1.style.display !== 'none') {
       tmp1.style.display = 'none';
       tmp0.innerHTML = '<span class="menu">☰</span>';
-      console.log('?: closed main menu');
+      console.log('-"-: closed main menu');
       // this.z.toggleMainMenu() useless, since {{on 'keydown'... is useless (why?)
       // NOTE: Autologged if toggleMainMenu is used
     } else {
@@ -29,7 +29,7 @@ const detectEsc = (event) => {
         // Check if any open dialog
         if (tmp[i].hasAttribute("open")) {
           tmp[i].close();
-          console.log('?: closed ' + tmp[i].id);
+          console.log('-"-: closed ' + tmp[i].id);
         }
       }
     }

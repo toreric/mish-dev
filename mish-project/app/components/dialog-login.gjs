@@ -2,7 +2,7 @@
 
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { action } from '@ember/object';
+// import { action } from '@ember/object';
 
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
@@ -36,12 +36,16 @@ export class DialogLogin extends Component {
   userCheck = () => {
     return new Promise(async resolve => {
       // Also parameter transfer to the backend server
-      this.z.getCredentials(this.z.userName) //, this.z.imdbDir, this.z.imdbRoot, this.z.picFound)
-      .then((credentials) => {
+      this.z.getCredentials().then((credentials) => {
         var cred = credentials.split('\n');
         this.z.loli(cred);
         var password = cred [0].trim();
         this.z.loli('password is ”' + password + '”');
+
+        var usr = document.querySelector('input.user_').value;
+        var prd = document.querySelector('input.password_').value;
+        this.z.loli(usr, prd);
+
         if (password === '<!DOCTYPE html>') {
           this.z.userStatus = this.statusMissing();
           this.z.allowvalue = null;
@@ -63,16 +67,16 @@ export class DialogLogin extends Component {
   }
 
   // Detect closing Esc key and handle dialog
-  @action
-  detectEscClose(e) {
+  // @action
+  detectEscClose = (e) => {
     if (e.keyCode === 27) { // Esc key
       this.z.closeDialog(dialogLoginId);
     }
   }
 
   // Detect closing click outside modal dialog
-  @action
-  detectClickOutside(e) {
+  // @action
+  detectClickOutside = (e) => {
     let tgt = e.target.id;
     if (tgt === dialogLoginId) {
       // Outside a modal dialog, else not!
@@ -91,8 +95,8 @@ export class DialogLogin extends Component {
       </header>
       <main style="text-align:center">
         <form action="">
-          <p>{{this.z.picName}}</p>
-          <p>
+          {{!-- <p>{{this.z.picName}}</p> --}}
+          <p style="margin:1rem">
             {{t 'dialog.login.text1'}} <span>{{this.z.userName}}</span>
             {{t 'with'}} [<span>{{this.z.userStatus}}</span>]-{{t 'rights'}}.
             <br>

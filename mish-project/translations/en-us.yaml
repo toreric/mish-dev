@@ -1,6 +1,8 @@
 price_banner: "{product} costs {price, number, ::currency/EUR}"
-guest: guest #NOTE: must exist in the login data base
+dark: dark
+guest: guest #NOTE: must exist in the _imdb_settings.sqlite user table
 intlcode: en-us
+light: light
 rights: rights
 with: with
 
