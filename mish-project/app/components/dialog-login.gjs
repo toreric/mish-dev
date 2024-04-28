@@ -36,7 +36,7 @@ export class DialogLogin extends Component {
         document.getElementById('logInError').style.display = 'none';
         document.querySelector('input.user_').value = '';
         document.querySelector('input.password_').value = '';
-        if (user !== oldUser) this.z.loli('User ' + user + ' did log in');
+        if (user !== oldUser) this.z.loli(user + ' logged in');
       } else {
         document.getElementById('logInError').style.display = '';
         await new Promise (z => setTimeout (z, 5222));

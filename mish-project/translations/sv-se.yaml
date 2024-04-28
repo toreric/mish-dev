@@ -1,5 +1,5 @@
 price_banner: "{product} kostar {price, number, ::currency/EUR}"
-dark: mörk
+dark: Mörk
 guest: gäst #NOTE: must exist in the _imdb_settings.sqlite user table
 intlcode: sv-se
 light: ljus
@@ -8,6 +8,7 @@ with: med
 
 albumcol: Albumsamling (eller albumrot)
 button:
+  backgtitle: Byt bakgrund
   close:     Stäng
   keywords:  Nyckelord
   login:     Inloggning

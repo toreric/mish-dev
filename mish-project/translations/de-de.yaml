@@ -1,5 +1,5 @@
 price_banner: "{product} kostet {price, number, ::currency/EUR}"
-dark: dunkel
+dark: Dunkel
 guest: gast #NOTE: must exist in the _imdb_settings.sqlite user table
 intlcode: de-de
 light: licht
@@ -8,6 +8,7 @@ with: mit
 
 albumcol: Albumsammlung (oder Albumstamm)
 button:
+  backgtitle: Hintergrund ändern
   close:     Schließen
   keywords:  Stichwörter
   login:     Anmelden
