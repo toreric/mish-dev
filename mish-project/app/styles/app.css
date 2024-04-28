@@ -44,7 +44,6 @@ dialog footer {
   justify-content: center;
   background-color: #ddd;
   cursor: grabbing;
-  width: 99.6%;
 }
 header p {
   margin: 0;

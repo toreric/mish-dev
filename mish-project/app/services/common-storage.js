@@ -10,6 +10,7 @@ export default class CommonStorageService extends Service {
   @tracked allowvalue; //the source of the 'allow' property values
   @tracked bkgrColor = '#cbcbcb'; //common background color
   @tracked credentials = ''; //user credentials \n-string
+  @tracked freeUsers = 'guest...';
   @tracked imdbDir = "/album";
   @tracked imdbRoot = "MISH";
   @tracked imdbRoots = ['root1', 'root2', 'root3'];
@@ -23,12 +24,11 @@ export default class CommonStorageService extends Service {
   }
 
   getCredentials = async (username) => {
-    if (!username) username = this.userName;
+    if (!username) username = this.userName; // Kept for Welcome
     return new Promise((resolve, reject) => {
-      // ===== XMLHttpRequest checking 'usr'
+      // ===== XMLHttpRequest checking 'username'
       var xhr = new XMLHttpRequest();
       xhr.open('GET', 'login', true, null, null);
-      // setReqHdr(xhr, 999);
       xhr.setRequestHeader('username', encodeURIComponent(username));
       xhr.setRequestHeader('imdbdir', encodeURIComponent(this.mdbDir));
       xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));

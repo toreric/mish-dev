@@ -62,12 +62,13 @@ dialog:
     wviva: welche sichtbar sind, variiert
     mmenu: "Im Hauptmenü wählen: Album, Suche, Favoriten, Albumübersicht ..."
   login:
-    header:   Anmeldung
+    header:   Anmelden
     user:     Benutzer
     name:     Name
     password: Passwort
     text1: Schon eingemeldet als
-    text2: "Wenn es einen Grund für Änderung gibt, hier machen:"
+    text2: Wenn es einen Grund für Änderung gibt, hier machen
+    text3: Benutzernamen ohne Passwort
     error: Falscher Benutzername oder Passwort, erneut versuchen!
   text:
     header:   Beschreibung für
@@ -89,8 +90,6 @@ select:
 time:
   text: "Zeitangabe:"
   buildstamp: Ember development server
-value:
-  missing: f e h l t
 write:
   creator: "Herkunft: Foto Ursprung Quelle"
   description: "Beschreibung: Wann wo was welche"

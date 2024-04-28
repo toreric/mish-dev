@@ -66,9 +66,10 @@ dialog:
     user:     User
     name:     Name
     password: Password
-    text1: You are already logged in as
-    text2: "If you have reason to change, do it here:"
-    error: Wrong user name or password, try again!
+    text1: You are readily logged in as
+    text2: If you have reason to change, do it here
+    text3: user names without password
+    error: Incorrect user name or password, try again!
   text:
     header:   Captions for
     keywords: Keywords for
@@ -89,8 +90,6 @@ select:
 time:
   text: The time is
   buildstamp: Ember development server
-value:
-  missing: m i s s i n g
 write:
   creator: 'From, how: Photo Origin Source'
   description: 'Caption: When Where What Who'

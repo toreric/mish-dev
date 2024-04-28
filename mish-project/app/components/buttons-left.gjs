@@ -7,11 +7,6 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
-// import { loli } from './common-functions';
-
-// import { closeDialog, toggleDialog } from './dialog-functions'
-
-// import { menuMainId } from './menu-main'
 import { dialogHelpId } from './dialog-help';
 
 // import { toggleMainMenu } from './menu-main';

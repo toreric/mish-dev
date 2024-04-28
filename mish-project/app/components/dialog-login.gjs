@@ -2,12 +2,10 @@
 
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-// import { action } from '@ember/object';
 
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
-// import { getCredentials } from './common-functions';
 
 // Note: Dialog function in Welcome needs dialogLoginId:
 export const dialogLoginId = "dialogLogin";
@@ -17,62 +15,32 @@ export class DialogLogin extends Component {
   @service('common-storage') z;
   @service intl;
 
-  get picName() { // this.picName may replace this.z.picName! An example.
+  get picName() { // this.picName may replace this.z.picName, a code example.
     return this.z.picName;
   }
 
-  get statusMissing() {
-    return this.intl.t('value.missing');
-  }
-
-  // setUserName = async (newUser) => {
-  //   this.z.loli('*****' + newUser);
-  //   await new Promise (z => setTimeout (z, 129));
-  //   this.z.setUserName(newUser);
-  //   await new Promise (z => setTimeout (z, 129));
-  //   this.z.loli('*****' + newUser);
-  // }
-
-  userCheck = () => {
-    return new Promise(async resolve => {
-      this.z.getCredentials().then((credentials) => {
-        var cred = credentials.split('\n');
-        this.z.loli(cred);
-        var password = cred [0].trim();
-        this.z.loli('password is ”' + password + '”');
-
-        var usr = document.querySelector('input.user_').value;
-        var prd = document.querySelector('input.password_').value;
-        this.z.loli(usr+'|'+prd);
-
-        if (password === '<!DOCTYPE html>') {
-          this.z.userStatus = this.statusMissing();
-          this.z.allowvalue = null;
-        } else {
-          this.z.userStatus = cred[1];
-          this.z.allowvalue = cred[2];
-        }
-        if (this.z.userStatus === "viewer") this.z.userName = 'viewer';
-        this.z.loli(this.z.userName + '[' + this.z.userStatus + ']' + this.z.allowvalue);
-      });
-    });
-  }
-
   logIn = () => {
-    var usr = document.querySelector('input.user_').value;
-    this.z.getCredentials(usr).then((credentials) => {
+    var user = document.querySelector('input.user_').value;
+    if (!user) user = this.z.userName; // Also in getCredentials, both important
+    this.z.getCredentials(user).then(async (credentials) => {
       var cred = credentials.split('\n');
-      var prd = document.querySelector('input.password_').value;
-      if (prd === cred[0]) {
-        this.z.userName = usr;
+      var pwrd = document.querySelector('input.password_').value.trim();
+      // cred = [password, status, allowvalue], no status if user was missing
+      if (cred[1] && cred[0] === pwrd) {
+        var oldUser = this.z.userName;
+        this.z.userName = user;
         this.z.userStatus = cred[1];
         this.z.allowvalue = cred[2];
+        this.z.freeUsers = cred[3];
+        // await new Promise (z => setTimeout (z, 222));
         document.getElementById('logInError').style.display = 'none';
         document.querySelector('input.user_').value = '';
         document.querySelector('input.password_').value = '';
-        this.z.loli('User ' + usr + ' did log in');
+        if (user !== oldUser) this.z.loli('User ' + user + ' did log in');
       } else {
         document.getElementById('logInError').style.display = '';
+        await new Promise (z => setTimeout (z, 5222));
+        document.getElementById('logInError').style.display = 'none';
       }
     })
   }
@@ -119,6 +87,8 @@ export class DialogLogin extends Component {
             {{t 'with'}} [<span>{{this.z.userStatus}}</span>]-{{t 'rights'}}.
             <br>
             {{t 'dialog.login.text2'}}
+            <br>
+            ({{t 'dialog.login.text3'}}: {{this.z.freeUsers}}):
           </p>
           <div class="show-inline" style="text-align:right;width:fit-content">
             {{t 'dialog.login.user'}}:

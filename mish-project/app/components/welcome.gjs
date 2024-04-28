@@ -2,30 +2,27 @@
 
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-// import { action } from '@ember/object';
 import { fn } from '@ember/helper';
-import { modifier } from 'ember-modifier';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
-import { makeDialogDraggable } from 'dialog-draggable';
+import { modifier } from 'ember-modifier';
 import { cell } from 'ember-resources';
-
-import { default as Header } from './header';
+import { makeDialogDraggable } from 'dialog-draggable';
 
 import { ButtonsLeft } from './buttons-left';
 import { DialogHelp } from './dialog-help';
 import { DialogLogin } from './dialog-login'
 import { DialogText } from './dialog-text';
+import { default as Header } from './header';
 import { MenuMain } from './menu-main';
 
-// import { getCredentials } from './common-functions';
 import { dialogLoginId } from './dialog-login';
 
 const returnValue = cell('');
 
 makeDialogDraggable();
 
-// Detect closing Click outside menuMain (tricky case!)
+// Detect closing click outside menuMain (tricky case!)
 document.addEventListener('mousedown', (event) => {
   var tmp0 = document.getElementById('menuButton');
   var tmp1 = document.getElementById('menuMain');
@@ -55,6 +52,7 @@ class Welcome extends Component {
   getCred = async () => {
     let cred = (await this.z.getCredentials()).split('\n');
     this.z.userStatus = cred[1];
+    this.z.freeUsers = cred[3];
   }
 
 }
@@ -64,8 +62,9 @@ const executeOnInsert = modifier((element, [component]) => {
 });
 
 export default class extends Welcome {
+  @service('common-storage') z;
   <template>
-    <div {{executeOnInsert this}}>
+    <div {{executeOnInsert this}} style="backgrounnd-color:{{this.z.bkgrColor}}">
       {{! Html inserted here will appear beneath the buildStamp div }}
       <h1 style="margin:0 0 0 4rem;display:inline">{{t "header"}}</h1>
 

@@ -10,7 +10,7 @@ albumcol: Albumsamling (eller albumrot)
 button:
   close:     Stäng
   keywords:  Nyckelord
-  login:     Logga in
+  login:     Inloggning
   notes:     Anteckningar
   save:      Spara
   saveclose: Spara och stäng
@@ -66,9 +66,10 @@ dialog:
     user:     Användare
     name:     Namn
     password: Nyckelord
-    text1: Du är redan inloggad som
-    text2: "Om du har anledning att byta gör du det här:"
-    error: Fel användarnamn eller nyckelord, försök igen!
+    text1: Du är nu inloggad som
+    text2: Om du har anledning att byta gör du det här
+    text3: användarnamn utan nyckelord
+    error: Felaktigt användarnamn eller nyckelord, försök igen!
   text:
     header:   Bildtexter för
     keywords: Nyckelord för
@@ -89,8 +90,6 @@ select:
 time:
   text: Klockan är
   buildstamp: Ember development server
-value:
-  missing: s a k n a s
 write:
   creator: "Ursprung: Foto upphov källa"
   description: "Beskrivning: När var vad vilka"

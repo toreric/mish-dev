@@ -2,7 +2,7 @@
 
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
-import { action } from '@ember/object';
+// import { action } from '@ember/object';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
@@ -25,8 +25,8 @@ export class DialogText extends Component {
   }
 
   // Detect closing Esc key and handle (child) dialogs
-  @action
-  async detectEscClose(e) {
+  // @action
+  detectEscClose = async (e) => {
    if (e.keyCode === 27) { // Esc key
       let tmp1 = document.getElementById(dialogTextNotesId);
       let tmp2 = document.getElementById(dialogTextKeywordsId);
@@ -50,8 +50,8 @@ export class DialogText extends Component {
   }
 
   // Detect closing click outside modal dialog
-  @action
-  detectClickOutside(e) {
+  // @action
+  detectClickOutside = (e) => {
     let tgt = e.target.id;
     if (tgt === dialogTextId || tgt === dialogTextNotesId || tgt === dialogTextKeywordsId) {
       // Outside a modal dialog, else not!

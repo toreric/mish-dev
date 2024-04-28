@@ -91,20 +91,28 @@ module.exports = function (app) {
     var name = decodeURIComponent(req.get('username'))
     console.log('  userName:', name)
     var password = ''
-    var status = 'viewer'
-    var allow = '?'
+    var status = ''
+    var allow = ''
     try {
-      let row = setdb.prepare ('SELECT pass, status FROM user WHERE name = $name').get ( {name: name})
+      let row = setdb.prepare('SELECT pass, status FROM user WHERE name = $name').get({name: name})
       if (row) {
         password = row.pass
         status = row.status
       }
-      row = setdb.prepare ('SELECT allow FROM class WHERE status = $status').get ( {status: status})
+      row = setdb.prepare('SELECT allow FROM class WHERE status = $status').get({status: status})
       if (row) {
         allow = row.allow
       }
+      let rows = setdb.prepare('SELECT name FROM user WHERE pass = ? ORDER BY name').all('')
+      var freeUsers = []
+      for (let i=0;i<rows.length;i++) {
+        freeUsers[i] = rows[i].name
+      }     
+      freeUsers = freeUsers.join(', ')
+      console.log(' freeUsers:', freeUsers)
+
       res.location ('/')
-      res.send(password +'\n'+ status +'\n'+ allow)
+      res.send(password +'\n'+ status +'\n'+ allow +'\n'+ freeUsers)
     } catch (err) {
       res.location('/')
       res.send(err.message)
