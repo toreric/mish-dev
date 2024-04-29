@@ -15,6 +15,7 @@ import { DialogHelp } from './dialog-help';
 import { DialogLogin } from './dialog-login'
 import { DialogText } from './dialog-text';
 import { default as Header } from './header';
+import { Language } from './language';
 import { MenuMain } from './menu-main';
 
 import { dialogLoginId } from './dialog-login';
@@ -36,24 +37,6 @@ document.addEventListener('mousedown', (event) => {
 
 class Welcome extends Component {
   @service('common-storage') z;
-  @service intl;
-  selections = this.intl.get('locales');
-  changeLocale = (newLoc) => {
-    new Promise (z => setTimeout (z, 200));
-    this.intl.set('locale', newLoc);
-  }
-  changeLanguage = (event) => {
-    new Promise (z => setTimeout (z, 200));
-    this.intl.set('locale', event.target.value);
-  }
-  isActive = (locale) => {
-    new Promise (z => setTimeout (z, 200));
-    return this.intl.locale[0] === locale;
-  }
-  langText = (locale) => {
-    new Promise (z => setTimeout (z, 200));
-    return this.intl.lookup("select.languagetext", locale);
-  }
 
   openLogIn = async () => {
     this.z.openModalDialog(dialogLoginId, 0);
@@ -63,11 +46,11 @@ class Welcome extends Component {
     if (this.z.bkgrColor === '#cbcbcb') {
       this.z.bkgrColor = '#000';
       this.z.textColor = '#fff';
-      this.z.loli('to dark thema');
+      this.z.loli('set dark background');
     } else {
       this.z.bkgrColor = '#cbcbcb';
       this.z.textColor = '#000';
-      this.z.loli('to light thema');
+      this.z.loli('set light background');
     }
     document.querySelector('body').style.background = this.z.bkgrColor;
     document.querySelector('body').style.color = this.z.textColor;
@@ -95,16 +78,11 @@ export default class extends Welcome {
       <h1 style="margin:0 0 0 4rem;display:inline">{{t "header"}}</h1>
 
       <button type="button" title={{t 'button.backgtitle'}} {{on 'click' (fn this.toggleBackg)}}>{{t 'dark'}}/{{t 'light'}}</button>
-
       <button type="button" {{on 'click' (fn this.openLogIn)}}>{{t 'button.login'}}</button>
-
-      <span>{{t 'time.text'}} <span><Clock @locale={{t 'intlcode'}} /></span></span>
-
-      <select id="selectLanguage" {{on "change" this.changeLanguage}}>
-      {{#each this.selections as |tongue|}}
-        <option {{on "click" (fn this.changeLocale tongue)}} value={{tongue}} selected={{if (this.isActive tongue) true}}>{{(this.langText tongue)}}</option>
-      {{/each}}
-      </select>
+      <span>{{t 'time.text'}}
+        <span><Clock @locale={{t 'intlcode'}} /></span>
+      </span>
+      <Language />
 
       <Header />
       <DialogLogin />

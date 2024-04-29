@@ -939,8 +939,8 @@ div[aria-describedby="textareas"] {
 #menuButton span.menu {
   font-size: 2.25rem;
 }
-/* maily for the language flag buttons */
-p.buttons span img {
+/* for the language flag buttons */
+.langflags img {
   cursor: pointer;
   height: 1rem;
   padding: 0;
@@ -949,7 +949,7 @@ p.buttons span img {
   border: 1px solid darkgray;
   border-radius: 2px;
 }
-p.buttons span.active img {
+.langflags.active img {
   opacity: 1;
   border-color: #333;
 }

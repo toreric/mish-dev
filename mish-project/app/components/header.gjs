@@ -4,7 +4,6 @@ import Component from '@glimmer/component';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import { inject as service } from '@ember/service';
-import { action } from '@ember/object';
 import t from 'ember-intl/helpers/t';
 
 import { Clock } from './clock';
@@ -34,20 +33,7 @@ export default class Header extends Component {
 
   <template><div style="margin:0 0 0 4rem;padding:0">
 
-    {{! Choose language }}
     <p class="buttons">
-      <span style="font-size:85%">{{t "select.language"}}</span><br>
-
-      {{#each this.selections as |tongue|}}
-        <span class={{if (this.isActive tongue) "active"}} {{on "click" (fn this.changeLocale tongue)}} style="padding:0;margin:0"><img src="/images/{{tongue}}.svg" alt={{tongue}}></span>
-      {{/each}}
-
-      <select id="selectLanguage" {{on "change" this.changeLanguage}}>
-      {{#each this.selections as |tongue|}}
-        <option {{on "click" (fn this.changeLocale tongue)}} value={{tongue}} selected={{if (this.isActive tongue) true}}>{{(this.langText tongue)}}</option>
-      {{/each}}
-      </select>
-
       {{! Selection, just an example }}
       <span>&nbsp; &nbsp; &nbsp; Testing: </span>
       <select>
