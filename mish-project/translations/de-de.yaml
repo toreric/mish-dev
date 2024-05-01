@@ -54,10 +54,10 @@ dialog:
     ihrcm2: kann rechtsklicken ersetzen)
     shift0: Shift + klicken auf einem Vorschaubild
     shift1: macht markieren/ausmarkieren
-    login0: Wenn Sie als Gastbenutzer (guest) angemeldet sind
-    login1: haben Sie nur wenige Rechte (Vorschaubilder verstecken, markieren und mit drag & drop bewegen; zum Originalbild gehen). Mit dem persönlichen Login erhalten Sie weitere Rechte (zum beispiel, Bildunterschriften ändern und speichern)
+    login0: Dem/der als Gast-Benutzer⋅in (gast) angemeldet ist
+    login1: steht nur beschränkte Rechte zur Verfügung (Vorschaubilder verstecken, markieren und mit drag & drop bewegen; zum Originalbild gehen). Nach persönlichem Login (Anmeldung) erfolgen weitere Rechte (z.B. Bildunterschriften ändern und speichern)
     green0: Ein Bild mit einem grünen unteren Rand
-    green1: ist aus einem anderen Album verlinkt – gehen Sie zum Originalbild mit dem grünen Link
+    green1: ist aus einem anderen Album verlinkt – zum Originalbild gehen mit dem grünen Link
     green2: ""
     flebu: Erstens, die linken Tasten
     wviva: welche sichtbar sind, variiert
@@ -68,7 +68,7 @@ dialog:
     name:     Name
     password: Passwort
     text1: Schon eingemeldet als
-    text2: Wenn es einen Grund für Änderung gibt, hier machen
+    text2: Wenn es einen Grund für Änderung gibt, mach's hier
     text3: Benutzernamen ohne Passwort
     error: Falscher Benutzername oder Passwort, erneut versuchen!
   text:
@@ -81,7 +81,7 @@ dialog:
     toggle: Textfenster öffnen/schließen
 erase: löschen
 goto: Gehe zu
-header: Hier ist Mish mit Polaris
+header: Mish Bildergalerie
 hello:
   world:  Guten Tag, Welt!
 selalbumcol: Albumsammlung wählen

@@ -54,8 +54,8 @@ dialog:
     ihrcm2: may replace right-click)
     shift0: Shift + click a thumbnail image
     shift1: selects/deselects it
-    login0: When logged in as 'guest'
-    login1: you only have certain rights (hide, select, and move thumbnails by drag'n-drop; go to original image). You can get more rights with a personal login (for example, make and save caption changes)
+    login0: When logged in as guest
+    login1: you will have limited rights (hide, select, and move thumbnails by drag'n-drop; go to original image). You can get more rights with a personal login (for example, make and save caption changes)
     green0: An image with a green bottom border
     green1: is linked from another album – go to the original image by clicking the green
     green2: " link"
@@ -81,7 +81,7 @@ dialog:
     toggle: Toggle text dialog
 erase: erase
 goto: Go to
-header: Mish with Polaris
+header: Mish picture gallery
 hello:
   world:  Hello World!
 selalbumcol: Choose album collection

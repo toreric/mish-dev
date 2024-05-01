@@ -54,7 +54,7 @@ dialog:
     ihrcm2: kan användas i stället för högerklick)
     shift0: Skifttangent + klick på en miniatyrbild
     shift1: markerar/avmarkerar den
-    login0: Då du är inloggad som gäst
+    login0: Inloggad som gäst
     login1: har du bara vissa rättigheter (gömma, markera och flytta miniatyrer med dra + släpp; gå till originalbild). Med personlig inloggning kan du få fler rättigheter (till exempel göra bildtextändringar och och spara dem)
     green0: En bild med grön underkant är länkad
     green1: från annat album – gå till originalbilden med klick på den gröna
@@ -81,7 +81,7 @@ dialog:
     toggle: Öppna/stäng textfönster
 erase: radera
 goto: Gå till
-header: Det här är Mish med Polaris
+header: Mish bildgalleri
 hello:
   world:  Goddag hela världen!
 selalbumcol: Välj albumsamling

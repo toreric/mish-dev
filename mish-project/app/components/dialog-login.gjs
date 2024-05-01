@@ -97,7 +97,7 @@ export class DialogLogin extends Component {
             {{t 'dialog.login.password'}}:
             <input class="password_" size="10" title={{t 'dialog.login.password'}} placeholder={{t 'dialog.login.password'}} type="password"><a title={{t 'erase'}} {{on 'click' (fn this.clearInput 'password_')}}> ×&nbsp;</a>
           </div>
-          <p id="logInError" style="margin:1rem;color:red;font-weight:bold;display:none">
+          <p id="logInError" style="margin:1rem 1rem 0;color:red;font-weight:bold;display:none">
             {{t 'dialog.login.error'}}
           </p>
         </form>

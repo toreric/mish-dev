@@ -8,7 +8,7 @@ import t from 'ember-intl/helpers/t';
 
 export class Language extends Component {
   @service intl;
-  selections = this.intl.get('locales');
+  selections = this.intl.get('locales').sort();
 
   changeLocale = (newLoc) => {
     new Promise (z => setTimeout (z, 200));

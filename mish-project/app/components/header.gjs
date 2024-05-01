@@ -13,27 +13,27 @@ import { Excite } from './excite';
 export default class Header extends Component {
   @service('common-storage') z;
   @service intl;
-  selections = this.intl.get('locales');
-  changeLocale = (newLoc) => {
-    new Promise (z => setTimeout (z, 200));
-    this.intl.set('locale', newLoc);
-  }
-  changeLanguage = (event) => {
-    new Promise (z => setTimeout (z, 200));
-    this.intl.set('locale', event.target.value);
-  }
-  isActive = (locale) => {
-    new Promise (z => setTimeout (z, 200));
-    return this.intl.locale[0] === locale;
-  }
-  langText = (locale) => {
-    new Promise (z => setTimeout (z, 200));
-    return this.intl.lookup("select.languagetext", locale);
-  }
+  // selections = this.intl.get('locales');
+  // changeLocale = (newLoc) => {
+  //   new Promise (z => setTimeout (z, 200));
+  //   this.intl.set('locale', newLoc);
+  // }
+  // changeLanguage = (event) => {
+  //   new Promise (z => setTimeout (z, 200));
+  //   this.intl.set('locale', event.target.value);
+  // }
+  // isActive = (locale) => {
+  //   new Promise (z => setTimeout (z, 200));
+  //   return this.intl.locale[0] === locale;
+  // }
+  // langText = (locale) => {
+  //   new Promise (z => setTimeout (z, 200));
+  //   return this.intl.lookup("select.languagetext", locale);
+  // }
 
   <template><div style="margin:0 0 0 4rem;padding:0">
 
-    <p class="buttons">
+    {{!-- <p class="buttons">
       {{! Selection, just an example }}
       <span>&nbsp; &nbsp; &nbsp; Testing: </span>
       <select>
@@ -46,7 +46,7 @@ export default class Header extends Component {
       <span style="font-size:85%">&nbsp; &nbsp; &nbsp; Default laguage is set in <strong style="font-size:85%">routes/application.js</strong></span>
     </p>
 
-    {{!-- {{! Testing ember-intl and some other things }}
+    {{! Testing ember-intl and some other things }}
     <Excite />
     {{t "intlcode"}} {{t "price_banner" product='A (1)' price=76.5}} --}}
 

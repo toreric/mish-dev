@@ -40,6 +40,7 @@ class Welcome extends Component {
 
   openLogIn = async () => {
     this.z.openModalDialog(dialogLoginId, 0);
+    // this.z.openDialog(dialogLoginId, 0);
   }
 
   toggleBackg = () => {
@@ -73,23 +74,22 @@ const executeOnInsert = modifier((element, [component]) => {
 export default class extends Welcome {
   @service('common-storage') z;
   <template>
-    <div {{executeOnInsert this}} >
+    <div {{executeOnInsert this}} style="display:flex;justify-content:space-between" >
       {{! Html inserted here will appear beneath the buildStamp div }}
-      <h1 style="margin:0 0 0 4rem;display:inline">{{t "header"}}</h1>
+      <h1 style="margin:0 0 0 4rem;display:inline">{{t "header"}}</h1>&nbsp;
 
-      <button type="button" title={{t 'button.backgtitle'}} {{on 'click' (fn this.toggleBackg)}}>{{t 'dark'}}/{{t 'light'}}</button>
-      <button type="button" {{on 'click' (fn this.openLogIn)}}>{{t 'button.login'}}</button>
+      <button type="button" title={{t 'button.backgtitle'}} {{on 'click' (fn this.toggleBackg)}}>{{t 'dark'}}/{{t 'light'}}</button>&nbsp;
+      <button type="button" {{on 'click' (fn this.openLogIn)}}>{{t 'button.login'}}</button>&nbsp;
       <span>{{t 'time.text'}}
         <span><Clock @locale={{t 'intlcode'}} /></span>
       </span>
       <Language />
-
-      <Header />
-      <DialogLogin />
-      <MenuMain />
-      <ButtonsLeft />
-      <DialogHelp />
-      <DialogText />
     </div>
+    <Header />
+    <DialogLogin />
+    <MenuMain />
+    <ButtonsLeft />
+    <DialogHelp />
+    <DialogText />
   </template>;
 }
