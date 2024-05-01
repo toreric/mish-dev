@@ -84,6 +84,7 @@ goto: Go to
 header: Mish picture gallery
 hello:
   world:  Hello World!
+picfound: Found_pictures
 selalbumcol: Choose album collection
 select:
   language: Select language

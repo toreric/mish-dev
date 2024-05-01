@@ -55,8 +55,9 @@ module.exports = function (app) {
         IMDB_DIR = decodeURIComponent( req.get('imdbdir') )
         IMDB = IMDB_HOME + '/' + IMDB_ROOT
         picFound = req.get('picfound')
-        // Remove all too old picFound files, NOTE the added random <.01yz>
-        let cmd = 'find -L ' + IMDB + ' -type d -name "' + picFound + '*" -amin +' + toold + ' | xargs rm -rf'
+        // Remove all too old picFound (search result) catalogs, NOTE their added random <.01yz>
+        let picFoundBaseName = picFound.replace(/\.[^.]{4}$/, '')
+        let cmd = 'find -L ' + IMDB + ' -type d -name "' + picFoundBaseName + '*" -amin +' + toold + ' | xargs rm -rf'
         console.log('\n' + cmd)
         await cmdasync(cmd)
       }

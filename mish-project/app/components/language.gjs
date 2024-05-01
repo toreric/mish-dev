@@ -7,19 +7,17 @@ import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
 export class Language extends Component {
+  @service('common-storage') z;
   @service intl;
   selections = this.intl.get('locales').sort();
 
-  changeLocale = (newLoc) => {
-    new Promise (z => setTimeout (z, 200));
+  changeLocale = async (newLoc) => {
     this.intl.set('locale', newLoc);
   }
-  changeLanguage = (event) => {
-    new Promise (z => setTimeout (z, 200));
+  changeLanguage = async (event) => {
     this.intl.set('locale', event.target.value);
   }
   isActive = (locale) => {
-    new Promise (z => setTimeout (z, 200));
     return this.intl.locale[0] === locale;
   }
   langText = (locale) => {

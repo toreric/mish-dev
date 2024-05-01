@@ -14,7 +14,9 @@ export default class CommonStorageService extends Service {
   @tracked imdbDir = "/album";
   @tracked imdbRoot = "MISH";
   @tracked imdbRoots = ['root1', 'root2', 'root3'];
-  /*!trk*/ picFound = "Funna_bilder." + Math.random().toString(36).substring(2,6); //found pics
+  picFoundBaseName = this.intl.t('picfound');
+  // The 'found-pics' temporary catalog name is amended with a random 4-code
+  picFound = this.picFoundBaseName + "." + Math.random().toString(36).substring(2,6);
   @tracked picName = 'IMG_1234a_2023_november_19'; //current image name
   @tracked userName = this.intl.t('guest');
   @tracked userStatus = '';
