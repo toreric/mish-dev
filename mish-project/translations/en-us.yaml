@@ -13,6 +13,7 @@ button:
   keywords:  Keywords
   login:     Log in
   notes:     Notes
+  rights:    About rights
   save:      Save
   saveclose: Save and close
 buttons:
@@ -71,6 +72,8 @@ dialog:
     text2: If you have reason to change, do it here
     text3: user names without password
     error: Incorrect user name or password, try again!
+  rights:
+    header: List of rights
   text:
     header:   Captions for
     keywords: Keywords for

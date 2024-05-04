@@ -8,10 +8,10 @@ import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
 // Note: Dialog function in Welcome needs dialogLoginId:
-export const dialogLoginId = "dialogLogin";
+export const dialogLoginId = 'dialogLogin';
+const dialogRightsId = 'dialogRights';
 
 export class DialogLogin extends Component {
-// export class DialogLogin extends Controller {
   @service('common-storage') z;
   @service intl;
 
@@ -29,7 +29,6 @@ export class DialogLogin extends Component {
       if (cred[1] && cred[0] === pwrd) {
         var oldUser = this.z.userName;
         this.z.userName = user;
-        this.z.userStatus = cred[1];
         this.z.allowvalue = cred[2];
         this.z.freeUsers = cred[3];
         // await new Promise (z => setTimeout (z, 222));
@@ -61,16 +60,16 @@ export class DialogLogin extends Component {
   }
 
   // Detect closing click outside modal dialog
-  // @action
   detectClickOutside = (e) => {
     let tgt = e.target.id;
-    if (tgt === dialogLoginId) {
+    if (tgt === dialogLoginId || tgt === dialogRightsId ) {
       // Outside a modal dialog, else not!
       this.z.closeDialog(tgt);
     }
   }
 
   <template>
+
     <dialog id="dialogLogin" {{on 'keydown' this.detectEscClose}} {{on 'click' this.detectClickOutside}}>
       <header data-dialog-draggable>
         <div style="width:99%">
@@ -80,7 +79,7 @@ export class DialogLogin extends Component {
         </div>
       </header>
       <main style="text-align:center">
-        <form action="">
+        <form action="submit">
           {{!-- <p>{{this.z.picName}}</p> --}}
           <p style="margin:1rem">
             {{t 'dialog.login.text1'}} <span>{{this.z.userName}}</span>
@@ -101,6 +100,7 @@ export class DialogLogin extends Component {
             {{t 'dialog.login.error'}}
           </p>
         </form>
+        <button type="button" {{on 'click' (fn this.z.openModalDialog dialogRightsId 0)}}>{{t 'button.rights'}}</button>&nbsp;
         <br>
       </main>
       <footer data-dialog-draggable>
@@ -108,5 +108,25 @@ export class DialogLogin extends Component {
         <button type="button" {{on 'click' (fn this.logIn)}}>{{t 'button.login'}}</button>&nbsp;
       </footer>
     </dialog>
+
+    <dialog id="dialogRights" {{on 'keydown' this.detectEscClose}} {{on 'click' this.detectClickOutside}}>
+      <header data-dialog-draggable>
+        <div style="width:99%">
+          <p>{{t 'dialog.rights.header'}}<span></span></p>
+        </div><div>
+          <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogRightsId)}}>×</button>
+        </div>
+      </header>
+      <main style="text-align:center">
+        <p>
+          Text i rättighetfönstret
+          {{!-- {{this.z.allowvalue}} --}}
+        </p>
+      </main>
+      <footer data-dialog-draggable>
+        <button type="button" {{on 'click' (fn this.z.closeDialog dialogRightsId)}}>{{t 'button.close'}}</button>&nbsp;
+      </footer>
+    </dialog>
+
   </template>
 }

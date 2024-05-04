@@ -36,9 +36,10 @@ export default class CommonStorageService extends Service {
       xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
       xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
       xhr.onload = function() {
-        let res = xhr.response.split('/n');
+        let res = xhr.response.split('\n');
+        if (res[1][0].trim() === '<') res[1] = '?';
         this.userStatus = res[1];
-        resolve(xhr.response);
+        resolve(res.join('\n'));
       }
       xhr.onerror = function() {
         reject({
@@ -117,7 +118,7 @@ export default class CommonStorageService extends Service {
   //== May also be used in the buttons of the dialogs:
 
   saveDialog = (dialogId) => {
-    // save code here
+    // save code here, to do!
     this.loli('saved ' + dialogId);
   }
 

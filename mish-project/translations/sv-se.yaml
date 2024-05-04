@@ -13,6 +13,7 @@ button:
   keywords:  Nyckelord
   login:     Inloggning
   notes:     Anteckningar
+  rights:    Om rättigheter
   save:      Spara
   saveclose: Spara och stäng
 buttons:
@@ -71,6 +72,8 @@ dialog:
     text2: Om du har anledning att byta gör du det här
     text3: användarnamn utan nyckelord
     error: Felaktigt användarnamn eller nyckelord, försök igen!
+  rights:
+    header: Lista över rättigheter
   text:
     header:   Bildtexter för
     keywords: Nyckelord för

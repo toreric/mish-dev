@@ -28,7 +28,7 @@ export class DialogHelp extends Component {
     <div style="width:99%">
       <p>{{t 'dialog.help.header'}}<br>{{t 'dialog.help.header1'}}<span></span></p>
     </div><div>
-      <button class="close" type="button" {{on 'click' (fn this.z.toggleDialog dialogHelpId)}}>×</button>
+      <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogHelpId)}}>×</button>
     </div>
   </header>
   <main>

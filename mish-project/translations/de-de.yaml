@@ -13,6 +13,7 @@ button:
   keywords:  Stichwörter
   login:     Anmelden
   notes:     Anmerkungen
+  rights:    Über Rechte
   save:      Speichern
   saveclose: Speichern und schließen
 buttons:
@@ -54,8 +55,8 @@ dialog:
     ihrcm2: kann rechtsklicken ersetzen)
     shift0: Shift + klicken auf einem Vorschaubild
     shift1: macht markieren/ausmarkieren
-    login0: Dem/der als Gast-Benutzer⋅in (gast) angemeldet ist
-    login1: steht nur beschränkte Rechte zur Verfügung (Vorschaubilder verstecken, markieren und mit drag & drop bewegen; zum Originalbild gehen). Nach persönlichem Login (Anmeldung) erfolgen weitere Rechte (z.B. Bildunterschriften ändern und speichern)
+    login0: Wer als Gast-Benutzer⋅in (gast) angemeldet ist
+    login1: hat nur beschränkte Rechte (Vorschaubilder verstecken, markieren und mit drag & drop bewegen; zum Originalbild gehen). Nach persönlichem Login (Anmeldung) erfolgen weitere Rechte (z.B. Bildunterschriften ändern und speichern)
     green0: Ein Bild mit einem grünen unteren Rand
     green1: ist aus einem anderen Album verlinkt – zum Originalbild gehen mit dem grünen Link
     green2: ""
@@ -68,9 +69,11 @@ dialog:
     name:     Name
     password: Passwort
     text1: Schon eingemeldet als
-    text2: Wenn es einen Grund für Änderung gibt, mach's hier
+    text2: Bei Änderungsanlass hier angeben
     text3: Benutzernamen ohne Passwort
     error: Falscher Benutzername oder Passwort, erneut versuchen!
+  rights:
+    header: Liste der Rechte
   text:
     header:   Beschreibung für
     keywords: Stichwörter für
