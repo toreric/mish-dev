@@ -68,7 +68,7 @@ dialog:
     user:     User
     name:     Name
     password: Password
-    text1: You are readily logged in as
+    text1: You are now logged in as
     text2: If you have reason to change, do it here
     text3: user names without password
     error: Incorrect user name or password, try again!

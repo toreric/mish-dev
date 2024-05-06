@@ -44,6 +44,12 @@ export class DialogLogin extends Component {
     })
   }
 
+  getAllowances = () => {
+    this.z.getCredentials('').then(async (allowList) => {
+      let alist = allowList.split('\n');
+    })
+  }
+
   // Clear input field: user or password
   clearInput = (inputClass) => {
     this.z.loli('clearInput (' + inputClass + ')');
@@ -68,6 +74,11 @@ export class DialogLogin extends Component {
     }
   }
 
+  // Make an allowvalue array for dialogRights
+  allowvalues = () => {
+    return this.z.allowvalue.split('');
+  }
+
   <template>
 
     <dialog id="dialogLogin" {{on 'keydown' this.detectEscClose}} {{on 'click' this.detectClickOutside}}>
@@ -79,7 +90,7 @@ export class DialogLogin extends Component {
         </div>
       </header>
       <main style="text-align:center">
-        <form action="submit">
+        <form action="">
           {{!-- <p>{{this.z.picName}}</p> --}}
           <p style="margin:1rem">
             {{t 'dialog.login.text1'}} <span>{{this.z.userName}}</span>
@@ -100,12 +111,13 @@ export class DialogLogin extends Component {
             {{t 'dialog.login.error'}}
           </p>
         </form>
+        <div style="display:none" info="allowvalue char 'array'">{{this.z.allowvalue}}</div>
         <button type="button" {{on 'click' (fn this.z.openModalDialog dialogRightsId 0)}}>{{t 'button.rights'}}</button>&nbsp;
         <br>
       </main>
       <footer data-dialog-draggable>
         <button type="button" {{on 'click' (fn this.z.closeDialog dialogLoginId)}}>{{t 'button.close'}}</button>&nbsp;
-        <button type="button" {{on 'click' (fn this.logIn)}}>{{t 'button.login'}}</button>&nbsp;
+        <button type="submit" {{on 'click' (fn this.logIn)}}>{{t 'button.login'}}</button>&nbsp;
       </footer>
     </dialog>
 
@@ -122,6 +134,17 @@ export class DialogLogin extends Component {
           Text i rättighetfönstret
           {{!-- {{this.z.allowvalue}} --}}
         </p>
+        <div class="" style="display:grid;grid-template-columns:auto auto auto auto auto auto auto">
+
+          {{#each this.status as |status|}}
+            {{#each this.allowvalues as |av|}}
+              <div>{{av}}</div>
+              {{if this.zero '0' '1'}}
+            {{/each}}
+          {{/each}}
+
+
+        </div>
       </main>
       <footer data-dialog-draggable>
         <button type="button" {{on 'click' (fn this.z.closeDialog dialogRightsId)}}>{{t 'button.close'}}</button>&nbsp;

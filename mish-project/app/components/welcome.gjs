@@ -61,6 +61,7 @@ class Welcome extends Component {
     if (!this.z.userStatus) { // only once
       let cred = (await this.z.getCredentials()).split('\n');
       this.z.userStatus = cred[1];
+      this.z.allowvalue = cred[2];
       this.z.freeUsers = cred[3];
     }
   }

@@ -7,7 +7,6 @@ import { inject as service } from '@ember/service';
 export default class CommonStorageService extends Service {
   @service intl;
 
-  @tracked allowvalue; //the source of the 'allow' property values
   @tracked bkgrColor = '#cbcbcb'; //common background color
   @tracked credentials = ''; //user credentials \n-string
   @tracked freeUsers = 'guest...';
@@ -27,6 +26,7 @@ export default class CommonStorageService extends Service {
 
   getCredentials = async (username) => {
     if (!username) username = this.userName; // Kept for Welcome
+    if (username === 'Get allowances') username = '';
     return new Promise((resolve, reject) => {
       // ===== XMLHttpRequest checking 'username'
       var xhr = new XMLHttpRequest();
@@ -53,6 +53,51 @@ export default class CommonStorageService extends Service {
     });
   }
 
+  //#region Allowance
+  //== Allowances properties/methods
+
+  allowance = [     //  'allow' order
+                    //
+    "adminAll",     // + allow EVERYTHING
+    "albumEdit",    // +  " create/delete album directories
+    "appendixEdit", // o  " edit appendices (attached documents)
+    "appendixView", // o  " view     "
+    "delcreLink",   // +  " delete and create linked images NOTE *
+    "deleteImg",    // +  " delete (= remove, erase) images NOTE *
+    "imgEdit",      // o  " edit images
+    "imgHidden",    // +  " view and manage hidden images
+    "imgOriginal",  // +  " view and download full size images
+    "imgReorder",   // +  " reorder images
+    "imgUpload",    // +  " upload    "
+    "notesEdit",    // +  " edit notes (metadata) NOTE *
+    "notesView",    // +  " view   "              NOTE *
+    "saveChanges",  // +  " save order/changes (= saveOrder)
+    "setSetting",   // +  " change settings
+    "textEdit"      // +  " edit image texts (metadata)
+                    //
+                    // o = not yet used
+  ];
+  allowText = [ // Ordered as 'allow', IMPORTANT!
+    "{{t 'adminAll'}}Får göra vadsomhelst",
+    "{{t 'albumEdit'}}göra/radera album",
+    "{{t 'appendixEdit'}}(arbeta med bilagor +4)",
+    "{{t 'appendixView'}}(se bilagor)",
+    "{{t 'delcreLink'}}flytta till annat album, göra/radera länkar",
+    "{{t 'deleteImg'}}radera bilder +5",
+    "{{t 'imgEdit'}}(redigera bilder)",
+    "{{t 'imgHidden'}}gömma/visa bilder",
+    "{{t 'imgOriginal'}}se högupplösta bilder",
+    "{{t 'imgReorder'}}flytta om bilder inom album",
+    "{{t 'imgUpload'}}ladda upp originalbilder till album",
+    "{{t 'notesEdit'}}redigera/spara anteckningar +13",
+    "{{t 'notesView'}}se anteckningar",
+    "{{t 'saveChanges'}}spara ändringar utöver text",
+    "{{t 'setSetting'}}ändra inställningar",
+    "{{t 'textEdit'}}redigera/spara bildtexter, gömda album"
+  ];
+  @tracked allowvalue = "0".repeat (this.allowance.length);
+  // @tracked allowvalue; //the source of the 'allow' property values
+
   //#region Menus
   //== Menu properties/methods
 
@@ -75,11 +120,13 @@ export default class CommonStorageService extends Service {
   }
 
   //#region Dialogs
-  //== Dialog properties/methods
-  // openDialog(id, op), toggleDialog(id, op), openModalDialog(id, op),
-  // saveDialog(id), closeDialog(id, op), and saveCloseDialog(id) (= save then close),
+  //== Dialog open/close/modal properties/methods
+
+  // Functions openDialog(id, op), toggleDialog(id, op), openModalDialog(id, op),
+  // saveDialog(id), closeDialog(id), and saveCloseDialog(id) (= save then close),
   // where id = `dialogId` and op = 'original position'. If op is `true` then the dialog
   // is opened in the original position -- else opened where it was left at last close.
+  // The close function may be modified to return to original position before closing.
 
   openDialog = (dialogId, origPos) => {
     let diaObj = document.getElementById(dialogId);
@@ -114,17 +161,10 @@ export default class CommonStorageService extends Service {
     }
   }
 
-  //#region Buttons
-  //== May also be used in the buttons of the dialogs:
-
   saveDialog = (dialogId) => {
     // save code here, to do!
+    // needs alternatives for any dialogId
     this.loli('saved ' + dialogId);
-  }
-
-  saveCloseDialog = (dialogId) => {
-    this.saveDialog(dialogId);
-    this.closeDialog(dialogId);
   }
 
   closeDialog = (dialogId) => {
@@ -133,6 +173,11 @@ export default class CommonStorageService extends Service {
       diaObj.close();
       this.loli('closed ' + dialogId);
     }
+  }
+
+  saveCloseDialog = (dialogId) => {
+    this.saveDialog(dialogId);
+    this.closeDialog(dialogId);
   }
   //#endregion
 }

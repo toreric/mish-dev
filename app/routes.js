@@ -95,25 +95,38 @@ module.exports = function (app) {
     var status = ''
     var allow = ''
     try {
-      let row = setdb.prepare('SELECT pass, status FROM user WHERE name = $name').get({name: name})
-      if (row) {
-        password = row.pass
-        status = row.status
-      }
-      row = setdb.prepare('SELECT allow FROM class WHERE status = $status').get({status: status})
-      if (row) {
-        allow = row.allow
-      }
-      let rows = setdb.prepare('SELECT name FROM user WHERE pass = ? ORDER BY name').all('')
-      var freeUsers = []
-      for (let i=0;i<rows.length;i++) {
-        freeUsers[i] = rows[i].name
-      }     
-      freeUsers = freeUsers.join(', ')
-      console.log(' freeUsers:', freeUsers)
+      if (name) {
+        let row = setdb.prepare('SELECT pass, status FROM user WHERE name = $name').get({name: name})
+        if (row) {
+          password = row.pass
+          status = row.status
+        }
+        row = setdb.prepare('SELECT allow FROM class WHERE status = $status').get({status: status})
+        if (row) {
+          allow = row.allow
+        }
+        let rows = setdb.prepare('SELECT name FROM user WHERE pass = ? ORDER BY name').all('')
+        var freeUsers = []
+        for (let i=0;i<rows.length;i++) {
+          freeUsers[i] = rows[i].name
+        }
+        freeUsers = freeUsers.join(', ')
+        console.log(' freeUsers:', freeUsers)
 
-      res.location ('/')
-      res.send(password +'\n'+ status +'\n'+ allow +'\n'+ freeUsers)
+        res.location ('/')
+        res.send(password +'\n'+ status +'\n'+ allow +'\n'+ freeUsers)
+
+      } else { // Send all recorded user statuses and their allowances
+        let rows = setdb.prepare('SELECT * FROM class ORDER BY status').all('')
+        var allowances = '';
+        for (let i=0;i<rows.length;i++) {
+          allowances += rows[i].status + '\n'
+          allowances += rows[i].allow + '\n'
+        }
+
+        res.location ('/')
+        res.send(allowances.trim())
+      }
     } catch (err) {
       res.location('/')
       res.send(err.message)

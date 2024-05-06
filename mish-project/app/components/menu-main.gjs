@@ -82,12 +82,12 @@ export class MenuMain extends Component {
         <a id ="jstreeHdr" {{on "click" (fn this.someFunction 'toggleJstreeAlbumSelect')}} > {{{this.jstreeHdr}}} </a>
       </p>
 
-      <!--div class="jstreeAlbumSelect" style="display:none">
+      {{!-- <div class="jstreeAlbumSelect" style="display:none">
         {{ember-jstree
           data=albumData
           eventDidSelectNode='{{this.someFunction("selAlb")}}'
         }}
-      </div-->
+      </div> --}}
     </div>
 
   </template>
