@@ -38,6 +38,7 @@ const detectEsc = (event) => {
 
 document.addEventListener ('keydown', detectEsc, false);
 
+
 export class MenuMain extends Component {
   @service('common-storage') z;
 
@@ -48,7 +49,11 @@ export class MenuMain extends Component {
 
   someFunction = (param) => {this.z.loli(param);}
 
-<template>
+  jstreeHdr = () => {
+    return "{{t 'albumcoll'}} " + this.z.imdbRoot;
+  }
+
+  <template>
 
     <div id="menuMain" class="mainMenu BACKG" onclick="return false" draggable="false" ondragstart="return false" style="display:none">
 
@@ -79,7 +84,7 @@ export class MenuMain extends Component {
       </p><br>
 
       <p onclick="return false" draggable="false" ondragstart="return false" title="Visa alla album = hela albumträdet" style="z-index:0">
-        <a id ="jstreeHdr" {{on "click" (fn this.someFunction 'toggleJstreeAlbumSelect')}} > {{{this.jstreeHdr}}} </a>
+        <a id ="jstreeHdr" {{on "click" (fn this.someFunction 'toggleJstreeAlbumSelect')}} > {{this.jstreeHdr}} </a>
       </p>
 
       {{!-- <div class="jstreeAlbumSelect" style="display:none">

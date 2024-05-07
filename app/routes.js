@@ -59,7 +59,8 @@ module.exports = function (app) {
         let picFoundBaseName = picFound.replace(/\.[^.]{4}$/, '')
         let cmd = 'find -L ' + IMDB + ' -type d -name "' + picFoundBaseName + '*" -amin +' + toold + ' | xargs rm -rf'
         console.log('\n' + cmd)
-        await cmdasync(cmd)
+        // await cmdasync(cmd) // ger direktare diagnos
+        await execP(cmd)
       }
     }
     // 30 black, 31 red, 32 green, 33 yellow, 34 blue, 35 magenta, 36 cyan, 37 white, 0 default
@@ -78,8 +79,7 @@ module.exports = function (app) {
       console.log(req.hostname)
       console.log(req.originalUrl)
     }
-    //console.log (process.memoryUsage ())
-    //console.log ('PARAMS', req.params)
+    // console.log (process.memoryUsage ())
     if (req.body && req.body.like) {
       console.log('LIKE', req.body.like)
     }
@@ -90,7 +90,7 @@ module.exports = function (app) {
   // ##### #0.6 Return user credentials
   app.get('/login/', (req, res) => {
     var name = decodeURIComponent(req.get('username'))
-    console.log('  userName:', name)
+    console.log('  userName: "' + name + '"')
     var password = ''
     var status = ''
     var allow = ''
@@ -114,22 +114,27 @@ module.exports = function (app) {
         console.log(' freeUsers:', freeUsers)
 
         res.location ('/')
+        console.log(password +'\n'+ status +'\n'+ allow +'\n'+ freeUsers)
         res.send(password +'\n'+ status +'\n'+ allow +'\n'+ freeUsers)
 
       } else { // Send all recorded user statuses and their allowances
-        let rows = setdb.prepare('SELECT * FROM class ORDER BY status').all('')
+        console.log('login 1')
+        let rows = setdb.prepare('SELECT * FROM class ORDER BY status').all()
+        console.log('login 2')
         var allowances = '';
         for (let i=0;i<rows.length;i++) {
           allowances += rows[i].status + '\n'
           allowances += rows[i].allow + '\n'
         }
-
+        
+        console.log(allowances.trim())
         res.location ('/')
         res.send(allowances.trim())
       }
     } catch (err) {
+      console.log('Sqlite(?)error:', err.message)
       res.location('/')
-      res.send(err.message)
+      res.send('Sqlite(?)error: ' + err.message)
     }
   })
 

@@ -25,7 +25,9 @@ export default class CommonStorageService extends Service {
   }
 
   getCredentials = async (username) => {
-    if (!username) username = this.userName; // Kept for Welcome
+    // await new Promise (z => setTimeout (z, 999));
+    username = username.trim();
+    if (!username) username = this.userName; // for initiation in Welcome
     if (username === 'Get allowances') username = '';
     return new Promise((resolve, reject) => {
       // ===== XMLHttpRequest checking 'username'
@@ -37,7 +39,8 @@ export default class CommonStorageService extends Service {
       xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
       xhr.onload = function() {
         let res = xhr.response.split('\n');
-        if (res[1][0].trim() === '<') res[1] = '?';
+        console.log('server:', res);
+        if (res.length<2 || res[1].trim()[0] === '<') return;
         this.userStatus = res[1];
         resolve(res.join('\n'));
       }

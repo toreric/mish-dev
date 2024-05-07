@@ -89,6 +89,7 @@ hello:
   world:  Guten Tag, Welt!
 picfound: Bilder_gefunden
 selalbumcol: Albumsammlung wählen
+albumcoll: Albumsammlung
 select:
   language: Sprache wählen
   languagetext: Deutsch

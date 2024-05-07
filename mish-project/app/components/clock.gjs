@@ -1,4 +1,4 @@
-//== Mish local-time component, used by Header
+//== Mish local-time component, used by Welcome
 
 import { cell, resource, resourceFactory } from 'ember-resources';
 
@@ -8,7 +8,7 @@ const clockText = resourceFactory((locale='sv-se') => {
     minute: 'numeric',
     second: 'numeric',
     hour12: false,
-    timeZoneName: "short"
+    timeZoneName: 'short'
   });
 
   return resource(({ on }) => {
@@ -35,6 +35,6 @@ const clockText = resourceFactory((locale='sv-se') => {
 // MODIFIED: export component
 
 export const Clock = <template>
-  {{! locale is reset when imported into header.gjs }}
+  {{! locale is reset when imported }}
   {{clockText locale='ko-ko'}}
 </template>

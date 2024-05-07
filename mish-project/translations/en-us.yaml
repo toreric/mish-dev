@@ -89,6 +89,7 @@ hello:
   world:  Hello World!
 picfound: Found_pictures
 selalbumcol: Choose album collection
+albumcoll: Album collection
 select:
   language: Select language
   languagetext: English

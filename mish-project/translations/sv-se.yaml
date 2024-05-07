@@ -89,6 +89,7 @@ hello:
   world:  Goddag hela världen!
 picfound: Funna_bilder
 selalbumcol: Välj albumsamling
+albumcoll: Albumsamling
 select:
   language: Välj språk
   languagetext: Svenska

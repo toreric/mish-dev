@@ -21,6 +21,7 @@ export class DialogLogin extends Component {
 
   logIn = () => {
     var user = document.querySelector('input.user_').value;
+    user = user.trim();
     if (!user) user = this.z.userName; // Also in getCredentials, both important
     this.z.getCredentials(user).then(async (credentials) => {
       var cred = credentials.split('\n');
@@ -41,12 +42,6 @@ export class DialogLogin extends Component {
         await new Promise (z => setTimeout (z, 5222));
         document.getElementById('logInError').style.display = 'none';
       }
-    })
-  }
-
-  getAllowances = () => {
-    this.z.getCredentials('').then(async (allowList) => {
-      let alist = allowList.split('\n');
     })
   }
 
@@ -72,6 +67,14 @@ export class DialogLogin extends Component {
       // Outside a modal dialog, else not!
       this.z.closeDialog(tgt);
     }
+  }
+
+  getAllowances = () => {
+    this.z.getCredentials('Get allowances').then(async (allowList) => {
+      // return allowList.split('\n');
+      this.z.loli(allowList);
+      return allowList;
+    })
   }
 
   // Make an allowvalue array for dialogRights
@@ -134,15 +137,15 @@ export class DialogLogin extends Component {
           Text i rättighetfönstret
           {{!-- {{this.z.allowvalue}} --}}
         </p>
+        {{this.getAllowances ''}}
         <div class="" style="display:grid;grid-template-columns:auto auto auto auto auto auto auto">
 
-          {{#each this.status as |status|}}
+          {{!-- {{#each this.status as |status|}}
             {{#each this.allowvalues as |av|}}
               <div>{{av}}</div>
               {{if this.zero '0' '1'}}
             {{/each}}
-          {{/each}}
-
+          {{/each}} --}}
 
         </div>
       </main>
