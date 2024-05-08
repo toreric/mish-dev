@@ -19,30 +19,27 @@ export class DialogLogin extends Component {
     return this.z.picName;
   }
 
-  logIn = () => {
-    var user = document.querySelector('input.user_').value;
-    user = user.trim();
-    if (!user) user = this.z.userName; // Also in getCredentials, both important
-    this.z.getCredentials(user).then(async (credentials) => {
-      var cred = credentials.split('\n');
-      var pwrd = document.querySelector('input.password_').value.trim();
-      // cred = [password, status, allowvalue], no status if user was missing
-      if (cred[1] && cred[0] === pwrd) {
-        var oldUser = this.z.userName;
-        this.z.userName = user;
-        this.z.allowvalue = cred[2];
-        this.z.freeUsers = cred[3];
-        // await new Promise (z => setTimeout (z, 222));
-        document.getElementById('logInError').style.display = 'none';
-        document.querySelector('input.user_').value = '';
-        document.querySelector('input.password_').value = '';
-        if (user !== oldUser) this.z.loli(user + ' logged in');
-      } else {
-        document.getElementById('logInError').style.display = '';
-        await new Promise (z => setTimeout (z, 5222));
-        document.getElementById('logInError').style.display = 'none';
-      }
-    })
+  logIn = async () => {
+    let user = document.querySelector('input.user_').value.trim();
+    if (!user) user = this.z.userName;
+    let cred = (await this.z.getCredentials(user)).split('\n');
+    let pwrd = document.querySelector('input.password_').value.trim();
+    // cred = [password, userStatus, allowvalue, freeUsers], no status for illegal users
+    if (cred[1] && pwrd === cred[0]) {
+      var oldUser = this.z.userName;
+      this.z.userName = user;
+      this.z.userStatus = cred[1];
+      this.z.allowvalue = cred[2];
+      this.z.freeUsers = cred[3];
+      document.getElementById('logInError').style.display = 'none';
+      document.querySelector('input.user_').value = '';
+      document.querySelector('input.password_').value = '';
+      if (user !== oldUser) this.z.loli(user + ' logged in');
+    } else {
+      document.getElementById('logInError').style.display = '';
+      await new Promise (z => setTimeout (z, 5222));
+      document.getElementById('logInError').style.display = 'none';
+    }
   }
 
   // Clear input field: user or password
@@ -135,9 +132,9 @@ export class DialogLogin extends Component {
       <main style="text-align:center">
         <p>
           Text i rättighetfönstret
-          {{!-- {{this.z.allowvalue}} --}}
+          {{(fn this.getAllowances)}}
+
         </p>
-        {{this.getAllowances ''}}
         <div class="" style="display:grid;grid-template-columns:auto auto auto auto auto auto auto">
 
           {{!-- {{#each this.status as |status|}}

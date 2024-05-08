@@ -27,10 +27,13 @@ export default class CommonStorageService extends Service {
   getCredentials = async (username) => {
     // await new Promise (z => setTimeout (z, 999));
     username = username.trim();
-    if (!username) username = this.userName; // for initiation in Welcome
+    // this.loli(this.userName);
+    if (username === 'Get user name') username = this.userName; // for initiation in Welcome
+    // this.loli(username + ' (parameter)');
     if (username === 'Get allowances') username = '';
     return new Promise((resolve, reject) => {
       // ===== XMLHttpRequest checking 'username'
+      // console.log(username + ' (parameter, Promise)');
       var xhr = new XMLHttpRequest();
       xhr.open('GET', 'login', true, null, null);
       xhr.setRequestHeader('username', encodeURIComponent(username));
@@ -39,9 +42,8 @@ export default class CommonStorageService extends Service {
       xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
       xhr.onload = function() {
         let res = xhr.response.split('\n');
-        console.log('server:', res);
+        // console.log('-"-: (from server) ' +  res);
         if (res.length<2 || res[1].trim()[0] === '<') return;
-        this.userStatus = res[1];
         resolve(res.join('\n'));
       }
       xhr.onerror = function() {

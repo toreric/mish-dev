@@ -61,15 +61,15 @@ class Welcome extends Component {
     // Wait two seconds as this comes directly after reload:
     await new Promise (z => setTimeout (z, 1999));
     if (!this.z.userStatus) { // only once
-        this.z.getCredentials().then(cred => {
-        this.z.userStatus = cred[1];
-        this.z.allowvalue = cred[2];
-        this.z.freeUsers = cred[3];
-      });
-      // let cred = (await this.z.getCredentials()).split('\n');
-      // this.z.userStatus = cred[1];
-      // this.z.allowvalue = cred[2];
-      // this.z.freeUsers = cred[3];
+      // this.z.getCredentials('Get user name').then(cred => {
+      //   this.z.userStatus = cred[1];
+      //   this.z.allowvalue = cred[2];
+      //   this.z.freeUsers = cred[3];
+      // });
+      let cred = (await this.z.getCredentials('Get user name')).split('\n');
+      this.z.userStatus = cred[1];
+      this.z.allowvalue = cred[2];
+      this.z.freeUsers = cred[3];
     }
   }
 

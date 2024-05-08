@@ -118,9 +118,7 @@ module.exports = function (app) {
         res.send(password +'\n'+ status +'\n'+ allow +'\n'+ freeUsers)
 
       } else { // Send all recorded user statuses and their allowances
-        console.log('login 1')
         let rows = setdb.prepare('SELECT * FROM class ORDER BY status').all()
-        console.log('login 2')
         var allowances = '';
         for (let i=0;i<rows.length;i++) {
           allowances += rows[i].status + '\n'
