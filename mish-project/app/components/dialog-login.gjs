@@ -1,7 +1,9 @@
 //== Mish login dialog
 
 import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
+import { action } from '@ember/object';
 
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
@@ -14,6 +16,7 @@ const dialogRightsId = 'dialogRights';
 export class DialogLogin extends Component {
   @service('common-storage') z;
   @service intl;
+  // @tracked 2;
 
   get picName() { // this.picName may replace this.z.picName, a code example.
     return this.z.picName;
@@ -34,7 +37,7 @@ export class DialogLogin extends Component {
       document.getElementById('logInError').style.display = 'none';
       document.querySelector('input.user_').value = '';
       document.querySelector('input.password_').value = '';
-      if (user !== oldUser) this.z.loli(user + ' logged in');
+      if (user !== oldUser) this.z.loli('logged in');
     } else {
       document.getElementById('logInError').style.display = '';
       await new Promise (z => setTimeout (z, 5222));
@@ -66,12 +69,27 @@ export class DialogLogin extends Component {
     }
   }
 
-  getAllowances = () => {
-    this.z.getCredentials('Get allowances').then(async (allowList) => {
-      // return allowList.split('\n');
-      this.z.loli(allowList);
-      return allowList;
-    })
+  // Format allowances for dialogRights
+  // @action
+  allowances = () => {
+    return this.z.allowances;
+    // let tmp = this.z.allowances.split('\n');
+    // var status = [];
+    // var allow = [];
+    // for (let i=0; i<tmp.length; i+=2) {
+    //   status.push(tmp[i]);
+    //   allow.push(tmp[i+1]);
+    // }
+    // await new Promise (z => setTimeout (z, 222));
+    // var m = String(allow[0]).length;
+    // var mx = '';
+    // for (let i=0; i<m; i++) {
+    //   for (let j=0; j<status.length; j++) {
+    //     mx += String(allow[j])[i];
+    //   }
+    //   mx += '\n';
+    // }
+    // return String(mx).trim();
   }
 
   // Make an allowvalue array for dialogRights
@@ -80,76 +98,79 @@ export class DialogLogin extends Component {
   }
 
   <template>
+    <div style="display:flex" {{on 'keydown' this.detectEscClose}} {{on 'click' this.detectClickOutside}}>
 
-    <dialog id="dialogLogin" {{on 'keydown' this.detectEscClose}} {{on 'click' this.detectClickOutside}}>
-      <header data-dialog-draggable>
-        <div style="width:99%">
-          <p>{{t 'dialog.login.header'}}<span>{{null}}</span></p>
-        </div>{{null}}<div>
-          <button class="close" type="button" {{on 'click' (fn this.z.toggleDialog dialogLoginId)}}>×</button>
-        </div>
-      </header>
-      <main style="text-align:center">
-        <form action="">
-          {{!-- <p>{{this.z.picName}}</p> --}}
-          <p style="margin:1rem">
-            {{t 'dialog.login.text1'}} <span>{{this.z.userName}}</span>
-            {{t 'with'}} [<span>{{this.z.userStatus}}</span>]-{{t 'rights'}}.
-            <br>
-            {{t 'dialog.login.text2'}}
-            <br>
-            ({{t 'dialog.login.text3'}}: {{this.z.freeUsers}}):
-          </p>
-          <div class="show-inline" style="text-align:right;width:fit-content">
-            {{t 'dialog.login.user'}}:
-            <input class="user_" size="10" title={{t 'dialog.login.name'}} placeholder={{t 'dialog.login.name'}} type="text"><a title={{t 'erase'}} {{on 'click' (fn this.clearInput 'user_')}}> ×&nbsp;</a>
-            <br>
-            {{t 'dialog.login.password'}}:
-            <input class="password_" size="10" title={{t 'dialog.login.password'}} placeholder={{t 'dialog.login.password'}} type="password"><a title={{t 'erase'}} {{on 'click' (fn this.clearInput 'password_')}}> ×&nbsp;</a>
+      <dialog id="dialogLogin">
+        <header data-dialog-draggable>
+          <div style="width:99%">
+            <p>{{t 'dialog.login.header'}}<span>{{null}}</span></p>
+          </div>{{null}}<div>
+            <button class="close" type="button" {{on 'click' (fn this.z.toggleDialog dialogLoginId)}}>×</button>
           </div>
-          <p id="logInError" style="margin:1rem 1rem 0;color:red;font-weight:bold;display:none">
-            {{t 'dialog.login.error'}}
+        </header>
+        <main style="text-align:center">
+          <form action="">
+            {{!-- <p>{{this.z.picName}}</p> --}}
+            <p style="margin:1rem">
+              {{t 'dialog.login.text1'}} <span>{{this.z.userName}}</span>
+              {{t 'with'}} [<span>{{this.z.userStatus}}</span>]-{{t 'rights'}}.
+              <br>
+              {{t 'dialog.login.text2'}}
+              <br>
+              ({{t 'dialog.login.text3'}}: {{this.z.freeUsers}}):
+            </p>
+            <div class="show-inline" style="text-align:right;width:fit-content">
+              {{t 'dialog.login.user'}}:
+              <input class="user_" size="10" title={{t 'dialog.login.name'}} placeholder={{t 'dialog.login.name'}} type="text"><a title={{t 'erase'}} {{on 'click' (fn this.clearInput 'user_')}}> ×&nbsp;</a>
+              <br>
+              {{t 'dialog.login.password'}}:
+              <input class="password_" size="10" title={{t 'dialog.login.password'}} placeholder={{t 'dialog.login.password'}} type="password"><a title={{t 'erase'}} {{on 'click' (fn this.clearInput 'password_')}}> ×&nbsp;</a>
+            </div>
+            <p id="logInError" style="margin:1rem 1rem 0;color:red;font-weight:bold;display:none">
+              {{t 'dialog.login.error'}}
+            </p>
+          </form>
+          <div style="display:none" info="allowvalue char 'array'">{{this.z.allowvalue}}</div>
+          <button type="button" {{on 'click' (fn this.z.openModalDialog dialogRightsId 0)}}>{{t 'button.rights'}}</button>&nbsp;
+          <br>
+        </main>
+        <footer data-dialog-draggable>
+          <button type="button" {{on 'click' (fn this.z.closeDialog dialogLoginId)}}>{{t 'button.close'}}</button>&nbsp;
+          <button type="submit" {{on 'click' (fn this.logIn)}}>{{t 'button.login'}}</button>&nbsp;
+        </footer>
+      </dialog>
+
+      <dialog id="dialogRights">
+        <header data-dialog-draggable>
+          <div style="width:99%">
+            <p>{{t 'dialog.rights.header'}}<span></span></p>
+          </div><div>
+            <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogRightsId)}}>×</button>
+          </div>
+        </header>
+        <main style="text-align:center">
+          <p>
+            Text in the Rights Dialog
           </p>
-        </form>
-        <div style="display:none" info="allowvalue char 'array'">{{this.z.allowvalue}}</div>
-        <button type="button" {{on 'click' (fn this.z.openModalDialog dialogRightsId 0)}}>{{t 'button.rights'}}</button>&nbsp;
-        <br>
-      </main>
-      <footer data-dialog-draggable>
-        <button type="button" {{on 'click' (fn this.z.closeDialog dialogLoginId)}}>{{t 'button.close'}}</button>&nbsp;
-        <button type="submit" {{on 'click' (fn this.logIn)}}>{{t 'button.login'}}</button>&nbsp;
-      </footer>
-    </dialog>
+          <p>
+            <pre>{{(this.allowances)}}</pre>
+          </p>
+          <div class="" style="display:grid;grid-template-columns:auto auto auto auto auto auto auto">
 
-    <dialog id="dialogRights" {{on 'keydown' this.detectEscClose}} {{on 'click' this.detectClickOutside}}>
-      <header data-dialog-draggable>
-        <div style="width:99%">
-          <p>{{t 'dialog.rights.header'}}<span></span></p>
-        </div><div>
-          <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogRightsId)}}>×</button>
-        </div>
-      </header>
-      <main style="text-align:center">
-        <p>
-          Text i rättighetfönstret
-          {{(fn this.getAllowances)}}
+            {{!-- {{#each this.status as |status|}}
+              {{#each this.allowvalues as |av|}}
+                <div>{{av}}</div>
+                {{if this.zero '0' '1'}}
+              {{/each}}
+            {{/each}} --}}
 
-        </p>
-        <div class="" style="display:grid;grid-template-columns:auto auto auto auto auto auto auto">
+          </div>
+        </main>
+        <footer data-dialog-draggable>
+          <button type="button" {{on 'click' (fn this.z.closeDialog dialogRightsId)}}>{{t 'button.close'}}</button>&nbsp;
+        </footer>
+      </dialog>
 
-          {{!-- {{#each this.status as |status|}}
-            {{#each this.allowvalues as |av|}}
-              <div>{{av}}</div>
-              {{if this.zero '0' '1'}}
-            {{/each}}
-          {{/each}} --}}
-
-        </div>
-      </main>
-      <footer data-dialog-draggable>
-        <button type="button" {{on 'click' (fn this.z.closeDialog dialogRightsId)}}>{{t 'button.close'}}</button>&nbsp;
-      </footer>
-    </dialog>
-
+    </div>
   </template>
 }

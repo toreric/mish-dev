@@ -58,14 +58,11 @@ class Welcome extends Component {
   }
 
   getCred = async () => {
-    // Wait two seconds as this comes directly after reload:
-    await new Promise (z => setTimeout (z, 1999));
     if (!this.z.userStatus) { // only once
-      // this.z.getCredentials('Get user name').then(cred => {
-      //   this.z.userStatus = cred[1];
-      //   this.z.allowvalue = cred[2];
-      //   this.z.freeUsers = cred[3];
-      // });
+      let allow = await this.z.getCredentials('Get allowances');
+      console.log(allow);
+      this.z.allowances = allow;
+      await new Promise (z => setTimeout (z,    99));
       let cred = (await this.z.getCredentials('Get user name')).split('\n');
       this.z.userStatus = cred[1];
       this.z.allowvalue = cred[2];

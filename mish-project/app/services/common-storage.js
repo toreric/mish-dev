@@ -7,18 +7,19 @@ import { inject as service } from '@ember/service';
 export default class CommonStorageService extends Service {
   @service intl;
 
-  @tracked bkgrColor = '#cbcbcb'; //common background color
-  @tracked credentials = ''; //user credentials \n-string
-  @tracked freeUsers = 'guest...';
-  @tracked imdbDir = "/album";
-  @tracked imdbRoot = "MISH";
-  @tracked imdbRoots = ['root1', 'root2', 'root3'];
-  picFoundBaseName = this.intl.t('picfound');
-  // The 'found-pics' temporary catalog name is amended with a random 4-code
-  picFound = this.picFoundBaseName + "." + Math.random().toString(36).substring(2,6);
-  @tracked picName = 'IMG_1234a_2023_november_19'; //current image name
-  @tracked userName = this.intl.t('guest');
-  @tracked userStatus = '';
+  @tracked  allowances = '';
+  @tracked  bkgrColor = '#cbcbcb'; //common background color
+  @tracked  credentials = ''; //user credentials \n-string
+  @tracked  freeUsers = 'guest...';
+  @tracked  imdbDir = "/album";
+  @tracked  imdbRoot = "MISH";
+  @tracked  imdbRoots = ['root1', 'root2', 'root3'];
+            picFoundBaseName = this.intl.t('picfound');
+            // The 'found-pics' temporary catalog name is amended with a random 4-code:
+            picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
+  @tracked  picName = 'IMG_1234a_2023_november_19'; //current image name
+  @tracked  userName = this.intl.t('guest');
+  @tracked  userStatus = '';
 
   loli = (text) => { // loli = log list
     console.log(this.userName + ':', text);
@@ -28,11 +29,11 @@ export default class CommonStorageService extends Service {
     // await new Promise (z => setTimeout (z, 999));
     username = username.trim();
     // this.loli(this.userName);
-    if (username === 'Get user name') username = this.userName; // for initiation in Welcome
+    if (username === 'Get user name') username = this.userName; // Welcome, initiation
     // this.loli(username + ' (parameter)');
     if (username === 'Get allowances') username = '';
     return new Promise((resolve, reject) => {
-      // ===== XMLHttpRequest checking 'username'
+      // ===== XMLHttpRequest returning user credentials
       // console.log(username + ' (parameter, Promise)');
       var xhr = new XMLHttpRequest();
       xhr.open('GET', 'login', true, null, null);
@@ -41,10 +42,8 @@ export default class CommonStorageService extends Service {
       xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
       xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
       xhr.onload = function() {
-        let res = xhr.response.split('\n');
-        // console.log('-"-: (from server) ' +  res);
-        if (res.length<2 || res[1].trim()[0] === '<') return;
-        resolve(res.join('\n'));
+        let res = xhr.response;
+        resolve(res);
       }
       xhr.onerror = function() {
         reject({
