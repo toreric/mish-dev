@@ -7,7 +7,6 @@ import { inject as service } from '@ember/service';
 export default class CommonStorageService extends Service {
   @service intl;
 
-  @tracked  allowances = '';
   @tracked  bkgrColor = '#cbcbcb'; //common background color
   @tracked  credentials = ''; //user credentials \n-string
   @tracked  freeUsers = 'guest...';
@@ -60,6 +59,18 @@ export default class CommonStorageService extends Service {
   //#region Allowance
   //== Allowances properties/methods
 
+  // allowvalue is the source of the 'allow' property values, set at login TODO
+  @tracked allowvalue = "0".repeat (this.allowance.length);
+
+  // Information text retreived from the _imdb_settings.sqlite datbase at login
+  @tracked  allowances = '';
+
+  zeroSet = () => { // Will this be needed any more?
+    this.allowValue = ('0'.repeat (this.allowance.length));
+  }
+
+  allow = {};
+
   allowance = [     //  'allow' order
                     //
     "adminAll",     // + allow EVERYTHING
@@ -82,25 +93,52 @@ export default class CommonStorageService extends Service {
                     // o = not yet used
   ];
   allowText = [ // Ordered as 'allow', IMPORTANT!
-    "{{t 'adminAll'}}Får göra vadsomhelst",
-    "{{t 'albumEdit'}}göra/radera album",
-    "{{t 'appendixEdit'}}(arbeta med bilagor +4)",
-    "{{t 'appendixView'}}(se bilagor)",
-    "{{t 'delcreLink'}}flytta till annat album, göra/radera länkar",
-    "{{t 'deleteImg'}}radera bilder +5",
-    "{{t 'imgEdit'}}(redigera bilder)",
-    "{{t 'imgHidden'}}gömma/visa bilder",
-    "{{t 'imgOriginal'}}se högupplösta bilder",
-    "{{t 'imgReorder'}}flytta om bilder inom album",
-    "{{t 'imgUpload'}}ladda upp originalbilder till album",
-    "{{t 'notesEdit'}}redigera/spara anteckningar +13",
-    "{{t 'notesView'}}se anteckningar",
-    "{{t 'saveChanges'}}spara ändringar utöver text",
-    "{{t 'setSetting'}}ändra inställningar",
-    "{{t 'textEdit'}}redigera/spara bildtexter, gömda album"
+    'adminAll: ' + this.intl.t('adminAll'),
+    'albumEdit: ' + this.intl.t('albumEdit'),
+    'appendixEdit: ' + this.intl.t('appendixEdit'),
+    'appendixView: ' + this.intl.t('appendixView'),
+    'delcreLink: ' + this.intl.t('delcreLink'),
+    'deleteImg: ' + this.intl.t('deleteImg'),
+    'imgEdit: ' + this.intl.t('imgEdit'),
+    'imgHidden: ' + this.intl.t('imgHidden'),
+    'imgOriginal: ' + this.intl.t('imgOriginal'),
+    'imgReorder: ' + this.intl.t('imgReorder'),
+    'imgUpload: ' + this.intl.t('imgUpload'),
+    'notesEdit: ' + this.intl.t('notesEdit'),
+    'notesView: ' + this.intl.t('notesView'),
+    'saveChanges: ' + this.intl.t('saveChanges'),
+    'setSetting: ' + this.intl.t('setSetting'),
+    'textEdit: ' + this.intl.t('textEdit'),
   ];
-  @tracked allowvalue = "0".repeat (this.allowance.length);
-  // @tracked allowvalue; //the source of the 'allow' property values
+
+  allowFunc = () => { // Called from Welcome   after login
+    var allow = this.allow;
+    var allowance = this.allowance;
+    var allowvalue = this.allowvalue;
+    for (var i=0; i<allowance.length; i++) {
+      allow [allowance [i]] = Number (allowvalue [i]);
+    }
+    if (allow.deleteImg) {  // NOTE *  If ...
+      allow.delcreLink = 1; // NOTE *  then set this too
+      i = allowance.indexOf ("delcreLink");
+      // Also set the source value (in this way since allowvalue [i] = "1" in't allowed: compiler error: "4 is read-only" if 4 = the index value)
+      allowvalue = allowvalue.slice (0, i - allowvalue.length) + "1" + allowvalue.slice (i + 1 - allowvalue.length);
+    }
+    if (allow.notesEdit) { // NOTE *  If ...
+      allow.notesView = 1; // NOTE *  then set this too
+      i = allowance.indexOf ("notesView");
+      allowvalue = allowvalue.slice (0, i - allowvalue.length) + "1" + allowvalue.slice (i + 1 - allowvalue.length);
+    }
+    // Hide smallbuttons we don't need:
+    if (allow.adminAll || allow.saveChanges) {
+      document.getElementById('saveOrder').style.display = '';
+    } else { // Any user may reorder but not save
+      document.getElementById('saveOrder').style.display = 'none';
+    }
+    this.allow = allow;
+    this.allowance = allowance;
+    this.allowvalue = allowvalue;
+  }
 
   //#region Menus
   //== Menu properties/methods

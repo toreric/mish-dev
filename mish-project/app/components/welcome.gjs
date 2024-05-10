@@ -84,7 +84,7 @@ export default class extends Welcome {
       <h1 style="margin:0 0 0 4rem;display:inline">{{t "header"}}</h1>&nbsp;
 
       <button type="button" title={{t 'button.backgtitle'}} {{on 'click' (fn this.toggleBackg)}}>{{t 'dark'}}/{{t 'light'}}</button>&nbsp;
-      <button type="button" {{on 'click' (fn this.openLogIn)}}>{{t 'button.login'}}</button>&nbsp;
+      <button type="button" {{on 'click' (fn this.openLogIn)}}>{{t 'button.optlogin'}}</button>&nbsp;
       <span>{{t 'time.text'}}
         <span><Clock @locale={{t 'intlcode'}} /></span>
       </span>

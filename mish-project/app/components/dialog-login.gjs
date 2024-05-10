@@ -30,14 +30,18 @@ export class DialogLogin extends Component {
     // cred = [password, userStatus, allowvalue, freeUsers], no status for illegal users
     if (cred[1] && pwrd === cred[0]) {
       var oldUser = this.z.userName;
-      this.z.userName = user;
-      this.z.userStatus = cred[1];
-      this.z.allowvalue = cred[2];
-      this.z.freeUsers = cred[3];
       document.getElementById('logInError').style.display = 'none';
       document.querySelector('input.user_').value = '';
       document.querySelector('input.password_').value = '';
-      if (user !== oldUser) this.z.loli('logged in');
+      if (user !== oldUser) {
+        this.z.userName = user;
+        this.z.userStatus = cred[1];
+        this.z.allowvalue = cred[2];
+        this.z.freeUsers = cred[3];
+        this.z.allowFunc();
+        this.z.loli(this.z.allow);
+        this.z.loli('logged in');
+      }
     } else {
       document.getElementById('logInError').style.display = '';
       await new Promise (z => setTimeout (z, 5222));
@@ -72,24 +76,14 @@ export class DialogLogin extends Component {
   // Format allowances for dialogRights
   // @action
   allowances = () => {
-    return this.z.allowances;
-    // let tmp = this.z.allowances.split('\n');
-    // var status = [];
-    // var allow = [];
-    // for (let i=0; i<tmp.length; i+=2) {
-    //   status.push(tmp[i]);
-    //   allow.push(tmp[i+1]);
-    // }
-    // await new Promise (z => setTimeout (z, 222));
-    // var m = String(allow[0]).length;
-    // var mx = '';
-    // for (let i=0; i<m; i++) {
-    //   for (let j=0; j<status.length; j++) {
-    //     mx += String(allow[j])[i];
-    //   }
-    //   mx += '\n';
-    // }
-    // return String(mx).trim();
+    let text = this.z.allowances.split('\n');
+    let add = this.z.allowText;
+    let j = 2;
+    for (let i=0;i<add.length;i++) {
+      text[j] += add[i];
+      j++;
+    }
+    return text.join('\n');
   }
 
   // Make an allowvalue array for dialogRights
@@ -131,12 +125,12 @@ export class DialogLogin extends Component {
             </p>
           </form>
           <div style="display:none" info="allowvalue char 'array'">{{this.z.allowvalue}}</div>
-          <button type="button" {{on 'click' (fn this.z.openModalDialog dialogRightsId 0)}}>{{t 'button.rights'}}</button>&nbsp;
           <br>
         </main>
         <footer data-dialog-draggable>
           <button type="button" {{on 'click' (fn this.z.closeDialog dialogLoginId)}}>{{t 'button.close'}}</button>&nbsp;
           <button type="submit" {{on 'click' (fn this.logIn)}}>{{t 'button.login'}}</button>&nbsp;
+          <button type="button" {{on 'click' (fn this.z.openModalDialog dialogRightsId 0)}}>{{t 'button.rights'}}</button>&nbsp;
         </footer>
       </dialog>
 
@@ -149,22 +143,24 @@ export class DialogLogin extends Component {
           </div>
         </header>
         <main style="text-align:center">
-          <p>
-            Text in the Rights Dialog
+          <p alt="Kopierat från dialogLogin">
+            {{t 'dialog.login.text1'}} <span>{{this.z.userName}}</span>
+            {{t 'with'}} [<span>{{this.z.userStatus}}</span>]-{{t 'rights'}}
           </p>
           <p>
-            <pre>{{(this.allowances)}}</pre>
+            <pre alt="PRE keeps line feeds" style="font-family:'Andale Mono',FreeMono;font-size:85%;text-align:left"> {{(this.allowances)}}</pre>
           </p>
-          <div class="" style="display:grid;grid-template-columns:auto auto auto auto auto auto auto">
 
-            {{!-- {{#each this.status as |status|}}
+          {{!-- <div class="" style="display:grid;grid-template-columns:auto auto auto auto auto auto auto">
+
+            {{#each this.status as |status|}}
               {{#each this.allowvalues as |av|}}
                 <div>{{av}}</div>
                 {{if this.zero '0' '1'}}
               {{/each}}
-            {{/each}} --}}
+            {{/each}}
 
-          </div>
+          </div> --}}
         </main>
         <footer data-dialog-draggable>
           <button type="button" {{on 'click' (fn this.z.closeDialog dialogRightsId)}}>{{t 'button.close'}}</button>&nbsp;

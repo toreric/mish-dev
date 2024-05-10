@@ -1,6 +1,25 @@
 price_banner: "{product} kostar {price, number, ::currency/EUR}"
+
+adminAll: Får göra vadsomhelst
+albumEdit:    göra/radera album
+appendixEdit: (arbeta med bilagor +4)
+appendixView: (se på bilagor)
+delcreLink:   flytta till annat album, göra/radera länkar
+deleteImg:    radera bilder +5
+imgEdit:      (redigera bilder)
+imgHidden:    gömma/visa bilder
+imgOriginal:  se högupplösta bilder
+imgReorder:   flytta om bilder inom album
+imgUpload:    ladda upp originalbilder till album
+notesEdit:    redigera/spara anteckningar +13
+notesView:    se på anteckningar
+saveChanges:  spara ändringar utöver text
+setSetting:   ändra inställningar
+textEdit:     redigera/spara bildtexter, gömda album
+
 dark: Mörk
-guest: gäst #NOTE: must exist in the _imdb_settings.sqlite user table
+#NOTE: the guest value must exist in the _imdb_settings.sqlite user table
+guest: gäst
 intlcode: sv-se
 light: ljus
 rights: rättigheter
@@ -11,8 +30,9 @@ button:
   backgtitle: Byt bakgrund
   close:     Stäng
   keywords:  Nyckelord
-  login:     Inloggning
+  login:     Logga in
   notes:     Anteckningar
+  optlogin:  Inloggning/se rättigheter
   rights:    Om rättigheter
   save:      Spara
   saveclose: Spara och stäng

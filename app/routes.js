@@ -117,14 +117,22 @@ module.exports = function (app) {
         console.log(password +'\n'+ status +'\n'+ allow +'\n'+ freeUsers)
         res.send(password +'\n'+ status +'\n'+ allow +'\n'+ freeUsers)
 
-      } else { // Send all recorded user statuses and their allowances
+      } else { // Send all recorded user statuses and their allowances, formatted
         let rows = setdb.prepare('SELECT * FROM class ORDER BY status').all()
-        var allowances = '';
-        for (let i=0;i<rows.length;i++) {
-          allowances += rows[i].status + '\n'
-          allowances += rows[i].allow + '\n'
+        var allowances = ''
+        for (let j=0;j<rows.length;j++) {
+          allowances +=  ' ' + rows[j].status
         }
-        
+          allowances += '\n───────────────────────────────────────────────\n'
+        let al = rows[0].allow.length
+        for (let i=0;i<al;i++) {
+          for (let j=0;j<rows.length;j++) {
+            // allowances += '     ' + (rows[j].allow)[i].replace(/0/g, '⋅').replace(/1/g, '●') // overkill
+            allowances += '     ' + (rows[j].allow)[i].replace('0', '⋅').replace('1', '●')
+          }
+          allowances += '     ' + (i + 1) + ' = ' + '' + '\n'
+        }
+        allowances += '───────────────────────────────────────────────\n'
         console.log(allowances.trim())
         res.location ('/')
         res.send(allowances.trim())
