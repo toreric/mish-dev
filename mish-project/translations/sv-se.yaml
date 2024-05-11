@@ -1,6 +1,6 @@
 price_banner: "{product} kostar {price, number, ::currency/EUR}"
 
-allowed: "              Får"
+allowed: "                Får"
 adminAll:     göra vadsomhelst
 albumEdit:    göra/radera album
 appendixEdit: (arbeta med bilagor +4)
@@ -94,7 +94,8 @@ dialog:
     text3: användarnamn utan nyckelord
     error: Felaktigt användarnamn eller nyckelord, försök igen!
   rights:
-    header: Lista över rättigheter
+    header: Lista över rättigheter och deras innebörd
+    text0: "Närmast sifferkolumnen visas dina gällande rättigheter:"
   text:
     header:   Bildtexter för
     keywords: Nyckelord för

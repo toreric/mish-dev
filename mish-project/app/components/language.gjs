@@ -12,10 +12,10 @@ export class Language extends Component {
   selections = this.intl.get('locales').sort();
 
   changeLocale = async (newLoc) => {
-    this.intl.set('locale', newLoc);
+    this.intl.setLocale([newLoc]);
   }
   changeLanguage = async (event) => {
-    this.intl.set('locale', event.target.value);
+    this.intl.setLocale([event.target.value]);
   }
   isActive = (locale) => {
     return this.intl.locale[0] === locale;

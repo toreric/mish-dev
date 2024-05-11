@@ -1,6 +1,6 @@
 price_banner: "{product} costs {price, number, ::currency/EUR}"
 
-allowed: "              Allowed to"
+allowed: "                Allowed to"
 adminAll:     göra vadsomhelst
 albumEdit:    göra/radera album
 appendixEdit: (arbeta med bilagor +4)
@@ -94,7 +94,8 @@ dialog:
     text3: user names without password
     error: Incorrect user name or password, try again!
   rights:
-    header: List of rights
+    header: List of rights and their meaning
+    text0: "Your current rights are shown next to the number column:"
   text:
     header:   Captions for
     keywords: Keywords for

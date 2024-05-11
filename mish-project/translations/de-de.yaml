@@ -1,6 +1,6 @@
 price_banner: "{product} kostet {price, number, ::currency/EUR}"
 
-allowed: "              Erlaubt zu"
+allowed: "                Erlaubt zu"
 adminAll:     irgendetwas tun
 albumEdit:    Album erstellen/löschen
 appendixEdit: (mit Anhängen arbeiten +4)
@@ -94,7 +94,8 @@ dialog:
     text3: Benutzernamen ohne Passwort
     error: Falscher Benutzername oder Passwort, erneut versuchen!
   rights:
-    header: Liste der Rechte
+    header: Liste der Rechte und ihrer Bedeutung
+    text0: "Aktuelle Rechte sind neben der Zahlenspalte angezeigt:"
   text:
     header:   Beschreibung für
     keywords: Stichwörter für

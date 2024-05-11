@@ -130,7 +130,7 @@ module.exports = function (app) {
             // allowances += '     ' + (rows[j].allow)[i].replace(/0/g, '⋅').replace(/1/g, '●') // overkill
             allowances += '     ' + (rows[j].allow)[i].replace('0', '⋅').replace('1', '●')
           }
-          allowances += '     ' + (i + 1) + ' = ' + '' + '\n'
+          allowances += '     \n'
         }
         allowances += '───────────────────────────────────────────────\n'
         console.log(allowances.trim())

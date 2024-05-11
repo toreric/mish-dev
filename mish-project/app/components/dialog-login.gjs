@@ -39,7 +39,7 @@ export class DialogLogin extends Component {
         this.z.allowvalue = cred[2];
         this.z.freeUsers = cred[3];
         this.z.allowFunc();
-        this.z.loli(this.z.allow);
+        // this.z.loli(this.z.allow);
         this.z.loli('logged in');
       }
     } else {
@@ -78,11 +78,12 @@ export class DialogLogin extends Component {
   allowances = () => {
     // await new Promise (z => setTimeout (z, 555));
     let text = this.z.allowances.split('\n');
+    let av = this.z.allowvalue.replace(/0/g, '⋅').replace(/1/g, '●');
     let add = this.z.allowText;
     text[1] +=  this.intl.t('allowed');
     let j = 2;
     for (let i=0;i<add.length;i++) {
-      text[j] += add[i];
+      text[j] += av[i] + ' ' + (i + 1) + ' = ' + add[i];
       j++;
     }
     return text.join('\n');
@@ -131,8 +132,8 @@ export class DialogLogin extends Component {
         </main>
         <footer data-dialog-draggable>
           <button type="button" {{on 'click' (fn this.z.closeDialog dialogLoginId)}}>{{t 'button.close'}}</button>&nbsp;
-          <button type="submit" {{on 'click' (fn this.logIn)}}>{{t 'button.login'}}</button>&nbsp;
           <button type="button" {{on 'click' (fn this.z.openModalDialog dialogRightsId 0)}}>{{t 'button.rights'}}</button>&nbsp;
+          <button type="submit" {{on 'click' (fn this.logIn)}}>{{t 'button.login'}}</button>&nbsp;
         </footer>
       </dialog>
 
@@ -145,9 +146,10 @@ export class DialogLogin extends Component {
           </div>
         </header>
         <main style="text-align:center">
-          <p alt="Kopierat från dialogLogin">
+          <p alt="Delvis kopierat från dialogLogin">
             {{t 'dialog.login.text1'}} <span>{{this.z.userName}}</span>
-            {{t 'with'}} [<span>{{this.z.userStatus}}</span>]-{{t 'rights'}}
+            {{t 'with'}} [<span>{{this.z.userStatus}}</span>]-{{t 'rights'}}.
+            {{t 'dialog.rights.text0'}}
           </p>
           <p>
             <pre alt="PRE keeps line feeds" style="font-family:'Andale Mono',FreeMono;font-size:85%;text-align:left"> {{(this.allowances)}}</pre>
