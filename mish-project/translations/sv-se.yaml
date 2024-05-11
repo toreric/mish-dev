@@ -1,6 +1,7 @@
 price_banner: "{product} kostar {price, number, ::currency/EUR}"
 
-adminAll: Får göra vadsomhelst
+allowed: "              Får"
+adminAll:     göra vadsomhelst
 albumEdit:    göra/radera album
 appendixEdit: (arbeta med bilagor +4)
 appendixView: (se på bilagor)
@@ -32,7 +33,7 @@ button:
   keywords:  Nyckelord
   login:     Logga in
   notes:     Anteckningar
-  optlogin:  Inloggning/se rättigheter
+  optlogin:  Inloggning/om rättigheter
   rights:    Om rättigheter
   save:      Spara
   saveclose: Spara och stäng

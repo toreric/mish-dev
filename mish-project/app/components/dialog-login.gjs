@@ -76,8 +76,10 @@ export class DialogLogin extends Component {
   // Format allowances for dialogRights
   // @action
   allowances = () => {
+    // await new Promise (z => setTimeout (z, 555));
     let text = this.z.allowances.split('\n');
     let add = this.z.allowText;
+    text[1] +=  this.intl.t('allowed');
     let j = 2;
     for (let i=0;i<add.length;i++) {
       text[j] += add[i];

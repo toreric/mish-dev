@@ -59,11 +59,11 @@ export default class CommonStorageService extends Service {
   //#region Allowance
   //== Allowances properties/methods
 
-  // allowvalue is the source of the 'allow' property values, set at login TODO
+  // allowvalue is the source of the 'allow' property values, reset at login
   @tracked allowvalue = "0".repeat (this.allowance.length);
 
   // Information text retreived from the _imdb_settings.sqlite datbase at login
-  @tracked  allowances = '';
+  @tracked allowances = '';
 
   zeroSet = () => { // Will this be needed any more?
     this.allowValue = ('0'.repeat (this.allowance.length));

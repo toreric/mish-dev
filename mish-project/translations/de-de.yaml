@@ -1,21 +1,22 @@
 price_banner: "{product} kostet {price, number, ::currency/EUR}"
 
-adminAll: Får göra vadsomhelst
-albumEdit:    göra/radera album
-appendixEdit: (arbeta med bilagor +4)
-appendixView: (se på bilagor)
-delcreLink:   flytta till annat album, göra/radera länkar
-deleteImg:    radera bilder +5
-imgEdit:      (redigera bilder)
-imgHidden:    gömma/visa bilder
-imgOriginal:  se högupplösta bilder
-imgReorder:   flytta om bilder inom album
-imgUpload:    ladda upp originalbilder till album
-notesEdit:    redigera/spara anteckningar +13
-notesView:    se på anteckningar
-saveChanges:  spara ändringar utöver text
-setSetting:   ändra inställningar
-textEdit:     redigera/spara bildtexter, gömda album
+allowed: "              Erlaubt zu"
+adminAll:     irgendetwas tun
+albumEdit:    Album erstellen/löschen
+appendixEdit: (mit Anhängen arbeiten +4)
+appendixView: (Anhänge anschauen)
+delcreLink:   Bilder in andere Alben verschieben, Links erstellen/löschen
+deleteImg:    Bilder löschen +5
+imgEdit:      (Bilder bearbeiten)
+imgHidden:    Bilder ein-/ausblenden
+imgOriginal:  hochauflösende Bilder sehen
+imgReorder:   Bilder innerhalb von Alben verschieben
+imgUpload:    Originalfotos in das Album hochladen
+notesEdit:    Notizen bearbeiten/speichern +13
+notesView:    Notizen anschauen
+saveChanges:  Änderungen speichern zusätzlich zu Text
+setSetting:   Einstellungen ändern
+textEdit:     Untertiteln bearbeiten/speichern, ausgeblendete Alben anzeigen
 
 dark: Dunkel
 #NOTE: the guest value must exist in the _imdb_settings.sqlite user table

@@ -15,8 +15,8 @@ export default class ApplicationRoute extends Route {
     // this.intl.setLocale(['...']) may be changed for testing, like down below.
     this.intl.setLocale([defaultLocale]);
 
-    // this.intl.setLocale(['sv-se']);
-    this.intl.setLocale(['de-de']);
+    this.intl.setLocale(['sv-se']);
+    // this.intl.setLocale(['de-de']);
     // this.intl.setLocale(['en-us']);
   }
 }

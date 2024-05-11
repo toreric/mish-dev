@@ -1,6 +1,7 @@
 price_banner: "{product} costs {price, number, ::currency/EUR}"
 
-adminAll: Får göra vadsomhelst
+allowed: "              Allowed to"
+adminAll:     göra vadsomhelst
 albumEdit:    göra/radera album
 appendixEdit: (arbeta med bilagor +4)
 appendixView: (se på bilagor)
