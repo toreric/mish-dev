@@ -95,7 +95,7 @@ dialog:
     error: Felaktigt användarnamn eller nyckelord, försök igen!
   rights:
     header: Lista över rättigheter och deras innebörd
-    text0: "Närmast sifferkolumnen visas dina gällande rättigheter:"
+    text0: "Närmast sifferkolumnen visas de gällande rättigheterna:"
   text:
     header:   Bildtexter för
     keywords: Nyckelord för
@@ -109,7 +109,7 @@ goto: Gå till
 header: Mish bildgalleri
 hello:
   world:  Goddag hela världen!
-picfound: Funna_bilder
+picfound: §Funna_bilder
 selalbumcol: Välj albumsamling
 albumcoll: Albumsamling
 select:

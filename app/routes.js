@@ -46,7 +46,7 @@ module.exports = function (app) {
 
   // ##### R O U T I N G  E N T R I E S
   // Check 'Express route tester'!
-  // ##### #0. General passing point
+  // ##### General passing point
   app.all ('*', async function(req, res, next) {
     if (req.originalUrl !== '/upload') { // Upload with dropzone: 'req' used else!
       let tmp = req.get('imdbroot')
@@ -83,11 +83,11 @@ module.exports = function (app) {
     if (req.body && req.body.like) {
       console.log('LIKE', req.body.like)
     }
-
     next() // pass control to the next handler
   })
 
-  // ##### #0.6 Return user credentials
+  // ##### Return a user's credentials for login, or return
+  //       all available user statuses and their allowances
   app.get('/login/', (req, res) => {
     var name = decodeURIComponent(req.get('username'))
     console.log('  userName: "' + name + '"')
@@ -142,6 +142,151 @@ module.exports = function (app) {
       res.location('/')
       res.send('Sqlite(?)error: ' + err.message)
     }
+  })
+
+  // ##### Find subdirs which are album roots
+  app.get ('/rootdir', function (req, res) {
+    readSubdir (IMDB_HOME).then (dirlist => {
+      dirlist = dirlist.join ('\n')
+      var tmp = execSync ("echo $IMDB_ROOT").toString ().trim ()
+      if (dirlist.indexOf (tmp) < 0) {tmp = ""}
+      dirlist = tmp + '\n' + dirlist
+      res.location ('/')
+      res.send (dirlist)
+      //res.end ()
+    })
+    .catch ( (err) => {
+      console.error ("RRR", err.message)
+      res.location ('/')
+      res.send (err.message)
+    })
+  })
+  // ===== Read the dir's content of album sub-dirs (not recursively)
+  readSubdir = async (dir, files = []) => {
+    let items = await fs.readdirAsync ('rln' + dir) // items are file || dir names
+    return Promise.map (items, async (name) => { // Cannot use mapSeries here (why?)
+      //let apitem = path.resolve (dir, name) // Absolute path
+      let item = path.join (dir, name) // Relative path
+      if (acceptedDirName (name) && !brokenLink (item)) {
+        let stat = await fs.statAsync ('rln' + item)
+        if (stat.isDirectory ()) {
+          let flagFile = path.join (item, '.imdb')
+          let fd = await fs.openAsync ('rln' + flagFile, 'r')
+          if (fd > -1) {
+            await fs.closeAsync (fd)
+            files.push (name)
+          }
+        }
+      }
+    })
+    .then (files, () => {
+      return files
+    })
+    .catch ( (err) => {
+      console.error ("€ARG", err.message)
+      return err.toString ()
+    })
+  }
+  // ===== Check if an album/directory name can be accepted
+  function acceptedDirName (name) { // Note that &ndash; is accepted:
+    let acceptedName = 0 === name.replace (/[/\-–@_.a-zåäöA-ZÅÄÖ0-9]+/g, "").length
+    return acceptedName && name.slice (0,1) !== "." && !name.includes ('/.')
+  }
+  // ===== Is this file/directory a broken link? Returns its name or false
+  // NOTE: Broken links may cause severe problems if not taken care of properly!
+  brokenLink = item => {
+    return execSync ("find '" + item + "' -maxdepth 0 -xtype l 2>/dev/null").toString ()
+  }
+
+
+  // ##### Get IMDB (image data base) directories list,
+  //       i.e. get all possible album directories
+    app.get ('/imdbdirs/', async function (req, res) {
+    await new Promise (z => setTimeout (z, 200))
+    // Refresh picFoundx: the shell commands must execute in sequence
+    let pif = IMDB + '/' + picFound
+    let cmd = 'rm -rf ' + pif + ' && mkdir ' + pif + ' && touch ' + pif + '/.imdb'
+    await cmdasync (cmd)
+    setTimeout (function () {
+      allDirs ().then (dirlist => { // dirlist entries start with the root album
+        areAlbums (dirlist).then (async dirlist => {
+//          dirlist = dirlist.sort ()
+          let dirtext = dirlist.join ("€")
+          let dircoco = [] // directory content counter
+          let dirlabel = [] // Album label thumbnail paths
+
+          // Get all thumbnails and select
+          // randomly one to be used as "subdirectory label"
+          for (let i=0; i<dirlist.length; i++) {
+            cmd = "echo -n `ls " + IMDB + dirlist [i] + "/_mini_* 2>/dev/null`"
+            let pics = await execP (cmd)
+            pics = pics.toString ().trim ().split (" ")
+            if (!pics [0]) {pics = []} // Remove a "" element
+            let npics = pics.length
+            if (npics > 0) {
+              let k, n = 1 + Number ((new Date).getTime ().toString ().slice (-1))
+              // Instead of seeding, loop n (1 to 10) times to get some variation:
+              for (let j=0; j<n; j++) {
+                k = Math.random ()*npics
+              }
+              var albumLabel = pics [Number (k.toString ().replace (/\..*/, ""))]
+            } else {albumLabel = "€" + dirlist [i]}
+            // Count the number of subdirectories
+            let subs = occurrences (dirtext, dirlist [i]) - 1
+            npics = " (" + npics + ")"
+            if (i > 0 && subs) {npics += subs} // text!
+            dircoco.push (npics)
+            dirlabel.push (albumLabel)
+          }
+          for (let i=0; i<dirlist.length; i++) {
+            var albumLabel
+            if (dirlabel [i].slice (0, 1) === "€" && dirlabel [i].indexOf (picFound) === -1) {
+              albumLabel = dirlabel [i].slice (1)
+              dirlabel [i] = ""
+              for (let j=i+1; j<dirlist.length; j++) { // Take any subalbum's minipic if available
+                if (albumLabel === dirlabel [j].slice (IMDB.length).slice (0, albumLabel.length)) {
+                  dirlabel [i] = dirlabel [j]
+                  break
+                }
+              }
+            }
+          }
+
+          //OLD: let fd, ignorePaths = IMDB_HOME + "/" + IMDB_ROOT + "/_imdb_ignore.txt"
+          let fd, ignorePaths = IMDB + "/_imdb_ignore.txt"
+          try { // Create _imdb_ignore.txt if missing
+            fd = await fs.openAsync (ignorePaths, 'r')
+            await fs.closeAsync (fd)
+          } catch (err) {
+            fd = await fs.openAsync (ignorePaths, 'w') // created
+            await fs.closeAsync (fd)
+          }
+          // An _imdb_ignore line/path may/should start with just './' (if not #)
+          let ignore = (await execP ("cat " + ignorePaths)).toString ().trim ().split ("\n")
+          for (let j=0; j<ignore.length; j++) {
+            for (let i=0; i<dirlist.length; i++) {
+              if (ignore [j] && ignore [j].slice (0, 1) !== '#') {
+                ignore [j] = ignore [j].replace (/^[^/]*/, "")
+                if (ignore [j] && dirlist [i].startsWith (ignore [j])) dircoco [i] += "*"
+              }
+            }
+          }
+          dirtext = dirtext.replace (/€/g, "\n")
+          dircoco = dircoco.join ("\n")
+          dirlabel = dirlabel.join ("\n")
+          // NOTE: IMDB = IMDB_HOME + "/" + IMDB_ROOT, but here "@" separates them (important!):
+          dirtext = IMDB_HOME + "@" + IMDB_ROOT + "\n" + dirtext + "\nNodeJS " + process.version.trim ()
+          res.location ('/')
+          //NOTE: The paths include IMDB_ROOT, soon removed by caller!
+          res.send (dirtext + "\n" + dircoco + "\n" + dirlabel)
+          //res.end ()
+          console.log ('Directory information sent from server')
+        })
+      }).catch (function (error) {
+        res.location ('/')
+        res.sloadend (error.message)
+      })
+    }, 2000) // Was 1000
   })
 
   // ===== Get the image databases' root directory

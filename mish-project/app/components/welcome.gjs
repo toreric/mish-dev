@@ -59,15 +59,21 @@ class Welcome extends Component {
 
   getCred = async () => {
     if (!this.z.userStatus) { // only once
+      // Set a guest user and corresponding allowances
       let allow = await this.z.getCredentials('Get allowances');
       console.log(allow);
       this.z.allowances = allow;
-      await new Promise (z => setTimeout (z,    99));
+      await new Promise (z => setTimeout (z, 99));
+      // Get all recorded user statuses and their allowances + passwordless users
       let cred = (await this.z.getCredentials('Get user name')).split('\n');
       this.z.userStatus = cred[1];
       this.z.allowvalue = cred[2];
       this.z.freeUsers = cred[3];
-    }
+      await new Promise (z => setTimeout (z, 99));
+      // Get album-collection-qualified catalogs
+      let roots = await this.z.getAlbumRoots();
+      this.z.imdbRoots = roots.split('\n');
+    };
   }
 
 }

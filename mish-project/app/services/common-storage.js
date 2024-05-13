@@ -1,8 +1,8 @@
 //== Mish common storage service with global properties/methods
 
 import Service from '@ember/service';
-import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 
 export default class CommonStorageService extends Service {
   @service intl;
@@ -10,19 +10,24 @@ export default class CommonStorageService extends Service {
   @tracked  bkgrColor = '#cbcbcb'; //common background color
   @tracked  credentials = ''; //user credentials \n-string
   @tracked  freeUsers = 'guest...';
-  @tracked  imdbDir = "/album";
-  @tracked  imdbRoot = "MISH";
-  @tracked  imdbRoots = ['root1', 'root2', 'root3'];
+  @tracked  imdbDir = '';
+  @tracked  imdbDirs = '';
+  @tracked  imdbRoot = '';
+  @tracked  imdbRoots = ['dummy', 'fake', 'falsch'];
             picFoundBaseName = this.intl.t('picfound');
             // The 'found-pics' temporary catalog name is amended with a random 4-code:
             picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
   @tracked  picName = 'IMG_1234a_2023_november_19'; //current image name
+  @tracked  userDir = '';
   @tracked  userName = this.intl.t('guest');
   @tracked  userStatus = '';
 
   loli = (text) => { // loli = log list
     console.log(this.userName + ':', text);
   }
+
+  //#region Server
+  //== Server tasks
 
   getCredentials = async (username) => {
     // await new Promise (z => setTimeout (z, 999));
@@ -33,11 +38,70 @@ export default class CommonStorageService extends Service {
     if (username === 'Get allowances') username = '';
     return new Promise((resolve, reject) => {
       // ===== XMLHttpRequest returning user credentials
-      // console.log(username + ' (parameter, Promise)');
       var xhr = new XMLHttpRequest();
-      xhr.open('GET', 'login', true, null, null);
+      xhr.open('GET', 'login/', true, null, null);
       xhr.setRequestHeader('username', encodeURIComponent(username));
-      xhr.setRequestHeader('imdbdir', encodeURIComponent(this.mdbDir));
+      xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
+      xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
+      xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
+      xhr.onload = function() {
+        let res = xhr.response;
+        resolve(res);
+      }
+      xhr.onerror = function() {
+        reject({
+          status: this.status,
+          statusText: xhr.statusText
+        });
+      }
+      xhr.send();
+    }).catch(error => {
+      console.error(error.message);
+    });
+  }
+
+  getAlbumRoots = async () => {
+    // Propose root directory (requestDirs)
+    return new Promise ( (resolve, reject) => {
+      var xhr = new XMLHttpRequest ();
+      xhr.open ('GET', 'rootdir/', true, null, null);
+      xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
+      xhr.onload = function () {
+        if (this.status >= 200 && this.status < 300) {
+          var dirList = xhr.response;
+          resolve (dirList);
+        } else {
+          reject ({
+            status: this.status,
+            statusText: xhr.statusText
+          });
+        }
+      };
+      xhr.onerror = function () {
+        reject ({
+          status: this.status,
+          statusText: xhr.statusText
+        });
+      };
+      xhr.send ();
+    }).catch (error => {
+      if (error.status !== 404) {
+        console.error (error.message);
+      } else {
+        console.warn ("reqRoot: No NodeJS server");
+      }
+    });
+  }
+
+
+  getAlbumDirs = async (thisDir) => {
+    // Get album collections or albums if thisDir is an album root
+    return new Promise((resolve, reject) => {
+      // ===== XMLHttpRequest returning user credentials
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', 'imdbdirs', true, null, null);
+      xhr.setRequestHeader('username', encodeURIComponent(username));
+      xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
       xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
       xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
       xhr.onload = function() {
@@ -66,7 +130,7 @@ export default class CommonStorageService extends Service {
   @tracked allowances = '';
 
   zeroSet = () => { // Will this be needed any more?
-    this.allowValue = ('0'.repeat (this.allowance.length));
+    this.allowvalue = ('0'.repeat (this.allowance.length));
   }
 
   allow = {};
@@ -92,26 +156,28 @@ export default class CommonStorageService extends Service {
                     //
                     // o = not yet used
   ];
-  allowText = [ // Ordered as 'allow', IMPORTANT!
-    'adminAll: ' + this.intl.t('adminAll'),
-    'albumEdit: ' + this.intl.t('albumEdit'),
-    'appendixEdit: ' + this.intl.t('appendixEdit'),
-    'appendixView: ' + this.intl.t('appendixView'),
-    'delcreLink: ' + this.intl.t('delcreLink'),
-    'deleteImg: ' + this.intl.t('deleteImg'),
-    'imgEdit: ' + this.intl.t('imgEdit'),
-    'imgHidden: ' + this.intl.t('imgHidden'),
-    'imgOriginal: ' + this.intl.t('imgOriginal'),
-    'imgReorder: ' + this.intl.t('imgReorder'),
-    'imgUpload: ' + this.intl.t('imgUpload'),
-    'notesEdit: ' + this.intl.t('notesEdit'),
-    'notesView: ' + this.intl.t('notesView'),
-    'saveChanges: ' + this.intl.t('saveChanges'),
-    'setSetting: ' + this.intl.t('setSetting'),
-    'textEdit: ' + this.intl.t('textEdit'),
-  ];
 
-  allowFunc = () => { // Called from Welcome   after login
+  get allowText() {[
+  // allowText = [ // Ordered as 'allow', IMPORTANT!
+    `adminAll: ${this.intl.t('adminAll')}`,
+    `albumEdit: ${this.intl.t('albumEdit')}`,
+    `appendixEdit: ${this.intl.t('appendixEdit')}`,
+    `appendixView: ${this.intl.t('appendixView')}`,
+    `delcreLink: ${this.intl.t('delcreLink')}`,
+    `deleteImg: ${this.intl.t('deleteImg')}`,
+    `imgEdit: ${this.intl.t('imgEdit')}`,
+    `imgHidden: ${this.intl.t('imgHidden')}`,
+    `imgOriginal: ${this.intl.t('imgOriginal')}`,
+    `imgReorder: ${this.intl.t('imgReorder')}`,
+    `imgUpload: ${this.intl.t('imgUpload')}`,
+    `notesEdit: ${this.intl.t('notesEdit')}`,
+    `notesView: ${this.intl.t('notesView')}`,
+    `saveChanges: ${this.intl.t('saveChanges')}`,
+    `setSetting: ${this.intl.t('setSetting')}`,
+    `textEdit: ${this.intl.t('textEdit')}`
+  ];}
+
+  allowFunc = () => { // Called from Welcome after login
     var allow = this.allow;
     var allowance = this.allowance;
     var allowvalue = this.allowvalue;
