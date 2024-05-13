@@ -1,6 +1,6 @@
 // app/routes.js
 
-module.exports = function (app) {
+module.exports = function (app) { // Start module.exports
   const path = require ('path')
   const Promise = require ('bluebird')
   const fs = Promise.promisifyAll (require ('fs')) // ...Async () suffix
@@ -28,8 +28,8 @@ module.exports = function (app) {
   let IMDB_ROOT = '' // Must be set in route
   // ----- Image database directory
   let IMDB_DIR = '' // Must be set in route
-  // ----- Name of symlink pointing to IMDB_ROOT
-  let IMDB = '' // History: Replaces the former ´link-to-album´ task of 'imdb' (IMDB_LINK)
+  // ----- Name of 
+  let IMDB = ''
   // ----- Name of special (temporary) search result albums
   let picFound = ''
   // ----- Max lifetime (minutes) after last access of a special (temporary) search result album
@@ -56,8 +56,9 @@ module.exports = function (app) {
         IMDB = IMDB_HOME + '/' + IMDB_ROOT
         picFound = req.get('picfound')
         // Remove all too old picFound (search result) catalogs, NOTE their added random <.01yz>
-        let picFoundBaseName = picFound.replace(/\.[^.]{4}$/, '')
-        let cmd = 'find -L ' + IMDB + ' -type d -name "' + picFoundBaseName + '*" -amin +' + toold + ' | xargs rm -rf'
+        // let picFoundBaseName = picFound.replace(/\.[^.]{4}$/, '')
+        // let cmd = 'find -L ' + IMDB + ' -type d -name "' + picFoundBaseName + '*" -amin +' + toold + ' | xargs rm -rf'
+        let cmd = 'find -L ' + IMDB + ' -type d -name "' + '§*" -amin +' + toold + ' | xargs rm -rf'
         console.log('\n' + cmd)
         // await cmdasync(cmd) // ger direktare diagnos
         await execP(cmd)
@@ -145,12 +146,12 @@ module.exports = function (app) {
   })
 
   // ##### Find subdirs which are album roots
-  app.get ('/rootdir', function (req, res) {
+  app.get ('/rootdir/', function (req, res) {
     readSubdir (IMDB_HOME).then (dirlist => {
       dirlist = dirlist.join ('\n')
-      var tmp = execSync ("echo $IMDB_ROOT").toString ().trim ()
-      if (dirlist.indexOf (tmp) < 0) {tmp = ""}
-      dirlist = tmp + '\n' + dirlist
+      // var tmp = execSync ("echo $IMDB_ROOT").toString ().trim ()
+      // if (dirlist.indexOf (tmp) < 0) {tmp = ""}
+      // dirlist = tmp + '\n' + dirlist
       res.location ('/')
       res.send (dirlist)
       //res.end ()
@@ -161,47 +162,10 @@ module.exports = function (app) {
       res.send (err.message)
     })
   })
-  // ===== Read the dir's content of album sub-dirs (not recursively)
-  readSubdir = async (dir, files = []) => {
-    let items = await fs.readdirAsync ('rln' + dir) // items are file || dir names
-    return Promise.map (items, async (name) => { // Cannot use mapSeries here (why?)
-      //let apitem = path.resolve (dir, name) // Absolute path
-      let item = path.join (dir, name) // Relative path
-      if (acceptedDirName (name) && !brokenLink (item)) {
-        let stat = await fs.statAsync ('rln' + item)
-        if (stat.isDirectory ()) {
-          let flagFile = path.join (item, '.imdb')
-          let fd = await fs.openAsync ('rln' + flagFile, 'r')
-          if (fd > -1) {
-            await fs.closeAsync (fd)
-            files.push (name)
-          }
-        }
-      }
-    })
-    .then (files, () => {
-      return files
-    })
-    .catch ( (err) => {
-      console.error ("€ARG", err.message)
-      return err.toString ()
-    })
-  }
-  // ===== Check if an album/directory name can be accepted
-  function acceptedDirName (name) { // Note that &ndash; is accepted:
-    let acceptedName = 0 === name.replace (/[/\-–@_.a-zåäöA-ZÅÄÖ0-9]+/g, "").length
-    return acceptedName && name.slice (0,1) !== "." && !name.includes ('/.')
-  }
-  // ===== Is this file/directory a broken link? Returns its name or false
-  // NOTE: Broken links may cause severe problems if not taken care of properly!
-  brokenLink = item => {
-    return execSync ("find '" + item + "' -maxdepth 0 -xtype l 2>/dev/null").toString ()
-  }
-
 
   // ##### Get IMDB (image data base) directories list,
   //       i.e. get all possible album directories
-    app.get ('/imdbdirs/', async function (req, res) {
+  app.get ('/imdbdirs/', async function (req, res) {
     await new Promise (z => setTimeout (z, 200))
     // Refresh picFoundx: the shell commands must execute in sequence
     let pif = IMDB + '/' + picFound
@@ -210,13 +174,13 @@ module.exports = function (app) {
     setTimeout (function () {
       allDirs ().then (dirlist => { // dirlist entries start with the root album
         areAlbums (dirlist).then (async dirlist => {
-//          dirlist = dirlist.sort ()
+          // dirlist = dirlist.sort ()
           let dirtext = dirlist.join ("€")
           let dircoco = [] // directory content counter
           let dirlabel = [] // Album label thumbnail paths
 
-          // Get all thumbnails and select
-          // randomly one to be used as "subdirectory label"
+          // Get all thumbnails and select randomly
+          // one to be used as "subdirectory label"
           for (let i=0; i<dirlist.length; i++) {
             cmd = "echo -n `ls " + IMDB + dirlist [i] + "/_mini_* 2>/dev/null`"
             let pics = await execP (cmd)
@@ -289,6 +253,8 @@ module.exports = function (app) {
     }, 2000) // Was 1000
   })
 
+  //#region Functions
+
   // ===== Get the image databases' root directory
   // The server environment should have $IMDB_HOME, else use $HOME
   function imdbHome() {
@@ -299,7 +265,45 @@ module.exports = function (app) {
     return IMDB_HOME
   }
 
-}
-// End module.exports
+  // ===== Read the dir's content of album sub-dirs (not recursively)
+  readSubdir = async (dir, files = []) => {
+    let items = await fs.readdirAsync ('rln' + dir) // items are file || dir names
+    return Promise.map (items, async (name) => { // Cannot use mapSeries here (why?)
+      //let apitem = path.resolve (dir, name) // Absolute path
+      let item = path.join (dir, name) // Relative path
+      if (acceptedDirName (name) && !brokenLink (item)) {
+        let stat = await fs.statAsync ('rln' + item)
+        if (stat.isDirectory ()) {
+          let flagFile = path.join (item, '.imdb')
+          let fd = await fs.openAsync ('rln' + flagFile, 'r')
+          if (fd > -1) {
+            await fs.closeAsync (fd)
+            files.push (name)
+          }
+        }
+      }
+    })
+    .then (files, () => {
+      return files
+    })
+    .catch ( (err) => {
+      console.error ("€ARG", err.message)
+      return err.toString ()
+    })
+  }
+
+  // ===== Check if an album/directory name can be accepted
+  function acceptedDirName (name) { // Note that &ndash; is accepted:
+    let acceptedName = 0 === name.replace (/[/\-–@_.a-zåäöA-ZÅÄÖ0-9]+/g, "").length
+    return acceptedName && name.slice (0,1) !== "." && !name.includes ('/.')
+  }
+
+  // ===== Is this file/directory a broken link? Returns its name or false
+  // NOTE: Broken links may cause severe problems if not taken care of properly!
+  brokenLink = item => {
+    return execSync ("find '" + item + "' -maxdepth 0 -xtype l 2>/dev/null").toString ()
+  }
+
+} // End module.exports
 
 

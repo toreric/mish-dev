@@ -41,6 +41,7 @@ document.addEventListener ('keydown', detectEsc, false);
 
 export class MenuMain extends Component {
   @service('common-storage') z;
+  @service intl;
 
   selectRoot = (event) => {
     this.z.imdbRoot = event.target.value;
@@ -50,7 +51,7 @@ export class MenuMain extends Component {
   someFunction = (param) => {this.z.loli(param);}
 
   jstreeHdr = () => {
-    return "{{t 'albumcoll'}} " + this.z.imdbRoot;
+    return this.intl.t('albumcoll') + ' ' + this.z.imdbRoot;
   }
 
   <template>
