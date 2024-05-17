@@ -77,7 +77,7 @@ export class DialogLogin extends Component {
   get allowances() {
     let text = this.z.allowances.split('\n');
       // console.log(this.z.allowvalue);
-    let av = this.z.allowvalue.replace(/0/g, '⋅').replace(/1/g, '●');
+    let av = this.z.allowvalue.replace(/0/g, '.').replace(/1/g, 'x');
       // console.log(av);
       // console.log(this.z.allowText);
     var add = this.z.allowText;
@@ -154,7 +154,7 @@ export class DialogLogin extends Component {
             {{t 'dialog.rights.text0'}}
           </p>
           <p style="text-align:left;font-size:85%">
-            <pre alt="PRE keeps line feeds" style="font-family:'Andale Mono',FreeMono;font-size:97%;margin:0"> {{this.allowances}}</pre>{{t 'dialog.rights.footnote1'}}<br>{{t 'dialog.rights.footnote2'}}
+            <pre alt="PRE keeps line feeds" style="font-family:'Andale Mono','Cascadia Mono';font-size:97%;margin:0"> {{this.allowances}}</pre>{{t 'dialog.rights.footnote1'}}<br>{{t 'dialog.rights.footnote2'}}
             <br>{{t 'dialog.rights.footnote3'}}
             </p>
             <p style="text-align:left;font-size:85%;font-weight:bold">

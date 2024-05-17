@@ -95,7 +95,7 @@ dialog:
     text3: user names without password
     error: Incorrect user name or password, try again!
   rights:
-    header: List of rights and their meaning
+    header: List of rights and their meaning, and legal terms of use at the bottom
     text0: "The current rights are shown next to the number column:"
     text1: You are allowed to see and have the images for your own use but not to distribute them further.
     text2: Nor may you use them for any commercial or profit-making purpose.

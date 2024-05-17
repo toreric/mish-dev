@@ -95,7 +95,7 @@ dialog:
     text3: Benutzernamen ohne Passwort
     error: Falscher Benutzername oder Passwort, erneut versuchen!
   rights:
-    header: Liste der Rechte und ihrer Bedeutung
+    header: Liste der Rechte und ihrer Bedeutung, mit rechtliche Nutzungsbedingungen unten
     text0: "Aktuelle Rechte sind neben der Zahlenspalte angezeigt:"
     text1: Es ist Ihnen gestattet, die Bilder für Ihren eigenen Gebrauch zu sehen und zu besitzen, sie jedoch nicht weiter zu verbreiten.
     text2: Sie dürfen sie auch nicht für kommerzielle oder gewinnbringende Zwecke verwenden.

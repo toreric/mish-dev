@@ -128,8 +128,8 @@ module.exports = function (app) { // Start module.exports
         let al = rows[0].allow.length
         for (let i=0;i<al;i++) {
           for (let j=0;j<rows.length;j++) {
-            // allowances += '     ' + (rows[j].allow)[i].replace(/0/g, '⋅').replace(/1/g, '●') // overkill
-            allowances += '     ' + (rows[j].allow)[i].replace('0', '⋅').replace('1', '●')
+            // allowances += '     ' + (rows[j].allow)[i].replace(/0/g, '⋅').replace(/1/g, '@') // overkill
+            allowances += '     ' + (rows[j].allow)[i].replace('0', '.').replace('1', 'x')
           }
           allowances += '     \n'
         }
