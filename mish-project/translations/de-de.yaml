@@ -3,20 +3,20 @@ price_banner: "{product} kostet {price, number, ::currency/EUR}"
 allowed: "                Erlaubt zu"
 adminAll:     irgendetwas tun
 albumEdit:    Album erstellen/löschen
-appendixEdit: (mit Anhängen arbeiten +4)
+appendixEdit: (mit Anhängen arbeiten +4)¹
 appendixView: (Anhänge anschauen)
 delcreLink:   Bilder in andere Alben verschieben, Links erstellen/löschen
 deleteImg:    Bilder löschen +5
 imgEdit:      (Bilder bearbeiten)
 imgHidden:    Bilder ein-/ausblenden
-imgOriginal:  hochauflösende Bilder sehen
+imgOriginal:  hochauflösende Bilder sehen²
 imgReorder:   Bilder innerhalb von Alben verschieben
 imgUpload:    Originalfotos in das Album hochladen
 notesEdit:    Notizen bearbeiten/speichern +13
 notesView:    Notizen anschauen
 saveChanges:  Änderungen speichern zusätzlich zu Text
 setSetting:   Einstellungen ändern
-textEdit:     Untertiteln bearbeiten/speichern, ausgeblendete Alben anzeigen
+textEdit:     Untertiteln bearbeiten/speichern, ausgeblendete Alben anzeigen³
 
 dark: Dunkel
 #NOTE: the guest value must exist in the _imdb_settings.sqlite user table
@@ -33,7 +33,8 @@ button:
   keywords:  Stichwörter
   login:     Anmelden
   notes:     Anmerkungen
-  optlogin:  Anmeldung/Rechteinformation
+  optlogin:  Anmeldung
+  rightsinfo: Rechteinformation
   rights:    Über Rechte
   save:      Speichern
   saveclose: Speichern und schließen
@@ -96,6 +97,13 @@ dialog:
   rights:
     header: Liste der Rechte und ihrer Bedeutung
     text0: "Aktuelle Rechte sind neben der Zahlenspalte angezeigt:"
+    text1: Es ist Ihnen gestattet, die Bilder für Ihren eigenen Gebrauch zu sehen und zu besitzen, sie jedoch nicht weiter zu verbreiten.
+    text2: Sie dürfen sie auch nicht für kommerzielle oder gewinnbringende Zwecke verwenden.
+    text3: Sie verpflichten sich, die geltenden Urheberrechtsgesetze zu respektieren und Bilder nicht an Dritte weiterzugeben.
+    text4: Bei Fragen zur Genehmigung einer möglichen Verbreitung oder Übertragung wenden Sie sich bitte an Sävar Hembygdsförening.
+    footnote1: "¹ Rechte in Klammern: Noch nicht implementiert"
+    footnote2: "² Einschränkungen für einige Bilder aufgrund unvollständiger Urheberrechte"
+    footnote3: "³ Ohne diese Berechtigung kann man nicht wissen, ob versteckte Alben vorhanden sind"
   text:
     header:   Beschreibung für
     keywords: Stichwörter für

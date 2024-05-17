@@ -9,9 +9,9 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
-// Note: Dialog function in Welcome needs dialogLoginId:
+// Note: Dialog function in Welcome needs dialog*Id:
 export const dialogLoginId = 'dialogLogin';
-const dialogRightsId = 'dialogRights';
+export const dialogRightsId = 'dialogRights';
 
 export class DialogLogin extends Component {
   @service('common-storage') z;
@@ -91,21 +91,6 @@ export class DialogLogin extends Component {
     return text.join('\n');
   }
 
-  // @action
-  // allowances = async () => {
-  //   let text = this.z.allowances.split('\n');
-  //   let av = this.z.allowvalue.replace(/0/g, '⋅').replace(/1/g, '●');
-  //   await new Promise (z => setTimeout (z, 555));
-  //   var add = this.z.allowText;
-  //   text[1] +=  this.intl.t('allowed');
-  //   let j = 2;
-  //   for (let i=0;i<add.length;i++) {
-  //     text[j] += av[i] + ' ' + (i + 1) + ' = ' + add[i];
-  //     j++;
-  //   }
-  //   return text.join('\n');
-  // }
-
   // Make an allowvalue array for dialogRights
   allowvalues = () => {
     return this.z.allowvalue.split('');
@@ -168,20 +153,13 @@ export class DialogLogin extends Component {
             {{t 'with'}} [<span>{{this.z.userStatus}}</span>]-{{t 'rights'}}.
             {{t 'dialog.rights.text0'}}
           </p>
-          <p>
-            <pre alt="PRE keeps line feeds" style="font-family:'Andale Mono',FreeMono;font-size:85%;text-align:left"> {{this.allowances}}</pre>
+          <p style="text-align:left;font-size:85%">
+            <pre alt="PRE keeps line feeds" style="font-family:'Andale Mono',FreeMono;font-size:97%;margin:0"> {{this.allowances}}</pre>{{t 'dialog.rights.footnote1'}}<br>{{t 'dialog.rights.footnote2'}}
+            <br>{{t 'dialog.rights.footnote3'}}
+            </p>
+            <p style="text-align:left;font-size:85%;font-weight:bold">
+            {{t 'dialog.rights.text1'}}<br>{{t 'dialog.rights.text2'}}<br>{{t 'dialog.rights.text3'}}<br>{{t 'dialog.rights.text4'}}
           </p>
-
-          {{!-- <div class="" style="display:grid;grid-template-columns:auto auto auto auto auto auto auto">
-
-            {{#each this.status as |status|}}
-              {{#each this.allowvalues as |av|}}
-                <div>{{av}}</div>
-                {{if this.zero '0' '1'}}
-              {{/each}}
-            {{/each}}
-
-          </div> --}}
         </main>
         <footer data-dialog-draggable>
           <button type="button" {{on 'click' (fn this.z.closeDialog dialogRightsId)}}>{{t 'button.close'}}</button>&nbsp;

@@ -194,6 +194,12 @@ export default class CommonStorageService extends Service {
     for (var i=0; i<allowance.length; i++) {
       allow [allowance [i]] = Number (allowvalue [i]);
     }
+    if (allow.adminAll) {
+      allowvalue = "1".repeat (this.allowance.length);
+      for (var i=0; i<allowance.length; i++) {
+        allow [allowance [i]] = 1;
+      }
+    }
     if (allow.deleteImg) {  // NOTE *  If ...
       allow.delcreLink = 1; // NOTE *  then set this too
       i = allowance.indexOf ("delcreLink");
@@ -206,7 +212,7 @@ export default class CommonStorageService extends Service {
       allowvalue = allowvalue.slice (0, i - allowvalue.length) + "1" + allowvalue.slice (i + 1 - allowvalue.length);
     }
     // Hide smallbuttons we don't need:
-    if (allow.adminAll || allow.saveChanges) {
+    if (allow.saveChanges) {
       document.getElementById('saveOrder').style.display = '';
     } else { // Any user may reorder but not save
       document.getElementById('saveOrder').style.display = 'none';

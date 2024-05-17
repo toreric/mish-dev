@@ -19,6 +19,7 @@ import { Language } from './language';
 import { MenuMain } from './menu-main';
 
 import { dialogLoginId } from './dialog-login';
+import { dialogRightsId } from './dialog-login';
 
 const returnValue = cell('');
 
@@ -38,9 +39,12 @@ document.addEventListener('mousedown', (event) => {
 class Welcome extends Component {
   @service('common-storage') z;
 
+  openRights = async () => {
+    this.z.openModalDialog(dialogRightsId, 0);
+    // this.z.openDialog(dialogRightsId, 0);
+  }
   openLogIn = async () => {
     this.z.openModalDialog(dialogLoginId, 0);
-    // this.z.openDialog(dialogLoginId, 0);
   }
 
   toggleBackg = () => {
@@ -90,7 +94,7 @@ export default class extends Welcome {
       <h1 style="margin:0 0 0 4rem;display:inline">{{t "header"}}</h1>&nbsp;
 
       <button type="button" title={{t 'button.backgtitle'}} {{on 'click' (fn this.toggleBackg)}}>{{t 'dark'}}/{{t 'light'}}</button>&nbsp;
-      <button type="button" {{on 'click' (fn this.openLogIn)}}>{{t 'button.optlogin'}}</button>&nbsp;
+      <span><button type="button" {{on 'click' (fn this.openRights)}}>{{t 'button.rightsinfo'}}</button>&nbsp;<button type="button" {{on 'click' (fn this.openLogIn)}}>{{t 'button.optlogin'}}</button></span>&nbsp;
       <span>{{t 'time.text'}}
         <span><Clock @locale={{t 'intlcode'}} /></span>
       </span>

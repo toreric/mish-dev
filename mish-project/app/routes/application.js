@@ -14,10 +14,10 @@ export default class ApplicationRoute extends Route {
     // Can perhaps be resolvet via cockies or some similar measure. Until then,
     // this.intl.setLocale(['...']) may be changed for testing, like down below.
     this.intl.setLocale([defaultLocale]);*/
+    // this.intl.setLocale([this.intl.t('intlcode')]);
 
-    this.intl.setLocale([this.intl.t('intlcode')]);
     // this.intl.setLocale(['sv-se']);
-    // this.intl.setLocale(['de-de']);
+    this.intl.setLocale(['de-de']);
     // this.intl.setLocale(['en-us']);
   }
 }

@@ -3,20 +3,20 @@ price_banner: "{product} kostar {price, number, ::currency/EUR}"
 allowed: "                Får"
 adminAll:     göra vadsomhelst
 albumEdit:    göra/radera album
-appendixEdit: (arbeta med bilagor +4)
+appendixEdit: (arbeta med bilagor +4)¹
 appendixView: (se på bilagor)
 delcreLink:   flytta till annat album, göra/radera länkar
 deleteImg:    radera bilder +5
 imgEdit:      (redigera bilder)
 imgHidden:    gömma/visa bilder
-imgOriginal:  se högupplösta bilder
+imgOriginal:  se högupplösta bilder²
 imgReorder:   flytta om bilder inom album
 imgUpload:    ladda upp originalbilder till album
 notesEdit:    redigera/spara anteckningar +13
 notesView:    se på anteckningar
 saveChanges:  spara ändringar utöver text
 setSetting:   ändra inställningar
-textEdit:     redigera/spara bildtexter, gömda album
+textEdit:     redigera/spara bildtexter, gömda album³
 
 dark: Mörk
 #NOTE: the guest value must exist in the _imdb_settings.sqlite user table
@@ -33,8 +33,9 @@ button:
   keywords:  Nyckelord
   login:     Logga in
   notes:     Anteckningar
-  optlogin:  Inloggning/om rättigheter
+  optlogin:  Inloggning
   rights:    Om rättigheter
+  rightsinfo: Rättighetsinformation
   save:      Spara
   saveclose: Spara och stäng
 buttons:
@@ -96,6 +97,13 @@ dialog:
   rights:
     header: Lista över rättigheter och deras innebörd
     text0: "Närmast sifferkolumnen visas de gällande rättigheterna:"
+    text1: Du får se och använda bilderna för eget bruk men inte distribuera dem vidare.
+    text2: Du får inte heller använda dem för något kommersiellt eller vinstdrivande syfte.
+    text3: Du åtar dig att respektera tillämplig upphovsrättslagstiftning och att inte överlåta bilder till tredje part.
+    text4: Vänligen hantera alla frågor om tillstånd för distribution eller överlåtelse genom att kontakta Sävar Hembygdsförening.
+    footnote1: "¹ Rättigheter inom parentes: Ännu ej implementerade"
+    footnote2: "² Begränsning för vissa bilder på grund av ofullständig upphovsrätt"
+    footnote3: "³ Utan denna rättighet går det inte att veta om det finns gömda album"
   text:
     header:   Bildtexter för
     keywords: Nyckelord för

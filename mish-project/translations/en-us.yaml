@@ -1,22 +1,22 @@
 price_banner: "{product} costs {price, number, ::currency/EUR}"
 
 allowed: "                Allowed to"
-adminAll:     göra vadsomhelst
-albumEdit:    göra/radera album
-appendixEdit: (arbeta med bilagor +4)
-appendixView: (se på bilagor)
-delcreLink:   flytta till annat album, göra/radera länkar
-deleteImg:    radera bilder +5
-imgEdit:      (redigera bilder)
-imgHidden:    gömma/visa bilder
-imgOriginal:  se högupplösta bilder
-imgReorder:   flytta om bilder inom album
-imgUpload:    ladda upp originalbilder till album
-notesEdit:    redigera/spara anteckningar +13
-notesView:    se på anteckningar
-saveChanges:  spara ändringar utöver text
-setSetting:   ändra inställningar
-textEdit:     redigera/spara bildtexter, gömda album
+adminAll:     do anything
+albumEdit:    make/erase albums
+appendixEdit: (edit appendices +4)¹
+appendixView: (view appendices)
+delcreLink:   move to another album, make/erase links
+deleteImg:    erase images +5
+imgEdit:      (edit images)
+imgHidden:    hide/show images
+imgOriginal:  view high density images²
+imgReorder:   move images within an album
+imgUpload:    upload original images to album
+notesEdit:    edit/save notes +13
+notesView:    view notes
+saveChanges:  save changes more than texts
+setSetting:   change settings
+textEdit:     edit/save image texts/captions, access hidden albums³
 
 dark: Dark
 #NOTE: the guest value must exist in the _imdb_settings.sqlite user table
@@ -33,8 +33,9 @@ button:
   keywords:  Keywords
   login:     Log in
   notes:     Notes
-  optlogin:  Log in/rights information
+  optlogin:  Log in
   rights:    About rights
+  rightsinfo: Rights information
   save:      Save
   saveclose: Save and close
 buttons:
@@ -96,6 +97,13 @@ dialog:
   rights:
     header: List of rights and their meaning
     text0: "The current rights are shown next to the number column:"
+    text1: You are allowed to see and have the images for your own use but not to distribute them further.
+    text2: Nor may you use them for any commercial or profit-making purpose.
+    text3: You undertake to respect applicable copyright legislation and not to transfer images to third parties.
+    text4: Please handle all questions about permission for possible distribution or transfer by contacting Sävar Hembygdsförening.
+    footnote1: "¹ Rights in parentheses: Not yet implemented"
+    footnote2: "² Restriction for some images due to incomplete Copyright"
+    footnote3: "³ Without this permission, there is no way to know if hidden albums exist"
   text:
     header:   Captions for
     keywords: Keywords for
