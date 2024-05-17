@@ -7,6 +7,9 @@ import { tracked } from '@glimmer/tracking';
 export default class CommonStorageService extends Service {
   @service intl;
 
+  //#region Variables
+  //== Significant Mish system global variables
+
   @tracked  bkgrColor = '#cbcbcb'; //common background color
   @tracked  credentials = ''; //user credentials \n-string
   @tracked  freeUsers = 'guest...';
@@ -14,13 +17,16 @@ export default class CommonStorageService extends Service {
   @tracked  imdbDirs = '';
   @tracked  imdbRoot = '';
   @tracked  imdbRoots = ['dummy', 'fake', 'falsch'];
-            picFoundBaseName = this.intl.t('picfound');
+  @tracked  picFoundBaseName = this.intl.t('picfound');
             // The 'found-pics' temporary catalog name is amended with a random 4-code:
-            picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
+  @tracked  picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
   @tracked  picName = 'IMG_1234a_2023_november_19'; //current image name
   @tracked  userDir = '';
   @tracked  userName = this.intl.t('guest');
   @tracked  userStatus = '';
+
+  //#region Utilities
+  //== Other service functions
 
   loli = (text) => { // loli = log list
     console.log(this.userName + ':', text);
@@ -30,10 +36,14 @@ export default class CommonStorageService extends Service {
   //== Server tasks
 
   getCredentials = async (username) => {
-    // await new Promise (z => setTimeout (z, 999));
+    // await new Promise (z => setTimeout (z, 555));
     username = username.trim();
     // this.loli(this.userName);
-    if (username === 'Get user name') username = this.userName; // Welcome, initiation
+    if (username === 'Get user name') { // Welcome, initiation
+      username = this.userName; // Default log in
+      // this.imdbDir = '';  // Empty it
+      this.imdbRoot = ''; // Empty it
+    }
     // this.loli(username + ' (parameter)');
     if (username === 'Get allowances') username = '';
     return new Promise((resolve, reject) => {
@@ -126,16 +136,16 @@ export default class CommonStorageService extends Service {
   // allowvalue is the source of the 'allow' property values, reset at login
   @tracked allowvalue = "0".repeat (this.allowance.length);
 
-  // Information text retreived from the _imdb_settings.sqlite datbase at login
+  // Infotext retreived from _imdb_settings.sqlite datbase in dialog-login
   @tracked allowances = '';
 
   zeroSet = () => { // Will this be needed any more?
     this.allowvalue = ('0'.repeat (this.allowance.length));
   }
 
-  allow = {};
+  @tracked allow = {};
 
-  allowance = [     //  'allow' order
+  @tracked allowance = [     //  'allow' order
                     //
     "adminAll",     // + allow EVERYTHING
     "albumEdit",    // +  " create/delete album directories
@@ -157,8 +167,8 @@ export default class CommonStorageService extends Service {
                     // o = not yet used
   ];
 
-  get allowText() {[
   // allowText = [ // Ordered as 'allow', IMPORTANT!
+  get allowText() { return [
     `adminAll: ${this.intl.t('adminAll')}`,
     `albumEdit: ${this.intl.t('albumEdit')}`,
     `appendixEdit: ${this.intl.t('appendixEdit')}`,

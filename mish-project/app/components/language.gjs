@@ -13,9 +13,11 @@ export class Language extends Component {
 
   changeLocale = async (newLoc) => {
     this.intl.setLocale([newLoc]);
+    this.z.loli('set language to ' + newLoc);
   }
   changeLanguage = async (event) => {
     this.intl.setLocale([event.target.value]);
+    this.z.loli('set language to ' + event.target.value);
   }
   isActive = (locale) => {
     return this.intl.locale[0] === locale;

@@ -74,12 +74,14 @@ export class DialogLogin extends Component {
   }
 
   // Format allowances for dialogRights
-  // @action
-  allowances = async () => {
+  get allowances() {
     let text = this.z.allowances.split('\n');
+      // console.log(this.z.allowvalue);
     let av = this.z.allowvalue.replace(/0/g, '⋅').replace(/1/g, '●');
-    await new Promise (z => setTimeout (z, 555));
+      // console.log(av);
+      // console.log(this.z.allowText);
     var add = this.z.allowText;
+      // console.log(add);
     text[1] +=  this.intl.t('allowed');
     let j = 2;
     for (let i=0;i<add.length;i++) {
@@ -88,6 +90,21 @@ export class DialogLogin extends Component {
     }
     return text.join('\n');
   }
+
+  // @action
+  // allowances = async () => {
+  //   let text = this.z.allowances.split('\n');
+  //   let av = this.z.allowvalue.replace(/0/g, '⋅').replace(/1/g, '●');
+  //   await new Promise (z => setTimeout (z, 555));
+  //   var add = this.z.allowText;
+  //   text[1] +=  this.intl.t('allowed');
+  //   let j = 2;
+  //   for (let i=0;i<add.length;i++) {
+  //     text[j] += av[i] + ' ' + (i + 1) + ' = ' + add[i];
+  //     j++;
+  //   }
+  //   return text.join('\n');
+  // }
 
   // Make an allowvalue array for dialogRights
   allowvalues = () => {
@@ -152,7 +169,7 @@ export class DialogLogin extends Component {
             {{t 'dialog.rights.text0'}}
           </p>
           <p>
-            <pre alt="PRE keeps line feeds" style="font-family:'Andale Mono',FreeMono;font-size:85%;text-align:left"> {{(this.allowances)}}</pre>
+            <pre alt="PRE keeps line feeds" style="font-family:'Andale Mono',FreeMono;font-size:85%;text-align:left"> {{this.allowances}}</pre>
           </p>
 
           {{!-- <div class="" style="display:grid;grid-template-columns:auto auto auto auto auto auto auto">

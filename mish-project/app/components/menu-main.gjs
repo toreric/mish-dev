@@ -51,7 +51,7 @@ export class MenuMain extends Component {
   someFunction = (param) => {this.z.loli(param);}
 
   jstreeHdr = () => {
-    return this.intl.t('albumcoll') + ' ' + this.z.imdbRoot;
+    return this.intl.t('albumcoll') + ' ”' + this.z.imdbRoot + '”';
   }
 
   <template>
