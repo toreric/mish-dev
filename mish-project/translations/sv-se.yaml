@@ -1,13 +1,14 @@
 price_banner: "{product} kostar {price, number, ::currency/EUR}"
 
+# These are also for the dialog.rights
 allowed: "                Får"
 adminAll:     göra vadsomhelst
 albumEdit:    göra/radera album
 appendixEdit: (arbeta med bilagor +4)¹
-appendixView: (se på bilagor)
+appendixView: (se på bilagor)¹
 delcreLink:   flytta till annat album, göra/radera länkar
 deleteImg:    radera bilder +5
-imgEdit:      (redigera bilder)
+imgEdit:      (redigera bilder)¹
 imgHidden:    gömma/visa bilder
 imgOriginal:  se högupplösta bilder²
 imgReorder:   flytta om bilder inom album
@@ -19,7 +20,8 @@ setSetting:   ändra inställningar
 textEdit:     redigera/spara bildtexter, gömda album³
 
 dark: Mörk
-#NOTE: the guest value must exist in the _imdb_settings.sqlite user table
+#NOTE: Choose a guest: value which exists in the _imdb_settings.sqlite 'user' table!
+#      Else use instead the standard name guest!
 guest: gäst
 intlcode: sv-se
 light: ljus
@@ -38,6 +40,7 @@ button:
   rightsinfo: Rättighetsinformation
   save:      Spara
   saveclose: Spara och stäng
+
 buttons:
   left:
     main: Huvudmeny
@@ -58,11 +61,8 @@ buttons:
 
     up: "Gå upp (visa\n
         översta raden)\n
-        [pgUp]"
-
-    meet: "Möte: Här ses man på\n
-          Internet (i nytt fönster).\n
-          Kom överens med de(n)\n
+        #NOTE: the guest value must exist in the _imdb_settings.sqlite user table
+  Kom överens med de(n)\n
           du vill träffa. Det behövs\n
           inga inbjudningar – ni\n
           bara klickar här!"
@@ -95,7 +95,7 @@ dialog:
     text3: användarnamn utan nyckelord
     error: Felaktigt användarnamn eller nyckelord, försök igen!
   rights:
-    header: Lista över rättigheter och deras innebörd, samt rättsliga användarvillkor längst ner
+    header: Lista över användarrättigheter och deras innebörd, samt rättsliga användarvillkor längst ner
     text0: "Närmast sifferkolumnen visas de gällande rättigheterna:"
     text1: Du får se och använda bilderna för eget bruk men inte distribuera dem vidare.
     text2: Du får inte heller använda dem för något kommersiellt eller vinstdrivande syfte.

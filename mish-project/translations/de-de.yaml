@@ -1,13 +1,14 @@
 price_banner: "{product} kostet {price, number, ::currency/EUR}"
 
+# These are also for the dialog.rights
 allowed: "                Erlaubt zu"
 adminAll:     irgendetwas tun
 albumEdit:    Album erstellen/löschen
 appendixEdit: (mit Anhängen arbeiten +4)¹
-appendixView: (Anhänge anschauen)
+appendixView: (Anhänge anschauen)¹
 delcreLink:   Bilder in andere Alben verschieben, Links erstellen/löschen
 deleteImg:    Bilder löschen +5
-imgEdit:      (Bilder bearbeiten)
+imgEdit:      (Bilder bearbeiten)¹
 imgHidden:    Bilder ein-/ausblenden
 imgOriginal:  hochauflösende Bilder sehen²
 imgReorder:   Bilder innerhalb von Alben verschieben
@@ -19,7 +20,8 @@ setSetting:   Einstellungen ändern
 textEdit:     Untertiteln bearbeiten/speichern, ausgeblendete Alben anzeigen³
 
 dark: Dunkel
-#NOTE: the guest value must exist in the _imdb_settings.sqlite user table
+#NOTE: Choose a guest: value which exists in the _imdb_settings.sqlite 'user' table!
+#      Else use instead the standard name guest!
 guest: gast
 intlcode: de-de
 light: licht
@@ -38,6 +40,7 @@ button:
   rights:    Über Rechte
   save:      Speichern
   saveclose: Speichern und schließen
+
 buttons:
   left:
     main: Hauptmenü
@@ -95,7 +98,7 @@ dialog:
     text3: Benutzernamen ohne Passwort
     error: Falscher Benutzername oder Passwort, erneut versuchen!
   rights:
-    header: Liste der Rechte und ihrer Bedeutung, mit rechtliche Nutzungsbedingungen unten
+    header: Liste der Nutzerrechte und ihrer Bedeutung, mit rechtliche Nutzungsbedingungen unten
     text0: "Aktuelle Rechte sind neben der Zahlenspalte angezeigt:"
     text1: Es ist Ihnen gestattet, die Bilder für Ihren eigenen Gebrauch zu sehen und zu besitzen, sie jedoch nicht weiter zu verbreiten.
     text2: Sie dürfen sie auch nicht für kommerzielle oder gewinnbringende Zwecke verwenden.

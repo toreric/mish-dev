@@ -122,18 +122,19 @@ module.exports = function (app) { // Start module.exports
         let rows = setdb.prepare('SELECT * FROM class ORDER BY status').all()
         var allowances = ''
         for (let j=0;j<rows.length;j++) {
-          allowances +=  ' ' + rows[j].status
+          allowances +=  rows[j].status + ' '
         }
-          allowances += '\n───────────────────────────────────────────────\n'
+          allowances += '\n──────────────────────────────────────────────\n'
         let al = rows[0].allow.length
         for (let i=0;i<al;i++) {
           for (let j=0;j<rows.length;j++) {
             // allowances += '     ' + (rows[j].allow)[i].replace(/0/g, '⋅').replace(/1/g, '@') // overkill
-            allowances += '     ' + (rows[j].allow)[i].replace('0', '.').replace('1', 'x')
+            if (j) { var space = '     ' } else { space = '    ' }
+            allowances += space + (rows[j].allow)[i].replace('0', '.').replace('1', 'x')
           }
           allowances += '     \n'
         }
-        allowances += '───────────────────────────────────────────────\n'
+        allowances += '──────────────────────────────────────────────\n'
         console.log(allowances.trim())
         res.location ('/')
         res.send(allowances.trim())

@@ -25,10 +25,11 @@ export class DialogLogin extends Component {
   logIn = async () => {
     let user = document.querySelector('input.user_').value.trim();
     if (!user) user = this.z.userName;
+    // Get the credentials for user, cred = [password, userStatus, allowvalue, freeUsers]
     let cred = (await this.z.getCredentials(user)).split('\n');
+
     let pwrd = document.querySelector('input.password_').value.trim();
-    // cred = [password, userStatus, allowvalue, freeUsers], no status for illegal users
-    if (cred[1] && pwrd === cred[0]) {
+    if (cred[1] && pwrd === cred[0]) { // No status for illegal users
       var oldUser = this.z.userName;
       document.getElementById('logInError').style.display = 'none';
       document.querySelector('input.user_').value = '';
@@ -57,7 +58,6 @@ export class DialogLogin extends Component {
   }
 
   // Detect closing Esc key and handle dialog
-  // @action
   detectEscClose = (e) => {
     if (e.keyCode === 27) { // Esc key
       this.z.closeDialog(dialogLoginId);
@@ -99,7 +99,7 @@ export class DialogLogin extends Component {
   <template>
     <div style="display:flex" {{on 'keydown' this.detectEscClose}} {{on 'click' this.detectClickOutside}}>
 
-      <dialog id="dialogLogin">
+      <dialog id="dialogLogin" draggable="false" ondragstart="return false">
         <header data-dialog-draggable>
           <div style="width:99%">
             <p>{{t 'dialog.login.header'}}<span>{{null}}</span></p>
@@ -108,7 +108,7 @@ export class DialogLogin extends Component {
           </div>
         </header>
         <main style="text-align:center">
-          <form action="">
+          <form onsubmit="this.logIn()">
             {{!-- <p>{{this.z.picName}}</p> --}}
             <p style="margin:1rem">
               {{t 'dialog.login.text1'}} <span>{{this.z.userName}}</span>
@@ -139,7 +139,7 @@ export class DialogLogin extends Component {
         </footer>
       </dialog>
 
-      <dialog id="dialogRights">
+      <dialog id="dialogRights" draggable="false" ondragstart="return false">
         <header data-dialog-draggable>
           <div style="width:99%">
             <p>{{t 'dialog.rights.header'}}<span></span></p>
@@ -147,14 +147,14 @@ export class DialogLogin extends Component {
             <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogRightsId)}}>×</button>
           </div>
         </header>
-        <main style="text-align:center">
+        <main style="text-align:center;padding:0 0.25rem 0 0.25rem">
           <p alt="Delvis kopierat från dialogLogin">
             {{t 'dialog.login.text1'}} <span>{{this.z.userName}}</span>
             {{t 'with'}} [<span>{{this.z.userStatus}}</span>]-{{t 'rights'}}.
             {{t 'dialog.rights.text0'}}
           </p>
           <p style="text-align:left;font-size:85%">
-            <pre alt="PRE keeps line feeds" style="font-family:'Andale Mono','Cascadia Mono';font-size:97%;margin:0"> {{this.allowances}}</pre>{{t 'dialog.rights.footnote1'}}<br>{{t 'dialog.rights.footnote2'}}
+            <pre alt="PRE keeps line feeds" style="font-family:'Andale Mono','Cascadia Mono';font-size:97%;margin:0">{{this.allowances}}</pre>{{t 'dialog.rights.footnote1'}}<br>{{t 'dialog.rights.footnote2'}}
             <br>{{t 'dialog.rights.footnote3'}}
             </p>
             <p style="text-align:left;font-size:85%;font-weight:bold">

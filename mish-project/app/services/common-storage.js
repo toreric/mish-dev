@@ -17,12 +17,19 @@ export default class CommonStorageService extends Service {
   @tracked  imdbDirs = '';
   @tracked  imdbRoot = '';
   @tracked  imdbRoots = ['dummy', 'fake', 'falsch'];
-  @tracked  picFoundBaseName = this.intl.t('picfound');
-            // The 'found-pics' temporary catalog name is amended with a random 4-code:
+        get intlCode() { return `${this.intl.t('intlcode')}`; }
+  // @tracked  picFoundBaseName = this.intl.t('picfound');
+        get picFoundBaseName() { return `${this.intl.t('picfound')}`; }
+  // The found pics temporary catalog name is amended with a random 4-code:
   @tracked  picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
+     // get picFound() {
+     //   return `${this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6)}`;
+     // }
   @tracked  picName = 'IMG_1234a_2023_november_19'; //current image name
   @tracked  userDir = '';
-  @tracked  userName = this.intl.t('guest');
+        get defaultUserName() { return `${this.intl.t('guest')}`; }
+  @tracked  userName = this.defaultUserName; // May be changed at another login
+
   @tracked  userStatus = '';
 
   //#region Utilities
@@ -53,7 +60,7 @@ export default class CommonStorageService extends Service {
       xhr.setRequestHeader('username', encodeURIComponent(username));
       xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
       xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
-      xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
+      xhr.setRequestHeader('picfound', this.picFound); // All 'widhtin 255' characters
       xhr.onload = function() {
         let res = xhr.response;
         resolve(res);
@@ -75,7 +82,10 @@ export default class CommonStorageService extends Service {
     return new Promise ( (resolve, reject) => {
       var xhr = new XMLHttpRequest ();
       xhr.open ('GET', 'rootdir/', true, null, null);
+      xhr.setRequestHeader('username', encodeURIComponent(this.username));
       xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
+      xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
+      xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
       xhr.onload = function () {
         if (this.status >= 200 && this.status < 300) {
           var dirList = xhr.response;
