@@ -46,6 +46,7 @@ export class MenuMain extends Component {
   selectRoot = (event) => {
     this.z.imdbRoot = event.target.value;
     this.z.loli('IMDB_ROOT set to ' + this.z.imdbRoot);
+    // HÄR ska servern skicka subalbumlisan
   }
 
   someFunction = (param) => {this.z.loli(param);}

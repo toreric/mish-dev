@@ -16,34 +16,26 @@ module.exports = function (app) { // Start module.exports
   const SQLite = require ('better-sqlite3')
   const setdb = new SQLite('_imdb_settings.sqlite')
 
-  // ----- Upload counter
-  let n_upl = 0
-  // ----- mailSender/host/provider/smtpRelay for the contact function
-  let mailsender = 'savarhembygd@telia.com'
-  // ----- Present work directory
-  let WWW_ROOT = path.resolve ('.')
-  // ----- Root directory where IMDB_ROOTs are found
-  let IMDB_HOME = imdbHome () // From env.var. $IMDB_HOME or $HOME
-  // ----- Image database root directory
-  let IMDB_ROOT = '' // Must be set in route
-  // ----- Image database directory
-  let IMDB_DIR = '' // Must be set in route
-  // ----- Name of 
+  let n_upl = 0 // Upload counter
+  let mailsender = 'savarhembygd@telia.com' // mailSender/host/provider/smtpRelay
+  let WWW_ROOT = path.resolve('.') // Present work directory
+                             // Root directory where IMDB_ROOTs are found:
+  let IMDB_HOME = imdbHome() // From env.var. $IMDB_HOME or $HOME
+  let IMDB_ROOT = '' // Image database root directory
+  let IMDB_DIR = ''  // Actual image database (sub)directory
   let IMDB = ''
-  // ----- Name of special (temporary) search result albums
-  let picFound = ''
-  // ----- Max lifetime (minutes) after last access of a special (temporary) search result album
+  let picFound = '' // Name of special (temporary) search result album
+  // Max lifetime (minutes) after last access of a special (temporary) search result album
   let toold = 60
-  // ----- For debug data(base) directories
+  // For debug data(base) directories
   let show_imagedir = false // for debugging
-
   // ===== Make a synchronous shell command formally 'asynchronous' (cf. asynchronous execP)
   let cmdasync = async (cmd) => {return execSync (cmd)}
   // ===== ABOUT COMMAND EXECUTION
   // ===== `execP` provides a non-blocking, promise-based approach to executing commands, which is generally preferred in Node.js applications for better performance and easier asynchronous handling.
   // ===== `cmdasync`, using `execSync`, offers a synchronous alternative that blocks the event loop, which might be useful in specific scenarios but is generally not recommended for most use cases due to its blocking nature. `a = await cmdasync(cmd)` and `a = execSync(cmd)` achieve the same end result of executing a command synchronously. The usage differs based on the context (asynchronous with `await` for `cmdasync` versus direct synchronous call for `execSync`). The choice between them depends on whether you're working within an asynchronous function and your preference for error handling and code style.
 
-
+  //#region start route
   // ##### R O U T I N G  E N T R I E S
   // Check 'Express route tester'!
   // ##### General passing point
@@ -87,6 +79,7 @@ module.exports = function (app) { // Start module.exports
     next() // pass control to the next handler
   })
 
+  //#region login
   // ##### Return a user's credentials for login, or return
   //       all available user statuses and their allowances
   app.get('/login/', (req, res) => {
@@ -146,6 +139,7 @@ module.exports = function (app) { // Start module.exports
     }
   })
 
+  //#region rootdir
   // ##### Find subdirs which are album roots
   app.get ('/rootdir/', function (req, res) {
     readSubdir (IMDB_HOME).then (dirlist => {
@@ -164,6 +158,7 @@ module.exports = function (app) { // Start module.exports
     })
   })
 
+  //#region imdbdirs
   // ##### Get IMDB (image data base) directories list,
   //       i.e. get all possible album directories
   app.get ('/imdbdirs/', async function (req, res) {

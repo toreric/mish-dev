@@ -108,7 +108,7 @@ export class DialogLogin extends Component {
           </div>
         </header>
         <main style="text-align:center">
-          <form onsubmit="this.logIn()">
+          <form {{on 'submit' this.logIn}}>
             {{!-- <p>{{this.z.picName}}</p> --}}
             <p style="margin:1rem">
               {{t 'dialog.login.text1'}} <span>{{this.z.userName}}</span>
@@ -133,9 +133,9 @@ export class DialogLogin extends Component {
           <br>
         </main>
         <footer data-dialog-draggable>
-          <button type="button" {{on 'click' (fn this.z.closeDialog dialogLoginId)}}>{{t 'button.close'}}</button>&nbsp;
+          <button type="submit" autofocus {{on 'click' (fn this.logIn)}}>{{t 'button.login'}}</button>&nbsp;
           <button type="button" {{on 'click' (fn this.z.openModalDialog dialogRightsId 0)}}>{{t 'button.rights'}}</button>&nbsp;
-          <button type="submit" {{on 'click' (fn this.logIn)}}>{{t 'button.login'}}</button>&nbsp;
+          <button type="button" {{on 'click' (fn this.z.closeDialog dialogLoginId)}}>{{t 'button.close'}}</button>&nbsp;
         </footer>
       </dialog>
 
