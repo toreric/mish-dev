@@ -47,20 +47,6 @@ class Welcome extends Component {
     this.z.openModalDialog(dialogLoginId, 0);
   }
 
-  toggleBackg = () => {
-    if (this.z.bkgrColor === '#cbcbcb') {
-      this.z.bkgrColor = '#000';
-      this.z.textColor = '#fff';
-      this.z.loli('set dark background');
-    } else {
-      this.z.bkgrColor = '#cbcbcb';
-      this.z.textColor = '#000';
-      this.z.loli('set light background');
-    }
-    document.querySelector('body').style.background = this.z.bkgrColor;
-    document.querySelector('body').style.color = this.z.textColor;
-  }
-
   getCred = async () => {
     if (!this.z.userStatus) { // only once
       // Set a guest user and corresponding allowances
@@ -89,11 +75,11 @@ const executeOnInsert = modifier((element, [component]) => {
 export default class extends Welcome {
   @service('common-storage') z;
   <template>
-    <div {{executeOnInsert this}} style="display:flex;justify-content:space-between" >
+    <div {{executeOnInsert this}} style="display:flex;justify-content:space-between">
       {{! Html inserted here will appear beneath the buildStamp div }}
       <h1 style="margin:0 0 0 4rem;display:inline">{{t "header"}}</h1>&nbsp;
 
-      <button type="button" title={{t 'button.backgtitle'}} {{on 'click' (fn this.toggleBackg)}}>{{t 'dark'}}/{{t 'light'}}</button>&nbsp;
+      <button type="button" title={{t 'button.backgtitle'}} {{on 'click' (fn this.z.toggleBackg)}}>{{t 'dark'}}/{{t 'light'}}</button>&nbsp;
       <span><button type="button" {{on 'click' (fn this.openRights)}}>{{t 'button.rightsinfo'}}</button>&nbsp;<button type="button" {{on 'click' (fn this.openLogIn)}}>{{t 'button.optlogin'}}</button></span>&nbsp;
       <span>{{t 'time.text'}}
         <span><Clock @locale={{t 'intlcode'}} /></span>

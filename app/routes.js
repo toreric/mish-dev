@@ -19,22 +19,21 @@ module.exports = function (app) { // Start module.exports
   let n_upl = 0 // Upload counter
   let mailsender = 'savarhembygd@telia.com' // mailSender/host/provider/smtpRelay
   let WWW_ROOT = path.resolve('.') // Present work directory
-                             // Root directory where IMDB_ROOTs are found:
-  let IMDB_HOME = imdbHome() // From env.var. $IMDB_HOME or $HOME
+  let IMDB_HOME = imdbHome() // Root directory where IMDB_ROOTs are found
   let IMDB_ROOT = '' // Image database root directory
   let IMDB_DIR = ''  // Actual image database (sub)directory
   let IMDB = ''
   let picFound = '' // Name of special (temporary) search result album
-  // Max lifetime (minutes) after last access of a special (temporary) search result album
-  let toold = 60
-  // For debug data(base) directories
-  let show_imagedir = false // for debugging
+  let toold = 60 // Max lifetime (min:s) after last access of a temporary search result album
+  let show_imagedir = false // For debug data(base) directories
+
   // ===== Make a synchronous shell command formally 'asynchronous' (cf. asynchronous execP)
   let cmdasync = async (cmd) => {return execSync (cmd)}
   // ===== ABOUT COMMAND EXECUTION
   // ===== `execP` provides a non-blocking, promise-based approach to executing commands, which is generally preferred in Node.js applications for better performance and easier asynchronous handling.
   // ===== `cmdasync`, using `execSync`, offers a synchronous alternative that blocks the event loop, which might be useful in specific scenarios but is generally not recommended for most use cases due to its blocking nature. `a = await cmdasync(cmd)` and `a = execSync(cmd)` achieve the same end result of executing a command synchronously. The usage differs based on the context (asynchronous with `await` for `cmdasync` versus direct synchronous call for `execSync`). The choice between them depends on whether you're working within an asynchronous function and your preference for error handling and code style.
 
+  //#region = code regions!
   //#region start route
   // ##### R O U T I N G  E N T R I E S
   // Check 'Express route tester'!
@@ -82,7 +81,7 @@ module.exports = function (app) { // Start module.exports
   //#region login
   // ##### Return a user's credentials for login, or return
   //       all available user statuses and their allowances
-  app.get('/login/', (req, res) => {
+  app.get('/login', (req, res) => {
     var name = decodeURIComponent(req.get('username'))
     console.log('  userName: "' + name + '"')
     var password = ''
@@ -141,7 +140,7 @@ module.exports = function (app) { // Start module.exports
 
   //#region rootdir
   // ##### Find subdirs which are album roots
-  app.get ('/rootdir/', function (req, res) {
+  app.get ('/rootdir', function (req, res) {
     readSubdir (IMDB_HOME).then (dirlist => {
       dirlist = dirlist.join ('\n')
       // var tmp = execSync ("echo $IMDB_ROOT").toString ().trim ()
@@ -160,16 +159,19 @@ module.exports = function (app) { // Start module.exports
 
   //#region imdbdirs
   // ##### Get IMDB (image data base) directories list,
-  //       i.e. get all possible album directories
-  app.get ('/imdbdirs/', async function (req, res) {
+  //       i.e. get all possible album directories, recursive
+  app.get ('/imdbdirs', async function (req, res) {
     await new Promise (z => setTimeout (z, 200))
-    // Refresh picFoundx: the shell commands must execute in sequence
+    // Refresh picFound: the shell commands must execute in sequence
     let pif = IMDB + '/' + picFound
+    console.log(pif)
     let cmd = 'rm -rf ' + pif + ' && mkdir ' + pif + ' && touch ' + pif + '/.imdb'
-    await cmdasync (cmd)
+    console.log(cmd)
+    // await cmdasync(cmd) // ger direktare diagnos
+    await execP(cmd)
     setTimeout (function () {
-      allDirs ().then (dirlist => { // dirlist entries start with the root album
-        areAlbums (dirlist).then (async dirlist => {
+      allDirs().then (dirlist => { // dirlist entries start with the root album
+        areAlbums(dirlist).then (async dirlist => {
           // dirlist = dirlist.sort ()
           let dirtext = dirlist.join ("€")
           let dircoco = [] // directory content counter
@@ -178,41 +180,40 @@ module.exports = function (app) { // Start module.exports
           // Get all thumbnails and select randomly
           // one to be used as "subdirectory label"
           for (let i=0; i<dirlist.length; i++) {
-            cmd = "echo -n `ls " + IMDB + dirlist [i] + "/_mini_* 2>/dev/null`"
+            cmd = "echo -n `ls " + IMDB + dirlist[i] + "/_mini_* 2>/dev/null`"
             let pics = await execP (cmd)
-            pics = pics.toString ().trim ().split (" ")
-            if (!pics [0]) {pics = []} // Remove a "" element
+            pics = pics.toString().trim().split(" ")
+            if (!pics[0]) {pics = []} // Remove a "" element
             let npics = pics.length
             if (npics > 0) {
-              let k, n = 1 + Number ((new Date).getTime ().toString ().slice (-1))
+              let k, n = 1 + Number((new Date).getTime().toString().slice(-1))
               // Instead of seeding, loop n (1 to 10) times to get some variation:
               for (let j=0; j<n; j++) {
-                k = Math.random ()*npics
+                k = Math.random()*npics
               }
-              var albumLabel = pics [Number (k.toString ().replace (/\..*/, ""))]
-            } else {albumLabel = "€" + dirlist [i]}
+              var albumLabel = pics[Number (k.toString ().replace (/\..*/, ""))]
+            } else {albumLabel = "€" + dirlist[i]}
             // Count the number of subdirectories
-            let subs = occurrences (dirtext, dirlist [i]) - 1
+            let subs = occurrences(dirtext, dirlist[i]) - 1
             npics = " (" + npics + ")"
             if (i > 0 && subs) {npics += subs} // text!
-            dircoco.push (npics)
-            dirlabel.push (albumLabel)
+            dircoco.push(npics)
+            dirlabel.push(albumLabel)
           }
           for (let i=0; i<dirlist.length; i++) {
+//HÄR ÄR DET NÅT LURT
             var albumLabel
-            if (dirlabel [i].slice (0, 1) === "€" && dirlabel [i].indexOf (picFound) === -1) {
-              albumLabel = dirlabel [i].slice (1)
-              dirlabel [i] = ""
+            if (dirlabel[i].slice(0, 1) === "€" && dirlabel[i].indexOf('§') === -1) {
+              albumLabel = dirlabel[i].slice(1)
+              dirlabel[i] = ""
               for (let j=i+1; j<dirlist.length; j++) { // Take any subalbum's minipic if available
-                if (albumLabel === dirlabel [j].slice (IMDB.length).slice (0, albumLabel.length)) {
-                  dirlabel [i] = dirlabel [j]
+                if (albumLabel === dirlabel[j].slice(IMDB.length).slice(0, albumLabel.length)) {
+                  dirlabel[i] = dirlabel[j]
                   break
                 }
               }
             }
           }
-
-          //OLD: let fd, ignorePaths = IMDB_HOME + "/" + IMDB_ROOT + "/_imdb_ignore.txt"
           let fd, ignorePaths = IMDB + "/_imdb_ignore.txt"
           try { // Create _imdb_ignore.txt if missing
             fd = await fs.openAsync (ignorePaths, 'r')
@@ -222,12 +223,12 @@ module.exports = function (app) { // Start module.exports
             await fs.closeAsync (fd)
           }
           // An _imdb_ignore line/path may/should start with just './' (if not #)
-          let ignore = (await execP ("cat " + ignorePaths)).toString ().trim ().split ("\n")
+          let ignore = (await execP("cat " + ignorePaths)).toString().trim().split("\n")
           for (let j=0; j<ignore.length; j++) {
             for (let i=0; i<dirlist.length; i++) {
-              if (ignore [j] && ignore [j].slice (0, 1) !== '#') {
-                ignore [j] = ignore [j].replace (/^[^/]*/, "")
-                if (ignore [j] && dirlist [i].startsWith (ignore [j])) dircoco [i] += "*"
+              if (ignore[j] && ignore[j].slice(0, 1) !== '#') {
+                ignore[j] = ignore[j].replace (/^[^/]*/, "")
+                if (ignore[j] && dirlist[i].startsWith (ignore[j])) dircoco[i] += "*"
               }
             }
           }
@@ -235,7 +236,7 @@ module.exports = function (app) { // Start module.exports
           dircoco = dircoco.join ("\n")
           dirlabel = dirlabel.join ("\n")
           // NOTE: IMDB = IMDB_HOME + "/" + IMDB_ROOT, but here "@" separates them (important!):
-          dirtext = IMDB_HOME + "@" + IMDB_ROOT + "\n" + dirtext + "\nNodeJS " + process.version.trim ()
+          dirtext = IMDB_HOME + "@" + IMDB_ROOT + "\n" + dirtext + "\nNodeJS " + process.version.trim()
           res.location ('/')
           //NOTE: The paths include IMDB_ROOT, soon removed by caller!
           res.send (dirtext + "\n" + dircoco + "\n" + dirlabel)
@@ -263,18 +264,18 @@ module.exports = function (app) { // Start module.exports
 
   // ===== Read the dir's content of album sub-dirs (not recursively)
   readSubdir = async (dir, files = []) => {
-    let items = await fs.readdirAsync ('rln' + dir) // items are file || dir names
+    let items = await fs.readdirAsync('rln' + dir) // items are file || dir names
     return Promise.map (items, async (name) => { // Cannot use mapSeries here (why?)
       //let apitem = path.resolve (dir, name) // Absolute path
       let item = path.join (dir, name) // Relative path
       if (acceptedDirName (name) && !brokenLink (item)) {
         let stat = await fs.statAsync ('rln' + item)
-        if (stat.isDirectory ()) {
-          let flagFile = path.join (item, '.imdb')
-          let fd = await fs.openAsync ('rln' + flagFile, 'r')
+        if (stat.isDirectory()) {
+          let flagFile = path.join(item, '.imdb')
+          let fd = await fs.openAsync('rln' + flagFile, 'r')
           if (fd > -1) {
-            await fs.closeAsync (fd)
-            files.push (name)
+            await fs.closeAsync(fd)
+            files.push(name)
           }
         }
       }
@@ -291,13 +292,85 @@ module.exports = function (app) { // Start module.exports
   // ===== Check if an album/directory name can be accepted
   function acceptedDirName (name) { // Note that &ndash; is accepted:
     let acceptedName = 0 === name.replace (/[/\-–@_.a-zåäöA-ZÅÄÖ0-9]+/g, "").length
-    return acceptedName && name.slice (0,1) !== "." && !name.includes ('/.')
+    return acceptedName && name.slice(0,1) !== "." && !name.includes ('/.')
   }
 
   // ===== Is this file/directory a broken link? Returns its name or false
   // NOTE: Broken links may cause severe problems if not taken care of properly!
   brokenLink = item => {
     return execSync ("find '" + item + "' -maxdepth 0 -xtype l 2>/dev/null").toString ()
+  }
+
+
+  // ===== Read the IMDB's content of sub-dirs recursively
+  // Use: allDirs().then (dirlist => { ...
+  // IMDB is the absolute current abum root path
+  // Returns directories formatted like imdbDirs, (first "", then /... etc.)
+  let allDirs = async () => {
+    let dirlist = await cmdasync('find -L ' + IMDB + ' -type d|sort')
+    dirlist = dirlist.toString().trim() // Formalise string
+    dirlist = dirlist.split('\n')
+    for (let i=0; i<dirlist.length; i++) {
+      dirlist[i] = dirlist[i].slice(IMDB.length)
+    }
+    return dirlist
+  }
+
+  // ===== Remove from a directory path array each entry not pointing
+  // to an album, which contains a file named '.imdb', and return
+  // the remaining album directory list. NOTE: Both 'return's (*) are required!
+  let areAlbums = async (dirlist) => {
+    let fd, albums = []
+    return Promise.mapSeries(dirlist, async (album) => { // (*) // CAN use mapSeries here but don't know why!?
+      try {
+        fd = await fs.openAsync('rln' + IMDB + album + '/.imdb', 'r')
+        await fs.closeAsync(fd)
+        if (album.includes("/.")) {
+          // Ignore 'dotted' directory paths
+          //console.log ("NOT album:", album)
+        } else {
+          albums.push(album)
+        }
+      } catch (err) {
+        // Ignore directories without '.imdb' file
+        //console.log ("NOT album:", album)
+      }
+    }).then ( () => {
+      return albums // (*)
+    })
+    .catch ( (err) => {
+      console.error("€RRR", err.message)
+      return err.toString()
+    })
+  }
+
+  /** Function that counts occurrences of a substring in a string;
+   * @param {String} string               The string
+   * @param {String} subString            The substring to search for
+   * @param {Boolean} [allowOverlapping]  Optional. (Default:false)
+   *
+   * @author Vitim.us https://gist.github.com/victornpb/7736865
+   * @see Unit Test https://jsfiddle.net/Victornpb/5axuh96u/
+   * @see http://stackoverflow.com/questions/4009756/how-to-count-string-occurrence-in-string/7924240#7924240
+   */
+  function occurrences(string, subString, allowOverlapping) {
+    string += "";
+    subString += "";
+    if (subString.length <= 0) return (string.length + 1);
+
+    var n = 0,
+      pos = 0,
+      step = allowOverlapping ? 1 : subString.length;
+
+    while (true) {
+      pos = string.indexOf(subString, pos);
+      if (pos >= 0) {
+        ++n;
+        pos += step;
+      } else break;
+    }
+  //console.log(subString, n);
+    return n;
   }
 
 } // End module.exports

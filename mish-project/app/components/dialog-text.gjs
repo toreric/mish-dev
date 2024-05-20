@@ -47,8 +47,9 @@ export class DialogText extends Component {
     }
   }
 
-  // Detect closing click outside modal dialog
+  // Detect closing click outside a dialog-draggable modal dialog
   detectClickOutside = (e) => {
+    if (!navigator.userAgent.includes("Firefox")) return; // Only Firefox can do this
     let tgt = e.target.id;
     if (tgt === dialogTextId || tgt === dialogTextNotesId || tgt === dialogTextKeywordsId) {
       // Outside a modal dialog, else not!
@@ -60,7 +61,7 @@ export class DialogText extends Component {
     <div style="display:flex" {{on 'keydown' this.detectEscClose}} {{on 'click' this.detectClickOutside}}>
 
       <dialog id='dialogText'>
-        <header data-dialog-draggable>
+        <header data-dialog-draggable >
           <p>&nbsp;</p>
           <p>{{t 'dialog.text.header'}} <span>{{this.z.picName}}</span></p>
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogTextId)}}>×</button>

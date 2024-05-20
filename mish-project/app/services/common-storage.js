@@ -10,32 +10,42 @@ export default class CommonStorageService extends Service {
   //#region Variables
   //== Significant Mish system global variables
 
-  @tracked  bkgrColor = '#cbcbcb'; //common background color
-  @tracked  credentials = ''; //user credentials \n-string
-  @tracked  freeUsers = 'guest...';
-  @tracked  imdbDir = '';
-  @tracked  imdbDirs = '';
-  @tracked  imdbRoot = '';
-  @tracked  imdbRoots = ['dummy', 'fake', 'falsch'];
+  @tracked  bkgrColor = '#cbcbcb';          //common background color
+  @tracked  credentials = '';               //user credentials: \n-string from db
+  @tracked  freeUsers = 'guest...';         //user names which do not require passwords
+  @tracked  imdbDir = '';                   //actual/current (sub)album directory
+  @tracked  imdbDirs = '';                  //available album directories at imdbRoot
+  @tracked  imdbRoot = '';                  //chosen album root directory (collection)
+  @tracked  imdbRoots = ['fake', 'falsch']; //avalable album root directories (collections)
         get intlCode() { return `${this.intl.t('intlcode')}`; }
-  // @tracked  picFoundBaseName = this.intl.t('picfound');
         get picFoundBaseName() { return `${this.intl.t('picfound')}`; }
-  // The found pics temporary catalog name is amended with a random 4-code:
+            // The found pics temporary catalog name is amended with a random 4-code:
   @tracked  picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
-     // get picFound() {
-     //   return `${this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6)}`;
-     // }
-  @tracked  picName = 'IMG_1234a_2023_november_19'; //current image name
+  @tracked  picName = 'IMG_1234a2023_nov_19'; //actual/current image name
   @tracked  userDir = '';
         get defaultUserName() { return `${this.intl.t('guest')}`; }
-  @tracked  userName = this.defaultUserName; // May be changed at another login
-
+  @tracked  userName = this.defaultUserName; // May be changed at e.g. logins
   @tracked  userStatus = '';
+  // More variables may be defined further down
 
   //#region Utilities
   //== Other service functions
 
-  loli = (text) => { // loli = log list
+  toggleBackg = () => {
+    if (this.bkgrColor === '#cbcbcb') {
+      this.bkgrColor = '#111';
+      this.textColor = '#fff';
+      this.loli('set dark background');
+    } else {
+      this.bkgrColor = '#cbcbcb';
+      this.textColor = '#111';
+      this.loli('set light background');
+    }
+    document.querySelector('body').style.background = this.bkgrColor;
+    document.querySelector('body').style.color = this.textColor;
+  }
+
+  loli = (text) => { // loli = log list with user name
     console.log(this.userName + ':', text);
   }
 
@@ -113,14 +123,13 @@ export default class CommonStorageService extends Service {
     });
   }
 
-
-  getAlbumDirs = async (thisDir) => {
+  getAlbumDirs = async () => {
     // Get album collections or albums if thisDir is an album root
     return new Promise((resolve, reject) => {
       // ===== XMLHttpRequest returning user credentials
       var xhr = new XMLHttpRequest();
-      xhr.open('GET', 'imdbdirs', true, null, null);
-      xhr.setRequestHeader('username', encodeURIComponent(username));
+      xhr.open('GET', 'imdbdirs/', true, null, null);
+      xhr.setRequestHeader('username', encodeURIComponent(this.username));
       xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
       xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
       xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
@@ -233,7 +242,7 @@ export default class CommonStorageService extends Service {
   }
 
   //#region Menus
-  //== Menu properties/methods
+  //== Menu utilities
 
   toggleMainMenu = async () => {
     var menuMain = document.getElementById("menuMain");
@@ -254,7 +263,7 @@ export default class CommonStorageService extends Service {
   }
 
   //#region Dialogs
-  //== Dialog open/close/modal properties/methods
+  //== Dialog utilities for open/close/modal ...
 
   // Functions openDialog(id, op), toggleDialog(id, op), openModalDialog(id, op),
   // saveDialog(id), closeDialog(id), and saveCloseDialog(id) (= save then close),
@@ -291,7 +300,6 @@ export default class CommonStorageService extends Service {
       if (origPos) diaObj.style = '';
       diaObj.showModal();
       this.loli('opened ' + dialogId + ' (modal)');
-
     }
   }
 

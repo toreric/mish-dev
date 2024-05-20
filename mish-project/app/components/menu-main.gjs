@@ -43,10 +43,13 @@ export class MenuMain extends Component {
   @service('common-storage') z;
   @service intl;
 
-  selectRoot = (event) => {
+  selectRoot = async (event) => {
     this.z.imdbRoot = event.target.value;
     this.z.loli('IMDB_ROOT set to ' + this.z.imdbRoot);
     // HÄR ska servern skicka subalbumlisan
+    let tmp = await this.z.getAlbumDirs();
+    this.z.loli(tmp);
+    this.z.imdbDirs = tmp;
   }
 
   someFunction = (param) => {this.z.loli(param);}

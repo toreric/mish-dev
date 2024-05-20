@@ -64,8 +64,10 @@ export class DialogLogin extends Component {
     }
   }
 
-  // Detect closing click outside modal dialog
+  // Detect closing click outside a dialog-draggable modal dialog
   detectClickOutside = (e) => {
+    // this.z.loli(navigator.userAgent);
+    if (!navigator.userAgent.includes("Firefox")) return; // Only Firefox can do this
     let tgt = e.target.id;
     if (tgt === dialogLoginId || tgt === dialogRightsId ) {
       // Outside a modal dialog, else not!
@@ -129,7 +131,6 @@ export class DialogLogin extends Component {
               {{t 'dialog.login.error'}}
             </p>
           </form>
-          <div style="display:none" info="allowvalue char 'array'">{{this.z.allowvalue}}</div>
           <br>
         </main>
         <footer data-dialog-draggable>
