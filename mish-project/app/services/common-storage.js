@@ -15,6 +15,7 @@ export default class CommonStorageService extends Service {
   @tracked  freeUsers = 'guest...';         //user names which do not require passwords
   @tracked  imdbDir = '';                   //actual/current (sub)album directory
   @tracked  imdbDirs = '';                  //available album directories at imdbRoot
+  @tracked  imdbPath = '';                  //userDir+imdbRoot = absolut path to album root
   @tracked  imdbRoot = '';                  //chosen album root directory (collection)
   @tracked  imdbRoots = ['fake', 'falsch']; //avalable album root directories (collections)
         get intlCode() { return `${this.intl.t('intlcode')}`; }
@@ -22,7 +23,7 @@ export default class CommonStorageService extends Service {
             // The found pics temporary catalog name is amended with a random 4-code:
   @tracked  picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
   @tracked  picName = 'IMG_1234a2023_nov_19'; //actual/current image name
-  @tracked  userDir = '';
+  @tracked  userDir = '/path/to/albums'; //maybe your home dir. or any; server argument!
         get defaultUserName() { return `${this.intl.t('guest')}`; }
   @tracked  userName = this.defaultUserName; // May be changed at e.g. logins
   @tracked  userStatus = '';

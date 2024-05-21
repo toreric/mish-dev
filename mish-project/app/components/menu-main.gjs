@@ -11,6 +11,8 @@ import t from 'ember-intl/helpers/t';
 
 export const menuMainId = 'menuMain';
 
+const LF = '\n';
+
 // Detect closing Esc key for menuMain or open dialogs
 const detectEsc = (event) => {
   if (event.keyCode === 27) { // Esc key
@@ -43,12 +45,14 @@ export class MenuMain extends Component {
   @service('common-storage') z;
   @service intl;
 
-  selectRoot = async (event) => {
+  selectRoot = async (event) => { // Album root = collection
     this.z.imdbRoot = event.target.value;
     this.z.loli('IMDB_ROOT set to ' + this.z.imdbRoot);
-    // HÄR ska servern skicka subalbumlisan
+    // Retreive the album tree of this collection
     let tmp = await this.z.getAlbumDirs();
-    this.z.loli(tmp);
+    this.z.loli(LF + tmp);
+
+
     this.z.imdbDirs = tmp;
   }
 

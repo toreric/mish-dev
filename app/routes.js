@@ -33,7 +33,7 @@ module.exports = function (app) { // Start module.exports
   // ===== `execP` provides a non-blocking, promise-based approach to executing commands, which is generally preferred in Node.js applications for better performance and easier asynchronous handling.
   // ===== `cmdasync`, using `execSync`, offers a synchronous alternative that blocks the event loop, which might be useful in specific scenarios but is generally not recommended for most use cases due to its blocking nature. `a = await cmdasync(cmd)` and `a = execSync(cmd)` achieve the same end result of executing a command synchronously. The usage differs based on the context (asynchronous with `await` for `cmdasync` versus direct synchronous call for `execSync`). The choice between them depends on whether you're working within an asynchronous function and your preference for error handling and code style.
 
-  //#region = code regions!
+  //#region = code regions, only for the editors's minilist!
   //#region start route
   // ##### R O U T I N G  E N T R I E S
   // Check 'Express route tester'!
@@ -173,9 +173,10 @@ module.exports = function (app) { // Start module.exports
       allDirs().then (dirlist => { // dirlist entries start with the root album
         areAlbums(dirlist).then (async dirlist => {
           // dirlist = dirlist.sort ()
+          var albumLabel
           let dirtext = dirlist.join ("€")
-          let dircoco = [] // directory content counter
-          let dirlabel = [] // Album label thumbnail paths
+          let dircoco = [] // directory content counters
+          let dirlabel = [] // album label thumbnail paths
 
           // Get all thumbnails and select randomly
           // one to be used as "subdirectory label"
@@ -191,24 +192,30 @@ module.exports = function (app) { // Start module.exports
               for (let j=0; j<n; j++) {
                 k = Math.random()*npics
               }
-              var albumLabel = pics[Number (k.toString ().replace (/\..*/, ""))]
-            } else {albumLabel = "€" + dirlist[i]}
+              albumLabel = pics[Number(k.toString().replace(/\..*/, ""))]
+            } else {albumLabel = "€" + dirlist[i]} // Mark empty albums
             // Count the number of subdirectories
-            let subs = occurrences(dirtext, dirlist[i]) - 1
+            var subs
+            if(i) {
+              subs = occurrences(dirtext, dirlist[i]) - 1
+            } else {
+              subs = dirlist.length - 1 // All subsubs to root
+            }
             npics = " (" + npics + ")"
-            if (i > 0 && subs) {npics += subs} // text!
+            // if (i > 0 && subs) {npics += subs} // text!
+            if (subs) {npics += subs} // text!
             dircoco.push(npics)
             dirlabel.push(albumLabel)
           }
           for (let i=0; i<dirlist.length; i++) {
-//HÄR ÄR DET NÅT LURT
-            var albumLabel
-            if (dirlabel[i].slice(0, 1) === "€" && dirlabel[i].indexOf('§') === -1) {
+      console.log('A i dirlabel[i]',i,dirlabel[i])
+            if (dirlabel[i].slice(0, 1) === "€") {
               albumLabel = dirlabel[i].slice(1)
               dirlabel[i] = ""
-              for (let j=i+1; j<dirlist.length; j++) { // Take any subalbum's minipic if available
+              for (let j=i+1; j<dirlist.length; j++) { //Take any subalbum's minipic if available
                 if (albumLabel === dirlabel[j].slice(IMDB.length).slice(0, albumLabel.length)) {
                   dirlabel[i] = dirlabel[j]
+      console.log('B i dirlabel[i]',i,dirlabel[i])
                   break
                 }
               }
@@ -226,6 +233,7 @@ module.exports = function (app) { // Start module.exports
           let ignore = (await execP("cat " + ignorePaths)).toString().trim().split("\n")
           for (let j=0; j<ignore.length; j++) {
             for (let i=0; i<dirlist.length; i++) {
+      console.log('C i dirlabel[i]',i,dirlabel[i])
               if (ignore[j] && ignore[j].slice(0, 1) !== '#') {
                 ignore[j] = ignore[j].replace (/^[^/]*/, "")
                 if (ignore[j] && dirlist[i].startsWith (ignore[j])) dircoco[i] += "*"
@@ -236,7 +244,9 @@ module.exports = function (app) { // Start module.exports
           dircoco = dircoco.join ("\n")
           dirlabel = dirlabel.join ("\n")
           // NOTE: IMDB = IMDB_HOME + "/" + IMDB_ROOT, but here "@" separates them (important!):
-          dirtext = IMDB_HOME + "@" + IMDB_ROOT + "\n" + dirtext + "\nNodeJS " + process.version.trim()
+          // dirtext = IMDB_HOME + "@" + IMDB_ROOT + "\n" + dirtext + "\nNodeJS " + process.version.trim()
+          // Add 2 lines at start: Node version and imdbPath
+          dirtext = "\nNodeJS " + process.version.trim() + "\n" + IMDB + "\n" + dirtext
           res.location ('/')
           //NOTE: The paths include IMDB_ROOT, soon removed by caller!
           res.send (dirtext + "\n" + dircoco + "\n" + dirlabel)
@@ -318,14 +328,15 @@ module.exports = function (app) { // Start module.exports
 
   // ===== Remove from a directory path array each entry not pointing
   // to an album, which contains a file named '.imdb', and return
-  // the remaining album directory list. NOTE: Both 'return's (*) are required!
+  // the remaining album directory list. NOTE: Both returns(*) are required!
   let areAlbums = async (dirlist) => {
     let fd, albums = []
-    return Promise.mapSeries(dirlist, async (album) => { // (*) // CAN use mapSeries here but don't know why!?
+    return Promise.mapSeries(dirlist, async (album) => { //(*) CAN use mapSeries here but don't understand why!?
       try {
         fd = await fs.openAsync('rln' + IMDB + album + '/.imdb', 'r')
         await fs.closeAsync(fd)
-        if (album.includes("/.")) {
+        // Exclude dotted, and not actual picFound files
+        if (album.includes('/.') || album.includes('§') && album.indexOf(picFound) === -1) {
           // Ignore 'dotted' directory paths
           //console.log ("NOT album:", album)
         } else {
@@ -336,9 +347,8 @@ module.exports = function (app) { // Start module.exports
         //console.log ("NOT album:", album)
       }
     }).then ( () => {
-      return albums // (*)
-    })
-    .catch ( (err) => {
+      return albums //(*)
+    }).catch ( (err) => {
       console.error("€RRR", err.message)
       return err.toString()
     })
