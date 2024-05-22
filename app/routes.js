@@ -109,7 +109,7 @@ module.exports = function (app) { // Start module.exports
         console.log(' freeUsers:', freeUsers)
 
         res.location ('/')
-        console.log(password +LF+ status +LF+ allow +LF+ freeUsers)
+        // console.log(password +LF+ status +LF+ allow +LF+ freeUsers)
         res.send(password +LF+ status +LF+ allow +LF+ freeUsers)
 
       } else { // Send all recorded user statuses and their allowances, formatted
@@ -166,9 +166,9 @@ module.exports = function (app) { // Start module.exports
     await new Promise (z => setTimeout (z, 200))
     // Refresh picFound: the shell commands must execute in sequence
     let pif = IMDB + '/' + picFound
-    console.log(pif)
+    // console.log(pif)
     let cmd = 'rm -rf ' + pif + ' && mkdir ' + pif + ' && touch ' + pif + '/.imdb'
-    console.log(cmd)
+    console.log(LF + cmd)
     // await cmdasync(cmd) // ger direktare diagnos
     await execP(cmd)
     setTimeout (function () {
@@ -196,10 +196,13 @@ module.exports = function (app) { // Start module.exports
               }
               albumLabel = pics[Number(k.toString().replace(/\..*/, ""))]
             } else {albumLabel = "€" + dirlist[i]} // Mark empty albums
-            // Count the number of subdirectories
-            var subs
+            // Count the number of subdirectories; albums are in sorted order
+            var subs = 0
             if(i) {
-              subs = occurrences(dirtext, dirlist[i]) - 1
+              // subs = occurrences(dirtext, dirlist[i]) - 1 //too liberal
+              for (let j=i+1; j<dirlist.length; j++) {
+                if ((dirlist[j]).startsWith(dirlist[i])) ++subs
+              }
             } else {
               subs = dirlist.length - 1 // All subsubs to root
             }
@@ -242,17 +245,15 @@ module.exports = function (app) { // Start module.exports
               }
             }
           }
-          dircoco = dircoco.join (LF)
-          dirlabel = dirlabel.join (LF)
-          // NOTE: IMDB = IMDB_HOME + "/" + IMDB_ROOT, but here "@" separates them (important!):
-          // dirtext = IMDB_HOME + "@" + IMDB_ROOT + LF + dirtext + "\nNodeJS " + process.version.trim()
+          dircoco = dircoco.join(LF)
+          dirlabel = dirlabel.join(LF)
           // Add 2 lines at start: Node version and imdbPath
           dirtext = "NodeJS " + process.version.trim() + LF + IMDB + LF + dirtext
-          res.location ('/')
+          res.location('/')
           //NOTE: The paths include IMDB_ROOT, soon removed by caller!
           res.send (dirtext + LF + dircoco + LF + dirlabel)
-          //res.end ()
-          console.log ('Directory information sent from server')
+          //res.end()
+          console.log('Directory information sent from server')
         })
       }).catch (function (error) {
         res.location ('/')
@@ -355,6 +356,7 @@ module.exports = function (app) { // Start module.exports
     })
   }
 
+  // THIS FUNCTION IS NEVER USED
   /** Function that counts occurrences of a substring in a string;
    * @param {String} string               The string
    * @param {String} subString            The substring to search for

@@ -52,20 +52,14 @@ export class MenuMain extends Component {
     let tmp = await this.z.getAlbumDirs();
     let arr = tmp.split(LF);
     let aboutNode = arr.shift();
-    // await new Promise (z => setTimeout (z, 99)); // let arr settle!
     this.z.imdbPath = arr.shift();
-    // await new Promise (z => setTimeout (z, 99)); // let arr settle!
     let n = arr.length/3;
     this.z.imdbDirs = arr.splice(0, n);
-    // await new Promise (z => setTimeout (z, 99)); // let arr settle!
     this.z.imdbCoco = arr.splice(0, n);
-    // await new Promise (z => setTimeout (z, 99)); // let arr settle!
     this.z.imdbLabels = arr.splice(0, n);
-    // await new Promise (z => setTimeout (z, 99)); // let arr settle!
     this.z.loli('imdbDirs ' + n + LF + this.z.imdbDirs.join(LF));
     this.z.loli('imdbCoco ' + n + LF + this.z.imdbCoco.join(LF));
     this.z.loli('imdbLabels ' + n + LF + this.z.imdbLabels.join(LF));
-
   }
 
   someFunction = (param) => {this.z.loli(param);}
