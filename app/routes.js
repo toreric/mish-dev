@@ -33,6 +33,8 @@ module.exports = function (app) { // Start module.exports
   // ===== `execP` provides a non-blocking, promise-based approach to executing commands, which is generally preferred in Node.js applications for better performance and easier asynchronous handling.
   // ===== `cmdasync`, using `execSync`, offers a synchronous alternative that blocks the event loop, which might be useful in specific scenarios but is generally not recommended for most use cases due to its blocking nature. `a = await cmdasync(cmd)` and `a = execSync(cmd)` achieve the same end result of executing a command synchronously. The usage differs based on the context (asynchronous with `await` for `cmdasync` versus direct synchronous call for `execSync`). The choice between them depends on whether you're working within an asynchronous function and your preference for error handling and code style.
 
+  const LF = '\n'
+
   //#region = code regions, only for the editors's minilist!
   //#region start route
   // ##### R O U T I N G  E N T R I E S
@@ -50,7 +52,7 @@ module.exports = function (app) { // Start module.exports
         // let picFoundBaseName = picFound.replace(/\.[^.]{4}$/, '')
         // let cmd = 'find -L ' + IMDB + ' -type d -name "' + picFoundBaseName + '*" -amin +' + toold + ' | xargs rm -rf'
         let cmd = 'find -L ' + IMDB + ' -type d -name "' + '§*" -amin +' + toold + ' | xargs rm -rf'
-        console.log('\n' + cmd)
+        console.log(LF + cmd)
         // await cmdasync(cmd) // ger direktare diagnos
         await execP(cmd)
       }
@@ -59,7 +61,7 @@ module.exports = function (app) { // Start module.exports
     // Add '1;' for bright, e.g. '\x1b[1;33m' is bright yellow, while '\x1b[31m' is red, etc.
     let BYEL = '\x1b[1;33m' // Bright yellow
     let RSET = '\x1b[0m'    // Reset
-    console.log('\n' + BYEL + decodeURIComponent(req.originalUrl) + RSET);
+    console.log(LF + BYEL + decodeURIComponent(req.originalUrl) + RSET);
     console.log('  WWW_ROOT:', WWW_ROOT)
     console.log(' IMDB_HOME:', IMDB_HOME)
     console.log('      IMDB:', IMDB)
@@ -107,8 +109,8 @@ module.exports = function (app) { // Start module.exports
         console.log(' freeUsers:', freeUsers)
 
         res.location ('/')
-        console.log(password +'\n'+ status +'\n'+ allow +'\n'+ freeUsers)
-        res.send(password +'\n'+ status +'\n'+ allow +'\n'+ freeUsers)
+        console.log(password +LF+ status +LF+ allow +LF+ freeUsers)
+        res.send(password +LF+ status +LF+ allow +LF+ freeUsers)
 
       } else { // Send all recorded user statuses and their allowances, formatted
         let rows = setdb.prepare('SELECT * FROM class ORDER BY status').all()
@@ -142,10 +144,10 @@ module.exports = function (app) { // Start module.exports
   // ##### Find subdirs which are album roots
   app.get ('/rootdir', function (req, res) {
     readSubdir (IMDB_HOME).then (dirlist => {
-      dirlist = dirlist.join ('\n')
+      dirlist = dirlist.join (LF)
       // var tmp = execSync ("echo $IMDB_ROOT").toString ().trim ()
       // if (dirlist.indexOf (tmp) < 0) {tmp = ""}
-      // dirlist = tmp + '\n' + dirlist
+      // dirlist = tmp + LF + dirlist
       res.location ('/')
       res.send (dirlist)
       //res.end ()
@@ -174,7 +176,7 @@ module.exports = function (app) { // Start module.exports
         areAlbums(dirlist).then (async dirlist => {
           // dirlist = dirlist.sort ()
           var albumLabel
-          let dirtext = dirlist.join ("€")
+          let dirtext = dirlist.join (LF)
           let dircoco = [] // directory content counters
           let dirlabel = [] // album label thumbnail paths
 
@@ -208,14 +210,14 @@ module.exports = function (app) { // Start module.exports
             dirlabel.push(albumLabel)
           }
           for (let i=0; i<dirlist.length; i++) {
-      console.log('A i dirlabel[i]',i,dirlabel[i])
+            // console.log('A i dirlabel[i]',i,dirlabel[i])
             if (dirlabel[i].slice(0, 1) === "€") {
               albumLabel = dirlabel[i].slice(1)
               dirlabel[i] = ""
               for (let j=i+1; j<dirlist.length; j++) { //Take any subalbum's minipic if available
                 if (albumLabel === dirlabel[j].slice(IMDB.length).slice(0, albumLabel.length)) {
                   dirlabel[i] = dirlabel[j]
-      console.log('B i dirlabel[i]',i,dirlabel[i])
+                  // console.log('B i dirlabel[i]',i,dirlabel[i])
                   break
                 }
               }
@@ -230,26 +232,25 @@ module.exports = function (app) { // Start module.exports
             await fs.closeAsync (fd)
           }
           // An _imdb_ignore line/path may/should start with just './' (if not #)
-          let ignore = (await execP("cat " + ignorePaths)).toString().trim().split("\n")
+          let ignore = (await execP("cat " + ignorePaths)).toString().trim().split(LF)
           for (let j=0; j<ignore.length; j++) {
             for (let i=0; i<dirlist.length; i++) {
-      console.log('C i dirlabel[i]',i,dirlabel[i])
+              // console.log('C i dirlabel[i]',i,dirlabel[i])
               if (ignore[j] && ignore[j].slice(0, 1) !== '#') {
                 ignore[j] = ignore[j].replace (/^[^/]*/, "")
                 if (ignore[j] && dirlist[i].startsWith (ignore[j])) dircoco[i] += "*"
               }
             }
           }
-          dirtext = dirtext.replace (/€/g, "\n")
-          dircoco = dircoco.join ("\n")
-          dirlabel = dirlabel.join ("\n")
+          dircoco = dircoco.join (LF)
+          dirlabel = dirlabel.join (LF)
           // NOTE: IMDB = IMDB_HOME + "/" + IMDB_ROOT, but here "@" separates them (important!):
-          // dirtext = IMDB_HOME + "@" + IMDB_ROOT + "\n" + dirtext + "\nNodeJS " + process.version.trim()
+          // dirtext = IMDB_HOME + "@" + IMDB_ROOT + LF + dirtext + "\nNodeJS " + process.version.trim()
           // Add 2 lines at start: Node version and imdbPath
-          dirtext = "\nNodeJS " + process.version.trim() + "\n" + IMDB + "\n" + dirtext
+          dirtext = "NodeJS " + process.version.trim() + LF + IMDB + LF + dirtext
           res.location ('/')
           //NOTE: The paths include IMDB_ROOT, soon removed by caller!
-          res.send (dirtext + "\n" + dircoco + "\n" + dirlabel)
+          res.send (dirtext + LF + dircoco + LF + dirlabel)
           //res.end ()
           console.log ('Directory information sent from server')
         })
@@ -319,7 +320,7 @@ module.exports = function (app) { // Start module.exports
   let allDirs = async () => {
     let dirlist = await cmdasync('find -L ' + IMDB + ' -type d|sort')
     dirlist = dirlist.toString().trim() // Formalise string
-    dirlist = dirlist.split('\n')
+    dirlist = dirlist.split(LF)
     for (let i=0; i<dirlist.length; i++) {
       dirlist[i] = dirlist[i].slice(IMDB.length)
     }

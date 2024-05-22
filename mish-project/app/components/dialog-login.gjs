@@ -13,6 +13,8 @@ import t from 'ember-intl/helpers/t';
 export const dialogLoginId = 'dialogLogin';
 export const dialogRightsId = 'dialogRights';
 
+const LF = '\n';
+
 export class DialogLogin extends Component {
   @service('common-storage') z;
   @service intl;
@@ -26,7 +28,7 @@ export class DialogLogin extends Component {
     let user = document.querySelector('input.user_').value.trim();
     if (!user) user = this.z.userName;
     // Get the credentials for user, cred = [password, userStatus, allowvalue, freeUsers]
-    let cred = (await this.z.getCredentials(user)).split('\n');
+    let cred = (await this.z.getCredentials(user)).split(LF);
 
     let pwrd = document.querySelector('input.password_').value.trim();
     if (cred[1] && pwrd === cred[0]) { // No status for illegal users
@@ -77,7 +79,7 @@ export class DialogLogin extends Component {
 
   // Format allowances for dialogRights
   get allowances() {
-    let text = this.z.allowances.split('\n');
+    let text = this.z.allowances.split(LF);
       // console.log(this.z.allowvalue);
     let av = this.z.allowvalue.replace(/0/g, '.').replace(/1/g, 'x');
       // console.log(av);
@@ -90,7 +92,7 @@ export class DialogLogin extends Component {
       text[j] += av[i] + ' ' + (i + 1) + ' = ' + add[i];
       j++;
     }
-    return text.join('\n');
+    return text.join(LF);
   }
 
   // Make an allowvalue array for dialogRights

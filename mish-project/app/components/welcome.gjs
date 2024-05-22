@@ -22,7 +22,7 @@ import { dialogLoginId } from './dialog-login';
 import { dialogRightsId } from './dialog-login';
 
 const returnValue = cell('');
-
+const LF = '\n';
 makeDialogDraggable();
 
 // Detect closing click outside menuMain (tricky case!)
@@ -55,14 +55,14 @@ class Welcome extends Component {
       this.z.allowances = allow;
       // await new Promise (z => setTimeout (z, 99));
       // Get all recorded user statuses and their allowances + passwordless users
-      let cred = (await this.z.getCredentials('Get user name')).split('\n');
+      let cred = (await this.z.getCredentials('Get user name')).split(LF);
       this.z.userStatus = cred[1];
       this.z.allowvalue = cred[2];
       this.z.freeUsers = cred[3];
       // await new Promise (z => setTimeout (z, 99));
       // Get album-collection-qualified catalogs
       let roots = await this.z.getAlbumRoots();
-      this.z.imdbRoots = roots.split('\n');
+      this.z.imdbRoots = roots.split(LF);
     };
   }
 

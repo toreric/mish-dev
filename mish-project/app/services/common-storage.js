@@ -13,8 +13,10 @@ export default class CommonStorageService extends Service {
   @tracked  bkgrColor = '#cbcbcb';          //common background color
   @tracked  credentials = '';               //user credentials: \n-string from db
   @tracked  freeUsers = 'guest...';         //user names which do not require passwords
+  @tracked  imdbCoco = '';                  //content counters etc. for imdbDirs (*)
   @tracked  imdbDir = '';                   //actual/current (sub)album directory
   @tracked  imdbDirs = '';                  //available album directories at imdbRoot
+  @tracked  imdbLabels = '';                //thumbnail labels for imdbDirs
   @tracked  imdbPath = '';                  //userDir+imdbRoot = absolut path to album root
   @tracked  imdbRoot = '';                  //chosen album root directory (collection)
   @tracked  imdbRoots = ['fake', 'falsch']; //avalable album root directories (collections)
@@ -25,9 +27,11 @@ export default class CommonStorageService extends Service {
   @tracked  picName = 'IMG_1234a2023_nov_19'; //actual/current image name
   @tracked  userDir = '/path/to/albums'; //maybe your home dir. or any; server argument!
         get defaultUserName() { return `${this.intl.t('guest')}`; }
-  @tracked  userName = this.defaultUserName; // May be changed at e.g. logins
+  @tracked  userName = this.defaultUserName; // May be changed in other ways at e.g. logins
   @tracked  userStatus = '';
   // More variables may be defined further down
+  // (*) imdbCoco format is "(<npics>) <nsubdirs> <flag>" where <flag> is empty or "*"
+  // The imdbCoco <flag> indicates a hidden album, which needs permission for access
 
   //#region Utilities
   //== Other service functions
