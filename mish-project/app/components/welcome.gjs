@@ -14,12 +14,14 @@ import { ButtonsLeft } from './buttons-left';
 import { DialogHelp } from './dialog-help';
 import { DialogLogin } from './dialog-login'
 import { DialogText } from './dialog-text';
+import { DialogXper } from './dialog-xper';
 import { default as Header } from './header';
 import { Language } from './language';
 import { MenuMain } from './menu-main';
 
 import { dialogLoginId } from './dialog-login';
 import { dialogRightsId } from './dialog-login';
+import { dialogXperId } from './dialog-xper';
 
 const returnValue = cell('');
 const LF = '\n';
@@ -79,8 +81,12 @@ export default class extends Welcome {
       {{! Html inserted here will appear beneath the buildStamp div }}
       <h1 style="margin:0 0 0 4rem;display:inline">{{t "header"}}</h1>&nbsp;
 
+      <button type="button" title="Xperimental" {{on 'click' (fn this.z.toggleDialog dialogXperId)}}>X</button>
+
       <button type="button" title={{t 'button.backgtitle'}} {{on 'click' (fn this.z.toggleBackg)}}>{{t 'dark'}}/{{t 'light'}}</button>&nbsp;
+
       <span><button type="button" {{on 'click' (fn this.openRights)}}>{{t 'button.rightsinfo'}}</button>&nbsp;<button type="button" {{on 'click' (fn this.openLogIn)}}>{{t 'button.optlogin'}}</button></span>&nbsp;
+
       <span>{{t 'time.text'}}
         <span><Clock @locale={{t 'intlcode'}} /></span>
       </span>
@@ -92,5 +98,6 @@ export default class extends Welcome {
     <ButtonsLeft />
     <DialogHelp />
     <DialogText />
+    <DialogXper />
   </template>;
 }
