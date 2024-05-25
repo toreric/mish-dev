@@ -59,6 +59,13 @@ export class DialogLogin extends Component {
     document.querySelector('input.' + inputClass).focus({ focusVisible: true });
   }
 
+  // Detect login Enter key
+   detectLogInEnter = (e) => {
+    if (e.keyCode === 13) { // Enter key
+      this.logIn();
+    }
+  }
+
   // Detect closing Esc key and handle dialog
   detectEscClose = (e) => {
     if (e.keyCode === 27) { // Esc key
@@ -112,7 +119,7 @@ export class DialogLogin extends Component {
           </div>
         </header>
         <main style="text-align:center">
-          <form {{on 'submit' this.logIn}}>
+          <form>
             {{!-- <p>{{this.z.picName}}</p> --}}
             <p style="margin:1rem">
               {{t 'dialog.login.text1'}} <span>{{this.z.userName}}</span>
@@ -124,10 +131,10 @@ export class DialogLogin extends Component {
             </p>
             <div class="show-inline" style="text-align:right;width:fit-content">
               {{t 'dialog.login.user'}}:
-              <input class="user_" size="10" title={{t 'dialog.login.name'}} placeholder={{t 'dialog.login.name'}} type="text"><a title={{t 'erase'}} {{on 'click' (fn this.clearInput 'user_')}}> ×&nbsp;</a>
+              <input class="user_" size="12" title={{t 'dialog.login.name'}} placeholder={{t 'dialog.login.name'}} type="text" {{on 'keydown' this.detectLogInEnter}}><a title={{t 'erase'}} {{on 'click' (fn this.clearInput 'user_')}}> ×&nbsp;</a>
               <br>
               {{t 'dialog.login.password'}}:
-              <input class="password_" size="10" title={{t 'dialog.login.password'}} placeholder={{t 'dialog.login.password'}} type="password"><a title={{t 'erase'}} {{on 'click' (fn this.clearInput 'password_')}}> ×&nbsp;</a>
+              <input class="password_" size="12" title={{t 'dialog.login.password'}} placeholder={{t 'dialog.login.password'}} type="password" {{on 'keydown' this.detectLogInEnter}}><a title={{t 'erase'}} {{on 'click' (fn this.clearInput 'password_')}}> ×&nbsp;</a>
             </div>
             <p id="logInError" style="margin:1rem 1rem 0;color:red;font-weight:bold;display:none">
               {{t 'dialog.login.error'}}

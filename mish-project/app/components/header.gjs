@@ -13,36 +13,18 @@ import { Excite } from './excite';
 export default class Header extends Component {
   @service('common-storage') z;
   @service intl;
-  // selections = this.intl.get('locales');
-  // changeLocale = (newLoc) => {
-  //   new Promise (z => setTimeout (z, 200));
-  //   this.intl.set('locale', newLoc);
-  // }
-  // changeLanguage = (event) => {
-  //   new Promise (z => setTimeout (z, 200));
-  //   this.intl.set('locale', event.target.value);
-  // }
-  // isActive = (locale) => {
-  //   new Promise (z => setTimeout (z, 200));
-  //   return this.intl.locale[0] === locale;
-  // }
-  // langText = (locale) => {
-  //   new Promise (z => setTimeout (z, 200));
-  //   return this.intl.lookup("select.languagetext", locale);
-  // }
 
   <template><div style="margin:0 0 0 4rem;padding:0">
 
     {{!-- <p class="buttons">
-      {{! Selection, just an example }}
       <span>&nbsp; &nbsp; &nbsp; Testing: </span>
       <select>
+        {{! Selection example where the first visible option disapppears }}
         <option value="" selected disabled hidden>Select</option>
         <option value="0" style="color:red">Red</option>
         <option value="1" style="color:green">Green</option>
         <option value="2" style="color:blue">Blue</option>
       </select>
-
     </p> --}}
 
     {{! Testing ember-intl and some other things }}
