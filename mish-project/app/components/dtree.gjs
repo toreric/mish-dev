@@ -1,5 +1,3 @@
-import { htmlSafe } from '@ember/template';
-
 /*--------------------------------------------------|
 | dTree 2.05 | www.destroydrop.com/javascript/tree/ |
 |---------------------------------------------------|
@@ -12,23 +10,21 @@ import { htmlSafe } from '@ember/template';
 |--------------------------------------------------*/
 
 // Node object
-class Node {
-  constructor(id, pid, name, url, title, target, icon, iconOpen, open) {
-    this.id = id;
-    this.pid = pid;
-    this.name = name;
-    this.url = url;
-    this.title = title;
-    this.target = target;
-    this.icon = icon;
-    this.iconOpen = iconOpen;
-    this._io = open || false;
-    this._is = false;
-    this._ls = false;
-    this._hc = false;
-    this._ai = 0;
-    this._p;
-  }
+function Node(id, pid, name, url, title, target, icon, iconOpen, open) {
+	this.id = id;
+	this.pid = pid;
+	this.name = name;
+	this.url = url;
+	this.title = title;
+	this.target = target;
+	this.icon = icon;
+	this.iconOpen = iconOpen;
+	this._io = open || false;
+	this._is = false;
+	this._ls = false;
+	this._hc = false;
+	this._ai = 0;
+	this._p;
 };
 
 // Tree object
@@ -350,24 +346,28 @@ dTree.prototype.isOpen = function(id) {
   d.add(11,9,'Mom\'s birthday','example01.html');
   d.add(12,0,'Recycle Bin','example01.html','','','img/trash.gif');
 
-  var dv = d.toString();
+  // var dv = d.toString();
   // dv = dv.replace(/onclick="javascript: d\.([^;"]*);">/g, 'onclick={{this.d.$1}}>');
-  console.log(dv);
+  console.log(d.toString());
+
+  const thid = d;
 
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
+import { htmlSafe } from '@ember/template';
 
 export class DTree extends Component {
   // @service('common-storage') z;
   // @service intl;
-  @tracked d;
-
+  @tracked d = thid;
   // get dd() {
   //   return this.d;
   // }
-
   <template>
-    <p id="tree">{{htmlSafe dv}}</p>
+    {{htmlSafe this.d}}
+    {{!-- <script>
+      document.write(this.d);
+    </script> --}}
   </template>
 }

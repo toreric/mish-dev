@@ -11,20 +11,20 @@
 
 // Node object
 function Node(id, pid, name, url, title, target, icon, iconOpen, open) {
-  this.id = id;
-  this.pid = pid;
-  this.name = name;
-  this.url = url;
-  this.title = title;
-  this.target = target;
-  this.icon = icon;
-  this.iconOpen = iconOpen;
-  this._io = open || false;
-  this._is = false;
-  this._ls = false;
-  this._hc = false;
-  this._ai = 0;
-  this._p;
+	this.id = id;
+	this.pid = pid;
+	this.name = name;
+	this.url = url;
+	this.title = title;
+	this.target = target;
+	this.icon = icon;
+	this.iconOpen = iconOpen;
+	this._io = open || false;
+	this._is = false;
+	this._ls = false;
+	this._hc = false;
+	this._ai = 0;
+	this._p;
 };
 
 // Tree object
