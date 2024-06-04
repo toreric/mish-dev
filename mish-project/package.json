@@ -27,13 +27,11 @@
     "test:ember": "ember test"
   },
   "dependencies": {
-    "@glimmer/runtime": "^0.92.0",
     "body-parser": "^1.20.2",
     "dialog-draggable": "^0.1.5",
     "ember-modifier": "^4.1.0",
-    "ember-primitives": "^0.16.0",
+    "ember-primitives": "^0.19.0",
     "ember-resources": "^7.0.0",
-    "pnpm": "^9.0.6",
     "tracked-built-ins": "^3.1.1"
   },
   "devDependencies": {
@@ -53,7 +51,7 @@
     "@glint/environment-ember-loose": "^1.0.2",
     "@glint/environment-ember-template-imports": "^1.0.2",
     "@glint/template": "^1.0.2",
-    "@nullvoxpopuli/eslint-configs": "^3.2.0",
+    "@nullvoxpopuli/eslint-configs": "^4.0.0",
     "@tsconfig/ember": "^3.0.0",
     "broccoli-asset-rev": "^3.0.0",
     "concurrently": "^8.2.0",
@@ -94,7 +92,7 @@
     "tracked-built-ins": "^3.1.1",
     "webpack": "^5.88.2"
   },
-  "packageManager": "pnpm@7.1.7",
+  "packageManager": "pnpm@9.0.6",
   "pnpm": {
     "overrides": {
       "ember-cli-babel": "^8.2.0",

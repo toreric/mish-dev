@@ -7,6 +7,7 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 import { DTree } from './dtree';
+import { JSTree } from './jstree';
 
 export const dialogXperId = "dialogXper";
 

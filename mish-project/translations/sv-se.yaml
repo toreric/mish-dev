@@ -61,8 +61,10 @@ buttons:
 
     up: "Gå upp (visa\n
         översta raden)\n
-        #NOTE: the guest value must exist in the _imdb_settings.sqlite user table
-  Kom överens med de(n)\n
+        [pgUp]"
+
+    meet: "Internetmöte:\n
+          Kom överens med de(n)\n
           du vill träffa. Det behövs\n
           inga inbjudningar – ni\n
           bara klickar här!"
