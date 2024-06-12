@@ -259,7 +259,7 @@ module.exports = function (app) { // Start module.exports
         res.location ('/')
         res.sloadend (error.message)
       })
-    }, 2000) // Was 1000
+    }, 1000) // Was 2000
   })
 
   //#region Functions

@@ -1,13 +1,14 @@
 //== Mish experimental dialog
 
 import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
-import { DTree } from './dtree';
-import { JSTree } from './jstree';
+// import { DTree } from './dtree';
+// import { JSTree } from './jstree';
 
 export const dialogXperId = "dialogXper";
 
@@ -21,9 +22,7 @@ export class DialogXper extends Component {
     }
   }
 
-  <template>
-
-  <dialog id="dialogXper" {{on 'keydown' this.detectEscClose}}>
+  <template><dialog id="dialogXper" {{on 'keydown' this.detectEscClose}}>
     <header data-dialog-draggable>
       <div style="width:99%">
         <p>Experimental dialog<span></span></p>
@@ -35,13 +34,54 @@ export class DialogXper extends Component {
       <p>Mish experimental dialog</p>
       <h2>Example</h2>
       <div class="dtree">
-        <DTree />
+        <Tree0 />
       </div>
     </main>
     <footer data-dialog-draggable>
       <button type="button" {{on 'click' (fn this.z.closeDialog dialogXperId)}}>{{t 'button.close'}}</button>&nbsp;
     </footer>
-  </dialog>
+  </dialog></template>
+}
 
+class Tree0 extends Component {
+  @service('common-storage') z;
+  get tree() {
+    this.z.loli(JSON.stringify(this.z.imdbTree, null, 2));
+    return this.args.tree ?? this.z.imdbTree;
+  }
+  <template>
+    <Tree @tree={{this.tree}} />
+  </template>
+}
+
+class Tree extends Component {
+  @tracked isOpen = true;
+  toggle = () => {
+    this.isOpen = !this.isOpen;
+  }
+  <template>
+    {{#if this.isOpen}}
+      <ul>
+      {{#each @tree as |node|}}
+        <li style="display:inline">
+          {{node.name}}<br>
+        {{#if node.children}}
+          <Tree @tree={{node.children}} />
+        {{/if}}
+        </li>
+      {{/each}}
+      </ul>
+    {{else}}
+      <ul>
+      {{#each @tree as |node|}}
+        <li style="display:none">
+          {{node.name}}<br>
+        {{#if node.children}}
+          <Tree @tree={{node.children}} />
+        {{/if}}
+        </li>
+      {{/each}}
+      </ul>
+    {{/if}}
   </template>
 }

@@ -20,6 +20,7 @@ export default class CommonStorageService extends Service {
   @tracked  imdbPath = '';                  //userDir+imdbRoot = absolut path to album root
   @tracked  imdbRoot = '';                  //chosen album root directory (collection)
   @tracked  imdbRoots = ['fake', 'falsch']; //avalable album root directories (collections)
+  @tracked  imdbTree = null;                //will have the imdbDirs object tree
         get intlCode() { return `${this.intl.t('intlcode')}`; }
         get picFoundBaseName() { return `${this.intl.t('picfound')}`; }
             // The found pics temporary catalog name is amended with a random 4-code:

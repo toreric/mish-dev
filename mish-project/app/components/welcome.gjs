@@ -55,8 +55,7 @@ class Welcome extends Component {
       let allow = await this.z.getCredentials('Get allowances');
       console.log(allow);
       this.z.allowances = allow;
-      // await new Promise (z => setTimeout (z, 99));
-      // Get all recorded user statuses and their allowances + passwordless users
+     // Get all recorded user statuses and their allowances + passwordless users
       let cred = (await this.z.getCredentials('Get user name')).split(LF);
       this.z.userStatus = cred[1];
       this.z.allowvalue = cred[2];

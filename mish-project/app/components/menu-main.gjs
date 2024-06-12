@@ -60,6 +60,37 @@ export class MenuMain extends Component {
     this.z.loli('imdbDirs ' + n + LF + this.z.imdbDirs.join(LF));
     this.z.loli('imdbCoco ' + n + LF + this.z.imdbCoco.join(LF));
     this.z.loli('imdbLabels ' + n + LF + this.z.imdbLabels.join(LF));
+    const data = this.z.imdbDirs;
+    for (let i=0;i<data.length;i++) {
+      data[i] = this.z.imdbRoot + data[i]; // change the empty root reference
+    }
+    this.z.loli(data);
+
+    //begin https://stackoverflow.com/questions/72006110/convert-file-path-into-object
+    const tree = { root: {} }
+    for (const path of data) {
+      const parts = path.split('/');
+      // const file = parts.pop();
+      let branch = tree, partPath = '';
+      for (const part of parts) {
+        partPath += `${part}/`;
+        if (partPath === `${part}/`) {
+          tree.root[partPath] = (tree[partPath] ??= { name: part, children: [] });
+        } else if (tree[partPath] === undefined) {
+            tree[partPath] = { name: part, children: [] };
+            branch.children.push(tree[partPath]);
+        }
+        branch = tree[partPath];
+      }
+      // branch.children.push({ name: file, id: path });
+    }
+    const result = Object.values(tree.root);
+    //end https://stackoverflow ... NOTE: With directories without files
+
+    this.z.imdbTree = result;
+    console.log(result);
+    // console.log(JSON.stringify(result, null, 2)) //human readable
+
   }
 
   someFunction = (param) => {this.z.loli(param);}
