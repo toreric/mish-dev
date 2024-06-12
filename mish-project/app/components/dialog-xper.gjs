@@ -56,14 +56,25 @@ class Tree0 extends Component {
 
 class Tree extends Component {
   @tracked isOpen = true;
+  @tracked display = '';
   toggle = () => {
     this.isOpen = !this.isOpen;
+    if (this.display) {
+      this.display = '';
+    } else {
+      this.display = 'none';
+    }
   }
   <template>
-    {{#if this.isOpen}}
+    {{!-- {{#if this.isOpen}} --}}
       <ul>
+      <button {{on "click" this.toggle}}>
+        {{if this.isOpen
+          "Close"
+          "Open"}}
+      </button>
       {{#each @tree as |node|}}
-        <li style="display:inline">
+        <li style="display:{{this.display}}">
           {{node.name}}<br>
         {{#if node.children}}
           <Tree @tree={{node.children}} />
@@ -71,17 +82,5 @@ class Tree extends Component {
         </li>
       {{/each}}
       </ul>
-    {{else}}
-      <ul>
-      {{#each @tree as |node|}}
-        <li style="display:none">
-          {{node.name}}<br>
-        {{#if node.children}}
-          <Tree @tree={{node.children}} />
-        {{/if}}
-        </li>
-      {{/each}}
-      </ul>
-    {{/if}}
   </template>
 }
