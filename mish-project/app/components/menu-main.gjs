@@ -9,8 +9,9 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
-export const menuMainId = 'menuMain';
+//#region Utilities
 
+export const menuMainId = 'menuMain';
 const LF = '\n';
 
 // Detect closing Esc key for menuMain or open dialogs
@@ -40,6 +41,7 @@ const detectEsc = (event) => {
 
 document.addEventListener ('keydown', detectEsc, false);
 
+//#region MenuMain
 
 export class MenuMain extends Component {
   @service('common-storage') z;
@@ -158,6 +160,8 @@ export class MenuMain extends Component {
   </template>
 }
 
+//#region Tree
+
 class Tree extends Component {
   @service('common-storage') z;
   @service intl;
@@ -211,3 +215,4 @@ class Tree extends Component {
     </div>
   </template>
 }
+//#endregion
