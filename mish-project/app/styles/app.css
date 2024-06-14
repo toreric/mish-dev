@@ -1725,7 +1725,7 @@ select {
   margin-top: 38px;
   padding: 5px;
 }
-.jstreeAlbumSelect {
+.albumTree {
   border: 1px solid gray;
   border-radius: 2px;
   margin: 0 -2.5px;
@@ -2127,9 +2127,11 @@ img.dotted {
 a {
   cursor: pointer;
   text-decoration: none;
+  border-radius: 3pt;
 }
 a:hover {
-  text-decoration: underline;
+  text-decoration: none;
+  background: #eee;
 }
 .dropzone .dz-preview .dz-remove {
   background-color: white;

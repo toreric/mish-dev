@@ -7,18 +7,30 @@ import { action } from '@ember/object';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
-// import { DTree } from './dtree';
-// import { JSTree } from './jstree';
 
 export const dialogXperId = "dialogXper";
 
 export class DialogXper extends Component {
   @service('common-storage') z;
 
+  get tree() {
+    // this.z.loli(JSON.stringify(this.z.imdbTree, null, 2));
+    return this.args.tree ?? this.z.imdbTree;
+  }
+
   // Detect closing Esc key
   detectEscClose = (e) => {
     if (e.keyCode === 27) { // Esc key
       if (document.getElementById(dialogXperId).open) this.z.closeDialog(dialogXperId);
+    }
+  }
+
+  // Close/open all nodes of albumTree (and perhaps hide node zero)
+  toggleAll = () => {
+    let all = document.querySelector(".albumTree").getElementsByTagName("a");
+    // all[0].style.display = 'none';
+    for (let i=1;i<all.length;i++) {
+      all[i].click();
     }
   }
 
@@ -31,10 +43,11 @@ export class DialogXper extends Component {
       </div>
     </header>
     <main>
-      <p>Mish experimental dialog</p>
+      <p>Mish experimental dialog Mish experimental dialog Mish experimental dialog </p>
       <h2>Example</h2>
-      <div class="dtree">
-        <Tree0 />
+       <button type="button" {{on 'click' (fn this.toggleAll)}}>{{t 'button.close'}}</button>&nbsp;
+     <div class="albumTree">
+        <Tree @tree={{this.tree}} />
       </div>
     </main>
     <footer data-dialog-draggable>
@@ -43,44 +56,54 @@ export class DialogXper extends Component {
   </dialog></template>
 }
 
-class Tree0 extends Component {
-  @service('common-storage') z;
-  get tree() {
-    this.z.loli(JSON.stringify(this.z.imdbTree, null, 2));
-    return this.args.tree ?? this.z.imdbTree;
-  }
-  <template>
-    <Tree @tree={{this.tree}} />
-  </template>
-}
-
 class Tree extends Component {
+  @service('common-storage') z;
   @tracked isOpen = true;
   @tracked display = '';
+
   toggle = () => {
     this.isOpen = !this.isOpen;
-    if (this.display) {
+    if (this.isOpen) {
       this.display = '';
     } else {
       this.display = 'none';
     }
   }
+
+  clickButton = (event) => {
+    let tgt = event.target;
+    if (tgt.tagName === 'IMG') {
+      tgt = tgt.parentElement;
+    }
+    let button = tgt.nextElementSibling.nextElementSibling.children[0];
+    button.click();
+    if (tgt.innerText.includes('⊕')) {
+      tgt.innerHTML = '⊖<img src="img/folderopen.gif" />';
+    } else {
+      tgt.innerHTML = '⊕<img src="img/folder.gif" />';
+    }
+  }
+
   <template>
-    {{!-- {{#if this.isOpen}} --}}
-      <ul>
-      <button {{on "click" this.toggle}}>
-        {{if this.isOpen
-          "Close"
-          "Open"}}
+    <div>
+      <button style="display:none" {{on "click" this.toggle}}>
+        {{if this.isOpen "Close" "Open"}}
       </button>
       {{#each @tree as |node|}}
-        <li style="display:{{this.display}}">
+        <div style="margin-left:1.5rem;line-height:1.5rem;display:{{this.display}}">
+          {{#if node.children}}
+            <a {{on "click" this.clickButton}}>
+              ⊖<img src="img/folderopen.gif" />
+            </a>
+          {{else}}
+            &nbsp;&nbsp;&nbsp; <img src="img/imgfolder.gif" />
+          {{/if}}
           {{node.name}}<br>
-        {{#if node.children}}
-          <Tree @tree={{node.children}} />
-        {{/if}}
-        </li>
+          {{#if node.children}}
+            <Tree @tree={{node.children}} />
+          {{/if}}
+        </div>
       {{/each}}
-      </ul>
+    </div>
   </template>
 }

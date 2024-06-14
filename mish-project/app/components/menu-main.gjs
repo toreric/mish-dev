@@ -95,8 +95,22 @@ export class MenuMain extends Component {
 
   someFunction = (param) => {this.z.loli(param);}
 
-  jstreeHdr = () => {
+  albumTreeHdr = () => {
     return this.intl.t('albumcoll') + ' ”' + this.z.imdbRoot + '”';
+  }
+
+  get tree() {
+    // this.z.loli(JSON.stringify(this.z.imdbTree, null, 2));
+    return this.args.tree ?? this.z.imdbTree;
+  }
+
+  // Close/open all nodes of albumTree except node zero
+  toggleAll = () => {
+    let all = document.querySelector(".albumTree").getElementsByTagName("a");
+    // all[0].style.display = 'none';
+    for (let i=1;i<all.length;i++) {
+      all[i].click();
+    }
   }
 
   <template>
@@ -130,16 +144,70 @@ export class MenuMain extends Component {
       </p><br>
 
       <p onclick="return false" draggable="false" ondragstart="return false" title="Visa alla album = hela albumträdet" style="z-index:0">
-        <a id ="jstreeHdr" {{on "click" (fn this.someFunction 'toggleJstreeAlbumSelect')}} > {{this.jstreeHdr}} </a>
+        <a id ="albumTreeHdr" {{on "click" (fn this.someFunction 'toggleJstreeAlbumSelect')}} > {{this.albumTreeHdr}} </a>
       </p>
 
-      {{!-- <div class="jstreeAlbumSelect" style="display:none">
-        {{ember-jstree
-          data=albumData
-          eventDidSelectNode='{{this.someFunction("selAlb")}}'
-        }}
-      </div> --}}
+      <div class="albumTree">
+        <button type="button" {{on 'click' (fn this.toggleAll)}}>{{t 'button.close'}}</button>
+
+       <Tree @tree={{this.tree}} />
+      </div>
+
     </div>
 
+  </template>
+}
+
+class Tree extends Component {
+  @service('common-storage') z;
+  @service intl;
+
+  @tracked isOpen = true;
+  @tracked display = '';
+
+  toggle = () => {
+    this.isOpen = !this.isOpen;
+    if (this.isOpen) {
+      this.display = '';
+    } else {
+      this.display = 'none';
+    }
+  }
+
+  clickButton = (event) => {
+    let tgt = event.target;
+    if (tgt.tagName === 'IMG') {
+      tgt = tgt.parentElement;
+    }
+    let button = tgt.nextElementSibling.nextElementSibling.children[0];
+    button.click();
+    if (tgt.innerText.includes('⊕')) {
+      tgt.innerHTML = '⊖<img src="img/folderopen.gif" />';
+    } else {
+      tgt.innerHTML = '⊕<img src="img/folder.gif" />';
+    }
+  }
+
+  <template>
+    <div>
+      <button style="display:none" {{on "click" this.toggle}}>
+        {{if this.isOpen "Close" "Open"}}
+      </button>
+      {{#each @tree as |node|}}
+        <div style="margin-left:1.5rem;line-height:1.5rem;display:{{this.display}}">
+          {{#if node.children}}
+            <a {{on "click" this.clickButton}}>
+              ⊖<img src="img/folderopen.gif" />
+            </a>
+          {{else}}
+            &nbsp;&nbsp;&nbsp; <img src="img/imgfolder.gif" />
+          {{/if}}
+          {{node.name}}<br>
+          {{#if node.children}}
+            <Tree @tree={{node.children}} />
+          {{/if}}
+        </div>
+      {{/each}}
+    </div>
   </template>
 }
