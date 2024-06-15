@@ -25,7 +25,7 @@ export class DialogXper extends Component {
     }
   }
 
-  // Close/open all nodes of albumTree (and perhaps hide node zero)
+  // Close/open all nodes of albumTree except node zero
   toggleAll = () => {
     let all = document.querySelector(".albumTree").getElementsByTagName("a");
     // all[0].style.display = 'none';
@@ -46,7 +46,7 @@ export class DialogXper extends Component {
       <p>Mish experimental dialog Mish experimental dialog Mish experimental dialog </p>
       <h2>Example</h2>
        <button type="button" {{on 'click' (fn this.toggleAll)}}>{{t 'button.close'}}</button>&nbsp;
-     <div class="albumTree">
+      <div class="albumTree">
         <Tree @tree={{this.tree}} />
       </div>
     </main>

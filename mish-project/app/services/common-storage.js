@@ -7,7 +7,7 @@ import { tracked } from '@glimmer/tracking';
 export default class CommonStorageService extends Service {
   @service intl;
 
-  //#region Variables
+  //   #region Variables
   //== Significant Mish system global variables
 
   @tracked  bkgrColor = '#cbcbcb';          //common background color
@@ -34,7 +34,7 @@ export default class CommonStorageService extends Service {
   // (*) imdbCoco format is "(<npics>) <nsubdirs> <flag>" where <flag> is empty or "*"
   // The imdbCoco <flag> indicates a hidden album, which needs permission for access
 
-  //#region Utilities
+  //   #region Utilities
   //== Other service functions
 
   toggleBackg = () => {
@@ -55,7 +55,7 @@ export default class CommonStorageService extends Service {
     console.log(this.userName + ':', text);
   }
 
-  //#region Server
+  //   #region Server
   //== Server tasks
 
   getCredentials = async (username) => {
@@ -155,7 +155,7 @@ export default class CommonStorageService extends Service {
     });
   }
 
-  //#region Allowance
+  //   #region Allowance
   //== Allowances properties/methods
 
   // allowvalue is the source of the 'allow' property values, reset at login
@@ -247,7 +247,7 @@ export default class CommonStorageService extends Service {
     this.allowvalue = allowvalue;
   }
 
-  //#region Menus
+  //   #region Menus
   //== Menu utilities
 
   toggleMainMenu = async () => {
@@ -268,7 +268,7 @@ export default class CommonStorageService extends Service {
     }
   }
 
-  //#region Dialogs
+  //   #region Dialogs
   //== Dialog utilities for open/close/modal ...
 
   // Functions openDialog(id, op), toggleDialog(id, op), openModalDialog(id, op),
@@ -329,5 +329,5 @@ export default class CommonStorageService extends Service {
   }
 
 }
-
-//#endregion
+//   #region End
+//   #endregion

@@ -26,6 +26,7 @@ guest: guest
 intlcode: en-us
 light: light
 rights: rights
+showalbumtree: Show all albums
 with: with
 
 albumcol: Album collection (or album root)

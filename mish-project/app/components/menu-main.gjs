@@ -9,7 +9,6 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
-//#region Utilities
 
 export const menuMainId = 'menuMain';
 const LF = '\n';
@@ -41,7 +40,7 @@ const detectEsc = (event) => {
 
 document.addEventListener ('keydown', detectEsc, false);
 
-//#region MenuMain
+
 
 export class MenuMain extends Component {
   @service('common-storage') z;
@@ -68,6 +67,7 @@ export class MenuMain extends Component {
     }
     this.z.loli(data);
 
+    // Convert the album directory list to a JS tree:
     //begin https://stackoverflow.com/questions/72006110/convert-file-path-into-object
     const tree = { root: {} }
     for (const path of data) {
@@ -87,11 +87,12 @@ export class MenuMain extends Component {
       // branch.children.push({ name: file, id: path });
     }
     const result = Object.values(tree.root);
-    //end https://stackoverflow ... NOTE: With directories without files
+    //end https://stackoverflow ... For directories only, file code is commented out
 
     this.z.imdbTree = result;
     console.log(result);
     // console.log(JSON.stringify(result, null, 2)) //human readable
+    // this.toggleAll();
 
   }
 
@@ -106,11 +107,21 @@ export class MenuMain extends Component {
     return this.args.tree ?? this.z.imdbTree;
   }
 
-  // Close/open all nodes of albumTree except node zero
+  // Close/open albumTree
+  toggleAlbumTree = () => {
+    this.toggleAll();
+    let tree = document.querySelector('.albumTree');
+    if (tree.style.display) {
+      tree.style.display = '';
+    }else {
+      tree.style.display = 'none';
+    }
+  }
+
+  // Close/open all nodes of albumTree
   toggleAll = () => {
     let all = document.querySelector(".albumTree").getElementsByTagName("a");
-    // all[0].style.display = 'none';
-    for (let i=1;i<all.length;i++) {
+    for (let i=0;i<all.length;i++) {
       all[i].click();
     }
   }
@@ -142,16 +153,16 @@ export class MenuMain extends Component {
       </p><br>
 
       <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title="Ta bort, gör nytt, bildsortera, dublettsökning, med mera">
-        <a {{on "click" (fn this.someFunction 'albumEdit')}} > {{{this.albumText}}} {{{this.albumName}}} </a>
+        <a {{on "click" (fn this.someFunction 'albumEdit')}}> {{{this.albumText}}} {{{this.albumName}}} </a>
       </p><br>
 
-      <p onclick="return false" draggable="false" ondragstart="return false" title="Visa alla album = hela albumträdet" style="z-index:0">
-        <a id ="albumTreeHdr" {{on "click" (fn this.someFunction 'toggleJstreeAlbumSelect')}} > {{this.albumTreeHdr}} </a>
+      <p onclick="return false" draggable="false" ondragstart="return false" title={{t 'showalbumtree'}} style="z-index:0">
+        <a id ="albumTreeHdr" {{on "click" (fn this.toggleAlbumTree)}}> {{this.albumTreeHdr}} </a>
       </p>
 
-      <div class="albumTree">
-        <button type="button" {{on 'click' (fn this.toggleAll)}}>{{t 'button.close'}}</button>
+      {{!-- <button type="button" class="toggleTree" style="display:none" {{on 'click' (fn this.toggleAll)}}>Toggle</button> --}}
 
+      <div class="albumTree" style="display:none">
        <Tree @tree={{this.tree}} />
       </div>
 
@@ -160,7 +171,7 @@ export class MenuMain extends Component {
   </template>
 }
 
-//#region Tree
+
 
 class Tree extends Component {
   @service('common-storage') z;
@@ -183,7 +194,7 @@ class Tree extends Component {
     if (tgt.tagName === 'IMG') {
       tgt = tgt.parentElement;
     }
-    let button = tgt.nextElementSibling.nextElementSibling.children[0];
+    let button = tgt.nextElementSibling.nextElementSibling;
     button.click();
     if (tgt.innerText.includes('⊕')) {
       tgt.innerHTML = '⊖<img src="img/folderopen.gif" />';
@@ -193,12 +204,12 @@ class Tree extends Component {
   }
 
   <template>
-    <div>
+
       <button style="display:none" {{on "click" this.toggle}}>
         {{if this.isOpen "Close" "Open"}}
       </button>
       {{#each @tree as |node|}}
-        <div style="margin-left:1.5rem;line-height:1.5rem;display:{{this.display}}">
+        <div style="margin:0 0.5rem 0 1.5rem;line-height:1.5rem;display:{{this.display}}">
           {{#if node.children}}
             <a {{on "click" this.clickButton}}>
               ⊖<img src="img/folderopen.gif" />
@@ -212,7 +223,7 @@ class Tree extends Component {
           {{/if}}
         </div>
       {{/each}}
-    </div>
+
   </template>
 }
-//#endregion
+

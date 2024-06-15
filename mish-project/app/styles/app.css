@@ -954,7 +954,7 @@ div[aria-describedby="textareas"] {
 }
 .mainMenu {
   position: fixed;
-  top: 3.2em;
+  top: 3.1em;
   left: 2px;
   min-width: 16em;
   margin: 0 0 0 4px;
@@ -1726,52 +1726,9 @@ select {
   padding: 5px;
 }
 .albumTree {
-  border: 1px solid gray;
   border-radius: 2px;
-  margin: 0 -2.5px;
-  padding: 0;
-}
-.jstree-container-ul {
   margin: 0;
-  max-height: 24em;
-  overflow-x: auto;
-  overflow-y: scroll;
-  scrollbar-color: #07e #999 !important;
-  scrollbar-width: auto;
-}
-.jstree-node {
-  padding-right: 0.25em; /*prevents scrollbar-y*/
-}
-.jstree-default .jstree-clicked {
-  color: #000;
-  border-radius: 0 4px 4px 0 !important;
-}
-.jstree-default .jstree-hovered {
-  background-color: inherit !important;
-  color: inherit !important;
-}
-.jstree-anchor:hover {
-  border-radius: 0 4px 4px 0;
-  background-color: #999 !important;
-}
-.jstree-anchor.jstree-hovered small {
-  background-color: inherit !important;
-  color: #1ce !important;
-}
-.jstree-default .jstree-icon {
-  background-color: #0085ff;
-}
-.jstree-anchor > .jstree-themeicon {
-  display: none;
-}
-.jstree-default .jstree-node,
-.jstree-default .jstree-icon {
-  border-radius: 1.5px;
-  /*margin-left: 12px;*/
-}
-.jstree-closed:hover > .jstree-ocl,
-.jstree-open:hover > .jstree-ocl {
-  background-color: #00bbff;
+  padding: 0;
 }
 
 @-webkit-keyframes borderBlink {
@@ -2131,7 +2088,7 @@ a {
 }
 a:hover {
   text-decoration: none;
-  background: #eee;
+  background: #888;
 }
 .dropzone .dz-preview .dz-remove {
   background-color: white;

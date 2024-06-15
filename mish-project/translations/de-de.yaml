@@ -26,6 +26,7 @@ guest: gast
 intlcode: de-de
 light: licht
 rights: Rechte
+showalbumtree: Alle Alben anzeigen
 with: mit
 
 albumcol: Albumsammlung (oder Albumstamm)
