@@ -26,10 +26,8 @@ guest: gäst
 intlcode: sv-se
 light: ljus
 rights: rättigheter
-showalbumtree: Visa alla album
 with: med
 
-albumcol: Albumsamling (eller albumrot)
 button:
   backgtitle: Byt bakgrund
   close:     Stäng
@@ -121,8 +119,15 @@ header: Mish bildgalleri
 hello:
   world:  Goddag hela världen!
 picfound: §Funna_bilder
+
 selalbumcol: Välj albumsamling
+albumcol: Albumsamling (eller albumrot)
+albumcare: Albumåtgärder för
+albumcareinfo: Ta bort, gör nytt, bildsortera, dublettsökning, med mera
 albumcoll: Albumsamling
+albumcollinfo: Visa alla album
+showalbumtree: Visa alla album
+
 select:
   language: Välj språk
   languagetext: Svenska

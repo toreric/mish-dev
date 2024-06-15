@@ -1730,6 +1730,13 @@ select {
   margin: 0;
   padding: 0;
 }
+.albumTree div {
+  margin-left: 1.5rem;
+  line-height: 1.5rem;
+}
+div.albumTree > div:first-of-type {
+  margin: 0.2rem;
+}
 
 @-webkit-keyframes borderBlink {
   from,

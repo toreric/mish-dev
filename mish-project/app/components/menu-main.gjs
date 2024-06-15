@@ -48,6 +48,7 @@ export class MenuMain extends Component {
 
   selectRoot = async (event) => { // Album root = collection
     this.z.imdbRoot = event.target.value;
+    this.z.imdbDir = this.z.imdbRoot; // The root is assumed initially selected
     this.z.loli('IMDB_ROOT set to ' + this.z.imdbRoot);
     // Retreive the album tree of this collection
     let tmp = await this.z.getAlbumDirs();
@@ -67,7 +68,7 @@ export class MenuMain extends Component {
     }
     this.z.loli(data);
 
-    // Convert the album directory list to a JS tree:
+    // Convert the album directory list 'data' to a JS tree:
     //begin https://stackoverflow.com/questions/72006110/convert-file-path-into-object
     const tree = { root: {} }
     for (const path of data) {
@@ -98,7 +99,10 @@ export class MenuMain extends Component {
 
   someFunction = (param) => {this.z.loli(param);}
 
-  albumTreeHdr = () => {
+  albumCare = () => {
+    return this.intl.t('albumcare') + ' ”' + this.z.imdbDir + '”';
+  }
+  albumColl = () => {
     return this.intl.t('albumcoll') + ' ”' + this.z.imdbRoot + '”';
   }
 
@@ -152,15 +156,13 @@ export class MenuMain extends Component {
         </a>
       </p><br>
 
-      <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title="Ta bort, gör nytt, bildsortera, dublettsökning, med mera">
-        <a {{on "click" (fn this.someFunction 'albumEdit')}}> {{{this.albumText}}} {{{this.albumName}}} </a>
+      <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title={{t 'albumcareinfo'}}>
+        <a {{on "click" (fn this.someFunction 'albumEdit')}}> {{{this.albumCare}}} </a>
       </p><br>
 
-      <p onclick="return false" draggable="false" ondragstart="return false" title={{t 'showalbumtree'}} style="z-index:0">
-        <a id ="albumTreeHdr" {{on "click" (fn this.toggleAlbumTree)}}> {{this.albumTreeHdr}} </a>
+      <p onclick="return false" draggable="false" ondragstart="return false" title={{t 'albumcollinfo'}} style="z-index:0">
+        <a class="" {{on "click" (fn this.toggleAlbumTree)}}> {{this.albumColl}} </a>
       </p>
-
-      {{!-- <button type="button" class="toggleTree" style="display:none" {{on 'click' (fn this.toggleAll)}}>Toggle</button> --}}
 
       <div class="albumTree" style="display:none">
        <Tree @tree={{this.tree}} />
@@ -209,7 +211,7 @@ class Tree extends Component {
         {{if this.isOpen "Close" "Open"}}
       </button>
       {{#each @tree as |node|}}
-        <div style="margin:0 0.5rem 0 1.5rem;line-height:1.5rem;display:{{this.display}}">
+        <div style="display:{{this.display}}">
           {{#if node.children}}
             <a {{on "click" this.clickButton}}>
               ⊖<img src="img/folderopen.gif" />

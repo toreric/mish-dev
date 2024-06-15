@@ -26,10 +26,8 @@ guest: guest
 intlcode: en-us
 light: light
 rights: rights
-showalbumtree: Show all albums
 with: with
 
-albumcol: Album collection (or album root)
 button:
   backgtitle: Change background
   close:     Close
@@ -122,8 +120,15 @@ header: Mish picture gallery
 hello:
   world:  Hello World!
 picfound: §Found_pictures
+
 selalbumcol: Choose album collection
+albumcol: Album collection (or album root)
+albumcare: Album care for
+albumcareinfo: Delete, create new, image sorting, duplicate search, and more
 albumcoll: Album collection
+albumcollinfo: Show all albums
+showalbumtree: Show all albums
+
 select:
   language: Select language
   languagetext: English
