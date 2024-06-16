@@ -962,9 +962,8 @@ div[aria-describedby="textareas"] {
   border: 1px solid gray;
   border-radius: 2px;
   text-align: left;
-  background: inherit;
+  background: #222;
   opacity: 0.9;
-  line-height: 0;
   z-index: 12;
 }
 .mainMenu p {
@@ -973,8 +972,7 @@ div[aria-describedby="textareas"] {
   display: inline;
   width: auto;
   height: auto;
-  background: inherit;
-  color: inherit;
+  color: white;
   padding: 0;
   /* Prevent highlighting: */
   -khtml-user-select: none;
@@ -996,7 +994,6 @@ div[aria-describedby="textareas"] {
   font-size: 90%;
   border: 0.5px solid lightgray;
   border-radius: 0 4px 4px 0;
-  background: #555;
   line-height: 1.2em;
   margin: -0.4em 0 0 0;
   padding: 0.6em 0.4em 0.6em 0.4em;
@@ -1725,13 +1722,14 @@ select {
   margin-top: 38px;
   padding: 5px;
 }
-.albumTree {
+div.albumTree {
   border-radius: 2px;
   margin: 0;
   padding: 0;
+  color: white;
 }
-.albumTree div {
-  margin-left: 1.5rem;
+div.albumTree div {
+  margin-left: 2rem;
   line-height: 1.5rem;
 }
 div.albumTree > div:first-of-type {
@@ -2095,7 +2093,7 @@ a {
 }
 a:hover {
   text-decoration: none;
-  background: #888;
+  color: #7df;
 }
 .dropzone .dz-preview .dz-remove {
   background-color: white;

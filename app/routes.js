@@ -206,9 +206,8 @@ module.exports = function (app) { // Start module.exports
             } else {
               subs = dirlist.length - 1 // All subsubs to root
             }
-            npics = " (" + npics + ")"
-            // if (i > 0 && subs) {npics += subs} // text!
-            if (subs) {npics += subs} // text!
+            npics = "(" + npics + ")"
+            if (subs) {npics += '+' + subs} // text!
             dircoco.push(npics)
             dirlabel.push(albumLabel)
           }
@@ -316,7 +315,7 @@ module.exports = function (app) { // Start module.exports
 
   // ===== Read the IMDB's content of sub-dirs recursively
   // Use: allDirs().then (dirlist => { ...
-  // IMDB is the absolute current abum root path
+  // IMDB is the absolute current album root path
   // Returns directories formatted like imdbDirs, (first "", then /... etc.)
   let allDirs = async () => {
     let dirlist = await cmdasync('find -L ' + IMDB + ' -type d|sort')

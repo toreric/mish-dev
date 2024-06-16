@@ -11,7 +11,9 @@ import t from 'ember-intl/helpers/t';
 
 
 export const menuMainId = 'menuMain';
-const LF = '\n';
+const LF = '\n'; // LINE_FEED
+const OP = '⊕'; // OPENS
+const CL = '⊖'; // CLOSES
 
 // Detect closing Esc key for menuMain or open dialogs
 const detectEsc = (event) => {
@@ -70,6 +72,7 @@ export class MenuMain extends Component {
 
     // Convert the album directory list 'data' to a JS tree:
     //begin https://stackoverflow.com/questions/72006110/convert-file-path-into-object
+    let i = 0;
     const tree = { root: {} }
     for (const path of data) {
       const parts = path.split('/');
@@ -78,9 +81,9 @@ export class MenuMain extends Component {
       for (const part of parts) {
         partPath += `${part}/`;
         if (partPath === `${part}/`) {
-          tree.root[partPath] = (tree[partPath] ??= { name: part, children: [] });
+          tree.root[partPath] = (tree[partPath] ??= { name: part, index: i++, coco: this.z.imdbCoco[i-1], children: [] });
         } else if (tree[partPath] === undefined) {
-            tree[partPath] = { name: part, children: [] };
+            tree[partPath] = { name: part, index: i++, coco: this.z.imdbCoco[i-1], children: [] };
             branch.children.push(tree[partPath]);
         }
         branch = tree[partPath];
@@ -89,16 +92,20 @@ export class MenuMain extends Component {
     }
     const result = Object.values(tree.root);
     //end https://stackoverflow ... For directories only, file code is commented out
+    //ALSO the index etc.properties are amended; coco = content count
 
     this.z.imdbTree = result;
+    document.querySelector('div.albumTree').style.display = 'none'; // May be open
+    await new Promise (z => setTimeout (z, 199)); // Soon allow next
+    this.toggleAll();
     console.log(result);
-    // console.log(JSON.stringify(result, null, 2)) //human readable
-    // this.toggleAll();
+    console.log(JSON.stringify(result, null, 2)) //human readable
 
   }
 
-  someFunction = (param) => {this.z.loli(param);}
+  someFunction = (param) => {this.z.loli(param);} // temporary dummy
 
+  // Some texts for div.albumTree follow:
   albumCare = () => {
     return this.intl.t('albumcare') + ' ”' + this.z.imdbDir + '”';
   }
@@ -106,15 +113,17 @@ export class MenuMain extends Component {
     return this.intl.t('albumcoll') + ' ”' + this.z.imdbRoot + '”';
   }
 
+  // The @tree argument for Tree component
   get tree() {
-    // this.z.loli(JSON.stringify(this.z.imdbTree, null, 2));
     return this.args.tree ?? this.z.imdbTree;
   }
 
   // Close/open albumTree
   toggleAlbumTree = () => {
-    this.toggleAll();
-    let tree = document.querySelector('.albumTree');
+    // if (document.querySelector('div.albumTree a:first-of-type').innerText.includes(CL)) {
+    //   this.toggleAll();
+    // }
+    let tree = document.querySelector('div.albumTree');
     if (tree.style.display) {
       tree.style.display = '';
     }else {
@@ -124,7 +133,7 @@ export class MenuMain extends Component {
 
   // Close/open all nodes of albumTree
   toggleAll = () => {
-    let all = document.querySelector(".albumTree").getElementsByTagName("a");
+    let all = document.querySelector("div.albumTree").getElementsByTagName("a");
     for (let i=0;i<all.length;i++) {
       all[i].click();
     }
@@ -196,12 +205,12 @@ class Tree extends Component {
     if (tgt.tagName === 'IMG') {
       tgt = tgt.parentElement;
     }
-    let button = tgt.nextElementSibling.nextElementSibling;
+    let button = tgt.nextElementSibling.nextElementSibling.nextElementSibling .nextElementSibling;
     button.click();
-    if (tgt.innerText.includes('⊕')) {
-      tgt.innerHTML = '⊖<img src="img/folderopen.gif" />';
+    if (tgt.innerText.includes(OP)) {
+      tgt.innerHTML = CL + '<img src="img/folderopen.gif" />';
     } else {
-      tgt.innerHTML = '⊕<img src="img/folder.gif" />';
+      tgt.innerHTML = OP + '<img src="img/folder.gif" />';
     }
   }
 
@@ -214,12 +223,19 @@ class Tree extends Component {
         <div style="display:{{this.display}}">
           {{#if node.children}}
             <a {{on "click" this.clickButton}}>
-              ⊖<img src="img/folderopen.gif" />
+              {{CL}}<img src="img/folderopen.gif" />
             </a>
           {{else}}
             &nbsp;&nbsp;&nbsp; <img src="img/imgfolder.gif" />
           {{/if}}
-          {{node.name}}<br>
+          <span style="font-size:77%;vertical-align:top;line-height:1.1rem">
+            {{node.index}}&nbsp;&nbsp;
+          </span>
+          {{node.name}}
+          <span style="font-size:77%;vertical-align:top">
+            &nbsp;&nbsp;{{node.coco}}
+          </span>
+          <br>
           {{#if node.children}}
             <Tree @tree={{node.children}} />
           {{/if}}
