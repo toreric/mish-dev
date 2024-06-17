@@ -44,6 +44,9 @@ export class DialogLogin extends Component {
         this.z.allowFunc();
         // this.z.loli(this.z.allow);
         this.z.loli('logged in');
+
+        document.getElementById('rootSel').selectedIndex = -1;
+
       }
     } else {
       document.getElementById('logInError').style.display = '';

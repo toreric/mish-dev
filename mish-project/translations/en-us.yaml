@@ -1,6 +1,16 @@
 price_banner: "{product} costs {price, number, ::currency/EUR}"
 
-# These are also for the dialog.rights
+# For the main menu = MenuMain component
+selalbumcol: Choose album collection
+albumcol: Album collection (or album root)
+albumcare: Album care for
+albumcareinfo: Delete, create new, image sorting, duplicate search, and more
+albumcoll: Album collection
+albumcollinfo: Show all albums
+showalbumtree: Show all albums
+anyhidden: visible due to user rights
+
+# Appendix to the the 'dialog.rights' (allowances)
 allowed: "                Allowed to"
 adminAll:     do anything
 albumEdit:    make/erase albums
@@ -120,15 +130,6 @@ header: Mish picture gallery
 hello:
   world:  Hello World!
 picfound: §Found_pictures
-
-selalbumcol: Choose album collection
-albumcol: Album collection (or album root)
-albumcare: Album care for
-albumcareinfo: Delete, create new, image sorting, duplicate search, and more
-albumcoll: Album collection
-albumcollinfo: Show all albums
-showalbumtree: Show all albums
-
 select:
   language: Select language
   languagetext: English

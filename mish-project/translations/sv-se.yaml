@@ -1,6 +1,16 @@
 price_banner: "{product} kostar {price, number, ::currency/EUR}"
 
-# These are also for the dialog.rights
+# For the main menu = MenuMain component
+selalbumcol: Välj albumsamling
+albumcol: Albumsamling (eller albumrot)
+albumcare: Albumåtgärder för
+albumcareinfo: Ta bort, gör nytt, bildsortera, dublettsökning, med mera
+albumcoll: Albumsamling
+albumcollinfo: Visa alla album
+showalbumtree: Visa alla album
+anyhidden: synligt p.g.a. användarrättighet
+
+# Appendix to the the 'dialog.rights' (allowances)
 allowed: "                Får"
 adminAll:     göra vadsomhelst
 albumEdit:    göra/radera album
@@ -119,15 +129,6 @@ header: Mish bildgalleri
 hello:
   world:  Goddag hela världen!
 picfound: §Funna_bilder
-
-selalbumcol: Välj albumsamling
-albumcol: Albumsamling (eller albumrot)
-albumcare: Albumåtgärder för
-albumcareinfo: Ta bort, gör nytt, bildsortera, dublettsökning, med mera
-albumcoll: Albumsamling
-albumcollinfo: Visa alla album
-showalbumtree: Visa alla album
-
 select:
   language: Välj språk
   languagetext: Svenska

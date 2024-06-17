@@ -958,7 +958,7 @@ div[aria-describedby="textareas"] {
   left: 2px;
   min-width: 16em;
   margin: 0 0 0 4px;
-  padding: 0 2px 0 2px;
+  padding: 0 3px;
   border: 1px solid gray;
   border-radius: 2px;
   text-align: left;
@@ -985,7 +985,7 @@ div[aria-describedby="textareas"] {
 .mainMenu p a {
   display: inline-block;
   white-space: nowrap;
-  width: 99.4%;
+  width: 100%;
 }
 .mainMenu p a {
   text-decoration: none;
@@ -993,17 +993,17 @@ div[aria-describedby="textareas"] {
   opacity: 0.9;
   font-size: 90%;
   border: 0.5px solid lightgray;
-  border-radius: 0 4px 4px 0;
-  line-height: 1.2em;
+  border-radius: inherit;
+  line-height: 1.2rem;
   margin: -0.4em 0 0 0;
-  padding: 0.6em 0.4em 0.6em 0.4em;
+  padding: 0.6rem 0 0.6rem 0.4rem;
   color: white;
 }
 .mainMenu p a.rootQuest {
   width: auto;
   border-radius: 4px;
   padding: 0;
-  margin-left: 0.5em;
+  margin-left: 0.5rem;
   font-size: 125%;
 }
 .mainMenu p a:hover {

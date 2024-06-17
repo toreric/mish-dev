@@ -39,7 +39,6 @@ const detectEsc = (event) => {
     }
   }
 }
-
 document.addEventListener ('keydown', detectEsc, false);
 
 
@@ -47,7 +46,11 @@ document.addEventListener ('keydown', detectEsc, false);
 export class MenuMain extends Component {
   @service('common-storage') z;
   @service intl;
+  @tracked hasHidden = false;
 
+  // Choose collection = album root directory and its album (sub)directories
+  // and convert them into an object tree with an amended property set.
+  // Finally indicate if this album tree has any hidden album.
   selectRoot = async (event) => { // Album root = collection
     this.z.imdbRoot = event.target.value;
     this.z.imdbDir = this.z.imdbRoot; // The root is assumed initially selected
@@ -81,9 +84,9 @@ export class MenuMain extends Component {
       for (const part of parts) {
         partPath += `${part}/`;
         if (partPath === `${part}/`) {
-          tree.root[partPath] = (tree[partPath] ??= { name: part, index: i++, coco: this.z.imdbCoco[i-1], children: [] });
+          tree.root[partPath] = (tree[partPath] ??= { name: part, index: i++, coco: this.z.imdbCoco[i-1], path: partPath, label: this.z.imdbLabels[i-1], children: [] });
         } else if (tree[partPath] === undefined) {
-            tree[partPath] = { name: part, index: i++, coco: this.z.imdbCoco[i-1], children: [] };
+            tree[partPath] = { name: part, index: i++, coco: this.z.imdbCoco[i-1], path: partPath, label: this.z.imdbLabels[i-1], children: [] };
             branch.children.push(tree[partPath]);
         }
         branch = tree[partPath];
@@ -100,6 +103,15 @@ export class MenuMain extends Component {
     this.toggleAll();
     console.log(result);
     console.log(JSON.stringify(result, null, 2)) //human readable
+
+    let anyHidden = () => { // flags any hidden album
+      let coco = this.z.imdbCoco;
+      for (let i=0;i<coco.length;i++) {
+        if (coco[i].includes('*')) return true;
+      }
+      return false;
+    }
+    this.hasHidden = anyHidden(); // if there are any hidden albums
 
   }
 
@@ -131,10 +143,10 @@ export class MenuMain extends Component {
     }
   }
 
-  // Close/open all nodes of albumTree
+  // Close/open all nodes of albumTree except the root
   toggleAll = () => {
     let all = document.querySelector("div.albumTree").getElementsByTagName("a");
-    for (let i=0;i<all.length;i++) {
+    for (let i=1;i<all.length;i++) {
       all[i].click();
     }
   }
@@ -174,7 +186,12 @@ export class MenuMain extends Component {
       </p>
 
       <div class="albumTree" style="display:none">
-       <Tree @tree={{this.tree}} />
+        <Tree @tree={{this.tree}} />
+        {{#if this.hasHidden}}
+          <p style="font-size:77%;vertical-align:top;text-align:center;line-height:1.1rem">
+              * {{t 'anyhidden'}}
+          </p>
+        {{/if}}
       </div>
 
     </div>
@@ -216,31 +233,31 @@ class Tree extends Component {
 
   <template>
 
-      <button style="display:none" {{on "click" this.toggle}}>
-        {{if this.isOpen "Close" "Open"}}
-      </button>
-      {{#each @tree as |node|}}
-        <div style="display:{{this.display}}">
-          {{#if node.children}}
-            <a {{on "click" this.clickButton}}>
-              {{CL}}<img src="img/folderopen.gif" />
-            </a>
-          {{else}}
-            &nbsp;&nbsp;&nbsp; <img src="img/imgfolder.gif" />
-          {{/if}}
-          <span style="font-size:77%;vertical-align:top;line-height:1.1rem">
-            {{node.index}}&nbsp;&nbsp;
-          </span>
-          {{node.name}}
-          <span style="font-size:77%;vertical-align:top">
-            &nbsp;&nbsp;{{node.coco}}
-          </span>
-          <br>
-          {{#if node.children}}
-            <Tree @tree={{node.children}} />
-          {{/if}}
-        </div>
-      {{/each}}
+    <button style="display:none" {{on "click" this.toggle}}>
+      {{if this.isOpen "Close" "Open"}}
+    </button>
+    {{#each @tree as |node|}}
+      <div style="display:{{this.display}}">
+        {{#if node.children}}
+          <a {{on "click" this.clickButton}}>
+            {{CL}}<img src="img/folderopen.gif" />
+          </a>
+        {{else}}
+          &nbsp;&nbsp;&nbsp; <img src="img/imgfolder.gif" />
+        {{/if}}
+        <span style="font-size:77%;vertical-align:top;line-height:1.1rem">
+          {{node.index}}&nbsp;&nbsp;
+        </span>
+        {{node.name}}
+        <span style="font-size:77%;vertical-align:top">
+          &nbsp;&nbsp;{{node.coco}}
+        </span>
+        <br>
+        {{#if node.children}}
+          <Tree @tree={{node.children}} />
+        {{/if}}
+      </div>
+    {{/each}}
 
   </template>
 }

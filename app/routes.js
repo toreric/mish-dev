@@ -240,7 +240,7 @@ module.exports = function (app) { // Start module.exports
               // console.log('C i dirlabel[i]',i,dirlabel[i])
               if (ignore[j] && ignore[j].slice(0, 1) !== '#') {
                 ignore[j] = ignore[j].replace (/^[^/]*/, "")
-                if (ignore[j] && dirlist[i].startsWith (ignore[j])) dircoco[i] += "*"
+                if (ignore[j] && dirlist[i].startsWith (ignore[j])) dircoco[i] += " *"
               }
             }
           }
