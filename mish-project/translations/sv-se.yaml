@@ -1,13 +1,17 @@
 price_banner: "{product} kostar {price, number, ::currency/EUR}"
 
 # For the main menu = MenuMain component
-selalbumcol: Välj albumsamling
-albumcol: Albumsamling (eller albumrot)
+selalbumcoll: Välj albumsamling
+albumcollinfo: Albumsamling (eller albumrot)
 albumcare: Albumåtgärder för
 albumcareinfo: Ta bort, gör nytt, bildsortera, dublettsökning, med mera
 albumcoll: Albumsamling
-albumcollinfo: Visa alla album
-showalbumtree: Visa alla album
+albumcollshow: Visa alla album
+tmpalbum1: Med
+tmpalbum2: "först: Tillfälligt album för visning av funna bilder"
+nimages: antal bilder
+nlinked: plus antal inlänkade bilder
+nsubalbums: antal underalbum
 anyhidden: synligt p.g.a. användarrättighet
 
 # Appendix to the the 'dialog.rights' (allowances)

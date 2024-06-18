@@ -183,12 +183,15 @@ module.exports = function (app) { // Start module.exports
           // Get all thumbnails and select randomly
           // one to be used as "subdirectory label"
           for (let i=0; i<dirlist.length; i++) {
+
+            cmd = "echo -n `find " + IMDB + dirlist[i] + " -maxdepth 1 -type l -name '_mini_*' | grep -c ''`";
+            let nlinks = (await execP(cmd))/1 // Get no of linked images
             cmd = "echo -n `ls " + IMDB + dirlist[i] + "/_mini_* 2>/dev/null`"
-            let pics = await execP (cmd)
+            let pics = await execP(cmd) // Get all images
             pics = pics.toString().trim().split(" ")
             if (!pics[0]) {pics = []} // Remove a "" element
-            let npics = pics.length
-            if (npics > 0) {
+            let npics = pics.length // No of images in the album
+            if (npics) {
               let k, n = 1 + Number((new Date).getTime().toString().slice(-1))
               // Instead of seeding, loop n (1 to 10) times to get some variation:
               for (let j=0; j<n; j++) {
@@ -206,8 +209,12 @@ module.exports = function (app) { // Start module.exports
             } else {
               subs = dirlist.length - 1 // All subsubs to root
             }
-            npics = "(" + npics + ")"
-            if (subs) {npics += '+' + subs} // text!
+            if (nlinks) {
+              npics = "(" + (npics - nlinks) + "+" + nlinks + ")"
+            } else {
+              npics = "(" + npics + ")"
+            }
+            if (subs) {npics += ' ' + subs + '‡'} // text!
             dircoco.push(npics)
             dirlabel.push(albumLabel)
           }

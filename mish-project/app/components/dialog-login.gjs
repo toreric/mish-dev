@@ -37,16 +37,21 @@ export class DialogLogin extends Component {
       document.querySelector('input.user_').value = '';
       document.querySelector('input.password_').value = '';
       if (user !== oldUser) {
+        // User change measures: name, credentials, reselect album root
         this.z.userName = user;
         this.z.userStatus = cred[1];
         this.z.allowvalue = cred[2];
         this.z.freeUsers = cred[3];
         this.z.allowFunc();
-        // this.z.loli(this.z.allow);
         this.z.loli('logged in');
-
         document.getElementById('rootSel').selectedIndex = -1;
-
+        this.z.imdbCoco = '';
+        this.z.imdbDir = '';
+        this.z.imdbDirs = '';
+        this.z.imdbLabels = '';
+        this.z.imdbPath = '';
+        this.z.imdbRoot = '';
+        this.z.imdbTree = null;
       }
     } else {
       document.getElementById('logInError').style.display = '';
@@ -123,7 +128,6 @@ export class DialogLogin extends Component {
         </header>
         <main style="text-align:center">
           <form>
-            {{!-- <p>{{this.z.picName}}</p> --}}
             <p style="margin:1rem">
               {{t 'dialog.login.text1'}} <span>{{this.z.userName}}</span>
               {{t 'with'}} [<span>{{this.z.userStatus}}</span>]-{{t 'rights'}}.

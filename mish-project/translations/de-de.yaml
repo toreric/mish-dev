@@ -1,13 +1,17 @@
 price_banner: "{product} kostet {price, number, ::currency/EUR}"
 
 # For the main menu = MenuMain component
-selalbumcol: Albumsammlung wählen
-albumcol: Albumsammlung (oder Albumstamm)
+selalbumcoll: Albumsammlung wählen
+albumcollinfo: Albumsammlung (oder Albumstamm)
 albumcare: Albumpflege für
 albumcareinfo: Löschen, neu erstellen, Bilder sortieren, nach Duplikaten suchen, und mehr
 albumcoll: Albumsammlung
-albumcollinfo: Alle Alben anzeigen
-showalbumtree: Alle Alben anzeigen
+albumcollshow: Alle Alben anzeigen
+tmpalbum1: Mit
+tmpalbum2: "zuerst: Temporäres Album zur Anzeige gefundener Bilder"
+nimages: Anzahl der Bilder
+nlinked: plus Anzahl der verlinkten Bilder
+nsubalbums: Anzahl der Unteralben
 anyhidden: sichtbar aufgrund Benutzerrecht
 
 # Appendix to the the 'dialog.rights' (allowances)

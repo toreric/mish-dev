@@ -166,8 +166,8 @@ export class MenuMain extends Component {
       <p onclick="return false" draggable="false" ondragstart="return false">
         <a class="" style="color: white;cursor: default">
 
-          <select id="rootSel" title={{t 'albumcol'}} {{on "change" this.selectRoot}}>
-            <option value="" selected disabled hidden>{{t 'selalbumcol'}}</option>
+          <select id="rootSel" title={{t 'albumcollinfo'}} {{on "change" this.selectRoot}}>
+            <option value="" selected disabled hidden>{{t 'selalbumcoll'}}</option>
             {{#each this.z.imdbRoots as |rootChoice|}}
               <option value={{rootChoice}} selected={{eq this.z.imdbRoot rootChoice}}>{{rootChoice}}</option>
             {{/each}}
@@ -181,15 +181,20 @@ export class MenuMain extends Component {
         <a {{on "click" (fn this.someFunction 'albumEdit')}}> {{{this.albumCare}}} </a>
       </p><br>
 
-      <p onclick="return false" draggable="false" ondragstart="return false" title={{t 'albumcollinfo'}} style="z-index:0">
+      <p onclick="return false" draggable="false" ondragstart="return false" title={{t 'albumcollshow'}} style="z-index:0">
         <a class="" {{on "click" (fn this.toggleAlbumTree)}}> {{this.albumColl}} </a>
       </p>
 
       <div class="albumTree" style="display:none">
         <Tree @tree={{this.tree}} />
-        {{#if this.hasHidden}}
-          <p style="font-size:77%;vertical-align:top;text-align:center;line-height:1.1rem">
-              * {{t 'anyhidden'}}
+        {{#if this.z.imdbRoot}}
+          <p style="font-size:77%;vertical-align:top;line-height:1.1rem;margin:0 0.2rem 0 3rem">
+            {{t 'tmpalbum1'}} § {{t 'tmpalbum2'}}<br>
+            (.) {{t 'nimages'}}, (.+.) {{t 'nlinked'}}<br>
+            ‡ {{t 'nsubalbums'}}
+            {{#if this.hasHidden}}
+              <br>* {{t 'anyhidden'}}
+            {{/if}}
           </p>
         {{/if}}
       </div>

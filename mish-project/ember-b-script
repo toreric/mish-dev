@@ -1,5 +1,6 @@
 #! /bin/bash
 
+# Ember-build-script: ember-b-script
 #rm -rf dist/ # preventive
 
 # Build production catalog
@@ -7,6 +8,7 @@ prodcat="../public/"
 ember b -prod --output-path=$prodcat --watch true
 
 # Insert a message line into index.html
+# Doesn't happen, if --watch true is set, until break with ^C
 echo "Inserting build timestamp ..."
 mestxt='BUILD '`date +%y%m%d-%H%M`
 echo $mestxt
