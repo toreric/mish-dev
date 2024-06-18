@@ -64,9 +64,20 @@ export class MenuMain extends Component {
     this.z.imdbDirs = arr.splice(0, n);
     this.z.imdbCoco = arr.splice(0, n);
     this.z.imdbLabels = arr.splice(0, n);
-    this.z.loli('imdbDirs ' + n + LF + this.z.imdbDirs.join(LF));
+    // this.z.loli('imdbDirs ' + n + LF + this.z.imdbDirs.join(LF));
     this.z.loli('imdbCoco ' + n + LF + this.z.imdbCoco.join(LF));
-    this.z.loli('imdbLabels ' + n + LF + this.z.imdbLabels.join(LF));
+    // this.z.loli('imdbLabels ' + n + LF + this.z.imdbLabels.join(LF));
+
+    // Remove hidden albums if permission fails
+    const allow = this.z.allow;
+    if(!allow.textEdit) {
+      for (let i=n-1;i>-1;i--) {
+        if (this.z.imdbCoco[i].includes('*')) {
+          this.z.loli(i + ' ' + this.z.imdbCoco[i]); // <<===========
+        }
+      }
+    }
+
     const data = this.z.imdbDirs;
     for (let i=0;i<data.length;i++) {
       data[i] = this.z.imdbRoot + data[i]; // change the empty root reference
@@ -101,8 +112,8 @@ export class MenuMain extends Component {
     document.querySelector('div.albumTree').style.display = 'none'; // May be open
     await new Promise (z => setTimeout (z, 199)); // Soon allow next
     this.toggleAll();
-    console.log(result);
-    console.log(JSON.stringify(result, null, 2)) //human readable
+    // console.log(result);
+    // console.log(JSON.stringify(result, null, 2)) //human readable
 
     let anyHidden = () => { // flags any hidden album
       let coco = this.z.imdbCoco;
