@@ -69,18 +69,36 @@ export class MenuMain extends Component {
     // this.z.loli('imdbLabels ' + n + LF + this.z.imdbLabels.join(LF));
 
     // Remove hidden albums if permission fails
+    this.z.loli(this.z.allowvalue);
     const allow = this.z.allow;
+    this.z.loli(allow);
+    this.z.loli(this.z.allow);
+    const allowance = this.z.allowance;
+    console.log('===========');
+    for (let i=0;i<allow.length;i++) {
+      this.z.loli(allow[allowance[i]]);
+    }
+    console.log('===========');
+    this.z.loli(allow.adminAll);
+    this.z.loli(allow['adminAll']);
+    this.z.loli(allow.albumEdit);
+    this.z.loli(allow['albumEdit']);
+    console.log('===========');
+
     if(!allow.textEdit) {
       for (let i=n-1;i>-1;i--) {
         if (this.z.imdbCoco[i].includes('*')) {
-          this.z.loli(i + ' ' + this.z.imdbCoco[i]); // <<===========
+          this.z.loli(i + ' ' + this.z.imdbCoco[i]); // <<==
+          this.z.imdbDirs.splice(i, 1);
+          this.z.imdbCoco.splice(i, 1);
+          this.z.imdbLabels.splice(i, 1);
         }
       }
     }
 
     const data = this.z.imdbDirs;
     for (let i=0;i<data.length;i++) {
-      data[i] = this.z.imdbRoot + data[i]; // change the empty root reference
+      data[i] = this.z.imdbRoot + data[i]; // fill the empty root reference
     }
     this.z.loli(data);
 
@@ -109,7 +127,7 @@ export class MenuMain extends Component {
     //ALSO the index etc.properties are amended; coco = content count
 
     this.z.imdbTree = result;
-    document.querySelector('div.albumTree').style.display = 'none'; // May be open
+    // document.querySelector('div.albumTree').style.display = 'none'; // May be open
     await new Promise (z => setTimeout (z, 199)); // Soon allow next
     this.toggleAll();
     // console.log(result);
@@ -201,7 +219,7 @@ export class MenuMain extends Component {
         {{#if this.z.imdbRoot}}
           <p style="font-size:77%;vertical-align:top;line-height:1.1rem;margin:0 0.2rem 0 3rem">
             {{t 'tmpalbum1'}} § {{t 'tmpalbum2'}}<br>
-            (.) {{t 'nimages'}}, (.+.) {{t 'nlinked'}}<br>
+            (⋅) {{t 'nimages'}}, (⋅+⋅) {{t 'nlinked'}}<br>
             ‡ {{t 'nsubalbums'}}
             {{#if this.hasHidden}}
               <br>* {{t 'anyhidden'}}

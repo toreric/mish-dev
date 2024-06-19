@@ -42,7 +42,7 @@ export class DialogLogin extends Component {
         this.z.userStatus = cred[1];
         this.z.allowvalue = cred[2];
         this.z.freeUsers = cred[3];
-        this.z.allowFunc();
+        this.z.allowFunc(); // SET ALLOWANCES
         this.z.loli('logged in');
         document.getElementById('rootSel').selectedIndex = -1;
         this.z.imdbCoco = '';
@@ -53,6 +53,7 @@ export class DialogLogin extends Component {
         this.z.imdbRoot = '';
         this.z.imdbTree = null;
       }
+
     } else {
       document.getElementById('logInError').style.display = '';
       await new Promise (z => setTimeout (z, 5222));

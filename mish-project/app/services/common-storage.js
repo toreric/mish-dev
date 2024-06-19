@@ -192,24 +192,24 @@ export default class CommonStorageService extends Service {
                     // o = not yet used
   ];
 
-  // allowText = [ // Ordered as 'allow', IMPORTANT!
+  // allowText = [ // IMPORTANT: Ordered as 'allow'z!
   get allowText() { return [
-    `adminAll: ${this.intl.t('adminAll')}`,
-    `albumEdit: ${this.intl.t('albumEdit')}`,
+    `adminAll:     ${this.intl.t('adminAll')}`,
+    `albumEdit:    ${this.intl.t('albumEdit')}`,
     `appendixEdit: ${this.intl.t('appendixEdit')}`,
     `appendixView: ${this.intl.t('appendixView')}`,
-    `delcreLink: ${this.intl.t('delcreLink')}`,
-    `deleteImg: ${this.intl.t('deleteImg')}`,
-    `imgEdit: ${this.intl.t('imgEdit')}`,
-    `imgHidden: ${this.intl.t('imgHidden')}`,
-    `imgOriginal: ${this.intl.t('imgOriginal')}`,
-    `imgReorder: ${this.intl.t('imgReorder')}`,
-    `imgUpload: ${this.intl.t('imgUpload')}`,
-    `notesEdit: ${this.intl.t('notesEdit')}`,
-    `notesView: ${this.intl.t('notesView')}`,
-    `saveChanges: ${this.intl.t('saveChanges')}`,
-    `setSetting: ${this.intl.t('setSetting')}`,
-    `textEdit: ${this.intl.t('textEdit')}`
+    `delcreLink:   ${this.intl.t('delcreLink')}`,
+    `deleteImg:    ${this.intl.t('deleteImg')}`,
+    `imgEdit:      ${this.intl.t('imgEdit')}`,
+    `imgHidden:    ${this.intl.t('imgHidden')}`,
+    `imgOriginal:  ${this.intl.t('imgOriginal')}`,
+    `imgReorder:   ${this.intl.t('imgReorder')}`,
+    `imgUpload:    ${this.intl.t('imgUpload')}`,
+    `notesEdit:    ${this.intl.t('notesEdit')}`,
+    `notesView:    ${this.intl.t('notesView')}`,
+    `saveChanges:  ${this.intl.t('saveChanges')}`,
+    `setSetting:   ${this.intl.t('setSetting')}`,
+    `textEdit:     ${this.intl.t('textEdit')}`
   ];}
 
   allowFunc = () => { // Called from Welcome after login
@@ -217,24 +217,24 @@ export default class CommonStorageService extends Service {
     var allowance = this.allowance;
     var allowvalue = this.allowvalue;
     for (var i=0; i<allowance.length; i++) {
-      allow [allowance [i]] = Number (allowvalue [i]);
+      allow[allowance[i]] = Number(allowvalue[i]);
     }
     if (allow.adminAll) {
       allowvalue = "1".repeat (this.allowance.length);
       for (var i=0; i<allowance.length; i++) {
-        allow [allowance [i]] = 1;
+        allow[allowance[i]] = 1;
       }
     }
     if (allow.deleteImg) {  // NOTE *  If ...
       allow.delcreLink = 1; // NOTE *  then set this too
-      i = allowance.indexOf ("delcreLink");
-      // Also set the source value (in this way since allowvalue [i] = "1" in't allowed: compiler error: "4 is read-only" if 4 = the index value)
-      allowvalue = allowvalue.slice (0, i - allowvalue.length) + "1" + allowvalue.slice (i + 1 - allowvalue.length);
+      i = allowance.indexOf("delcreLink");
+      // Also set the source value (in this way since allowvalue[i] = "1" in't allowed: compiler error: "4 is read-only" if 4 = the index value)
+      allowvalue = allowvalue.slice(0, i - allowvalue.length) + "1" + allowvalue.slice(i + 1 - allowvalue.length);
     }
     if (allow.notesEdit) { // NOTE *  If ...
       allow.notesView = 1; // NOTE *  then set this too
-      i = allowance.indexOf ("notesView");
-      allowvalue = allowvalue.slice (0, i - allowvalue.length) + "1" + allowvalue.slice (i + 1 - allowvalue.length);
+      i = allowance.indexOf("notesView");
+      allowvalue = allowvalue.slice(0, i - allowvalue.length) + "1" + allowvalue.slice(i + 1 - allowvalue.length);
     }
     // Hide smallbuttons we don't need:
     if (allow.saveChanges) {

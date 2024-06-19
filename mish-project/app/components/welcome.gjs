@@ -48,19 +48,19 @@ class Welcome extends Component {
   openLogIn = async () => {
     this.z.openModalDialog(dialogLoginId, 0);
   }
-
   getCred = async () => {
     if (!this.z.userStatus) { // only once
       // Set a guest user and corresponding allowances
-      let allow = await this.z.getCredentials('Get allowances');
-      console.log(allow);
-      this.z.allowances = allow;
+      let allowances = await this.z.getCredentials('Get allowances');
+      console.log(allowances);
+      this.z.allowances = allowances;
      // Get all recorded user statuses and their allowances + passwordless users
       let cred = (await this.z.getCredentials('Get user name')).split(LF);
       this.z.userStatus = cred[1];
       this.z.allowvalue = cred[2];
       this.z.freeUsers = cred[3];
       // await new Promise (z => setTimeout (z, 99));
+      this.z.allowFunc(); // SET ALLOWANCES PATTERN
       // Get album-collection-qualified catalogs
       let roots = await this.z.getAlbumRoots();
       this.z.imdbRoots = roots.split(LF);
