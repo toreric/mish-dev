@@ -129,7 +129,7 @@ export default class CommonStorageService extends Service {
     });
   }
 
-  getAlbumDirs = async () => {
+  getAlbumDirs = async (hidden) => {
     // Get album collections or albums if thisDir is an album root
     return new Promise((resolve, reject) => {
       // ===== XMLHttpRequest returning user credentials
@@ -139,6 +139,7 @@ export default class CommonStorageService extends Service {
       xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
       xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
       xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
+      xhr.setRequestHeader('hidden', hidden ? 'true' : 'false');
       xhr.onload = function() {
         let res = xhr.response;
         resolve(res);

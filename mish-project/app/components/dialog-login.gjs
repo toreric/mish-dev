@@ -42,7 +42,7 @@ export class DialogLogin extends Component {
         this.z.userStatus = cred[1];
         this.z.allowvalue = cred[2];
         this.z.freeUsers = cred[3];
-        this.z.allowFunc(); // SET ALLOWANCES
+        this.z.allowFunc(); // SET ALLOWANCES PATTERN
         this.z.loli('logged in');
         document.getElementById('rootSel').selectedIndex = -1;
         this.z.imdbCoco = '';
@@ -174,8 +174,8 @@ export class DialogLogin extends Component {
           <p style="text-align:left;font-size:85%">
             <pre alt="PRE keeps line feeds" style="font-family:'Andale Mono','Cascadia Mono';font-size:97%;margin:0">{{this.allowances}}</pre>{{t 'dialog.rights.footnote1'}}<br>{{t 'dialog.rights.footnote2'}}
             <br>{{t 'dialog.rights.footnote3'}}
-            </p>
-            <p style="text-align:left;font-size:85%;font-weight:bold">
+          </p>
+          <p style="text-align:left;font-size:85%;font-weight:bold">
             {{t 'dialog.rights.text1'}}<br>{{t 'dialog.rights.text2'}}<br>{{t 'dialog.rights.text3'}}<br>{{t 'dialog.rights.text4'}}
           </p>
         </main>

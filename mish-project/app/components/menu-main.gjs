@@ -55,8 +55,10 @@ export class MenuMain extends Component {
     this.z.imdbRoot = event.target.value;
     this.z.imdbDir = this.z.imdbRoot; // The root is assumed initially selected
     this.z.loli('IMDB_ROOT set to ' + this.z.imdbRoot);
-    // Retreive the album tree of this collection
-    let tmp = await this.z.getAlbumDirs();
+    const allow = this.z.allow; // PERMISSIONS
+
+    // Retreive album tree of this collection, arg.=true if hidden allowed
+    let tmp = await this.z.getAlbumDirs(allow.textEdit);
     let arr = tmp.split(LF);
     let aboutNode = arr.shift();
     this.z.imdbPath = arr.shift();
@@ -67,34 +69,6 @@ export class MenuMain extends Component {
     // this.z.loli('imdbDirs ' + n + LF + this.z.imdbDirs.join(LF));
     this.z.loli('imdbCoco ' + n + LF + this.z.imdbCoco.join(LF));
     // this.z.loli('imdbLabels ' + n + LF + this.z.imdbLabels.join(LF));
-
-    // Remove hidden albums if permission fails
-    this.z.loli(this.z.allowvalue);
-    const allow = this.z.allow;
-    this.z.loli(allow);
-    this.z.loli(this.z.allow);
-    const allowance = this.z.allowance;
-    console.log('===========');
-    for (let i=0;i<allow.length;i++) {
-      this.z.loli(allow[allowance[i]]);
-    }
-    console.log('===========');
-    this.z.loli(allow.adminAll);
-    this.z.loli(allow['adminAll']);
-    this.z.loli(allow.albumEdit);
-    this.z.loli(allow['albumEdit']);
-    console.log('===========');
-
-    if(!allow.textEdit) {
-      for (let i=n-1;i>-1;i--) {
-        if (this.z.imdbCoco[i].includes('*')) {
-          this.z.loli(i + ' ' + this.z.imdbCoco[i]); // <<==
-          this.z.imdbDirs.splice(i, 1);
-          this.z.imdbCoco.splice(i, 1);
-          this.z.imdbLabels.splice(i, 1);
-        }
-      }
-    }
 
     const data = this.z.imdbDirs;
     for (let i=0;i<data.length;i++) {
@@ -277,7 +251,7 @@ class Tree extends Component {
             {{CL}}<img src="img/folderopen.gif" />
           </a>
         {{else}}
-          &nbsp;&nbsp;&nbsp; <img src="img/imgfolder.gif" />
+          &nbsp;&nbsp;&nbsp; <img src="img/folderopen.gif" />
         {{/if}}
         <span style="font-size:77%;vertical-align:top;line-height:1.1rem">
           {{node.index}}&nbsp;&nbsp;

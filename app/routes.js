@@ -164,21 +164,50 @@ module.exports = function (app) { // Start module.exports
   //       i.e. get all possible album directories, recursive
   app.get ('/imdbdirs', async function (req, res) {
     await new Promise (z => setTimeout (z, 200))
+    let allowHidden = req.get('hidden')
     // Refresh picFound: the shell commands must execute in sequence
     let pif = IMDB + '/' + picFound
     // console.log(pif)
     let cmd = 'rm -rf ' + pif + ' && mkdir ' + pif + ' && touch ' + pif + '/.imdb'
     console.log(LF + cmd)
-    // await cmdasync(cmd) // ger direktare diagnos
+    // await cmdasync(cmd) // better diagnosis
     await execP(cmd)
     setTimeout (function () {
       allDirs().then (dirlist => { // dirlist entries start with the root album
         areAlbums(dirlist).then (async dirlist => {
           // dirlist = dirlist.sort ()
           var albumLabel
-          let dirtext = dirlist.join (LF)
           let dircoco = [] // directory content counters
           let dirlabel = [] // album label thumbnail paths
+
+          // Hidden albums are listed in _imdb_ignore.txt, create if missing
+          let fd, ignorePaths = IMDB + "/_imdb_ignore.txt"
+          try {
+            fd = await fs.openAsync (ignorePaths, 'r')
+            await fs.closeAsync (fd)
+          } catch (err) {
+            fd = await fs.openAsync (ignorePaths, 'w') // created
+            await fs.closeAsync (fd)
+          }
+          // Remove hidden albums from the list if allowHidden is 'false'
+          if (allowHidden !== 'true') {
+            for (let i=0; i<dirlist.length; i++) {
+              // An _imdb_ignore line/path may/should start with just './' (if not #)
+              let ignore = (await execP("cat " + ignorePaths)).toString().trim().split(LF)
+              for (let j=0; j<ignore.length; j++) {
+                if (ignore[j].slice(0, 1) === '#') ignore[j] = ''
+                ignore[j] = ignore[j].replace (/^[^/]*/, '')
+                for (let i=dirlist.length-1;i>-1;i--) {
+                  if (ignore[j] && ignore[j].slice(0, 1) !== '#') {
+                    if (ignore[j] && dirlist[i].startsWith(ignore[j])) {
+                      dirlist.splice(i, 1)
+                      break
+                    }
+                  }
+                }
+              }
+            }
+          }
 
           // Get all thumbnails and select randomly
           // one to be used as "subdirectory label"
@@ -202,7 +231,6 @@ module.exports = function (app) { // Start module.exports
             // Count the number of subdirectories; albums are in sorted order
             var subs = 0
             if(i) {
-              // subs = occurrences(dirtext, dirlist[i]) - 1 //too liberal
               for (let j=i+1; j<dirlist.length; j++) {
                 if ((dirlist[j]).startsWith(dirlist[i])) ++subs
               }
@@ -232,25 +260,21 @@ module.exports = function (app) { // Start module.exports
               }
             }
           }
-          let fd, ignorePaths = IMDB + "/_imdb_ignore.txt"
-          try { // Create _imdb_ignore.txt if missing
-            fd = await fs.openAsync (ignorePaths, 'r')
-            await fs.closeAsync (fd)
-          } catch (err) {
-            fd = await fs.openAsync (ignorePaths, 'w') // created
-            await fs.closeAsync (fd)
-          }
-          // An _imdb_ignore line/path may/should start with just './' (if not #)
-          let ignore = (await execP("cat " + ignorePaths)).toString().trim().split(LF)
-          for (let j=0; j<ignore.length; j++) {
-            for (let i=0; i<dirlist.length; i++) {
-              // console.log('C i dirlabel[i]',i,dirlabel[i])
-              if (ignore[j] && ignore[j].slice(0, 1) !== '#') {
-                ignore[j] = ignore[j].replace (/^[^/]*/, "")
-                if (ignore[j] && dirlist[i].startsWith (ignore[j])) dircoco[i] += " *"
+          // Add a mark for hidden files (if not removed already)
+          if (allowHidden === 'true') {
+            // An _imdb_ignore line/path may/should start with just './' (if not #)
+            let ignore = (await execP("cat " + ignorePaths)).toString().trim().split(LF)
+            for (let j=0; j<ignore.length; j++) {
+              for (let i=0; i<dirlist.length; i++) {
+                // console.log('C i dirlabel[i]',i,dirlabel[i])
+                if (ignore[j] && ignore[j].slice(0, 1) !== '#') {
+                  ignore[j] = ignore[j].replace (/^[^/]*/, "")
+                  if (ignore[j] && dirlist[i].startsWith (ignore[j])) dircoco[i] += " *"
+                }
               }
             }
           }
+          let dirtext = dirlist.join (LF)
           dircoco = dircoco.join(LF)
           dirlabel = dirlabel.join(LF)
           // Add 2 lines at start: Node version and imdbPath
