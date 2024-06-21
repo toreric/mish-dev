@@ -195,7 +195,7 @@ export class MenuMain extends Component {
           <p style="font-size:77%;vertical-align:top;line-height:1.1rem;margin:0 0.2rem 0 3rem">
             {{t 'tmpalbum1'}} § {{t 'tmpalbum2'}}<br>
             (⋅) {{t 'nimages'}}, (⋅+⋅) {{t 'nlinked'}}<br>
-            ‡ {{t 'nsubalbums'}} <a style="border:none" title="Öppna/stäng alla underalbum" {{on "click" (fn this.toggleAll)}}> {{OP}}/{{CL}} </a>
+            ‡ {{t 'nsubalbums'}} <a style="border:none;padding:1rem;text-align:right" title="Öppna/stäng alla underalbum" {{on "click" (fn this.toggleAll)}}> {{OP}}/{{CL}} </a>
             {{#if this.hasHidden}}
               <br>* {{t 'anyhidden'}}
             {{/if}}
