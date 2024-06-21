@@ -76,29 +76,30 @@ export class MenuMain extends Component {
     }
     this.z.loli(data);
 
-    // Convert the album directory list 'data' to a JS tree:
     //begin https://stackoverflow.com/questions/72006110/convert-file-path-into-object
+    // Convert the album directory list 'data' to a JS tree. Modifications are:
+    // m1. For directories only, file code is commented out.
+    // m2. The properties index, coco, path, and label, are added (coco = content count)
     let i = 0;
     const tree = { root: {} }
     for (const path of data) {
       const parts = path.split('/');
-      // const file = parts.pop();
+      // const file = parts.pop(); // m1.
       let branch = tree, partPath = '';
       for (const part of parts) {
         partPath += `${part}/`;
         if (partPath === `${part}/`) {
           tree.root[partPath] = (tree[partPath] ??= { name: part, index: i++, coco: this.z.imdbCoco[i-1], path: partPath, label: this.z.imdbLabels[i-1], children: [] });
         } else if (tree[partPath] === undefined) {
-            tree[partPath] = { name: part, index: i++, coco: this.z.imdbCoco[i-1], path: partPath, label: this.z.imdbLabels[i-1], children: [] };
+            tree[partPath] = { name: part, index: i++, coco: this.z.imdbCoco[i-1], path: partPath, label: this.z.imdbLabels[i-1], children: [] }; // m2.
             branch.children.push(tree[partPath]);
         }
         branch = tree[partPath];
       }
-      // branch.children.push({ name: file, id: path });
+      // branch.children.push({ name: file, id: path }); // m1.
     }
     const result = Object.values(tree.root);
-    //end https://stackoverflow ... For directories only, file code is commented out
-    //ALSO the index etc.properties are amended; coco = content count
+    //end https://stackoverflow ...
 
     this.z.imdbTree = result;
     // document.querySelector('div.albumTree').style.display = 'none'; // May be open
@@ -148,7 +149,7 @@ export class MenuMain extends Component {
 
   // Close/open all nodes of albumTree except the root
   toggleAll = () => {
-    let all = document.querySelector("div.albumTree").getElementsByTagName("a");
+    let all = document.querySelector('div.albumTree').querySelectorAll('a.album');
     for (let i=1;i<all.length;i++) {
       all[i].click();
     }
@@ -194,7 +195,7 @@ export class MenuMain extends Component {
           <p style="font-size:77%;vertical-align:top;line-height:1.1rem;margin:0 0.2rem 0 3rem">
             {{t 'tmpalbum1'}} § {{t 'tmpalbum2'}}<br>
             (⋅) {{t 'nimages'}}, (⋅+⋅) {{t 'nlinked'}}<br>
-            ‡ {{t 'nsubalbums'}}
+            ‡ {{t 'nsubalbums'}} <a style="border:none" title="Öppna/stäng alla underalbum" {{on "click" (fn this.toggleAll)}}> {{OP}}/{{CL}} </a>
             {{#if this.hasHidden}}
               <br>* {{t 'anyhidden'}}
             {{/if}}
@@ -227,10 +228,12 @@ class Tree extends Component {
 
   clickButton = (event) => {
     let tgt = event.target;
-    if (tgt.tagName === 'IMG') {
+    if (tgt.tagName === 'IMG') { // if A IMG and not A is clicked
       tgt = tgt.parentElement;
     }
-    let button = tgt.nextElementSibling.nextElementSibling.nextElementSibling .nextElementSibling;
+    // This button is unvisible:
+    // let button = tgt.nextElementSibling.nextElementSibling.nextElementSibling .nextElementSibling;
+    let button = tgt.parentElement.querySelector('button');
     button.click();
     if (tgt.innerText.includes(OP)) {
       tgt.innerHTML = CL + '<img src="img/folderopen.gif" />';
@@ -247,7 +250,7 @@ class Tree extends Component {
     {{#each @tree as |node|}}
       <div style="display:{{this.display}}">
         {{#if node.children}}
-          <a {{on "click" this.clickButton}}>
+          <a class="album" {{on "click" this.clickButton}}>
             {{CL}}<img src="img/folderopen.gif" />
           </a>
         {{else}}
