@@ -34,8 +34,10 @@ export class DialogLogin extends Component {
     if (cred[1] && pwrd === cred[0]) { // No status for illegal users
       var oldUser = this.z.userName;
       document.getElementById('logInError').style.display = 'none';
-      document.querySelector('input.user_').value = '';
-      document.querySelector('input.password_').value = '';
+      document.querySelector('input.user_').value = ' ';
+      document.querySelector('input.password_').value = ' ';
+      this.clearInput('user_');
+      this.clearInput('password_');
       if (user !== oldUser) {
         // User change measures: name, credentials, reselect album root
         this.z.userName = user;

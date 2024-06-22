@@ -119,13 +119,11 @@ export class MenuMain extends Component {
 
   }
 
-  someFunction = (param) => {this.z.loli(param);} // temporary dummy
-
-  // Some texts for div.albumTree follow:
-  albumCare = () => {
+  // Some texts for div.albumTree
+  albumCareText = () => {
     return this.intl.t('albumcare') + ' ”' + this.z.imdbDir + '”';
   }
-  albumColl = () => {
+  albumCollText = () => {
     return this.intl.t('albumcoll') + ' ”' + this.z.imdbRoot + '”';
   }
 
@@ -134,21 +132,50 @@ export class MenuMain extends Component {
     return this.args.tree ?? this.z.imdbTree;
   }
 
+    // Search album texts to find images
+  findText = () => {
+    if (this.checkRoot()) return;
+    this.z.loli('findText');
+    // ...todo
+  }
+
+  // Manage favorite image lists
+  seeFavorites = () => {
+    if (this.checkRoot()) return;
+    this.z.loli('seeFavorites');
+    // ...todo
+  }
+
+  // Edit or create albums etc.
+  albumEdit = () => {
+    if (this.checkRoot()) return;
+    this.z.loli('albumEdit');
+    // ...todo
+  }
+
   // Close/open albumTree
   toggleAlbumTree = () => {
-    if (document.getElementById('dialogAlert').hasAttribute('open')) {
-      this.z.closeDialog('dialogAlert');
-      return;
-    }
-    if (!this.z.imdbRoot) {
-      this.z.alertMess(this.intl.t('needaroot'));
-      return;
-    }
+    if (this.checkRoot()) return;
+    this.z.loli('toggleAlbumTree');
     let tree = document.querySelector('div.albumTree');
     if (tree.style.display) {
       tree.style.display = '';
     }else {
       tree.style.display = 'none';
+    }
+  }
+
+  // Check if the alert dialog is open (then close it), or if no
+  // album root/collection (imdbRoot) is chosen (then open it)
+  checkRoot = () => {
+    if (document.getElementById('dialogAlert').hasAttribute('open')) {
+      this.z.closeDialog('dialogAlert');
+      return true;
+    }
+    if (!this.z.imdbRoot) {
+      // alertMess opens the alert dialog
+      this.z.alertMess(this.intl.t('needaroot'));
+      return true;
     }
   }
 
@@ -165,11 +192,11 @@ export class MenuMain extends Component {
     <div id="menuMain" class="mainMenu BACKG" onclick="return false" draggable="false" ondragstart="return false" style="display:none">
 
       <p onclick="return false" draggable="false" ondragstart="return false" title="Sökning">
-        <a class="search" {{on "click" (fn this.someFunction 'findText')}}>Finn bilder <span style="font:normal 1em monospace!important">[F]</span></a>
+        <a class="search" {{on "click" (fn this.findText)}}>Finn bilder <span style="font:normal 1em monospace!important">[F]</span></a>
       </p><br>
 
       <p onclick="return false" draggable="false" ondragstart="return false" title="Favoritskötsel">
-        <a id ="favorites" {{on "click" (fn this.someFunction 'seeFavorites')}}>Favoritbilder</a>
+        <a id ="favorites" {{on "click" (fn this.seeFavorites)}}>Favoritbilder</a>
       </p><br>
 
       <p onclick="return false" draggable="false" ondragstart="return false">
@@ -187,11 +214,11 @@ export class MenuMain extends Component {
       </p><br>
 
       <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title={{t 'albumcareinfo'}}>
-        <a {{on "click" (fn this.someFunction 'albumEdit')}}> {{{this.albumCare}}} </a>
+        <a {{on "click" (fn this.albumEdit)}}> {{{this.albumCareText}}} </a>
       </p><br>
 
-      <p onclick="return false" draggable="false" ondragstart="return false" title={{t 'albumcollshow'}} style="z-index:0">
-        <a class="" {{on "click" (fn this.toggleAlbumTree)}}> {{this.albumColl}} </a>
+      <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title={{t 'albumcollshow'}}>
+        <a {{on "click" (fn this.toggleAlbumTree)}}> {{this.albumCollText}} </a>
       </p>
 
       <div class="albumTree" style="display:none">

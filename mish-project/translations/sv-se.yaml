@@ -136,6 +136,7 @@ header: Mish bildgalleri
 hello:
   world:  Goddag hela världen!
 infoHeader: Information
+loggedIn: Inloggad
 picfound: §Funna_bilder
 select:
   language: Välj språk

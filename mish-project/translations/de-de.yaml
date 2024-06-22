@@ -137,6 +137,7 @@ header: Mish Bildergalerie
 hello:
   world:  Guten Tag, Welt!
 infoHeader: Information
+loggedIn: Angemeldet
 picfound: §Bilder_gefunden
 select:
   language: Sprache wählen

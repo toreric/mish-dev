@@ -137,6 +137,7 @@ header: Mish picture gallery
 hello:
   world:  Hello World!
 infoHeader: Information
+loggedIn: Logged in
 picfound: §Found_pictures
 select:
   language: Select language

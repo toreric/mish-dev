@@ -22,7 +22,7 @@ export default class CommonStorageService extends Service {
   @tracked  imdbRoot = '';                  //chosen album root directory (collection)
   @tracked  imdbRoots = ['fake', 'falsch']; //avalable album root directories (collections)
   @tracked  imdbTree = null;                //will have the imdbDirs object tree
-  @tracked  infoHeader = 'Information';     //for information dialog
+  @tracked  infoHeader = 'Header text';     //for information dialog
   @tracked  infoMessage = 'No information'; //for information dialog
         get intlCode() { return `${this.intl.t('intlcode')}`; }
         get picFoundBaseName() { return `${this.intl.t('picfound')}`; }
@@ -58,10 +58,10 @@ export default class CommonStorageService extends Service {
   }
 
   alertMess = (mess, hdr) => {
+    this.infoHeader = this.intl.t('infoHeader'); // default header
     if (hdr) this.infoHeader = hdr;
     this.infoMessage = mess;
     this.openDialog('dialogAlert');
-    this.infoHeader = this.intl.t('infoHeader'); // Resetting default header
   }
 
   //   #region Server
