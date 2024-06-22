@@ -6,9 +6,11 @@ albumcollinfo: Albumsamling (eller albumrot)
 albumcare: Albumåtgärder för
 albumcareinfo: Ta bort, gör nytt, bildsortera, dublettsökning, med mera
 albumcoll: Albumsamling
-albumcollshow: Visa alla album
+albumcollshow: Visa/dölj albumlistan
 tmpalbum1: Med
 tmpalbum2: "först: Tillfälligt album för visning av funna bilder"
+toggleallalb: Öppna/stäng alla underalbum
+needaroot:    Välj först albumsamling!
 nimages: antal bilder
 nlinked: plus antal inlänkade bilder
 nsubalbums: antal underalbum
@@ -33,6 +35,7 @@ saveChanges:  spara ändringar utöver text
 setSetting:   ändra inställningar
 textEdit:     redigera/spara bildtexter, gömda album³
 
+all: Alla
 dark: Mörk
 #NOTE: Choose a guest: value which exists in the _imdb_settings.sqlite 'user' table!
 #      Else use instead the standard name guest!
@@ -132,6 +135,7 @@ goto: Gå till
 header: Mish bildgalleri
 hello:
   world:  Goddag hela världen!
+infoHeader: Information
 picfound: §Funna_bilder
 select:
   language: Välj språk

@@ -12,6 +12,7 @@ export default class CommonStorageService extends Service {
 
   @tracked  bkgrColor = '#cbcbcb';          //common background color
   @tracked  credentials = '';               //user credentials: \n-string from db
+        get defaultUserName() { return `${this.intl.t('guest')}`; }
   @tracked  freeUsers = 'guest...';         //user names which do not require passwords
   @tracked  imdbCoco = '';                  //content counters etc. for imdbDirs (*)
   @tracked  imdbDir = '';                   //actual/current (sub)album directory
@@ -21,14 +22,15 @@ export default class CommonStorageService extends Service {
   @tracked  imdbRoot = '';                  //chosen album root directory (collection)
   @tracked  imdbRoots = ['fake', 'falsch']; //avalable album root directories (collections)
   @tracked  imdbTree = null;                //will have the imdbDirs object tree
+  @tracked  infoHeader = 'Information';     //for information dialog
+  @tracked  infoMessage = 'No information'; //for information dialog
         get intlCode() { return `${this.intl.t('intlcode')}`; }
         get picFoundBaseName() { return `${this.intl.t('picfound')}`; }
             // The found pics temporary catalog name is amended with a random 4-code:
   @tracked  picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
   @tracked  picName = 'IMG_1234a2023_nov_19'; //actual/current image name
   @tracked  userDir = '/path/to/albums'; //maybe your home dir. or any; server argument!
-        get defaultUserName() { return `${this.intl.t('guest')}`; }
-  @tracked  userName = this.defaultUserName; // May be changed in other ways at e.g. logins
+  @tracked  userName = this.defaultUserName; // May be changed in other ways (e.g. logins)
   @tracked  userStatus = '';
   // More variables may be defined further down
   // (*) imdbCoco format is "(<npics>) <nsubdirs> <flag>" where <flag> is empty or "*"
@@ -53,6 +55,13 @@ export default class CommonStorageService extends Service {
 
   loli = (text) => { // loli = log list with user name
     console.log(this.userName + ':', text);
+  }
+
+  alertMess = (mess, hdr) => {
+    if (hdr) this.infoHeader = hdr;
+    this.infoMessage = mess;
+    this.openDialog('dialogAlert');
+    this.infoHeader = this.intl.t('infoHeader'); // Resetting default header
   }
 
   //   #region Server

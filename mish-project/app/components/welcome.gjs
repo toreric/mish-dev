@@ -11,6 +11,7 @@ import { makeDialogDraggable } from 'dialog-draggable';
 
 import { Clock } from './clock';
 import { ButtonsLeft } from './buttons-left';
+import { DialogAlert } from './dialog-alert';
 import { DialogHelp } from './dialog-help';
 import { DialogLogin } from './dialog-login'
 import { DialogText } from './dialog-text';
@@ -92,6 +93,7 @@ export default class extends Welcome {
       <Language />
     </div>
     <Header />
+    <DialogAlert />
     <DialogLogin />
     <MenuMain />
     <ButtonsLeft />

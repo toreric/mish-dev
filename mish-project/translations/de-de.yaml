@@ -6,9 +6,11 @@ albumcollinfo: Albumsammlung (oder Albumstamm)
 albumcare: Albumpflege für
 albumcareinfo: Löschen, neu erstellen, Bilder sortieren, nach Duplikaten suchen, und mehr
 albumcoll: Albumsammlung
-albumcollshow: Alle Alben anzeigen
+albumcollshow: Albumliste ein-/ausblenden
+toggleallalb: Alle Unteralben öffnen/schließen
 tmpalbum1: Mit
 tmpalbum2: "zuerst: Temporäres Album zur Anzeige gefundener Bilder"
+needaroot: Zuerst Albumsammlung auswählen!
 nimages: Anzahl der Bilder
 nlinked: plus Anzahl der verlinkten Bilder
 nsubalbums: Anzahl der Unteralben
@@ -33,6 +35,7 @@ saveChanges:  Änderungen speichern zusätzlich zu Text
 setSetting:   Einstellungen ändern
 textEdit:     Untertiteln bearbeiten/speichern, ausgeblendete Alben anzeigen³
 
+all: Alle
 dark: Dunkel
 #NOTE: Choose a guest: value which exists in the _imdb_settings.sqlite 'user' table!
 #      Else use instead the standard name guest!
@@ -133,6 +136,7 @@ goto: Gehe zu
 header: Mish Bildergalerie
 hello:
   world:  Guten Tag, Welt!
+infoHeader: Information
 picfound: §Bilder_gefunden
 select:
   language: Sprache wählen

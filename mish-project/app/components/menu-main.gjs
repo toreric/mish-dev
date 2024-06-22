@@ -136,9 +136,14 @@ export class MenuMain extends Component {
 
   // Close/open albumTree
   toggleAlbumTree = () => {
-    // if (document.querySelector('div.albumTree a:first-of-type').innerText.includes(CL)) {
-    //   this.toggleAll();
-    // }
+    if (document.getElementById('dialogAlert').hasAttribute('open')) {
+      this.z.closeDialog('dialogAlert');
+      return;
+    }
+    if (!this.z.imdbRoot) {
+      this.z.alertMess(this.intl.t('needaroot'));
+      return;
+    }
     let tree = document.querySelector('div.albumTree');
     if (tree.style.display) {
       tree.style.display = '';
@@ -190,12 +195,15 @@ export class MenuMain extends Component {
       </p>
 
       <div class="albumTree" style="display:none">
+
+        <a style="margin:0.2rem;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title={{t 'toggleallalb'}} {{on "click" (fn this.toggleAll)}}>{{t 'all'}} {{OP}}/{{CL}}</a>
+
         <Tree @tree={{this.tree}} />
         {{#if this.z.imdbRoot}}
           <p style="font-size:77%;vertical-align:top;line-height:1.1rem;margin:0 0.2rem 0 3rem">
             {{t 'tmpalbum1'}} § {{t 'tmpalbum2'}}<br>
             (⋅) {{t 'nimages'}}, (⋅+⋅) {{t 'nlinked'}}<br>
-            ‡ {{t 'nsubalbums'}} <a style="border:none;padding:1rem;text-align:right" title="Öppna/stäng alla underalbum" {{on "click" (fn this.toggleAll)}}> {{OP}}/{{CL}} </a>
+            ‡ {{t 'nsubalbums'}}
             {{#if this.hasHidden}}
               <br>* {{t 'anyhidden'}}
             {{/if}}

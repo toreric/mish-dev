@@ -6,9 +6,11 @@ albumcollinfo: Album collection (or album root)
 albumcare: Album care for
 albumcareinfo: Delete, create new, image sorting, duplicate search, and more
 albumcoll: Album collection
-albumcollshow: Show all albums
+albumcollshow: Show/hide album list
+toggleallalb: Open/close all subalbums
 tmpalbum1: With
 tmpalbum2: "first: Temporary album for displaying found images"
+needaroot: First select album collection!
 nimages: number of images
 nlinked: plus number of linked images
 nsubalbums: number of subalbums
@@ -33,6 +35,7 @@ saveChanges:  save changes more than texts
 setSetting:   change settings
 textEdit:     edit/save image texts/captions, access hidden albums³
 
+all: All
 dark: Dark
 #NOTE: Choose a guest: value which exists in the _imdb_settings.sqlite 'user' table!
 #      Else use instead the standard name guest!
@@ -133,6 +136,7 @@ goto: Go to
 header: Mish picture gallery
 hello:
   world:  Hello World!
+infoHeader: Information
 picfound: §Found_pictures
 select:
   language: Select language

@@ -45,6 +45,8 @@ export class DialogLogin extends Component {
         this.z.allowFunc(); // SET ALLOWANCES PATTERN
         this.z.loli('logged in');
         document.getElementById('rootSel').selectedIndex = -1;
+        document.querySelector('div.albumTree').style.display = 'none';
+
         this.z.imdbCoco = '';
         this.z.imdbDir = '';
         this.z.imdbDirs = '';
