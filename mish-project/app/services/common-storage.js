@@ -10,7 +10,7 @@ export default class CommonStorageService extends Service {
   //   #region Variables
   //== Significant Mish system global variables
 
-  @tracked  bkgrColor = '#cbcbcb';          //common background color
+  @tracked  bkgrColor = '#111';             //default background color
   @tracked  credentials = '';               //user credentials: \n-string from db
         get defaultUserName() { return `${this.intl.t('guest')}`; }
   @tracked  freeUsers = 'guest...';         //user names which do not require passwords
@@ -25,11 +25,13 @@ export default class CommonStorageService extends Service {
   @tracked  infoHeader = 'Header text';     //for information dialog
   @tracked  infoMessage = 'No information'; //for information dialog
         get intlCode() { return `${this.intl.t('intlcode')}`; }
+  @tracked  intlCodeCurr = this.intlCode;
         get picFoundBaseName() { return `${this.intl.t('picfound')}`; }
             // The found pics temporary catalog name is amended with a random 4-code:
   @tracked  picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
   @tracked  picName = 'IMG_1234a2023_nov_19'; //actual/current image name
-  @tracked  userDir = '/path/to/albums'; //maybe your home dir. or any; server argument!
+  @tracked  textColor = '#fff';          //default text color
+  @tracked  userDir = '/path/to/albums'; //maybe your home dir., server start argument!
   @tracked  userName = this.defaultUserName; // May be changed in other ways (e.g. logins)
   @tracked  userStatus = '';
   // (*) imdbCoco format is "(<npics>[+<nlinked>]) [<nsubdirs>] [<flag>]"
@@ -129,17 +131,19 @@ export default class CommonStorageService extends Service {
     this.allowvalue = allowvalue;
   }
 
-//   #region Utilities
+  //   #region Utilities
   //== Other service functions
 
   toggleBackg = () => {
     if (this.bkgrColor === '#cbcbcb') {
       this.bkgrColor = '#111';
       this.textColor = '#fff';
+      this.setCookie('mish_bkgr', 'dark');
       this.loli('set dark background');
     } else {
       this.bkgrColor = '#cbcbcb';
       this.textColor = '#111';
+      this.setCookie('mish_bkgr', 'light');
       this.loli('set light background');
     }
     document.querySelector('body').style.background = this.bkgrColor;
@@ -164,6 +168,33 @@ export default class CommonStorageService extends Service {
       n += Number(c[i].replace(/^[^(]*\(([0-9]+).*$/, '$1'));
     }
     return n.toString();
+  }
+
+  // Cookie names are mish_lang, mish_bkgr, ...
+  setCookie = (cname, cvalue, exminutes) => {
+    if (exminutes) {
+      var d = new Date();
+      d.setTime(d.getTime() + (exminutes*60000));
+      var expires = "expires="+ d.toUTCString();
+      document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/;SameSite=Lax";
+    } else {
+      document.cookie = cname + "=" + cvalue + ";path=/;SameSite=Lax";
+    }
+  }
+  getCookie = (cname) => {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
   }
 
   //   #region Server

@@ -144,7 +144,7 @@ select:
 time:
   text: Klockan är
   buildstamp: Ember development server
-totalImgNumber: "Totalt antal bilder i samlingen:"
+totalImgNumber: Totalt antal bilder i samlingen
 write:
   creator: "Ursprung: Foto upphov källa"
   description: "Beskrivning: När var vad vilka"

@@ -12,9 +12,11 @@ export class Language extends Component {
   selections = this.intl.get('locales').sort();
 
   changeLocale = async (newLoc) => {
-    if (newLoc === this.z.intlCode) return;
+    if (newLoc === this.z.intlCodeCurr) return;
     let defaultUser = this.z.userName === this.z.defaultUserName;
     this.intl.setLocale([newLoc]);
+    this.z.intlCodeCurr = newLoc;
+    this.z.setCookie('mish_lang', newLoc)
     this.z.loli('set language to ' + newLoc);
     if (defaultUser) { // Each language has a default user
       this.z.userName = this.z.defaultUserName;

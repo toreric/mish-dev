@@ -41,6 +41,7 @@ document.addEventListener('mousedown', (event) => {
 
 class Welcome extends Component {
   @service('common-storage') z;
+  @service intl;
 
   openRights = async () => {
     this.z.openModalDialog(dialogRightsId, 0);
@@ -51,20 +52,40 @@ class Welcome extends Component {
   }
   getCred = async () => {
     if (!this.z.userStatus) { // only once
+      // Set default background
+      document.querySelector('body').style.background = this.z.bkgrColor;
+      document.querySelector('body').style.color = this.z.textColor;
       // Set a guest user and corresponding allowances
       let allowances = await this.z.getCredentials('Get allowances');
       console.log(allowances);
       this.z.allowances = allowances;
+
      // Get all recorded user statuses and their allowances + passwordless users
       let cred = (await this.z.getCredentials('Get user name')).split(LF);
       this.z.userStatus = cred[1];
       this.z.allowvalue = cred[2];
       this.z.freeUsers = cred[3];
-      // await new Promise (z => setTimeout (z, 99));
       this.z.allowFunc(); // SET ALLOWANCES PATTERN
+
       // Get album-collection-qualified catalogs
       let roots = await this.z.getAlbumRoots();
       this.z.imdbRoots = roots.split(LF);
+
+      // Settings from cookies
+      // Language
+      let lng = this.z.getCookie('mish_lang');
+      if (lng) this.intl.setLocale([lng]);
+      this.z.intlCodeCurr = lng;
+      // Background
+      if (this.z.getCookie('mish_bkgr') === 'dark') {
+        this.z.bkgrColor = '#111';
+        this.z.textColor = '#fff';
+      } else {
+        this.z.bkgrColor = '#cbcbcb';
+        this.z.textColor = '#111';
+      }
+      document.querySelector('body').style.background = this.z.bkgrColor;
+      document.querySelector('body').style.color = this.z.textColor;
     };
   }
 
@@ -94,7 +115,7 @@ export default class extends Welcome {
     <div style="display:flex;justify-content:space-between;margin:0 0.25rem 0 4rem">
       <Language />
       <span>{{t 'time.text'}}
-        <span><Clock @locale={{t 'intlcode'}} /></span>
+        <span><Clock @locale={{this.z.intlCodeCurr}} /></span>
       </span>
     </div>
     <Header />

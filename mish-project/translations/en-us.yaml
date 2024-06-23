@@ -145,7 +145,7 @@ select:
 time:
   text: The time is
   buildstamp: Ember development server
-totalImgNumber: "Total number of images in the collection:"
+totalImgNumber: Total number of images in the collection
 write:
   creator: 'From, how: Photo Origin Source'
   description: 'Caption: When Where What Who'

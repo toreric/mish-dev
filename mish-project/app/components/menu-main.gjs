@@ -230,7 +230,7 @@ export class MenuMain extends Component {
 
       <div class="albumTree" style="display:none">
         <span style="display:flex;justify-content:space-between">
-          <span style="margin:0.2rem;padding:0.1rem 0.2rem;float:right" title="">{{t 'totalImgNumber'}}&nbsp;{{this.totalImgNumber}}</span>
+          <span style="margin:0.2rem;padding:0.1rem 0.2rem;float:right" title=""><em>{{t 'totalImgNumber'}}</em>:&nbsp;{{this.totalImgNumber}}</span>
 
           <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title={{t 'toggleallalb'}} {{on "click" (fn this.toggleAll)}}>{{t 'all'}} {{OP}}/{{CL}}</a>
         </span>
