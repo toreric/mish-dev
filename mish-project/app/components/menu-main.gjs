@@ -18,8 +18,8 @@ const CL = '⊖'; // CLOSES
 // Detect closing Esc key for menuMain or open dialogs
 const detectEsc = (event) => {
   if (event.keyCode === 27) { // Esc key
-    var tmp0 = document.getElementById("menuButton");
-    var tmp1 = document.getElementById("menuMain");
+    var tmp0 = document.getElementById('menuButton');
+    var tmp1 = document.getElementById('menuMain');
     if (tmp1.style.display !== 'none') {
       tmp1.style.display = 'none';
       tmp0.innerHTML = '<span class="menu">☰</span>';
@@ -31,7 +31,7 @@ const detectEsc = (event) => {
       var tmp = document.querySelectorAll('dialog');
       for (let i=0; i<tmp.length; i++) {
         // Check if any open dialog
-        if (tmp[i].hasAttribute("open")) {
+        if (tmp[i].hasAttribute('open')) {
           tmp[i].close();
           console.log('-"-: closed ' + tmp[i].id);
         }
@@ -132,7 +132,7 @@ export class MenuMain extends Component {
     return this.args.tree ?? this.z.imdbTree;
   }
 
-    // Search album texts to find images
+  // Search album texts to find images
   findText = () => {
     if (this.checkRoot()) return;
     this.z.loli('findText');
@@ -187,6 +187,13 @@ export class MenuMain extends Component {
     }
   }
 
+  // Count the number of images in this album
+  totalImgNumber = () => {
+    // await new Promise (z => setTimeout (z, 499)); // Soon allow next
+    let a = this.z.totalNumber();
+    return a;
+  }
+
   <template>
 
     <div id="menuMain" class="mainMenu BACKG" onclick="return false" draggable="false" ondragstart="return false" style="display:none">
@@ -222,8 +229,11 @@ export class MenuMain extends Component {
       </p>
 
       <div class="albumTree" style="display:none">
+        <span style="display:flex;justify-content:space-between">
+          <span style="margin:0.2rem;padding:0.1rem 0.2rem;float:right" title="">{{t 'totalImgNumber'}}&nbsp;{{this.totalImgNumber}}</span>
 
-        <a style="margin:0.2rem;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title={{t 'toggleallalb'}} {{on "click" (fn this.toggleAll)}}>{{t 'all'}} {{OP}}/{{CL}}</a>
+          <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title={{t 'toggleallalb'}} {{on "click" (fn this.toggleAll)}}>{{t 'all'}} {{OP}}/{{CL}}</a>
+        </span>
 
         <Tree @tree={{this.tree}} />
         {{#if this.z.imdbRoot}}
@@ -267,7 +277,6 @@ class Tree extends Component {
       tgt = tgt.parentElement;
     }
     // This button is unvisible:
-    // let button = tgt.nextElementSibling.nextElementSibling.nextElementSibling .nextElementSibling;
     let button = tgt.parentElement.querySelector('button');
     button.click();
     if (tgt.innerText.includes(OP)) {

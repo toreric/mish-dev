@@ -32,11 +32,104 @@ export default class CommonStorageService extends Service {
   @tracked  userDir = '/path/to/albums'; //maybe your home dir. or any; server argument!
   @tracked  userName = this.defaultUserName; // May be changed in other ways (e.g. logins)
   @tracked  userStatus = '';
-  // More variables may be defined further down
-  // (*) imdbCoco format is "(<npics>) <nsubdirs> <flag>" where <flag> is empty or "*"
-  // The imdbCoco <flag> indicates a hidden album, which needs permission for access
+  // (*) imdbCoco format is "(<npics>[+<nlinked>]) [<nsubdirs>] [<flag>]"
+  // where <npics> = images, <nlinks> = linked images, <nsubdirs> = subalums,
+  // and <flag> is empty or "*". The <flag> indicates a hidden album,
+  // which needs permission for access
 
-  //   #region Utilities
+    //   #region Allowance
+  //== Allowances properties/methods
+
+  // allowvalue is the source of the 'allow' property values, reset at login
+  @tracked allowvalue = "0".repeat (this.allowance.length);
+
+  // Infotext retreived from _imdb_settings.sqlite datbase in dialog-login
+  @tracked allowances = '';
+
+  // zeroSet = () => { // Will this be needed any more?
+  //   this.allowvalue = ('0'.repeat (this.allowance.length));
+  // }
+
+  @tracked allow = {};
+
+  @tracked allowance = [     //  'allow' order
+                    //
+    "adminAll",     // + allow EVERYTHING
+    "albumEdit",    // +  " create/delete album directories
+    "appendixEdit", // o  " edit appendices (attached documents)
+    "appendixView", // o  " view     "
+    "delcreLink",   // +  " delete and create linked images NOTE *
+    "deleteImg",    // +  " delete (= remove, erase) images NOTE *
+    "imgEdit",      // o  " edit images
+    "imgHidden",    // +  " view and manage hidden images
+    "imgOriginal",  // +  " view and download full size images
+    "imgReorder",   // +  " reorder images
+    "imgUpload",    // +  " upload    "
+    "notesEdit",    // +  " edit notes (metadata) NOTE *
+    "notesView",    // +  " view   "              NOTE *
+    "saveChanges",  // +  " save order/changes (= saveOrder)
+    "setSetting",   // +  " change settings
+    "textEdit"      // +  " edit image texts (metadata)
+                    //
+                    // o = not yet used
+  ];
+
+  // allowText = [ // IMPORTANT: Ordered as 'allow'z!
+  get allowText() { return [
+    `adminAll:     ${this.intl.t('adminAll')}`,
+    `albumEdit:    ${this.intl.t('albumEdit')}`,
+    `appendixEdit: ${this.intl.t('appendixEdit')}`,
+    `appendixView: ${this.intl.t('appendixView')}`,
+    `delcreLink:   ${this.intl.t('delcreLink')}`,
+    `deleteImg:    ${this.intl.t('deleteImg')}`,
+    `imgEdit:      ${this.intl.t('imgEdit')}`,
+    `imgHidden:    ${this.intl.t('imgHidden')}`,
+    `imgOriginal:  ${this.intl.t('imgOriginal')}`,
+    `imgReorder:   ${this.intl.t('imgReorder')}`,
+    `imgUpload:    ${this.intl.t('imgUpload')}`,
+    `notesEdit:    ${this.intl.t('notesEdit')}`,
+    `notesView:    ${this.intl.t('notesView')}`,
+    `saveChanges:  ${this.intl.t('saveChanges')}`,
+    `setSetting:   ${this.intl.t('setSetting')}`,
+    `textEdit:     ${this.intl.t('textEdit')}`
+  ];}
+
+  allowFunc = () => { // Called from Welcome after login
+    var allow = this.allow;
+    var allowance = this.allowance;
+    var allowvalue = this.allowvalue;
+    for (var i=0; i<allowance.length; i++) {
+      allow[allowance[i]] = Number(allowvalue[i]);
+    }
+    if (allow.adminAll) {
+      allowvalue = "1".repeat (this.allowance.length);
+      for (var i=0; i<allowance.length; i++) {
+        allow[allowance[i]] = 1;
+      }
+    }
+    if (allow.deleteImg) {  // NOTE *  If ...
+      allow.delcreLink = 1; // NOTE *  then set this too
+      i = allowance.indexOf("delcreLink");
+      // Also set the source value (in this way since allowvalue[i] = "1" in't allowed: compiler error: "4 is read-only" if 4 = the index value)
+      allowvalue = allowvalue.slice(0, i - allowvalue.length) + "1" + allowvalue.slice(i + 1 - allowvalue.length);
+    }
+    if (allow.notesEdit) { // NOTE *  If ...
+      allow.notesView = 1; // NOTE *  then set this too
+      i = allowance.indexOf("notesView");
+      allowvalue = allowvalue.slice(0, i - allowvalue.length) + "1" + allowvalue.slice(i + 1 - allowvalue.length);
+    }
+    // Hide smallbuttons we don't need:
+    if (allow.saveChanges) {
+      document.getElementById('saveOrder').style.display = '';
+    } else { // Any user may reorder but not save
+      document.getElementById('saveOrder').style.display = 'none';
+    }
+    this.allow = allow;
+    this.allowance = allowance;
+    this.allowvalue = allowvalue;
+  }
+
+//   #region Utilities
   //== Other service functions
 
   toggleBackg = () => {
@@ -62,6 +155,15 @@ export default class CommonStorageService extends Service {
     if (hdr) this.infoHeader = hdr;
     this.infoMessage = mess;
     this.openDialog('dialogAlert');
+  }
+
+  totalNumber = () => { // of original images
+    let n = 0;
+    let c = this.imdbCoco;
+    for (let i=0;i<c.length;i++) {
+      n += Number(c[i].replace(/^[^(]*\(([0-9]+).*$/, '$1'));
+    }
+    return n.toString();
   }
 
   //   #region Server
@@ -163,98 +265,6 @@ export default class CommonStorageService extends Service {
     }).catch(error => {
       console.error(error.message);
     });
-  }
-
-  //   #region Allowance
-  //== Allowances properties/methods
-
-  // allowvalue is the source of the 'allow' property values, reset at login
-  @tracked allowvalue = "0".repeat (this.allowance.length);
-
-  // Infotext retreived from _imdb_settings.sqlite datbase in dialog-login
-  @tracked allowances = '';
-
-  zeroSet = () => { // Will this be needed any more?
-    this.allowvalue = ('0'.repeat (this.allowance.length));
-  }
-
-  @tracked allow = {};
-
-  @tracked allowance = [     //  'allow' order
-                    //
-    "adminAll",     // + allow EVERYTHING
-    "albumEdit",    // +  " create/delete album directories
-    "appendixEdit", // o  " edit appendices (attached documents)
-    "appendixView", // o  " view     "
-    "delcreLink",   // +  " delete and create linked images NOTE *
-    "deleteImg",    // +  " delete (= remove, erase) images NOTE *
-    "imgEdit",      // o  " edit images
-    "imgHidden",    // +  " view and manage hidden images
-    "imgOriginal",  // +  " view and download full size images
-    "imgReorder",   // +  " reorder images
-    "imgUpload",    // +  " upload    "
-    "notesEdit",    // +  " edit notes (metadata) NOTE *
-    "notesView",    // +  " view   "              NOTE *
-    "saveChanges",  // +  " save order/changes (= saveOrder)
-    "setSetting",   // +  " change settings
-    "textEdit"      // +  " edit image texts (metadata)
-                    //
-                    // o = not yet used
-  ];
-
-  // allowText = [ // IMPORTANT: Ordered as 'allow'z!
-  get allowText() { return [
-    `adminAll:     ${this.intl.t('adminAll')}`,
-    `albumEdit:    ${this.intl.t('albumEdit')}`,
-    `appendixEdit: ${this.intl.t('appendixEdit')}`,
-    `appendixView: ${this.intl.t('appendixView')}`,
-    `delcreLink:   ${this.intl.t('delcreLink')}`,
-    `deleteImg:    ${this.intl.t('deleteImg')}`,
-    `imgEdit:      ${this.intl.t('imgEdit')}`,
-    `imgHidden:    ${this.intl.t('imgHidden')}`,
-    `imgOriginal:  ${this.intl.t('imgOriginal')}`,
-    `imgReorder:   ${this.intl.t('imgReorder')}`,
-    `imgUpload:    ${this.intl.t('imgUpload')}`,
-    `notesEdit:    ${this.intl.t('notesEdit')}`,
-    `notesView:    ${this.intl.t('notesView')}`,
-    `saveChanges:  ${this.intl.t('saveChanges')}`,
-    `setSetting:   ${this.intl.t('setSetting')}`,
-    `textEdit:     ${this.intl.t('textEdit')}`
-  ];}
-
-  allowFunc = () => { // Called from Welcome after login
-    var allow = this.allow;
-    var allowance = this.allowance;
-    var allowvalue = this.allowvalue;
-    for (var i=0; i<allowance.length; i++) {
-      allow[allowance[i]] = Number(allowvalue[i]);
-    }
-    if (allow.adminAll) {
-      allowvalue = "1".repeat (this.allowance.length);
-      for (var i=0; i<allowance.length; i++) {
-        allow[allowance[i]] = 1;
-      }
-    }
-    if (allow.deleteImg) {  // NOTE *  If ...
-      allow.delcreLink = 1; // NOTE *  then set this too
-      i = allowance.indexOf("delcreLink");
-      // Also set the source value (in this way since allowvalue[i] = "1" in't allowed: compiler error: "4 is read-only" if 4 = the index value)
-      allowvalue = allowvalue.slice(0, i - allowvalue.length) + "1" + allowvalue.slice(i + 1 - allowvalue.length);
-    }
-    if (allow.notesEdit) { // NOTE *  If ...
-      allow.notesView = 1; // NOTE *  then set this too
-      i = allowance.indexOf("notesView");
-      allowvalue = allowvalue.slice(0, i - allowvalue.length) + "1" + allowvalue.slice(i + 1 - allowvalue.length);
-    }
-    // Hide smallbuttons we don't need:
-    if (allow.saveChanges) {
-      document.getElementById('saveOrder').style.display = '';
-    } else { // Any user may reorder but not save
-      document.getElementById('saveOrder').style.display = 'none';
-    }
-    this.allow = allow;
-    this.allowance = allowance;
-    this.allowvalue = allowvalue;
   }
 
   //   #region Menus
