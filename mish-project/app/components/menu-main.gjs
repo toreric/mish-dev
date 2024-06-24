@@ -286,15 +286,30 @@ class Tree extends Component {
     }
   }
 
+  openAlbum = (i, name, e) => {
+    this.z.loli('Open album ' + i + ' ' + name);
+    this.z.loli(e);
+    // tmp = document.querySelectorAll('span.album');
+
+    for (let tmp of document.querySelectorAll('span.album')) tmp.style.color = '';
+
+    // for (let i=0;i<tmp.length;i++) {
+    //   tmp.style.color = '';
+    // }
+    e.target.style.color = 'orange';
+    this.z.imdbDir = this.z.imdbDirs[i];
+    this.z.loli(this.z.imdbDir);
+  }
+
   <template>
 
     <button style="display:none" {{on "click" this.toggle}}>
       {{if this.isOpen "Close" "Open"}}
     </button>
     {{#each @tree as |node|}}
-      <div style="display:{{this.display}}">
+      <div class="album a{{node.index}}" style="display:{{this.display}}">
         {{#if node.children}}
-          <a class="album" {{on "click" this.clickButton}}>
+          <a class="album a{{node.index}}" {{on "click" this.clickButton}}>
             {{CL}}<img src="img/folderopen.gif" />
           </a>
         {{else}}
@@ -303,7 +318,7 @@ class Tree extends Component {
         <span style="font-size:77%;vertical-align:top;line-height:1.1rem">
           {{node.index}}&nbsp;&nbsp;
         </span>
-        {{node.name}}
+        <span class="album a{{node.index}}" style="cursor:pointer" {{on "click" (fn this.openAlbum node.index node.name)}}>{{node.name}}</span>
         <span style="font-size:77%;vertical-align:top">
           &nbsp;&nbsp;{{node.coco}}
         </span>

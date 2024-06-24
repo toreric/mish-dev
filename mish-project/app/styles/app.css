@@ -1735,6 +1735,9 @@ div.albumTree div {
 div.albumTree > div:first-of-type {
   margin: 0.2rem;
 }
+span.album:hover {
+  color: #7df;
+}
 
 @-webkit-keyframes borderBlink {
   from,
