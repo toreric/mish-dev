@@ -6,6 +6,9 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
+// NOTE: Default language is primarily set in 'routes/application.js'
+// The set-by-user language will be preserved in the 'mish_lang' cookie
+
 export class Language extends Component {
   @service('common-storage') z;
   @service intl;

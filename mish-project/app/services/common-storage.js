@@ -10,29 +10,30 @@ export default class CommonStorageService extends Service {
   //   #region Variables
   //== Significant Mish system global variables
 
-  @tracked  bkgrColor = '#111';             //default background color
-  @tracked  credentials = '';               //user credentials: \n-string from db
+  @tracked  bkgrColor = '#111';     //default background color
+  @tracked  credentials = '';       //user credentials: \n-string from db
         get defaultUserName() { return `${this.intl.t('guest')}`; }
-  @tracked  freeUsers = 'guest...';         //user names which do not require passwords
-  @tracked  imdbCoco = '';                  //content counters etc. for imdbDirs (*)
-  @tracked  imdbDir = '';                   //actual/current (sub)album directory
-  @tracked  imdbDirs = '';                  //available album directories at imdbRoot
-  @tracked  imdbLabels = '';                //thumbnail labels for imdbDirs
-  @tracked  imdbPath = '';                  //userDir+imdbRoot = absolut path to album root
-  @tracked  imdbRoot = '';                  //chosen album root directory (collection)
-  @tracked  imdbRoots = ['fake', 'falsch']; //avalable album root directories (collections)
-  @tracked  imdbTree = null;                //will have the imdbDirs object tree
-  @tracked  infoHeader = 'Header text';     //for information dialog
-  @tracked  infoMessage = 'No information'; //for information dialog
+  @tracked  freeUsers = 'guest...'; //user names without passwords (set by DialogLogin)
+  @tracked  imdbCoco = '';          //content counters etc. for imdbDirs (*)
+  @tracked  imdbDir = '';           //actual/current (sub)album directory
+  @tracked  imdbDirs = '';          //available album directories at imdbRoot
+  @tracked  imdbLabels = '';        //thumbnail labels for imdbDirs
+  @tracked  imdbPath = '';          //userDir+imdbRoot = absolut path to album root
+  @tracked  imdbRoot = '';          //chosen album root directory (collection)
+        get imdbRootsPrep() { return `${this.intl.t('imdbRootsPrep')}`; } // advice!
+  @tracked  imdbRoots = [this.imdbRootsPrep]; //avalable album root directories
+  @tracked  imdbTree = null;                  //will have the imdbDirs object tree
+  @tracked  infoHeader = 'Header text';       //for information dialog
+  @tracked  infoMessage = 'No information';   //for information dialog
         get intlCode() { return `${this.intl.t('intlcode')}`; }
   @tracked  intlCodeCurr = this.intlCode;
         get picFoundBaseName() { return `${this.intl.t('picfound')}`; }
-            // The found pics temporary catalog name is amended with a random 4-code:
+  // The found pics temporary catalog name is amended with a random 4-code:
   @tracked  picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
   @tracked  picName = 'IMG_1234a2023_nov_19'; //actual/current image name
-  @tracked  textColor = '#fff';          //default text color
-  @tracked  userDir = '/path/to/albums'; //maybe your home dir., server start argument!
-  @tracked  userName = this.defaultUserName; // May be changed in other ways (e.g. logins)
+  @tracked  textColor = '#fff';               //default text color
+  @tracked  userDir = '/path/to/albums';      //maybe your home dir., server start argument!
+  @tracked  userName = this.defaultUserName;  // May be changed in other ways (e.g. logins)
   @tracked  userStatus = '';
   // (*) imdbCoco format is "(<npics>[+<nlinked>]) [<nsubdirs>] [<flag>]"
   // where <npics> = images, <nlinks> = linked images, <nsubdirs> = subalums,

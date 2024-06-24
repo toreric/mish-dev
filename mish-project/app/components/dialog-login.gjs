@@ -56,6 +56,7 @@ export class DialogLogin extends Component {
         this.z.imdbPath = '';
         this.z.imdbRoot = '';
         this.z.imdbTree = null;
+        this.z.closeDialog(dialogLoginId);
       }
 
     } else {

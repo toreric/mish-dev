@@ -28,9 +28,9 @@ export default class Header extends Component {
     </p> --}}
 
     {{! Testing ember-intl and some other things }}
-    <Excite />
+    {{!-- <Excite />
     {{this.z.intlCodeCurr}} {{t "price_banner" product='A (1)' price=76.5}}
-    <span style="font-size:85%">&nbsp; &nbsp; &nbsp; Default laguage is set in <strong style="font-size:85%">routes/application.js</strong></span>
+    <span style="font-size:85%">&nbsp; &nbsp; &nbsp; Default laguage is set in <strong style="font-size:85%">routes/application.js</strong></span> --}}
 
     {{! Dialog-testing buttons }}
     <p>
