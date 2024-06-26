@@ -135,6 +135,29 @@ export default class CommonStorageService extends Service {
   //   #region Utilities
   //== Other service functions
 
+  openAlbum = (i) => {
+    this.imdbDir = this.imdbDirs[i];
+    this.loli('Open album ' + i + ' ' + this.imdbDir);
+    // Reset color
+    for (let tmp of document.querySelectorAll('span.album')) {
+      tmp.style.color = '';
+    }
+    // // Hide all
+    //   for (let tmp of document.querySelectorAll('div.album')) {
+    //     tmp.style.display = 'none';
+    // }
+    // Set color and show the selected
+    document.querySelector('span.album.a' + i).style.color = 'orange';
+    let selected = document.querySelector('div.album.a' + i);
+    for (let tmp of document.querySelectorAll('div.album'))
+    selected.style.display = '';
+    // Check that all parents are visible too
+    while (selected.parentElement.classList.contains('album')) { // includes for array!
+      selected = selected.parentElement;
+      if (selected.nodeName === 'DIV'  ) selected.style.display = '';
+    }
+  }
+
   toggleBackg = () => {
     if (this.bkgrColor === '#cbcbcb') {
       this.bkgrColor = '#111';
@@ -160,6 +183,7 @@ export default class CommonStorageService extends Service {
     if (hdr) this.infoHeader = hdr;
     this.infoMessage = mess;
     this.openDialog('dialogAlert');
+    // this.openModalDialog('dialogAlert');
   }
 
   totalNumber = () => { // of original images
@@ -339,13 +363,14 @@ export default class CommonStorageService extends Service {
   }
 
   toggleDialog = (dialogId, origPos) => {
+    this.loli(dialogId);
     let diaObj = document.getElementById(dialogId);
     let what = 'closed ';
     if (diaObj.hasAttribute("open")) {
       diaObj.close();
     } else {
       what = 'opened ';
-      if (origPos) diaObj.style = '';
+      if (origPos) diaObj.style.display = '';
       diaObj.show();
     }
     this.loli(what + dialogId);

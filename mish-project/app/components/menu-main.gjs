@@ -9,6 +9,7 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
+import { dialogAlertId } from './dialog-alert';
 
 export const menuMainId = 'menuMain';
 const LF = '\n'; // LINE_FEED
@@ -50,7 +51,7 @@ export class MenuMain extends Component {
 
   // Choose collection = album root directory and its album (sub)directories
   // and convert them into an object tree with an amended property set.
-  // Finally indicate if this album tree has any hidden album.
+  // Finally indicate if this album tree has any hidden-without-allowance album.
   selectRoot = async (event) => { // Album root = collection
     this.z.imdbRoot = event.target.value;
     this.z.imdbDir = this.z.imdbRoot; // The root is assumed initially selected
@@ -72,7 +73,7 @@ export class MenuMain extends Component {
 
     const data = this.z.imdbDirs;
     for (let i=0;i<data.length;i++) {
-      data[i] = this.z.imdbRoot + data[i]; // fill the empty root reference
+      data[i] = this.z.imdbRoot + data[i]; // amend the root catalog
     }
     this.z.loli(data);
 
@@ -89,7 +90,7 @@ export class MenuMain extends Component {
       for (const part of parts) {
         partPath += `${part}/`;
         if (partPath === `${part}/`) {
-          tree.root[partPath] = (tree[partPath] ??= { name: part, index: i++, coco: this.z.imdbCoco[i-1], path: partPath, label: this.z.imdbLabels[i-1], children: [] });
+          tree.root[partPath] = (tree[partPath] ??= { name: part, index: i++, coco: this.z.imdbCoco[i-1], path: partPath, label: this.z.imdbLabels[i-1], children: [] }); // m2
         } else if (tree[partPath] === undefined) {
             tree[partPath] = { name: part, index: i++, coco: this.z.imdbCoco[i-1], path: partPath, label: this.z.imdbLabels[i-1], children: [] }; // m2.
             branch.children.push(tree[partPath]);
@@ -108,15 +109,15 @@ export class MenuMain extends Component {
     // console.log(result);
     // console.log(JSON.stringify(result, null, 2)) //human readable
 
-    let anyHidden = () => { // flags any hidden album
+    let anyHidden = () => { // flags any hidden-without-allowance album
       let coco = this.z.imdbCoco;
       for (let i=0;i<coco.length;i++) {
         if (coco[i].includes('*')) return true;
       }
       return false;
     }
-    this.hasHidden = anyHidden(); // if there are any hidden albums
-
+    this.hasHidden = anyHidden(); // if there are any hidden-without-allowance albums
+    this.z.openAlbum(0); // Select the root album
   }
 
   // Some texts for div.albumTree
@@ -165,6 +166,15 @@ export class MenuMain extends Component {
     }
   }
 
+  // Close/open all nodes of albumTree except the root
+  toggleAll = () => {
+    let all = document.querySelector('div.albumTree').querySelectorAll('a.album');
+    if (all[0].innerHTML.includes(OP)) all[0].click();
+    for (let i=1;i<all.length;i++) {
+      all[i].click();
+    }
+  }
+
   // Check if the alert dialog is open (then close it), or if no
   // album root/collection (imdbRoot) is chosen (then open it)
   checkRoot = () => {
@@ -175,15 +185,8 @@ export class MenuMain extends Component {
     if (!this.z.imdbRoot) {
       // alertMess opens the alert dialog
       this.z.alertMess(this.intl.t('needaroot'));
+      document.querySelector('.mainMenu select').focus();
       return true;
-    }
-  }
-
-  // Close/open all nodes of albumTree except the root
-  toggleAll = () => {
-    let all = document.querySelector('div.albumTree').querySelectorAll('a.album');
-    for (let i=1;i<all.length;i++) {
-      all[i].click();
     }
   }
 
@@ -209,7 +212,7 @@ export class MenuMain extends Component {
       <p onclick="return false" draggable="false" ondragstart="return false">
         <a class="" style="color: white;cursor: default">
 
-          <select id="rootSel" title={{t 'albumcollinfo'}} {{on "change" this.selectRoot}}>
+          <select id="rootSel" title={{t 'albumcollinfo'}} {{on 'change' this.selectRoot}} {{on 'click' (fn this.z.closeDialog dialogAlertId)}}>
             <option value="" selected disabled hidden>{{t 'selalbumcoll'}}</option>
             {{#each this.z.imdbRoots as |rootChoice|}}
               <option value={{rootChoice}} selected={{eq this.z.imdbRoot rootChoice}}>{{rootChoice}}</option>
@@ -286,25 +289,10 @@ class Tree extends Component {
     }
   }
 
-  openAlbum = (i, name, e) => {
-    this.z.loli('Open album ' + i + ' ' + name);
-    this.z.loli(e);
-    // tmp = document.querySelectorAll('span.album');
-
-    for (let tmp of document.querySelectorAll('span.album')) tmp.style.color = '';
-
-    // for (let i=0;i<tmp.length;i++) {
-    //   tmp.style.color = '';
-    // }
-    e.target.style.color = 'orange';
-    this.z.imdbDir = this.z.imdbDirs[i];
-    this.z.loli(this.z.imdbDir);
-  }
-
   <template>
 
-    <button style="display:none" {{on "click" this.toggle}}>
-      {{if this.isOpen "Close" "Open"}}
+    <button style="display:none" {{on 'click' this.toggle}}>
+      {{if this.isOpen 'Close' 'Open'}}
     </button>
     {{#each @tree as |node|}}
       <div class="album a{{node.index}}" style="display:{{this.display}}">
@@ -318,7 +306,7 @@ class Tree extends Component {
         <span style="font-size:77%;vertical-align:top;line-height:1.1rem">
           {{node.index}}&nbsp;&nbsp;
         </span>
-        <span class="album a{{node.index}}" style="cursor:pointer" {{on "click" (fn this.openAlbum node.index node.name)}}>{{node.name}}</span>
+        <span class="album a{{node.index}}" style="cursor:pointer" {{on "click" (fn this.z.openAlbum node.index)}}>{{node.name}}</span>
         <span style="font-size:77%;vertical-align:top">
           &nbsp;&nbsp;{{node.coco}}
         </span>

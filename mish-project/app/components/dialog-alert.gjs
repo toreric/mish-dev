@@ -31,7 +31,8 @@ export class DialogAlert extends Component {
     }
   }
 
-<template><dialog id="dialogAlert" {{on 'keydown' this.detectEscClose}}>
+<template>
+  <dialog id="dialogAlert" style="z-index:999" {{on 'keydown' this.detectEscClose}}>
     <header data-dialog-draggable>
       <div style="width:99%">
         <p>{{this.z.infoHeader}}<span></span></p>
@@ -47,5 +48,6 @@ export class DialogAlert extends Component {
     <footer data-dialog-draggable>
       <button type="button" {{on 'click' (fn this.z.closeDialog dialogAlertId)}}>{{t 'button.close'}}</button>&nbsp;
     </footer>
-  </dialog></template>
+  </dialog>
+</template>
 }

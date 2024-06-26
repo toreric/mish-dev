@@ -101,10 +101,17 @@ export default class extends Welcome {
     <div {{executeOnInsert this}} style="display:flex;justify-content:space-between;margin:0 0.25rem 0 4rem">
       {{! Html inserted here will appear beneath the buildStamp div }}
       <h1 style="margin:0 4rem 0 0;display:inline">{{t "header"}}</h1>
-      {{!-- &nbsp;<button type="button" title="Xperimental" {{on 'click' (fn this.z.toggleDialog dialogXperId)}}>X</button> --}}
+      <span>
 
-      <span><button type="button" title={{t 'button.backgtitle'}} {{on 'click' (fn this.z.toggleBackg)}}>{{t 'dark'}}/{{t 'light'}}</button> <button type="button" {{on 'click' (fn this.openRights)}}>{{t 'button.rightsinfo'}}</button> <button type="button" {{on 'click' (fn this.openLogIn)}}>{{t 'button.optlogin'}}</button> </span>
+        <button type="button" title="Xperimental" {{on 'click' (fn this.z.toggleDialog dialogXperId)}}>&nbsp;</button>
 
+        <button type="button" title={{t 'button.backgtitle'}} {{on 'click' (fn this.z.toggleBackg)}}>{{t 'dark'}}/{{t 'light'}}</button>
+
+        <button type="button" {{on 'click' (fn this.openRights)}}>{{t 'button.rightsinfo'}}</button>
+
+        <button type="button" {{on 'click' (fn this.openLogIn)}}>{{t 'button.optlogin'}}</button>
+
+      </span>
       <span>
         {{t 'loggedIn'}}: <b>{{this.z.userName}}</b> {{t 'with'}} [{{this.z.userStatus}}]-{{t 'rights'}}
       </span>
@@ -122,7 +129,7 @@ export default class extends Welcome {
     <MenuMain />
     <ButtonsLeft />
     <DialogHelp />
+    <DialogXper />
     <DialogText />
-    {{!-- <DialogXper /> --}}
   </template>;
 }
