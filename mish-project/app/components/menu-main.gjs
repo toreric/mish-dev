@@ -105,7 +105,7 @@ export class MenuMain extends Component {
     this.z.imdbTree = result;
     // document.querySelector('div.albumTree').style.display = 'none'; // May be open
     await new Promise (z => setTimeout (z, 199)); // Soon allow next
-    this.toggleAll();
+    this.closeAll();
     // console.log(result);
     // console.log(JSON.stringify(result, null, 2)) //human readable
 
@@ -118,14 +118,6 @@ export class MenuMain extends Component {
     }
     this.hasHidden = anyHidden(); // if there are any hidden-without-allowance albums
     this.z.openAlbum(0); // Select the root album
-  }
-
-  // Some texts for div.albumTree
-  albumCareText = () => {
-    return this.intl.t('albumcare') + ' ”' + this.z.imdbDir + '”';
-  }
-  albumCollText = () => {
-    return this.intl.t('albumcoll') + ' ”' + this.z.imdbRoot + '”';
   }
 
   // The @tree argument for Tree component
@@ -166,12 +158,47 @@ export class MenuMain extends Component {
     }
   }
 
-  // Close/open all nodes of albumTree except the root
-  toggleAll = () => {
+  // Open enough nodes to make the selected album visible
+  showSelected = async () => {
+    let index = this.z.imdbDirIndex;
+    let selected = document.querySelector('div.album.a' + index);
+    selected.style.display = '';
+    // Check that all parents are visible too
+    while (selected.parentElement.classList.contains('album')) {
+      selected = selected.parentElement;
+      if (selected.nodeName !== 'DIV') break;
+      selected.style.display = '';
+    }
+    selected = document.querySelector('span.album.a' + index);
+    selected.classList.add('blink');
+    await new Promise (z => setTimeout (z, 666));
+    selected.classList.remove('blink');
+  }
+
+  // // Close all nodes of albumTree except the root
+  // closeAll = () => {
+  //   let all = document.querySelector('div.albumTree').querySelectorAll('a.album');
+  //   if (all[0].innerHTML.includes(OP)) all[0].click();
+  //   for (let i=1;i<all.length;i++) {
+  //     if (all[i].innerHTML.includes(CL)) {
+  //       all[i].click();
+  //     }
+  //   }
+  // }
+
+  // Open all nodes of albumTree
+  openAll = () => {
     let all = document.querySelector('div.albumTree').querySelectorAll('a.album');
-    if (all[0].innerHTML.includes(OP)) all[0].click();
+    for (let i=0;i<all.length;i++) {
+      if (all[i].innerHTML.includes(OP)) all[i].click();
+    }
+  }
+
+  // Close all nodes of albumTree except the root
+  closeAll = () => {
+    let all = document.querySelector('div.albumTree').querySelectorAll('a.album');
     for (let i=1;i<all.length;i++) {
-      all[i].click();
+      if (all[i].innerHTML.includes(CL)) all[i].click();
     }
   }
 
@@ -224,18 +251,27 @@ export class MenuMain extends Component {
       </p><br>
 
       <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title={{t 'albumcareinfo'}}>
-        <a {{on "click" (fn this.albumEdit)}}> {{{this.albumCareText}}} </a>
+    {{!-- return this.intl.t('albumcare') + ' ”' + this.z.imdbDirName + '”'; --}}
+        <a {{on "click" (fn this.albumEdit)}}>{{t 'albumcare'}} <span title={{this.z.imdbDir}}>”{{this.z.imdbDirName}}”</span></a>
       </p><br>
 
       <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title={{t 'albumcollshow'}}>
-        <a {{on "click" (fn this.toggleAlbumTree)}}> {{this.albumCollText}} </a>
+        <a {{on "click" (fn this.toggleAlbumTree)}}>{{t 'albumcoll'}} ”{{this.z.imdbRoot}}”</a>
       </p>
 
       <div class="albumTree" style="display:none">
         <span style="display:flex;justify-content:space-between">
           <span style="margin:0.2rem;padding:0.1rem 0.2rem;float:right" title=""><em>{{t 'totalImgNumber'}}</em>:&nbsp;{{this.totalImgNumber}}</span>
 
-          <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title={{t 'toggleallalb'}} {{on "click" (fn this.toggleAll)}}>{{t 'all'}} {{OP}}/{{CL}}</a>
+          <span>
+            <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title={{t 'closeallalb'}} {{on "click" (fn this.closeAll)}}>{{t 'all'}} {{CL}}</a>
+
+            <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title={{t 'openallalb'}} {{on "click" (fn this.openAll)}}>{{t 'all'}} {{OP}}</a>
+
+            {{!-- <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title={{t 'closeallalb'}} {{on "click" (fn this.closeAll)}}>{{t 'button.close'}}</a> --}}
+
+            <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title={{t 'showselectedtext'}} {{on "click" (fn this.showSelected)}}>{{t 'showselected'}}</a>
+          </span>
         </span>
 
         <Tree @tree={{this.tree}} />

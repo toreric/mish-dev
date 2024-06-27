@@ -9,7 +9,10 @@ albumcoll: Albumsamling
 albumcollshow: Visa/dölj albumlistan
 tmpalbum1: Med
 tmpalbum2: "först: Tillfälligt album för visning av funna bilder"
-toggleallalb: Öppna/stäng alla underalbum
+openallalb: Öppna alla underalbum
+closeallalb: Stäng alla underalbum
+showselected: Visa valt
+showselectedtext: Visa det valda albumet
 needaroot:    Välj först albumsamling!
 nimages: antal bilder
 nlinked: plus antal inlänkade bilder

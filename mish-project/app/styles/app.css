@@ -111,6 +111,13 @@ button.close:hover {
   background: deeppink;
 }
 
+.blink {
+  animation: blink 200ms linear 0ms 16;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
 @media print {
   html,
   #wrap_pad {

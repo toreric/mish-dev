@@ -7,7 +7,10 @@ albumcare: Albumpflege für
 albumcareinfo: Löschen, neu erstellen, Bilder sortieren, nach Duplikaten suchen, und mehr
 albumcoll: Albumsammlung
 albumcollshow: Albumliste ein-/ausblenden
-toggleallalb: Alle Unteralben öffnen/schließen
+openallalb: Alle Unteralben öffnen
+closeallalb: Alle Unteralben schließen
+showselected: Ausgewähltes
+showselectedtext: Ausgewähltes Album anzeigen
 tmpalbum1: Mit
 tmpalbum2: "zuerst: Temporäres Album zur Anzeige gefundener Bilder"
 needaroot: Zuerst Albumsammlung auswählen!

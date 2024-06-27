@@ -58,8 +58,9 @@ export class DialogXper extends Component {
     </header>
     <main>
       <p>Mish experimental dialog Mish experimental dialog</p>
-      <h2>Example</h2>
-      <input type="number" min="0" max={{this.aMax}} style="width:3rem" {{on 'keydown' this.detectOpenEnter}}>
+      Open album number
+      <input type="number" pattern="[0-9]+" min="0" max={{this.aMax}} style="width:3rem" required {{on 'keydown' this.detectOpenEnter}}>
+      <br><br>
     </main>
     <footer data-dialog-draggable>
       <button type="button" {{on 'click' (fn this.z.closeDialog dialogXperId)}}>{{t 'button.close'}}</button>&nbsp;

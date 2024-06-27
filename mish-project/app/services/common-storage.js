@@ -16,6 +16,8 @@ export default class CommonStorageService extends Service {
   @tracked  freeUsers = 'guest...'; //user names without passwords (set by DialogLogin)
   @tracked  imdbCoco = '';          //content counters etc. for imdbDirs (*)
   @tracked  imdbDir = '';           //actual/current (sub)album directory
+  @tracked  imdbDirIndex = 0;       //actual/current (sub)album directory index
+        get imdbDirName() { return this.imdbDir.replace(/^(.*\/)*([^/]+)$/, '$2'); }
   @tracked  imdbDirs = '';          //available album directories at imdbRoot
   @tracked  imdbLabels = '';        //thumbnail labels for imdbDirs
   @tracked  imdbPath = '';          //userDir+imdbRoot = absolut path to album root
@@ -137,25 +139,24 @@ export default class CommonStorageService extends Service {
 
   openAlbum = (i) => {
     this.imdbDir = this.imdbDirs[i];
+    this.imdbDirIndex = i;
     this.loli('Open album ' + i + ' ' + this.imdbDir);
     // Reset color
     for (let tmp of document.querySelectorAll('span.album')) {
       tmp.style.color = '';
     }
-    // // Hide all
-    //   for (let tmp of document.querySelectorAll('div.album')) {
-    //     tmp.style.display = 'none';
-    // }
-    // Set color and show the selected
-    document.querySelector('span.album.a' + i).style.color = 'orange';
+    document.querySelector('span.album.a' + i).style.color = '#f46aff';
     let selected = document.querySelector('div.album.a' + i);
-    for (let tmp of document.querySelectorAll('div.album'))
     selected.style.display = '';
     // Check that all parents are visible too
-    while (selected.parentElement.classList.contains('album')) { // includes for array!
+    while (selected.parentElement.classList.contains('album')) {
       selected = selected.parentElement;
-      if (selected.nodeName === 'DIV'  ) selected.style.display = '';
+      if (selected.nodeName !== 'DIV') break;
+      selected.style.display = '';
     }
+    // Then populate the album component with 1) subalbums and 2) images
+    // HOW IS THAT DONE? Well, a server call, initiated from DisplayMinipics?
+    // Can such a thing be initiated from here? A 'set-load' switch? Or?
   }
 
   toggleBackg = () => {

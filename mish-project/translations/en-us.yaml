@@ -7,7 +7,10 @@ albumcare: Album care for
 albumcareinfo: Delete, create new, image sorting, duplicate search, and more
 albumcoll: Album collection
 albumcollshow: Show/hide album list
-toggleallalb: Open/close all subalbums
+openallalb: Open all subalbums
+closeallalb: Close all subalbums
+showselected: Selected
+showselectedtext: Show selected album
 tmpalbum1: With
 tmpalbum2: "first: Temporary album for displaying found images"
 needaroot: First select album collection!
