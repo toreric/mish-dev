@@ -22,6 +22,7 @@ export class DialogXper extends Component {
   // Detect enter key in input field
   detectOpenEnter = (e) => {
     if (e.keyCode === 13) { // Enter key
+      if (!e.target.value) return;
       if (!this.z.imdbRoot) {
         this.z.alertMess(this.intl.t('needaroot'));
         document.activeElement.blur();

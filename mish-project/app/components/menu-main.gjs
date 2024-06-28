@@ -1,4 +1,4 @@
-//== Mish main menu, select image root directoriy, jstree to be displayed
+//== Mish main menu, select image root directoriy, display album tree
 
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';

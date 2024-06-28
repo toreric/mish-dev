@@ -155,8 +155,8 @@ export default class CommonStorageService extends Service {
       selected.style.display = '';
     }
     // Then populate the album component with 1) subalbums and 2) images
-    // HOW IS THAT DONE? Well, a server call, initiated from DisplayMinipics?
-    // Can such a thing be initiated from here? A 'set-load' switch? Or?
+    // PLAN: a) call this.z.loadAlbum(i) from where?
+    //
   }
 
   toggleBackg = () => {
