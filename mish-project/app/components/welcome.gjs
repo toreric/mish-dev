@@ -25,7 +25,7 @@ import { dialogLoginId } from './dialog-login';
 import { dialogRightsId } from './dialog-login';
 import { dialogXperId } from './dialog-xper';
 
-const returnValue = cell('');
+const returnValue = cell(''); // Never used?
 const LF = '\n';
 makeDialogDraggable();
 
@@ -44,11 +44,10 @@ class Welcome extends Component {
   @service('common-storage') z;
   @service intl;
 
-  openRights = async () => {
+  openRights = () => {
     this.z.openModalDialog(dialogRightsId, 0);
-    // this.z.openDialog(dialogRightsId, 0);
   }
-  openLogIn = async () => {
+  openLogIn = () => {
     this.z.openModalDialog(dialogLoginId, 0);
   }
   getCred = async () => {
@@ -66,7 +65,7 @@ class Welcome extends Component {
       this.z.userStatus = cred[1];
       this.z.allowvalue = cred[2];
       this.z.freeUsers = cred[3];
-      this.z.allowFunc(); // SET ALLOWANCES PATTERN
+      this.z.allowFunc(); // SET ALLOWANCES PATTERN important!
 
       // Get album-collection-qualified catalogs
       let roots = await this.z.getAlbumRoots();

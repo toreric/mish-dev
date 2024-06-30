@@ -15,6 +15,7 @@ export const menuMainId = 'menuMain';
 const LF = '\n'; // LINE_FEED
 const OP = '⊕'; // OPENS
 const CL = '⊖'; // CLOSES
+const SA = '‡';  // SUBALBUM indicator, set in server (routes.js)
 
 // Detect closing Esc key for menuMain or open dialogs
 const detectEsc = (event) => {
@@ -67,20 +68,21 @@ export class MenuMain extends Component {
     this.z.imdbDirs = arr.splice(0, n);
     this.z.imdbCoco = arr.splice(0, n);
     this.z.imdbLabels = arr.splice(0, n);
-    // this.z.loli('imdbDirs ' + n + LF + this.z.imdbDirs.join(LF));
     this.z.loli('imdbCoco ' + n + LF + this.z.imdbCoco.join(LF));
+    this.z.loli('imdbDirs ' + n + LF + this.z.imdbDirs.join(LF));
     // this.z.loli('imdbLabels ' + n + LF + this.z.imdbLabels.join(LF));
 
     const data = this.z.imdbDirs;
     for (let i=0;i<data.length;i++) {
       data[i] = this.z.imdbRoot + data[i]; // amend the root catalog
     }
-    this.z.loli(data);
+    // this.z.loli(data);
+    // this.z.loli('imdbRoot/imdbDirs ' + n + LF + data.join(LF));
 
     //begin https://stackoverflow.com/questions/72006110/convert-file-path-into-object
     // Convert the album directory list 'data' to a JS tree. Modifications are:
     // m1. For directories only, file code is commented out.
-    // m2. The properties index, coco, path, and label, are added (coco = content count)
+    // m2. Properties added: index, coco, path, and label (coco = content count)
     let i = 0;
     const tree = { root: {} }
     for (const path of data) {
@@ -100,14 +102,14 @@ export class MenuMain extends Component {
       // branch.children.push({ name: file, id: path }); // m1.
     }
     const result = Object.values(tree.root);
-    //end https://stackoverflow ...
+    //end https://stackoverflow.com/questions/72006110/convert-file-path-into-object
 
     this.z.imdbTree = result;
-    // document.querySelector('div.albumTree').style.display = 'none'; // May be open
-    await new Promise (z => setTimeout (z, 199)); // Soon allow next
-    this.closeAll();
     // console.log(result);
-    // console.log(JSON.stringify(result, null, 2)) //human readable
+    // this.z.loli('imdbTree ' + n + LF + JSON.stringify(result, null, 2)); //human readable
+    // document.querySelector('div.albumTree').style.display = 'none'; // Tree view may be open
+    await new Promise (z => setTimeout (z, 199)); // Soon allow next
+    this.closeAll(); // fold all nodes except 0
 
     let anyHidden = () => { // flags any hidden-without-allowance album
       let coco = this.z.imdbCoco;
@@ -171,7 +173,7 @@ export class MenuMain extends Component {
     }
     selected = document.querySelector('span.album.a' + index);
     selected.classList.add('blink');
-    await new Promise (z => setTimeout (z, 666));
+    await new Promise (z => setTimeout (z, 666)); // blink pause
     selected.classList.remove('blink');
   }
 
@@ -219,7 +221,6 @@ export class MenuMain extends Component {
 
   // Count the number of images in this album
   totalImgNumber = () => {
-    // await new Promise (z => setTimeout (z, 499)); // Soon allow next
     let a = this.z.totalNumber();
     return a;
   }
@@ -252,7 +253,7 @@ export class MenuMain extends Component {
 
       <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title={{t 'albumcareinfo'}}>
     {{!-- return this.intl.t('albumcare') + ' ”' + this.z.imdbDirName + '”'; --}}
-        <a {{on "click" (fn this.albumEdit)}}>{{t 'albumcare'}} <span title={{this.z.imdbDir}}>”{{this.z.imdbDirName}}”</span></a>
+        <a {{on "click" (fn this.albumEdit)}}>{{t 'albumcare'}} <span title={{this.z.imdbDir}}>”{{{this.z.imdbDirName}}}”</span></a>
       </p><br>
 
       <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title={{t 'albumcollshow'}}>
@@ -279,7 +280,7 @@ export class MenuMain extends Component {
           <p style="font-size:77%;vertical-align:top;line-height:1.1rem;margin:0 0.2rem 0 3rem">
             {{t 'tmpalbum1'}} § {{t 'tmpalbum2'}}<br>
             (⋅) {{t 'nimages'}}, (⋅+⋅) {{t 'nlinked'}}<br>
-            ‡ {{t 'nsubalbums'}}
+            {{SA}} {{t 'nsubalbums'}}
             {{#if this.hasHidden}}
               <br>* {{t 'anyhidden'}}
             {{/if}}

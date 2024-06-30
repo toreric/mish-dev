@@ -43,9 +43,14 @@ dark: Dunkel
 #NOTE: Choose a guest: value which exists in the _imdb_settings.sqlite 'user' table!
 #      Else use instead the standard name guest!
 guest: gast
+has: hat
 intlcode: de-de
 light: licht
+no: keine
+plus: plus
 rights: Rechte
+subalbum:  Unteralbum
+subalbums: Unteralben
 with: mit
 
 button:
@@ -139,10 +144,10 @@ goto: Gehe zu
 header: Mish Bildergalerie
 hello:
   world:  Guten Tag, Welt!
-imdbRootsPrep: Die App neu laden!
 infoHeader: Information
 loggedIn: Angemeldet
 picfound: §Bilder_gefunden
+reloadApp: Die App neu laden!
 select:
   language: Sprache wählen
   languagetext: Deutsch

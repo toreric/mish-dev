@@ -17,12 +17,18 @@ export default class CommonStorageService extends Service {
   @tracked  imdbCoco = '';          //content counters etc. for imdbDirs (*)
   @tracked  imdbDir = '';           //actual/current (sub)album directory
   @tracked  imdbDirIndex = 0;       //actual/current (sub)album directory index
-        get imdbDirName() { return this.imdbDir.replace(/^(.*\/)*([^/]+)$/, '$2'); }
+        get imdbDirName() {
+              if (this.imdbDir) {
+                return this.imdbDir.replace(/^(.*\/)*([^/]+)$/, '$2').replace(/_/g, '&nbsp;');
+              } else {
+                return '';
+              }
+            }
   @tracked  imdbDirs = '';          //available album directories at imdbRoot
   @tracked  imdbLabels = '';        //thumbnail labels for imdbDirs
   @tracked  imdbPath = '';          //userDir+imdbRoot = absolut path to album root
   @tracked  imdbRoot = '';          //chosen album root directory (collection)
-        get imdbRootsPrep() { return `${this.intl.t('imdbRootsPrep')}`; } // advice!
+        get imdbRootsPrep() { return `${this.intl.t('reloadApp')}`; } // advice!
   @tracked  imdbRoots = [this.imdbRootsPrep]; //avalable album root directories
   @tracked  imdbTree = null;                  //will have the imdbDirs object tree
   @tracked  infoHeader = 'Header text';       //for information dialog
@@ -33,6 +39,17 @@ export default class CommonStorageService extends Service {
   // The found pics temporary catalog name is amended with a random 4-code:
   @tracked  picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
   @tracked  picName = 'IMG_1234a2023_nov_19'; //actual/current image name
+        get subaIndex() {
+              let subindex = [];
+              for (let i=this.imdbDirIndex+1;i<this.imdbDirs.length;i++) {
+                if (this.imdbDirs[i] && this.imdbDirs[i].startsWith(this.imdbDir)) {
+                  if (this.imdbDirs[i].slice(this.imdbDir.length + 1).split('/').length === 1) {
+                    subindex.push(i);
+                  }
+                }
+              }
+              return subindex;
+            }
   @tracked  textColor = '#fff';               //default text color
   @tracked  userDir = '/path/to/albums';      //maybe your home dir., server start argument!
   @tracked  userName = this.defaultUserName;  // May be changed in other ways (e.g. logins)
@@ -138,9 +155,10 @@ export default class CommonStorageService extends Service {
   //== Other service functions
 
   openAlbum = (i) => {
+    i = Number(i); // important!
     this.imdbDir = this.imdbDirs[i];
     this.imdbDirIndex = i;
-    this.loli('Open album ' + i + ' ' + this.imdbDir);
+    this.loli('opened album ' + i + ' ' + this.imdbDir);
     // Reset color
     for (let tmp of document.querySelectorAll('span.album')) {
       tmp.style.color = '';
@@ -154,9 +172,6 @@ export default class CommonStorageService extends Service {
       if (selected.nodeName !== 'DIV') break;
       selected.style.display = '';
     }
-    // Then populate the album component with 1) subalbums and 2) images
-    // PLAN: a) call this.z.loadAlbum(i) from where?
-    //
   }
 
   toggleBackg = () => {
@@ -227,7 +242,6 @@ export default class CommonStorageService extends Service {
   //== Server tasks
 
   getCredentials = async (username) => {
-    // await new Promise (z => setTimeout (z, 555));
     username = username.trim();
     // this.loli(this.userName);
     if (username === 'Get user name') { // Welcome, initiation
@@ -332,15 +346,15 @@ export default class CommonStorageService extends Service {
     var menuButton = document.getElementById("menuButton");
     if (menuMain.style.display === "none") {
       menuMain.style.display = "";
-      await new Promise (z => setTimeout (z, 9));
+      await new Promise (z => setTimeout (z, 9)); // slow response
       menuButton.innerHTML = '<span class="menu">×</span>';
-      await new Promise (z => setTimeout (z, 9));
+      await new Promise (z => setTimeout (z, 9)); // slow response
       this.loli('opened main menu');
     } else {
       menuMain.style.display = "none";
-      await new Promise (z => setTimeout (z, 9));
+      await new Promise (z => setTimeout (z, 9)); // slow response
       menuButton.innerHTML = '<span class="menu">☰</span>';
-      await new Promise (z => setTimeout (z, 9));
+      await new Promise (z => setTimeout (z, 9)); // slow response
       this.loli('closed main menu');
     }
   }

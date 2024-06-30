@@ -22,7 +22,8 @@ export class DialogXper extends Component {
   // Detect enter key in input field
   detectOpenEnter = (e) => {
     if (e.keyCode === 13) { // Enter key
-      if (!e.target.value) return;
+      let etv = e.target.value;
+      if (!etv || Number(etv) > this.aMax) return;
       if (!this.z.imdbRoot) {
         this.z.alertMess(this.intl.t('needaroot'));
         document.activeElement.blur();
@@ -31,11 +32,11 @@ export class DialogXper extends Component {
         document.querySelector('.mainMenu select').focus();
         return;
       }
-      this.z.openAlbum(e.target.value);
-      // This below may finally be removed
+      this.z.openAlbum(etv);
       this.z.toggleMainMenu();
-      document.querySelector('.albumTree').style.display = '';
-      document.querySelector('.mainMenu select').blur();
+      // This below may finally be removed
+      // document.querySelector('.albumTree').style.display = '';
+      // document.querySelector('.mainMenu select').blur();
     }
   }
 
@@ -47,7 +48,11 @@ export class DialogXper extends Component {
   }
 
   // Max index of albums
-  get aMax() { return this.z.imdbDirs.length - 1 ?? 0; }
+  get aMax() {
+    let i = this.z.imdbDirs.length;
+    if (i > 0) return i - 1;
+    return 0;
+  }
 
   <template><dialog id="dialogXper" {{on 'keydown' this.detectEscClose}}>
     <header data-dialog-draggable>
@@ -60,7 +65,7 @@ export class DialogXper extends Component {
     <main>
       <p>Mish experimental dialog Mish experimental dialog</p>
       Open album number
-      <input type="number" pattern="[0-9]+" min="0" max={{this.aMax}} style="width:3rem" required {{on 'keydown' this.detectOpenEnter}}>
+      <input type="number" pattern="[0-9]+" min="0" max={{this.aMax}} style="width:3rem" required autofocus {{on 'keydown' this.detectOpenEnter}}>
       <br><br>
     </main>
     <footer data-dialog-draggable>

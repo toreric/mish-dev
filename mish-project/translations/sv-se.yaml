@@ -43,9 +43,14 @@ dark: Mörk
 #NOTE: Choose a guest: value which exists in the _imdb_settings.sqlite 'user' table!
 #      Else use instead the standard name guest!
 guest: gäst
+has: har
 intlcode: sv-se
 light: ljus
+no: inga
+plus: plus
 rights: rättigheter
+subalbum:  underalbum
+subalbums: underalbum
 with: med
 
 button:
@@ -138,10 +143,10 @@ goto: Gå till
 header: Mish bildgalleri
 hello:
   world:  Goddag hela världen!
-imdbRootsPrep: Ladda om appen!
 infoHeader: Information
 loggedIn: Inloggad
 picfound: §Funna_bilder
+reloadApp: Ladda om appen!
 select:
   language: Välj språk
   languagetext: Svenska
