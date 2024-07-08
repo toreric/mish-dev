@@ -71,18 +71,20 @@ class Welcome extends Component {
       let roots = await this.z.getAlbumRoots();
       this.z.imdbRoots = roots.split(LF);
 
-      // Settings from cookies
-      // Language
+      // Language cookie
       let lng = this.z.getCookie('mish_lang');
       if (lng) this.intl.setLocale([lng]);
       this.z.intlCodeCurr = lng;
-      // Background
+      // Background cookie
       if (this.z.getCookie('mish_bkgr') === 'dark') {
         this.z.bkgrColor = '#111';
         this.z.textColor = '#fff';
-      } else {
+        this.z.subColor = '#aef';
+      }
+      if (this.z.getCookie('mish_bkgr') === 'light') {
         this.z.bkgrColor = '#cbcbcb';
         this.z.textColor = '#111';
+        this.z.subColor = '#146';
       }
       document.querySelector('body').style.background = this.z.bkgrColor;
       document.querySelector('body').style.color = this.z.textColor;

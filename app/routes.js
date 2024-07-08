@@ -59,9 +59,10 @@ module.exports = function (app) { // Start module.exports
     }
     // 30 black, 31 red, 32 green, 33 yellow, 34 blue, 35 magenta, 36 cyan, 37 white, 0 default
     // Add '1;' for bright, e.g. '\x1b[1;33m' is bright yellow, while '\x1b[31m' is red, etc.
+    let BGRE = '\x1b[1;32m' // Bright green
     let BYEL = '\x1b[1;33m' // Bright yellow
     let RSET = '\x1b[0m'    // Reset
-    console.log(LF + BYEL + decodeURIComponent(req.originalUrl) + RSET);
+    console.log(LF + BGRE + decodeURIComponent(req.originalUrl) + RSET);
     console.log('  WWW_ROOT:', WWW_ROOT)
     console.log(' IMDB_HOME:', IMDB_HOME)
     console.log('      IMDB:', IMDB)

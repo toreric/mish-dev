@@ -10,9 +10,10 @@ import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
 import { dialogAlertId } from './dialog-alert';
+// import EmberTooltip from './ember-tooltip';
 
 const LF = '\n'; // LINE_FEED
-const SA = '‡';  // SUBALBUM indicator, set in server (routes.js)
+const SA = '‡';  // SUBALBUM indicator, NOTE! set in server (routes.js)
 
 
 export class ViewMain extends Component {
@@ -20,7 +21,7 @@ export class ViewMain extends Component {
   @service intl;
 
   <template>
-    <div style="margin:0 0 0 4rem;width:auto;height:auto;border:0.5px solid lightgray">
+    <div style="margin:0 0 0 4rem;width:auto;height:auto">
       <SubAlbums />
     </div>
   </template>
@@ -50,7 +51,7 @@ class SubAlbums extends Component {
     let coco = '';
     if (this.z.imdbCoco) coco = this.z.imdbCoco[this.z.imdbDirIndex];
     let plus= '';
-    if (coco.includes(SA)) {
+    if (coco && coco.includes(SA)) { // Avoids error if imdbDirIndex is out of range
       let re = new RegExp(String.raw`${SA}.*$`) // If SA is '*' etc. then use ´\\*'
       // Check if there are more subalbums than the primary subalbums
       let more = Number(coco.replace(re, '').replace(/\ *[(0-9+)]+\ +([0-9]+)$/, '$1')) - this.z.subaIndex.length;
@@ -60,28 +61,52 @@ class SubAlbums extends Component {
     return plus;
   }
 
-  subaList = () => {return []};  // Subalbum links
+  wait = async () => {
+    await new Promise (z => setTimeout (z, 499)); // Soon allow next
+  }
+
+  imdbDirs = (i) => {
+    return this.z.imdbDirs[i];
+  }
+
+  imdbLabels = (i) => {
+    return this.z.imdbLabels[i];
+  }
+
+  dirName = (i) => {
+    return this.z.imdbDirs[i].replace(/^(.*\/)*([^/]+)$/, '$2').replace(/_/g, ' ');
+  }
+
+  // subColor = () => {
+  //   return this.z.subColor;
+  // }
 
   <template>
-    {{#if this.z.imdbRoot}}
-      <span title={{this.z.imdbDir}}>
-        <b>”{{{this.z.imdbDirName}}}”</b>
-        {{t 'has'}} {{this.nsub}} {{this.sual}} {{this.nadd}}
-      </span>
-    {{/if}}
+    {{!-- <EmberTooltip /> --}}
     <p class='albumsHdr' draggable="false" ondragstart="return false">
       <div class="miniImgs">
-        {{#each this.subaList as |suba|}}
-          <div class="subAlbum" {{fn  (thiz.z.subaSelect suba.album)}}>
-            <a class="imDir BLUET" style="background:transparent" title-2="Album ”{{suba.name}}”">
-              {{#if suba.image}}
-                <img src="rln{{suba.image}}"><br>
-              {{/if}}
-              <span>{{{suba.name}}}</span>
-            </a>
-          </div>
-        {{else}}
-        {{/each}}
+        {{#if this.z.imdbRoot}}
+          <span title={{this.z.imdbDir}}
+          {{!-- {{this.wait}} --}}
+          >
+            <b>”{{{this.z.imdbDirName}}}”</b>
+            {{t 'has'}} {{this.nsub}} {{this.sual}} {{this.nadd}}
+          </span>
+          <br>
+          {{#each this.z.subaIndex as |i|}}
+            <div class="subAlbum" title={{this.imdbDirs i}}>
+              <a class="imDir" style="background:transparent"
+                {{!-- {{ember-tooltip "This is a tooltip!"}} --}}
+              >
+                {{!-- {{#if suba.image}} --}}
+                  <img src="{{this.imdbLabels i}}"><br>
+                {{!-- {{/if}} --}}
+                <span style="font-size:85%;color:{{this.z.subColor}}">{{this.dirName i}}</span>
+              </a>
+            </div>
+          {{else}}
+          {{/each}}
+        {{/if}}
       </div>
     </p>
   </template>

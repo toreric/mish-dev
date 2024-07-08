@@ -34,11 +34,12 @@ export default class CommonStorageService extends Service {
   @tracked  infoHeader = 'Header text';       //for information dialog
   @tracked  infoMessage = 'No information';   //for information dialog
         get intlCode() { return `${this.intl.t('intlcode')}`; }
-  @tracked  intlCodeCurr = this.intlCode;
+  @tracked  intlCodeCurr = this.intlCode;     // language code
         get picFoundBaseName() { return `${this.intl.t('picfound')}`; }
   // The found pics temporary catalog name is amended with a random 4-code:
   @tracked  picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
   @tracked  picName = 'IMG_1234a2023_nov_19'; //actual/current image name
+  @tracked  subColor = '#06f  '; //subalbum legends
         get subaIndex() {
               let subindex = [];
               for (let i=this.imdbDirIndex+1;i<this.imdbDirs.length;i++) {
@@ -157,8 +158,9 @@ export default class CommonStorageService extends Service {
   openAlbum = (i) => {
     i = Number(i); // important!
     this.imdbDir = this.imdbDirs[i];
+
     this.imdbDirIndex = i;
-    this.loli('opened album ' + i + ' ' + this.imdbDir);
+    this.loli('opened album ' + i + ' ' + this.imdbDir, 'color:lightgreen' );
     // Reset color
     for (let tmp of document.querySelectorAll('span.album')) {
       tmp.style.color = '';
@@ -178,11 +180,13 @@ export default class CommonStorageService extends Service {
     if (this.bkgrColor === '#cbcbcb') {
       this.bkgrColor = '#111';
       this.textColor = '#fff';
+      this.subColor = '#aef';
       this.setCookie('mish_bkgr', 'dark');
       this.loli('set dark background');
     } else {
       this.bkgrColor = '#cbcbcb';
       this.textColor = '#111';
+      this.subColor = '#146';
       this.setCookie('mish_bkgr', 'light');
       this.loli('set light background');
     }
@@ -190,8 +194,8 @@ export default class CommonStorageService extends Service {
     document.querySelector('body').style.color = this.textColor;
   }
 
-  loli = (text) => { // loli = log list with user name
-    console.log(this.userName + ':', text);
+  loli = (text, style) => { // loli = log list with user name
+    console.log(this.userName + ': %c' + text, style);
   }
 
   alertMess = (mess, hdr) => {

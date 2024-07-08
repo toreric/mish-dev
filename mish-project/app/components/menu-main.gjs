@@ -15,7 +15,7 @@ export const menuMainId = 'menuMain';
 const LF = '\n'; // LINE_FEED
 const OP = '⊕'; // OPENS
 const CL = '⊖'; // CLOSES
-const SA = '‡';  // SUBALBUM indicator, set in server (routes.js)
+const SA = '‡';  // SUBALBUM indicator, NOTE! set in server (routes.js)
 
 // Detect closing Esc key for menuMain or open dialogs
 const detectEsc = (event) => {
@@ -56,7 +56,7 @@ export class MenuMain extends Component {
   selectRoot = async (event) => { // Album root = collection
     this.z.imdbRoot = event.target.value;
     this.z.imdbDir = this.z.imdbRoot; // The root is assumed initially selected
-    this.z.loli('IMDB_ROOT set to ' + this.z.imdbRoot);
+    this.z.loli('IMDB_ROOT set to ' + this.z.imdbRoot, 'color:green');
     const allow = this.z.allow; // PERMISSIONS
 
     // Retreive album tree of this collection, arg.=true if hidden allowed
@@ -151,13 +151,16 @@ export class MenuMain extends Component {
   // Close/open albumTree
   toggleAlbumTree = () => {
     if (this.checkRoot()) return;
-    this.z.loli('toggleAlbumTree');
-    let tree = document.querySelector('div.albumTree');
-    if (tree.style.display) {
-      tree.style.display = '';
+    let treeDiv = document.querySelector('div.albumTree');
+    let what;
+    if (treeDiv.style.display) {
+      what = 'open';
+      treeDiv.style.display = '';
     }else {
-      tree.style.display = 'none';
+      what = 'close';
+      treeDiv.style.display = 'none';
     }
+    this.z.loli('toggleAlbumTree ' + what);
   }
 
   // Open enough nodes to make the selected album visible
@@ -176,17 +179,6 @@ export class MenuMain extends Component {
     await new Promise (z => setTimeout (z, 666)); // blink pause
     selected.classList.remove('blink');
   }
-
-  // // Close all nodes of albumTree except the root
-  // closeAll = () => {
-  //   let all = document.querySelector('div.albumTree').querySelectorAll('a.album');
-  //   if (all[0].innerHTML.includes(OP)) all[0].click();
-  //   for (let i=1;i<all.length;i++) {
-  //     if (all[i].innerHTML.includes(CL)) {
-  //       all[i].click();
-  //     }
-  //   }
-  // }
 
   // Open all nodes of albumTree
   openAll = () => {
@@ -227,7 +219,7 @@ export class MenuMain extends Component {
 
   <template>
 
-    <div id="menuMain" class="mainMenu BACKG" onclick="return false" draggable="false" ondragstart="return false" style="display:none">
+    <div id="menuMain" class="mainMenu" onclick="return false" draggable="false" ondragstart="return false" style="display:none">
 
       <p onclick="return false" draggable="false" ondragstart="return false" title="Sökning">
         <a class="search" {{on "click" (fn this.findText)}}>Finn bilder <span style="font:normal 1em monospace!important">[F]</span></a>

@@ -35,7 +35,7 @@ export class DialogXper extends Component {
       this.z.openAlbum(etv);
       this.z.toggleMainMenu();
       // This below may finally be removed
-      // document.querySelector('.albumTree').style.display = '';
+      document.querySelector('.albumTree').style.display = '';
       // document.querySelector('.mainMenu select').blur();
     }
   }

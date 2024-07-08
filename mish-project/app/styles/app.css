@@ -1066,7 +1066,7 @@ button[disabled] {
 .albumsHdr {
   background-color: transparent;
   text-align: left;
-  margin: 0 0 0 1.3em;
+  margin: 0;
 }
 .subAlbum {
   background: transparent;
@@ -1076,8 +1076,12 @@ button[disabled] {
   margin: 0.5em 0.75em 0 0;
   font-size: 85%;
   font-weight: bold;
+  color: rgb(170, 238, 255);
 }
-.img_show .imDir .albumName {
+.subAlbum a span:hover {
+  text-decoration: underline;
+}
+  .img_show .imDir .albumName {
   padding-right: 50px;
 }
 strong.albumName {

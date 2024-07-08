@@ -34,12 +34,12 @@ export class Language extends Component {
   }
 
   isActive = (locale) => {
-    return this.intl.locale[0] === locale;
+    return this.intl.primaryLocale === locale;
   }
 
   langText = (locale) => {
-    new Promise (z => setTimeout (z, 200));
-    return this.intl.lookup("select.languagetext", locale);
+    // new Promise (z => setTimeout (z, 200));
+    return this.intl.getTranslation("select.languagetext", locale);
   }
 
   <template>

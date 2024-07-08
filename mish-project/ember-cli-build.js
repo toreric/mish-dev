@@ -1,6 +1,7 @@
 'use strict';
 
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+const { Webpack } = require('@embroider/webpack');
 
 module.exports = function (defaults) {
   const app = new EmberApp(defaults, {
@@ -10,7 +11,6 @@ module.exports = function (defaults) {
     },
   });
 
-  const { Webpack } = require('@embroider/webpack');
 
   return require('@embroider/compat').compatBuild(app, Webpack, {
     extraPublicTrees: [],
