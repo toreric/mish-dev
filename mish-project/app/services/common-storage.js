@@ -15,6 +15,7 @@ export default class CommonStorageService extends Service {
         get defaultUserName() { return `${this.intl.t('guest')}`; }
   @tracked  freeUsers = 'guest...'; //user names without passwords (set by DialogLogin)
   @tracked  imdbCoco = '';          //content counters etc. for imdbDirs (*)
+  @tracked  albumHistory = [0];     //album index visit history
   @tracked  imdbDir = '';           //actual/current (sub)album directory
   @tracked  imdbDirIndex = 0;       //actual/current (sub)album directory index
         get imdbDirName() {
@@ -158,8 +159,9 @@ export default class CommonStorageService extends Service {
   openAlbum = (i) => {
     i = Number(i); // important!
     this.imdbDir = this.imdbDirs[i];
-
     this.imdbDirIndex = i;
+    let h = this.albumHistory;
+    if (h.length > 0 && h[h.length - 1] !== i) this.albumHistory.push(i);
     this.loli('opened album ' + i + ' ' + this.imdbDir, 'color:lightgreen' );
     // Reset color
     for (let tmp of document.querySelectorAll('span.album')) {

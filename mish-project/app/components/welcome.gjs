@@ -91,6 +91,21 @@ class Welcome extends Component {
     };
   }
 
+  goBack = () => {
+    this.z.loli('History1=' + this.z.albumHistory);
+    if (!this.z.imdbRoot) return;
+    this.z.albumHistory.pop();
+    let index = this.z.albumHistory.length - 1;
+    if (index < 0) {
+      this.z.albumHistory = [0];
+      index = 0;
+    }
+    index = this.z.albumHistory[index];
+    if (this.z.albumHistory.length > 1) this.z.albumHistory.pop();
+    this.z.openAlbum(index);
+    this.z.loli('History2=' + this.z.albumHistory);
+  }
+
 }
 
 const executeOnInsert = modifier((element, [component]) => {
@@ -121,6 +136,9 @@ export default class extends Welcome {
 
     <div style="display:flex;justify-content:space-between;margin:0 0.25rem 0 4rem">
       <Language />
+      <span>
+        <a {{on 'click' (fn this.goBack)}}>&nbsp;&lt;- tillbaka&nbsp;</a>
+      </span>
       <span>{{t 'time.text'}}
         <span><Clock @locale={{this.z.intlCodeCurr}} /></span>
       </span>

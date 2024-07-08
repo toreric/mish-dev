@@ -1078,7 +1078,7 @@ button[disabled] {
   font-weight: bold;
   color: rgb(170, 238, 255);
 }
-.subAlbum a span:hover {
+.subAlbum:hover a span {
   text-decoration: underline;
 }
   .img_show .imDir .albumName {

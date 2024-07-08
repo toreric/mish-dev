@@ -94,7 +94,7 @@ class SubAlbums extends Component {
           </span>
           <br>
           {{#each this.z.subaIndex as |i|}}
-            <div class="subAlbum" title={{this.imdbDirs i}}>
+            <div class="subAlbum" title={{this.imdbDirs i}} {{on 'click' (fn this.z.openAlbum i)}}>
               <a class="imDir" style="background:transparent"
                 {{!-- {{ember-tooltip "This is a tooltip!"}} --}}
               >
