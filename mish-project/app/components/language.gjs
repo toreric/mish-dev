@@ -38,7 +38,6 @@ export class Language extends Component {
   }
 
   langText = (locale) => {
-    // new Promise (z => setTimeout (z, 200));
     return this.intl.getTranslation("select.languagetext", locale);
   }
 

@@ -32,15 +32,9 @@ export class DialogText extends Component {
       if (tmp1.open) {
         this.z.closeDialog(tmp1.id);
         await new Promise (z => setTimeout (z, 9)); // Soon allow next
-        // Close of modal closes its parent if it also is modal. Else,
-        // the parent is alreaady open and openModalDialog won't harm
-        // this.z.openModalDialog(dialogTextId, 0);
       } else if (tmp2.open) {
         this.z.closeDialog(tmp2.id);
         await new Promise (z => setTimeout (z, 9)); // Soon allow next
-        // Close of modal closes its parent if it also is modal. Else,
-        // the parent is alreaady open and openModalDialog won't harm *****??s
-        // this.z.openModalDialog(dialogTextId, 0);
       } else {
         this.z.closeDialog(dialogTextId);
       }

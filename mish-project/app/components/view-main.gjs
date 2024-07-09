@@ -61,10 +61,6 @@ class SubAlbums extends Component {
     return plus;
   }
 
-  wait = async () => {
-    await new Promise (z => setTimeout (z, 499)); // Soon allow next
-  }
-
   imdbDirs = (i) => {
     return this.z.imdbDirs[i];
   }
@@ -77,18 +73,12 @@ class SubAlbums extends Component {
     return this.z.imdbDirs[i].replace(/^(.*\/)*([^/]+)$/, '$2').replace(/_/g, ' ');
   }
 
-  // subColor = () => {
-  //   return this.z.subColor;
-  // }
-
   <template>
     {{!-- <EmberTooltip /> --}}
     <p class='albumsHdr' draggable="false" ondragstart="return false">
       <div class="miniImgs">
         {{#if this.z.imdbRoot}}
-          <span title={{this.z.imdbDir}}
-          {{!-- {{this.wait}} --}}
-          >
+          <span title={{this.z.imdbDir}}>
             <b>”{{{this.z.imdbDirName}}}”</b>
             {{t 'has'}} {{this.nsub}} {{this.sual}} {{this.nadd}}
           </span>

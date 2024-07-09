@@ -108,7 +108,7 @@ export class MenuMain extends Component {
     // console.log(result);
     // this.z.loli('imdbTree ' + n + LF + JSON.stringify(result, null, 2)); //human readable
     // document.querySelector('div.albumTree').style.display = 'none'; // Tree view may be open
-    await new Promise (z => setTimeout (z, 199)); // Soon allow next
+    await new Promise (z => setTimeout (z, 199)); // Wait for album tree to settle
     this.closeAll(); // fold all nodes except 0
 
     let anyHidden = () => { // flags any hidden-without-allowance album
