@@ -92,18 +92,19 @@ class Welcome extends Component {
   }
 
   goBack = () => {
-    this.z.loli('History1=' + this.z.albumHistory);
+    // this.z.loli('History1=' + this.z.albumHistory);
     if (!this.z.imdbRoot) return;
     this.z.albumHistory.pop();
     let index = this.z.albumHistory.length - 1;
     if (index < 0) {
       this.z.albumHistory = [0];
       index = 0;
+      return;
     }
     index = this.z.albumHistory[index];
     if (this.z.albumHistory.length > 1) this.z.albumHistory.pop();
     this.z.openAlbum(index);
-    this.z.loli('History2=' + this.z.albumHistory);
+    // this.z.loli('History2=' + this.z.albumHistory);
   }
 
 }
