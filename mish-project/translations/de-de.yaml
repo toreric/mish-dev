@@ -146,6 +146,7 @@ hello:
   world:  Guten Tag, Welt!
 infoHeader: Information
 loggedIn: Angemeldet
+noCollSelected: Keine Albumsammlung ausgewählt
 picfound: §Bilder_gefunden
 plusExplain: Unteralben haben auch Unteralben!
 reloadApp: Die App neu laden!

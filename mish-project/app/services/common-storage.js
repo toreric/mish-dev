@@ -172,6 +172,7 @@ export default class CommonStorageService extends Service {
     if (!this.imdbRoot) return;
     this.albumHistory.pop();
     let index = this.albumHistory.length - 1;
+    // if (index < 1) { // Reset even at 0=root, may prohibit "browser disorder"
     if (index < 0) {
       this.albumHistory = [0];
       return;
@@ -183,12 +184,13 @@ export default class CommonStorageService extends Service {
 
   openAlbum = (i) => {
     i = Number(i); // important!
+    if (i === 0) this.albumHistory = [0]; // Recover from possible "browser disorder"
     this.imdbDir = this.imdbDirs[i];
     this.imdbDirIndex = i;
     let h = this.albumHistory;
     if (h.length > 0 && h[h.length - 1] !== i) this.albumHistory.push(i);
     this.loli('opened album ' + i + ' ' + this.imdbDir, 'color:lightgreen' );
-    // Reset color
+    // Reset colors in the album tree of the main menu
     for (let tmp of document.querySelectorAll('span.album')) {
       tmp.style.color = '';
     }

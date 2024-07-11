@@ -123,10 +123,15 @@ export default class extends Welcome {
     <div style="display:flex;justify-content:space-between;margin:0 0.25rem 0 4rem">
       <Language />
       <span>
-        <a {{on 'click' (fn this.z.goBack)}}>&nbsp;&lt;- tillbaka&nbsp;</a>
+
+        {{!-- NOTE: This link is for emergency only if the browser's back arrow fails due
+        to problems in the initBrowser-goBack cooperation in the CommonStorage service:
+        <a {{on 'click' (fn this.z.goBack)}}>&nbsp;&lt;- go back&nbsp;</a> --}}
 
         {{#if this.z.imdbRoot}}
           <b>”{{this.z.imdbRoot}}”</b>
+        {{else}}
+          {{t 'noCollSelected'}}
         {{/if}}
 
       </span>

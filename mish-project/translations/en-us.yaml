@@ -146,6 +146,7 @@ hello:
   world:  Hello World!
 infoHeader: Information
 loggedIn: Logged in
+noCollSelected: No album collection selected
 picfound: §Found_pictures
 plusExplain: Subalbums also have subalbums!
 reloadApp: Reload the app!

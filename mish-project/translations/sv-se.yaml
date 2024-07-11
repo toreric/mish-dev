@@ -145,6 +145,7 @@ hello:
   world:  Goddag hela världen!
 infoHeader: Information
 loggedIn: Inloggad
+noCollSelected: Ingen albumsamling har valts
 picfound: §Funna_bilder
 plusExplain: Underalbum har också underalbum!
 reloadApp: Ladda om appen!
