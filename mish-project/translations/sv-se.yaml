@@ -146,6 +146,7 @@ hello:
 infoHeader: Information
 loggedIn: Inloggad
 picfound: §Funna_bilder
+plusExplain: Underalbum har också underalbum!
 reloadApp: Ladda om appen!
 select:
   language: Välj språk

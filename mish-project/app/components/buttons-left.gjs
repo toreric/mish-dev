@@ -18,7 +18,7 @@ export class ButtonsLeft extends Component {
   someFunction = (param) => {this.z.loli(param);}
 
   <template>
-    <!-- Start "home" page: the Information page-->
+
     <iframe class="intro" src="start.html" style="display:none"></iframe>
 
     <div id="smallButtons" draggable="false" ondragstart="return false">

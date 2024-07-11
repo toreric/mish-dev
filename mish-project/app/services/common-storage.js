@@ -40,7 +40,7 @@ export default class CommonStorageService extends Service {
   // The found pics temporary catalog name is amended with a random 4-code:
   @tracked  picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
   @tracked  picName = 'IMG_1234a2023_nov_19'; //actual/current image name
-  @tracked  subColor = '#06f  '; //subalbum legends
+  @tracked  subColor = '#06f'; //subalbum legends
         get subaIndex() {
               let subindex = [];
               for (let i=this.imdbDirIndex+1;i<this.imdbDirs.length;i++) {
@@ -156,6 +156,31 @@ export default class CommonStorageService extends Service {
   //   #region Utilities
   //== Other service functions
 
+  // Disable browser back button, go instead to most recent visited album
+  initBrowser = async () => {
+    // Refresh the setting, it may be lost!
+    while (this.bkgrColor) { // Intended eternal loop
+      window.history.pushState (null, "");
+      window.onpopstate = () => {
+        this.goBack();
+      }
+      await new Promise (z => setTimeout (z, 10000)); // Wait some seconds
+    }
+  }
+
+  goBack = () => {
+    if (!this.imdbRoot) return;
+    this.albumHistory.pop();
+    let index = this.albumHistory.length - 1;
+    if (index < 0) {
+      this.albumHistory = [0];
+      return;
+    }
+    index = this.albumHistory[index];
+    if (this.albumHistory.length > 1) this.albumHistory.pop();
+    this.openAlbum(index);
+  }
+
   openAlbum = (i) => {
     i = Number(i); // important!
     this.imdbDir = this.imdbDirs[i];
@@ -200,7 +225,7 @@ export default class CommonStorageService extends Service {
     console.log(this.userName + ': %c' + text, style);
   }
 
-  alertMess = (mess, hdr) => {
+  alertMess = async (mess, hdr) => {
     this.infoHeader = this.intl.t('infoHeader'); // default header
     if (hdr) this.infoHeader = hdr;
     this.infoMessage = mess;

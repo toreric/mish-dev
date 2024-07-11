@@ -25,9 +25,5 @@ module.exports = function (defaults) {
     amdCompatibility: {
       es: [],
     },
-    // splitAtRoutes: ['route.name'], // can also be a RegExp
-    // packagerOptions: {
-    //    webpackConfig: { }
-    // }
-  });
+ });
 };

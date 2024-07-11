@@ -35,14 +35,14 @@ export class DialogAlert extends Component {
   <dialog id="dialogAlert" style="z-index:999" {{on 'keydown' this.detectEscClose}}>
     <header data-dialog-draggable>
       <div style="width:99%">
-        <p>{{this.z.infoHeader}}<span></span></p>
+        <p style="color:blue">{{this.z.infoHeader}}<span></span></p>
       </div><div>
         <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogAlertId)}}>×</button>
       </div>
     </header>
     <main>
 
-      <p style="padding:1rem;font-weight:bold;color:red">{{this.z.infoMessage}}</p>
+      <p style="padding:1rem;font-weight:bold;color:blue">{{this.z.infoMessage}}</p>
 
     </main>
     <footer data-dialog-draggable>

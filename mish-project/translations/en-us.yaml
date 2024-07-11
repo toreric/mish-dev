@@ -147,6 +147,7 @@ hello:
 infoHeader: Information
 loggedIn: Logged in
 picfound: §Found_pictures
+plusExplain: Subalbums also have subalbums!
 reloadApp: Reload the app!
 select:
   language: Select language

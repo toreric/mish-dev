@@ -2,7 +2,8 @@
 import EmberTooltipComponent from 'ember-tooltips/components/ember-tooltip';
 
 export default EmberTooltipComponent.extend({
+  animationDuration: 0,
   effect: 'slide',
-  side: 'bottom',
-  spacing: 10
+  side: 'top',
+  spacing: 0
 });

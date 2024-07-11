@@ -32,7 +32,7 @@ class SubAlbums extends Component {
   @service('common-storage') z;
   @service intl;
 
-  get  nsub() {
+  get nsub() {
     let res =  this.z.subaIndex.length;
     if (res < 1) res = this.intl.t('no'); // 'inget'
     return res;
@@ -73,23 +73,31 @@ class SubAlbums extends Component {
     return this.z.imdbDirs[i].replace(/^(.*\/)*([^/]+)$/, '$2').replace(/_/g, ' ');
   }
 
+  get tooltipTarget() {
+    return document.querySelector('img:active');
+  }
+
   <template>
-    {{!-- <EmberTooltip /> --}}
     <p class='albumsHdr' draggable="false" ondragstart="return false">
       <div class="miniImgs">
         {{#if this.z.imdbRoot}}
           <span title={{this.z.imdbDir}}>
             <b>”{{{this.z.imdbDirName}}}”</b>
-            {{t 'has'}} {{this.nsub}} {{this.sual}} {{this.nadd}}
+            {{t 'has'}} {{this.nsub}} {{this.sual}}
+            {{!-- <a {{on 'click' (fn this.z.alertMess this.naddTxt this.naddHdr)}}>{{this.nadd}}</a> --}}
+            <span title={{t 'plusExplain'}}>{{this.nadd}}</span>
           </span>
           <br>
           {{#each this.z.subaIndex as |i|}}
-            <div class="subAlbum" title={{this.imdbDirs i}} {{on 'click' (fn this.z.openAlbum i)}}>
-              <a class="imDir" style="background:transparent"
-                {{!-- {{ember-tooltip "This is a tooltip!"}} --}}
-              >
+            <div class="subAlbum" title={{this.imdbDirs i}}
+              {{on 'click' (fn this.z.openAlbum i)}}>
+              {{!-- <EmberTooltip
+                @text="Here is more info!"
+                @targetElement={{this.tooltipTarget}}
+              /> --}}
+              <a class="imDir" style="background:transparent" title-2="Album ”{{this.dirName i}}”">
                 {{!-- {{#if suba.image}} --}}
-                  <img src="{{this.imdbLabels i}}"><br>
+                  <img src={{this.imdbLabels i}} alt="Album ”{{this.dirName i}}”"><br>
                 {{!-- {{/if}} --}}
                 <span style="font-size:85%;color:{{this.z.subColor}}">{{this.dirName i}}</span>
               </a>
