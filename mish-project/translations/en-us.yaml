@@ -53,6 +53,17 @@ subalbum:  subalbum
 subalbums: subalbums
 with: with
 
+albumSelectInfo: "Select here an album
+                  collection if it isn't
+                  already preselected.
+                  There may be more
+                  than one alternative.
+                  The entrance album to an
+                  album collection is also
+                  called ”album root”, as then
+                  branches downwards.
+                  – Tips at problems:
+                  Reload the browser!"
 button:
   backgtitle: Change background
   close:     Close
@@ -65,7 +76,6 @@ button:
   save:      Save
   saveclose: Save and close
 
-albumSelectInfo: Information om albumval
 buttons:
   left:
     main: Main menu

@@ -1213,7 +1213,7 @@ The jquery ui-tooltip is used elsewere (totip in *.js) */
   z-index:2;
 }
 .rootQuest[title-2]:hover::after {
-  width: 150px;
+  width: 160px;
 }
 [title-example-not-used] {
   position: relative;

@@ -53,6 +53,15 @@ subalbum:  Unteralbum
 subalbums: Unteralben
 with: mit
 
+albumSelectInfo: "Eine Albumsammlung hier auswählen,
+                 falls diese nicht bereits vorausgewählt ist.
+                 Möglicherweise gibt es noch mehr
+                 als eine Alternative.
+                 Das Eingabealbum einer Albumsammlung ist
+                 auch „Album Root“ genannt, un es
+                 verzweigt sich nach unten.
+                 – Tipps bei Problemen:
+                 Den Browser neuladen!"
 button:
   backgtitle: Hintergrund ändern
   close:     Schließen
@@ -65,7 +74,6 @@ button:
   save:      Speichern
   saveclose: Speichern und schließen
 
-albumSelectInfo: Information om albumval
 buttons:
   left:
     main: Hauptmenü
