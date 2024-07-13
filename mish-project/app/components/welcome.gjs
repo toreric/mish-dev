@@ -52,7 +52,7 @@ class Welcome extends Component {
   }
   getCred = async () => {
     if (!this.z.userStatus) { // only once
-      this.z.initBrowser();
+      this.z.initBrowser(); // Manipulate browser arrow
       // Set default background
       document.querySelector('body').style.background = this.z.bkgrColor;
       document.querySelector('body').style.color = this.z.textColor;
@@ -89,7 +89,8 @@ class Welcome extends Component {
       }
       document.querySelector('body').style.background = this.z.bkgrColor;
       document.querySelector('body').style.color = this.z.textColor;
-    };
+    }
+    this.z.openMainMenu();
   }
 
 }
@@ -99,7 +100,6 @@ const executeOnInsert = modifier((element, [component]) => {
 });
 
 export default class extends Welcome {
-  @service('common-storage') z;
   <template>
     <div {{executeOnInsert this}} style="display:flex;justify-content:space-between;margin:0 0.25rem 0 4rem">
       {{! Html inserted here will appear beneath the buildStamp div }}

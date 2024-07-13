@@ -40,7 +40,7 @@ export default class CommonStorageService extends Service {
   // The found pics temporary catalog name is amended with a random 4-code:
   @tracked  picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
   @tracked  picName = 'IMG_1234a2023_nov_19'; //actual/current image name
-  @tracked  subColor = '#06f'; //subalbum legends
+  @tracked  subColor = '#aef'; //subalbum legends
         get subaIndex() {
               let subindex = [];
               for (let i=this.imdbDirIndex+1;i<this.imdbDirs.length;i++) {
@@ -374,22 +374,24 @@ export default class CommonStorageService extends Service {
   //   #region Menus
   //== Menu utilities
 
-  toggleMainMenu = async () => {
+  openMainMenu = async () => {
     var menuMain = document.getElementById("menuMain");
     var menuButton = document.getElementById("menuButton");
-    if (menuMain.style.display === "none") {
-      menuMain.style.display = "";
-      await new Promise (z => setTimeout (z, 9)); // slow response
-      menuButton.innerHTML = '<span class="menu">×</span>';
-      await new Promise (z => setTimeout (z, 9)); // slow response
-      this.loli('opened main menu');
-    } else {
-      menuMain.style.display = "none";
-      await new Promise (z => setTimeout (z, 9)); // slow response
-      menuButton.innerHTML = '<span class="menu">☰</span>';
-      await new Promise (z => setTimeout (z, 9)); // slow response
-      this.loli('closed main menu');
-    }
+    menuMain.style.display = "";
+    await new Promise (z => setTimeout (z, 9)); // slow response
+    menuButton.innerHTML = '<span class="menu">×</span>';
+    await new Promise (z => setTimeout (z, 9)); // slow response
+    this.loli('opened main menu');
+  }
+
+  closeMainMenu = async (p) => {
+    var menuMain = document.getElementById("menuMain");
+    var menuButton = document.getElementById("menuButton");
+    menuMain.style.display = "none";
+    await new Promise (z => setTimeout (z, 9)); // slow response
+    menuButton.innerHTML = '<span class="menu">☰</span>';
+    await new Promise (z => setTimeout (z, 9)); // slow response
+    this.loli('closed main menu, ' + p);
   }
 
   //   #region Dialogs

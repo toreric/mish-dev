@@ -28,12 +28,12 @@ export class DialogXper extends Component {
         this.z.alertMess(this.intl.t('needaroot'));
         document.activeElement.blur();
         e.target.style.zIndex = 999;
-        this.z.toggleMainMenu();
-        document.querySelector('.mainMenu select').focus();
+        this.z.openMainMenu();
+        document.getElementById('rootSel').focus();
         return;
       }
       this.z.openAlbum(etv);
-      this.z.toggleMainMenu();
+      this.z.openMainMenu();
       // This below may finally be removed
       document.querySelector('.albumTree').style.display = '';
       // document.querySelector('.mainMenu select').blur();

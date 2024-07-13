@@ -65,6 +65,7 @@ button:
   save:      Speichern
   saveclose: Speichern und schließen
 
+albumSelectInfo: Information om albumval
 buttons:
   left:
     main: Hauptmenü

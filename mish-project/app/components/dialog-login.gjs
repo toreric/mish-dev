@@ -58,6 +58,8 @@ export class DialogLogin extends Component {
         this.z.imdbRoot = '';
         this.z.imdbTree = null;
         this.z.closeDialog(dialogLoginId);
+        this.z.openMainMenu();
+        document.querySelector('.mainMenu select').focus();
       }
 
     } else {

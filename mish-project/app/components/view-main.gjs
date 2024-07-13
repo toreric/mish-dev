@@ -73,8 +73,10 @@ class SubAlbums extends Component {
     return this.z.imdbDirs[i].replace(/^(.*\/)*([^/]+)$/, '$2').replace(/_/g, ' ');
   }
 
-  get tooltipTarget() {
-    return document.querySelector('img:active');
+  setLabel = (i) => {
+    let label = this.z.imdbLabels[i];
+    if (!label) label = 'images/empty.gif';
+    return label;
   }
 
   <template>
@@ -91,18 +93,13 @@ class SubAlbums extends Component {
           {{#each this.z.subaIndex as |i|}}
             <div class="subAlbum" title={{this.imdbDirs i}}
               {{on 'click' (fn this.z.openAlbum i)}}>
-              {{!-- <EmberTooltip
-                @text="Here is more info!"
-                @targetElement={{this.tooltipTarget}}
-              /> --}}
               <a class="imDir" style="background:transparent" title-2="Album ”{{this.dirName i}}”">
-                {{!-- {{#if suba.image}} --}}
-                  <img src={{this.imdbLabels i}} alt="Album ”{{this.dirName i}}”"><br>
+                {{!-- {{#if (eq '' (fn this.imdbLabels i))}} --}}
+                  <img src={{this.setLabel i}} alt="Album ”{{this.dirName i}}”"><br>
                 {{!-- {{/if}} --}}
                 <span style="font-size:85%;color:{{this.z.subColor}}">{{this.dirName i}}</span>
               </a>
             </div>
-          {{else}}
           {{/each}}
         {{/if}}
       </div>

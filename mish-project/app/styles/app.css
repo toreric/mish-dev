@@ -968,7 +968,7 @@ div[aria-describedby="textareas"] {
   background-color: #0085ff;
 }
 #menuButton span.menu {
-  font-size: 2.25rem;
+  font-size: 1.75rem;
 }
 /* for the language flag buttons */
 .langflags img {
@@ -1101,10 +1101,10 @@ button[disabled] {
   margin: 0.5em 0.75em 0 0;
   font-size: 85%;
   font-weight: bold;
-  color: #aaeeff;
+  color: #aef;
 }
 .subAlbum:hover a span {
-  color: #999!important;
+  color: #777!important;
 }
   .img_show .imDir .albumName {
   padding-right: 50px;
@@ -1183,7 +1183,11 @@ The jquery ui-tooltip is used elsewere (totip in *.js) */
   white-space: nowrap;
   z-index: 2;
 }
-[alt] {font-weight: normal;}
+[alt] {
+  font-weight: normal;
+  font-size: 80%;
+  color: #777;
+}
 [title-2] {
   position: relative;
 }
@@ -1192,7 +1196,7 @@ The jquery ui-tooltip is used elsewere (totip in *.js) */
   content: attr(title-2);
   position: absolute;
   left: 0;
-  top: 100%;
+  top: 16px;
   text-align: left;
   border: 0.5px #888 solid;
   border-radius: 3px;
@@ -1200,7 +1204,7 @@ The jquery ui-tooltip is used elsewere (totip in *.js) */
   padding: 1.5px 2px 3px 5px;
   color: #000;
   font-weight: normal;
-  font-size: 0.95 rem;
+  font-size: 0.95rem;
   line-height: 1rem;
   font-variant: normal;
   word-break: keep-all;

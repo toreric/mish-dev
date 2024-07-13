@@ -26,8 +26,6 @@ const detectEsc = (event) => {
       tmp1.style.display = 'none';
       tmp0.innerHTML = '<span class="menu">☰</span>';
       console.log('-"-: closed main menu');
-      // this.z.toggleMainMenu() useless, since {{on 'keydown'... is useless (why?)
-      // NOTE: Autologged if toggleMainMenu is used
     } else {
       // An open <dialog> has an 'open' attribue
       var tmp = document.querySelectorAll('dialog');
@@ -107,7 +105,6 @@ export class MenuMain extends Component {
     this.z.imdbTree = result;
     // console.log(result);
     // this.z.loli('imdbTree ' + n + LF + JSON.stringify(result, null, 2)); //human readable
-    // document.querySelector('div.albumTree').style.display = 'none'; // Tree view may be open
     await new Promise (z => setTimeout (z, 199)); // Wait for album tree to settle
     this.closeAll(); // fold all nodes except 0
 
@@ -120,6 +117,7 @@ export class MenuMain extends Component {
     }
     this.hasHidden = anyHidden(); // if there are any hidden-without-allowance albums
     this.z.openAlbum(0); // Select the root album
+    this.z.closeMainMenu('after opening root album'); // Close the main menu
   }
 
   // The @tree argument for Tree component
@@ -163,6 +161,21 @@ export class MenuMain extends Component {
     this.z.loli('toggleAlbumTree ' + what);
   }
 
+  // Check if the alert dialog is open (then close it), or if no
+  // album root/collection (imdbRoot) is chosen (then open it)
+  checkRoot = () => {
+    if (document.getElementById('dialogAlert').hasAttribute('open')) {
+      this.z.closeDialog('dialogAlert');
+      return true;
+    }
+    if (!this.z.imdbRoot) {
+      // alertMess opens the alert dialog
+      this.z.alertMess(this.intl.t('needaroot'));
+      document.querySelector('.mainMenu select').focus();
+      return true;
+    }
+  }
+
   // Open enough nodes to make the selected album visible
   showSelected = async () => {
     let index = this.z.imdbDirIndex;
@@ -196,21 +209,6 @@ export class MenuMain extends Component {
     }
   }
 
-  // Check if the alert dialog is open (then close it), or if no
-  // album root/collection (imdbRoot) is chosen (then open it)
-  checkRoot = () => {
-    if (document.getElementById('dialogAlert').hasAttribute('open')) {
-      this.z.closeDialog('dialogAlert');
-      return true;
-    }
-    if (!this.z.imdbRoot) {
-      // alertMess opens the alert dialog
-      this.z.alertMess(this.intl.t('needaroot'));
-      document.querySelector('.mainMenu select').focus();
-      return true;
-    }
-  }
-
   // Count the number of images in this album
   totalImgNumber = () => {
     let a = this.z.totalNumber();
@@ -239,7 +237,7 @@ export class MenuMain extends Component {
             {{/each}}
           </select>
 
-          <a class="rootQuest">&nbsp;?&nbsp;</a>
+          <a class="rootQuest" title-2={{t 'albumSelectInfo'}}>&nbsp;?&nbsp;</a>
         </a>
       </p><br>
 
@@ -252,6 +250,7 @@ export class MenuMain extends Component {
         <a {{on "click" (fn this.toggleAlbumTree)}}>{{t 'albumcoll'}} ”{{this.z.imdbRoot}}”</a>
       </p>
 
+
       <div class="albumTree" style="display:none">
         <span style="display:flex;justify-content:space-between">
           <span style="margin:0.2rem;padding:0.1rem 0.2rem;float:right" title=""><em>{{t 'totalImgNumber'}}</em>:&nbsp;{{this.totalImgNumber}}</span>
@@ -261,11 +260,10 @@ export class MenuMain extends Component {
 
             <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title={{t 'openallalb'}} {{on "click" (fn this.openAll)}}>{{t 'all'}} {{OP}}</a>
 
-            {{!-- <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title={{t 'closeallalb'}} {{on "click" (fn this.closeAll)}}>{{t 'button.close'}}</a> --}}
-
             <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title={{t 'showselectedtext'}} {{on "click" (fn this.showSelected)}}>{{t 'showselected'}}</a>
           </span>
         </span>
+
 
         <Tree @tree={{this.tree}} />
         {{#if this.z.imdbRoot}}
@@ -335,7 +333,7 @@ class Tree extends Component {
         <span style="font-size:77%;vertical-align:top;line-height:1.1rem">
           {{node.index}}&nbsp;&nbsp;
         </span>
-        <span class="album a{{node.index}}" style="cursor:pointer" {{on "click" (fn this.z.openAlbum node.index)}}>{{node.name}}</span>
+        <span class="album a{{node.index}}" style="cursor:pointer" {{on "click" (fn this.z.openAlbum node.index)}}{{on "click" (fn this.z.closeMainMenu 'after selection in the album tree')}}>{{node.name}}</span>
         <span style="font-size:77%;vertical-align:top">
           &nbsp;&nbsp;{{node.coco}}
         </span>

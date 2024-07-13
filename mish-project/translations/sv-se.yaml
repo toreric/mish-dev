@@ -40,7 +40,7 @@ textEdit:     redigera/spara bildtexter, gömda album³
 
 all: Alla
 dark: Mörk
-#NOTE: Choose a guest: value which exists in the _imdb_settings.sqlite 'user' table!
+#NOTE: Choose a guest:<value> which exists in the _imdb_settings.sqlite 'user' table!
 #      Else use instead the standard name guest!
 guest: gäst
 has: har
@@ -53,6 +53,17 @@ subalbum:  underalbum
 subalbums: underalbum
 with: med
 
+albumSelectInfo: "Välj här en album-
+                 samling om den inte
+                 redan är förvald.
+                 Det kan finnas fler
+                 än ett alternativ.
+                 Ingångsalbumet till en
+                 albumsamling kallas också
+                 ”albumroten”, som sedan
+                 förgrenar sig nedåt.
+                 – Tips vid problem:
+                 Ladda om webbläsaren!"
 button:
   backgtitle: Byt bakgrund
   close:     Stäng
