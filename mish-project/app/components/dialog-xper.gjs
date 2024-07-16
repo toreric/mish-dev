@@ -7,38 +7,88 @@ import { action } from '@ember/object';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
+import SortableObjects from 'ember-drag-drop/components/sortable-objects';
+import DraggableObject from 'ember-drag-drop/components/draggable-object';
+import { A } from '@ember/array';
 
 export const dialogXperId = "dialogXper";
+
+
+class SortExample extends Component {
+  sortFinishText = null;
+  sortableObjectList = A([
+    {id: 1, title:'Number 1'},
+    {id: 2, title:'Number 2'},
+    {id: 3, title:'Number 3'},
+    {id: 4, title:'Number 4'},
+    {id: 5, title:'Number 5'},
+    {id: 6, title:'Number 6'},
+    {id: 7, title:'Number 7'},
+    {id: 8, title:'Number 8'},
+    {id: 9, title:'Number 9'},
+    {id: 10, title:'Number 10'},
+    {id: 11, title:'Number 11'},
+    {id: 12, title:'Number 12'}
+  ])
+
+  @action
+  sortEndAction() {
+    console.log('Sort Ended', this.sortableObjectList);
+  }
+
+  <template>
+    <div class="u-halfBlock u-pullLeft">
+      <p>
+        Drag any box to another position and drop to re-sort the list
+      </p>
+      <div class="u-pullLeft">
+        <SortableObjects
+          @sortableObjectList={{this.sortableObjectList}}
+          @sortEndAction={{fn this.sortEndAction}}
+          @sortingScope="a"
+          @useSwap={{false}}
+        >
+          {{#each this.sortableObjectList as |item|}}
+            <DraggableObject
+              @content={{item}}
+              @overrideClass="img_mini"
+              @isSortable={{true}}
+              @sortingScope="a"
+            >
+              {{item.title}}
+            </DraggableObject>
+          {{/each}}
+        </SortableObjects>
+      </div>
+      <div class="u-pullLeft u-marginLeft">
+        <h3>
+          Order of objects is:
+        </h3>
+        <ul>
+          {{#each this.sortableObjectList as |item|}}
+            <li>
+              id:
+              {{item.id}}
+              , title:
+              {{item.title}}
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+  </template>
+}
 
 export class DialogXper extends Component {
   @service('common-storage') z;
   @service intl;
 
+// @tracked items = ['America', 'Asia', 'Europe'];
+
   // get tree() {
   //   // this.z.loli(JSON.stringify(this.z.imdbTree, null, 2));
   //   return this.args.tree ?? this.z.imdbTree;
   // }
-
-  // Detect enter key in input field
-  detectOpenEnter = (e) => {
-    if (e.keyCode === 13) { // Enter key
-      let etv = e.target.value;
-      if (!etv || Number(etv) > this.aMax) return;
-      if (!this.z.imdbRoot) {
-        this.z.alertMess(this.intl.t('needaroot'));
-        document.activeElement.blur();
-        e.target.style.zIndex = 999;
-        this.z.openMainMenu();
-        document.getElementById('rootSel').focus();
-        return;
-      }
-      this.z.openAlbum(etv);
-      this.z.openMainMenu();
-      // This below may finally be removed
-      document.querySelector('.albumTree').style.display = '';
-      // document.querySelector('.mainMenu select').blur();
-    }
-  }
 
   // Detect closing Esc key
   detectEscClose = (e) => {
@@ -47,29 +97,21 @@ export class DialogXper extends Component {
     }
   }
 
-  // Max index of albums
-  get aMax() {
-    let i = this.z.imdbDirs.length;
-    if (i > 0) return i - 1;
-    return 0;
-  }
-
-  <template><dialog id="dialogXper" {{on 'keydown' this.detectEscClose}}>
-    <header data-dialog-draggable>
-      <div style="width:99%">
-        <p>Experimental dialog<span></span></p>
-      </div><div>
-        <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogXperId)}}>×</button>
-      </div>
-    </header>
-    <main>
-      <p>Mish experimental dialog Mish experimental dialog</p>
-      Open album number
-      <input type="number" pattern="[0-9]+" min="0" max={{this.aMax}} style="width:3rem" required autofocus {{on 'keydown' this.detectOpenEnter}}>
-      <br><br>
-    </main>
-    <footer data-dialog-draggable>
-      <button type="button" {{on 'click' (fn this.z.closeDialog dialogXperId)}}>{{t 'button.close'}}</button>&nbsp;
-    </footer>
-  </dialog></template>
+  <template>
+    <dialog id="dialogXper" {{on 'keydown' this.detectEscClose}}>
+      <header data-dialog-draggable>
+        <div style="width:99%">
+          <p>Experimental dialog<span></span></p>
+        </div><div>
+          <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogXperId)}}>×</button>
+        </div>
+      </header>
+      <main>
+<SortExample />
+      </main>
+      <footer data-dialog-draggable>
+        <button type="button" {{on 'click' (fn this.z.closeDialog dialogXperId)}}>{{t 'button.close'}}</button>&nbsp;
+      </footer>
+    </dialog>
+  </template>
 }

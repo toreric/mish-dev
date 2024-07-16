@@ -413,7 +413,6 @@ export default class CommonStorageService extends Service {
   }
 
   toggleDialog = (dialogId, origPos) => {
-    this.loli(dialogId);
     let diaObj = document.getElementById(dialogId);
     let what = 'closed ';
     if (diaObj.hasAttribute("open")) {
