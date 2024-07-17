@@ -25,8 +25,8 @@ export default class CommonStorageService extends Service {
                 return '';
               }
             }
-  @tracked  imdbDirs = '';          //available album directories at imdbRoot
-  @tracked  imdbLabels = '';        //thumbnail labels for imdbDirs
+  @tracked  imdbDirs = [''];        //available album directories at imdbRoot
+  @tracked  imdbLabels = [''];      //thumbnail labels for imdbDirs (paths)
   @tracked  imdbPath = '';          //userDir+imdbRoot = absolut path to album root
   @tracked  imdbRoot = '';          //chosen album root directory (collection)
         get imdbRootsPrep() { return `${this.intl.t('reloadApp')}`; } // advice!

@@ -52,8 +52,8 @@ export class DialogLogin extends Component {
         this.z.imdbCoco = '';
         this.z.imdbDir = '';
         this.z.imdbDirIndex = 0;
-        this.z.imdbDirs = '';
-        this.z.imdbLabels = '';
+        this.z.imdbDirs = [''];
+        this.z.imdbLabels = [''];
         this.z.imdbPath = '';
         this.z.imdbRoot = '';
         this.z.imdbTree = null;

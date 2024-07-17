@@ -106,7 +106,7 @@ export default class extends Welcome {
       <h1 style="margin:0 4rem 0 0;display:inline">{{t "header"}}</h1>
       <span>
 
-        <button type="button" title="Xperimental" {{on 'click' (fn this.z.toggleDialog dialogXperId)}}>&nbsp;</button>
+        <button type="button" title="Xperimental" style="background:blueviolet" {{on 'click' (fn this.z.toggleDialog dialogXperId)}}>&nbsp;</button>
 
         <button type="button" title={{t 'button.backgtitle'}} {{on 'click' (fn this.z.toggleBackg)}}>{{t 'dark'}}/{{t 'light'}}</button>
 

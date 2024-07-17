@@ -3,7 +3,7 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import { action } from '@ember/object';
+// import { action } from '@ember/object';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
@@ -15,6 +15,9 @@ export const dialogXperId = "dialogXper";
 
 
 class SortExample extends Component {
+  @service('common-storage') z;
+  @service intl;
+
   sortFinishText = null;
   sortableObjectList = A([
     {id: 1, title:'Number 1'},
@@ -29,18 +32,27 @@ class SortExample extends Component {
     {id: 10, title:'Number 10'},
     {id: 11, title:'Number 11'},
     {id: 12, title:'Number 12'}
-  ])
+  ]);
 
-  @action
-  sortEndAction() {
+  get imdbLabels()  {
+    return this.z.imdbLabels.join('<br>');
+  }
+  // imdbLabels = () => {
+  //     return this.z.imdbLabels.join('<br>');
+  // }
+
+  // @action
+  sortEndAction = () => {
     console.log('Sort Ended', this.sortableObjectList);
+    console.log(this.z.imdbLabels);
   }
 
   <template>
     <div class="u-halfBlock u-pullLeft">
       <p>
-        Drag any box to another position and drop to re-sort the list
+        Drag to another position and drop to reorder
       </p>
+          {{{this.imdbLabels}}}
       <div class="u-pullLeft">
         <SortableObjects
           @sortableObjectList={{this.sortableObjectList}}
@@ -55,25 +67,10 @@ class SortExample extends Component {
               @isSortable={{true}}
               @sortingScope="a"
             >
-              {{item.title}}
+              {{item.title}} ({{item.id}})
             </DraggableObject>
           {{/each}}
         </SortableObjects>
-      </div>
-      <div class="u-pullLeft u-marginLeft">
-        <h3>
-          Order of objects is:
-        </h3>
-        <ul>
-          {{#each this.sortableObjectList as |item|}}
-            <li>
-              id:
-              {{item.id}}
-              , title:
-              {{item.title}}
-            </li>
-          {{/each}}
-        </ul>
       </div>
     </div>
   </template>
@@ -102,12 +99,13 @@ export class DialogXper extends Component {
       <header data-dialog-draggable>
         <div style="width:99%">
           <p>Experimental dialog<span></span></p>
-        </div><div>
+        </div>
+        <div>
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogXperId)}}>×</button>
         </div>
       </header>
       <main>
-<SortExample />
+        <SortExample />
       </main>
       <footer data-dialog-draggable>
         <button type="button" {{on 'click' (fn this.z.closeDialog dialogXperId)}}>{{t 'button.close'}}</button>&nbsp;
