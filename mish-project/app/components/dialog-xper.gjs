@@ -33,18 +33,33 @@ class SortExample extends Component {
     {id: 11, title:'Number 11'},
     {id: 12, title:'Number 12'}
   ]);
+  inix = A([{id:0, path: 'ROOT'}]);
 
-  get imdbLabels()  {
+  // get imdbLabels()  {
+  //   return this.z.imdbLabels.join('<br>');
+  // } // Equally good as the function below  ?
+  imdbLabels = () => {
+    // Populate the image-informatiom index array 'inix'
+    let n = 0;
+    let m = this.z.imdbLabels.length;
+    for (let i=1;i<m;i++) {
+      let p = this.z.imdbLabels[i];
+      if (p.length > 0) {
+        this.z.loli(i + ' ' + n + ' ' + p);
+        this.inix.pushObject({id: i, path: p});
+        n++;
+      }
+    }
+    this.z.loli(JSON.stringify(this.inix, null, '  ')); // Checked!
+    // this.z.loli(JSON.stringify(this.sortableObjectList, null, '  ')); // Checked!
+    // await new Promise (z => setTimeout (z, 666));
     return this.z.imdbLabels.join('<br>');
-  }
-  // imdbLabels = () => {
-  //     return this.z.imdbLabels.join('<br>');
-  // }
+  } // Doesn't need the fn helper within {{{}}}, why?
 
   // @action
   sortEndAction = () => {
-    console.log('Sort Ended', this.sortableObjectList);
-    console.log(this.z.imdbLabels);
+    // console.log('Sort Ended', this.sortableObjectList);
+    console.log('Sort Ended', this.inix);
   }
 
   <template>
@@ -55,19 +70,22 @@ class SortExample extends Component {
           {{{this.imdbLabels}}}
       <div class="u-pullLeft">
         <SortableObjects
-          @sortableObjectList={{this.sortableObjectList}}
+          {{!-- @sortableObjectList={{this.sortableObjectList}} --}}
+          @sortableObjectList={{this.inix}}
           @sortEndAction={{fn this.sortEndAction}}
           @sortingScope="a"
           @useSwap={{false}}
         >
-          {{#each this.sortableObjectList as |item|}}
+          {{!-- {{#each this.sortableObjectList as |item|}} --}}
+          {{#each this.inix as |item|}}
             <DraggableObject
               @content={{item}}
               @overrideClass="img_mini"
               @isSortable={{true}}
               @sortingScope="a"
             >
-              {{item.title}} ({{item.id}})
+              {{!-- {{item.title}} ({{item.id}}) --}}
+              ({{item.id}}) {{item.path}}<br>
             </DraggableObject>
           {{/each}}
         </SortableObjects>
