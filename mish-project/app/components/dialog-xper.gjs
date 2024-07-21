@@ -3,13 +3,14 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-// import { action } from '@ember/object';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 import SortableObjects from 'ember-drag-drop/components/sortable-objects';
 import DraggableObject from 'ember-drag-drop/components/draggable-object';
 import { A } from '@ember/array';
+import sortableGroup from 'ember-sortable/modifiers/sortable-group';
+import sortableItem from 'ember-sortable/modifiers/sortable-item';
 
 export const dialogXperId = "dialogXper";
 
@@ -18,92 +19,62 @@ class SortExample extends Component {
   @service('common-storage') z;
   @service intl;
 
-  sortFinishText = null;
-  sortableObjectList = A([
-    {id: 1, title:'Number 1'},
-    {id: 2, title:'Number 2'},
-    {id: 3, title:'Number 3'},
-    {id: 4, title:'Number 4'},
-    {id: 5, title:'Number 5'},
-    {id: 6, title:'Number 6'},
-    {id: 7, title:'Number 7'},
-    {id: 8, title:'Number 8'},
-    {id: 9, title:'Number 9'},
-    {id: 10, title:'Number 10'},
-    {id: 11, title:'Number 11'},
-    {id: 12, title:'Number 12'}
-  ]);
-  inix = A([{id:0, path: 'ROOT'}]);
+  @tracked lastDragged;
+  @tracked items = [];
 
-  // get imdbLabels()  {
-  //   return this.z.imdbLabels.join('<br>');
-  // } // Equally good as the function below  ?
   imdbLabels = () => {
-    // Populate the image-informatiom index array 'inix'
-    let n = 0;
+    // Populate the image-informatiom array 'items'
+    this.items = [];
     let m = this.z.imdbLabels.length;
     for (let i=1;i<m;i++) {
       let p = this.z.imdbLabels[i];
       if (p.length > 0) {
-        this.z.loli(i + ' ' + n + ' ' + p);
-        this.inix.pushObject({id: i, path: p});
-        n++;
+        // this.z.loli(i + ' ' + p);
+        this.items.push({id: i, path: p});
       }
     }
-    this.z.loli(JSON.stringify(this.inix, null, '  ')); // Checked!
-    // this.z.loli(JSON.stringify(this.sortableObjectList, null, '  ')); // Checked!
+    this.z.loli(JSON.stringify(this.items, null, '  ')); // Checked!
     // await new Promise (z => setTimeout (z, 666));
-    return this.z.imdbLabels.join('<br>');
-  } // Doesn't need the fn helper within {{{}}}, why?
+    let tmp = this.z.imdbLabels.join('<br>');
+    return tmp.slice(0, 0); // hide
+  } // Doesn't need the fn helper within {{{}}} in the template, why?
 
-  // @action
-  sortEndAction = () => {
-    // console.log('Sort Ended', this.sortableObjectList);
-    console.log('Sort Ended', this.inix);
+ reorderItems = (itemModels, draggedModel) => {
+    this.items = itemModels;
+    this.lastDragged = draggedModel;
   }
 
   <template>
-    <div class="u-halfBlock u-pullLeft">
-      <p>
-        Drag to another position and drop to reorder
-      </p>
-          {{{this.imdbLabels}}}
-      <div class="u-pullLeft">
-        <SortableObjects
-          {{!-- @sortableObjectList={{this.sortableObjectList}} --}}
-          @sortableObjectList={{this.inix}}
-          @sortEndAction={{fn this.sortEndAction}}
-          @sortingScope="a"
-          @useSwap={{false}}
-        >
-          {{!-- {{#each this.sortableObjectList as |item|}} --}}
-          {{#each this.inix as |item|}}
-            <DraggableObject
-              @content={{item}}
-              @overrideClass="img_mini"
-              @isSortable={{true}}
-              @sortingScope="a"
-            >
-              {{!-- {{item.title}} ({{item.id}}) --}}
-              ({{item.id}}) {{item.path}}<br>
-            </DraggableObject>
-          {{/each}}
-        </SortableObjects>
-      </div>
+
+    <p>
+      {{#if this.z.imdbRoot}}
+      Drag to another position and drop to reorder
+      {{else}}
+      Please select an album collection!
+      {{/if }}
+    </p>
+    <span style="display:">
+        {{{this.imdbLabels}}} {{!-- MAKES items! --}}
+    </span>
+
+    <div class="alb_mini" {{sortableGroup onChange=this.reorderItems}}>
+      {{#each this.items as |item|}}
+        <div class="img_mini" {{sortableItem model=item}}>
+          {{!-- {{item}} --}}
+          <img src="{{item.path}}" class="left-click" title="" draggable="false" ondragstart="return false">
+          {{!-- <span class='handle' {{sortable-handle}}>&varr;</span> --}}
+        </div>
+      {{/each}}
     </div>
+
+    <p>The last dragged item: {{this.lastDragged.path}}</p>
+
   </template>
 }
 
 export class DialogXper extends Component {
   @service('common-storage') z;
   @service intl;
-
-// @tracked items = ['America', 'Asia', 'Europe'];
-
-  // get tree() {
-  //   // this.z.loli(JSON.stringify(this.z.imdbTree, null, 2));
-  //   return this.args.tree ?? this.z.imdbTree;
-  // }
 
   // Detect closing Esc key
   detectEscClose = (e) => {
