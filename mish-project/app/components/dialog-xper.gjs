@@ -6,11 +6,12 @@ import { inject as service } from '@ember/service';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
-import SortableObjects from 'ember-drag-drop/components/sortable-objects';
-import DraggableObject from 'ember-drag-drop/components/draggable-object';
-import { A } from '@ember/array';
+// import SortableObjects from 'ember-drag-drop/components/sortable-objects';
+// import DraggableObject from 'ember-drag-drop/components/draggable-object';
+// import { A } from '@ember/array';
 import sortableGroup from 'ember-sortable/modifiers/sortable-group';
 import sortableItem from 'ember-sortable/modifiers/sortable-item';
+// import sortableHandle from 'ember-sortable/modifiers/sortable-handle';
 
 export const dialogXperId = "dialogXper";
 
@@ -44,6 +45,21 @@ class SortExample extends Component {
     this.lastDragged = draggedModel;
   }
 
+  handleVisualClass = {
+    UP: 'sortable-handle-up',
+    DOWN: 'sortable-handle-down',
+    LEFT: 'sortable-handle-left',
+    RIGHT: 'sortable-handle-right',
+  };
+
+  itemVisualClass = 'sortable-item--active';
+
+  // @action
+  // update(newOrder, draggedModel) {
+  //   set(this, 'model.items', newOrder);
+  //   set(this, 'model.dragged', draggedModel);
+  // }
+
   <template>
 
     <p>
@@ -57,17 +73,50 @@ class SortExample extends Component {
         {{{this.imdbLabels}}} {{!-- MAKES items! --}}
     </span>
 
-    <div class="alb_mini" {{sortableGroup onChange=this.reorderItems}}>
+    <ol class="alb_mini" style="display:flex;flex-wrap:wrap;padding:0;
+      align-items:baseline;justify-content:center;"
+      {{sortableGroup
+        direction='x'
+        onChange=this.reorderItems
+        itemVisualClass=this.itemVisualClass
+        handleVisualClass=this.handleVisualClass
+      }}
+    >
       {{#each this.items as |item|}}
-        <div class="img_mini" {{sortableItem model=item}}>
-          {{!-- {{item}} --}}
+        <li class="img_mini"
+          {{sortableItem
+            model=item
+            spacing=15
+            distance=5
+          }}
+        >
           <img src="{{item.path}}" class="left-click" title="" draggable="false" ondragstart="return false">
-          {{!-- <span class='handle' {{sortable-handle}}>&varr;</span> --}}
-        </div>
+          {{!-- <span class='handle' {{sortableHandle}}>&varr;</span> --}}
+        </li>
       {{/each}}
-    </div>
+    </ol>
 
     <p>The last dragged item: {{this.lastDragged.path}}</p>
+
+    {{!-- <section class='horizontal-demo'>
+      <h3>Horizontal</h3>
+      <ol
+        data-test-horizontal-demo-group
+        {{sortable-group
+          direction='x'
+          onChange=this.update
+          itemVisualClass=this.itemVisualClass
+          handleVisualClass=this.handleVisualClass
+          groupName='horizontal'
+        }}
+      >
+        {{#each @model.items as |item|}}
+          <li data-test-horizontal-demo-handle tabindex={{'0'}} {{sortable-item model=item groupName='horizontal'}}>
+            <ItemPresenter @item={{item}} />
+          </li>
+        {{/each}}
+      </ol>
+    </section> --}}
 
   </template>
 }
