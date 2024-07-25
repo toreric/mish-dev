@@ -3,6 +3,7 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
+import { eq, notEq } from 'ember-truth-helpers';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
@@ -12,9 +13,11 @@ import t from 'ember-intl/helpers/t';
 import sortableGroup from 'ember-sortable/modifiers/sortable-group';
 import sortableItem from 'ember-sortable/modifiers/sortable-item';
 // import sortableHandle from 'ember-sortable/modifiers/sortable-handle';
+// import { set, action } from '@ember/object';
 
 export const dialogXperId = "dialogXper";
 
+// var saveRoot = 'vepjf8';
 
 class SortExample extends Component {
   @service('common-storage') z;
@@ -24,23 +27,29 @@ class SortExample extends Component {
   @tracked items = [];
 
   imdbLabels = () => {
+    if (!this.z.imdbRoot) return;
     // Populate the image-informatiom array 'items'
     this.items = [];
     let m = this.z.imdbLabels.length;
+    let ix = 0;
     for (let i=1;i<m;i++) {
       let p = this.z.imdbLabels[i];
       if (p.length > 0) {
+        let na = p.replace(/(\/.*)*\/([^/]*)\..*$/g, '$2');
+        let pic = '<img src="' + p + '" class="left-click" title="" draggable="false" ondragstart="return false">'
         // this.z.loli(i + ' ' + p);
-        this.items.push({id: i, path: p});
+        this.items.push({index: ix, name: na, path: p, img: pic});
+        ix++;
       }
     }
     this.z.loli(JSON.stringify(this.items, null, '  ')); // Checked!
     // await new Promise (z => setTimeout (z, 666));
     let tmp = this.z.imdbLabels.join('<br>');
-    return tmp.slice(0, 0); // hide
+    return tmp;
+    //      return tmp.slice(0, 0); // hide
   } // Doesn't need the fn helper within {{{}}} in the template, why?
 
- reorderItems = (itemModels, draggedModel) => {
+  reorderItems = (itemModels, draggedModel) => {
     this.items = itemModels;
     this.lastDragged = draggedModel;
   }
@@ -54,69 +63,44 @@ class SortExample extends Component {
 
   itemVisualClass = 'sortable-item--active';
 
-  // @action
-  // update(newOrder, draggedModel) {
-  //   set(this, 'model.items', newOrder);
-  //   set(this, 'model.dragged', draggedModel);
-  // }
-
   <template>
 
     <p>
       {{#if this.z.imdbRoot}}
-      Drag to another position and drop to reorder
+        Press to (re)load images for
+        <button type="button" {{on 'click' this.imdbLabels}}>{{this.z.imdbRoot}}</button>
       {{else}}
-      Please select an album collection!
+        Please select an album collection!
       {{/if }}
     </p>
-    <span style="display:">
-        {{{this.imdbLabels}}} {{!-- MAKES items! --}}
-    </span>
 
-    <ol class="alb_mini" style="display:flex;flex-wrap:wrap;padding:0;
-      align-items:baseline;justify-content:center;"
+    <div class="alb_mini" style="display:flex;flex-wrap:wrap;padding:0;
+      align-items:normal;justify-content:center;"
       {{sortableGroup
-        direction='x'
+        direction='grid'
         onChange=this.reorderItems
         itemVisualClass=this.itemVisualClass
         handleVisualClass=this.handleVisualClass
       }}
     >
       {{#each this.items as |item|}}
-        <li class="img_mini"
+        <div class="img_mini"
           {{sortableItem
             model=item
-            spacing=15
+            spacing=0
             distance=5
           }}
         >
-          <img src="{{item.path}}" class="left-click" title="" draggable="false" ondragstart="return false">
+          {{{item.img}}}<br>
+          <div class="img_name">
+            {{item.name}}
+          </div>
           {{!-- <span class='handle' {{sortableHandle}}>&varr;</span> --}}
-        </li>
+        </div>
       {{/each}}
-    </ol>
+    </div>
 
     <p>The last dragged item: {{this.lastDragged.path}}</p>
-
-    {{!-- <section class='horizontal-demo'>
-      <h3>Horizontal</h3>
-      <ol
-        data-test-horizontal-demo-group
-        {{sortable-group
-          direction='x'
-          onChange=this.update
-          itemVisualClass=this.itemVisualClass
-          handleVisualClass=this.handleVisualClass
-          groupName='horizontal'
-        }}
-      >
-        {{#each @model.items as |item|}}
-          <li data-test-horizontal-demo-handle tabindex={{'0'}} {{sortable-item model=item groupName='horizontal'}}>
-            <ItemPresenter @item={{item}} />
-          </li>
-        {{/each}}
-      </ol>
-    </section> --}}
 
   </template>
 }

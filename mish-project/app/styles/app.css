@@ -1258,6 +1258,7 @@ The jquery ui-tooltip is used elsewere (totip in *.js) */
 }
 /* ##### Image size is also controlled at Imagemagick resizing in routes.js */
 .img_mini {
+  background: #3b3b3b;
   display: inline-block;
   position: relative;
   justify-content: center;
@@ -1307,14 +1308,14 @@ The jquery ui-tooltip is used elsewere (totip in *.js) */
   background: transparent;
 }
 .img_mini .img_name {
-  display: none;
   font-size: 84%;
   white-space: nowrap;
   color: #fd0;
   text-align: left;
   cursor: default;
-  z-index: 2;
-}
+  margin: -1rem 0 0 0;
+  width: max-content;
+  }
 .img_mini .img_name:hover {
   color: #d80;
   background-color: #434;
