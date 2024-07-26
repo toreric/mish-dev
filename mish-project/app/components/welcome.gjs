@@ -141,8 +141,8 @@ export default class extends Welcome {
     </div>
     <Header />
     <ViewMain />
-    <MenuMain />
     <ButtonsLeft />
+    <MenuMain />
     <DialogLogin />
     <DialogText />
     <DialogHelp />

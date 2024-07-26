@@ -1159,8 +1159,13 @@ a.imDir:hover img {
 a.imDir:hover span {
   color: #fff;
 }
-/* CSS tooltip title-1 for long one-liners.
-The jquery ui-tooltip is used elsewere (totip in *.js) */
+/* *** for missing img:s (btw. 'title' cannot be altered like this )*/
+[alt] {
+  font-weight: normal;
+  font-size: 80%;
+  color: #777;
+}
+/* *** CSS tooltip title-1 for long one-liners */
 *[title-1] {
   position: relative;
 }
@@ -1184,11 +1189,7 @@ The jquery ui-tooltip is used elsewere (totip in *.js) */
   white-space: nowrap;
   z-index: 2;
 }
-[alt] {
-  font-weight: normal;
-  font-size: 80%;
-  color: #777;
-}
+/* *** CSS tooltip title-2 for multiliners */
 [title-2] {
   position: relative;
 }
@@ -1197,13 +1198,14 @@ The jquery ui-tooltip is used elsewere (totip in *.js) */
   content: attr(title-2);
   position: absolute;
   left: 0;
-  top: 16px;
+  top: 102%;
   text-align: left;
   border: 0.5px #888 solid;
   border-radius: 3px;
   background-color: #cef;
   padding: 1.5px 2px 3px 5px;
   color: #000;
+  font-family: Georgia, "Times New Roman", Times, serif !important;
   font-weight: normal;
   font-size: 0.95rem;
   line-height: 1rem;

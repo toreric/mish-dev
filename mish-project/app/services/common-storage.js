@@ -16,7 +16,7 @@ export default class CommonStorageService extends Service {
   @tracked  freeUsers = 'guest...'; //user names without passwords (set by DialogLogin)
   @tracked  imdbCoco = '';          //content counters etc. for imdbDirs (*)
   @tracked  albumHistory = [0];     //album index visit history
-  @tracked  imdbDir = '';           //actual/current (sub)album directory
+  @tracked  imdbDir = '';           //actual/current (sub)album directory (sever IMDB_DIR)
   @tracked  imdbDirIndex = 0;       //actual/current (sub)album directory index
         get imdbDirName() {
               if (this.imdbDir) {
