@@ -1160,7 +1160,7 @@ a.imDir:hover span {
   color: #fff;
 }
 /* *** for missing img:s (btw. 'title' cannot be altered like this )*/
-[alt] {
+img[alt] {
   font-weight: normal;
   font-size: 80%;
   color: #777;
@@ -1321,6 +1321,7 @@ a.imDir:hover span {
 .img_mini .img_name:hover {
   color: #d80;
   background-color: #434;
+  width: max-content;
 }
 .js-draggableObject.show-inline.ember-view:hover {
   position: relative;
@@ -1430,7 +1431,20 @@ img.mark {
 .markTrue {
   position: absolute;
   width: 20px;
-  height: 20px;
+  height: aning, and legal terms of use at the bottom
+
+  You are now logged in as gast with [guest]-rights. The current rights are shown next to the number column:
+
+  admin edit editall editext guest setter viewer
+  ──────────────────────────────────────────────                Allowed to
+      x     .     .     .     .     .     .     . 1 = adminAll:     do anything
+      .     .     x     .     .     .     .     . 2 = albumEdit:    make/erase albums
+      .     .     .     .     .     .     .     . 3 = appendixEdit: (edit appendices +4)¹
+      .     .     .     .     .     .     .     . 4 = appendixView: (view appendices)¹
+      .     x     .     .     .     .     .     . 5 = delcreLink:   move to another album, make/erase links
+      .     .     x     .     .     .     .     . 6 = deleteImg:    erase images +5
+      .     .     .     .     .     .     .     . 7 = imgEdit:      (edit images)¹
+      .     x     x     x     x     .     .     x 8 = 20px;
   border: 0;
   top: 0px;
   right: 0px;

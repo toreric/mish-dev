@@ -27,6 +27,8 @@ import { dialogXperId } from './dialog-xper';
 
 const returnValue = cell(''); // Never used?
 const LF = '\n';
+const CRLF = '&#13;&#10;'; // May be used in 'title': the only mod.possible!
+
 makeDialogDraggable();
 
 // Detect closing click outside menuMain (tricky case!)

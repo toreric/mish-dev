@@ -9,6 +9,9 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
+import sortableGroup from 'ember-sortable/modifiers/sortable-group';
+import sortableItem from 'ember-sortable/modifiers/sortable-item';
+
 import { dialogAlertId } from './dialog-alert';
 // import EmberTooltip from './ember-tooltip';
 
@@ -26,111 +29,6 @@ export class ViewMain extends Component {
       <MiniImages />
     </div>
   </template>
-
-}
-
-class MiniImages extends Component {
-  @service('common-storage') z;
-  @service intl;
-
-//   requestNames () { // ===== Request the file information list
-//     // NEPF = number of entries (lines) per file in the plain text-line-result list ('namedata')
-//     // from the server. The main information (e.g. metadata) is retreived from each image file.
-//     // It is reordered into 'newdata' in 'sortnames' order, as far as possible;
-//     // 'sortnames' is cleaned from non-existent (removed) files and extended with new (added)
-//     // files, in order as is. So far, the sort order is 'sortnames' with hideFlag (and albumIndex?)
-//     var that = this;
-//     return new Promise ( (resolve, reject) => {
-//       var IMDB_DIR =  $ ('#imdbDir').text ();
-//       if (!IMDB_DIR) {IMDB_DIR = "/";} // Avoids empty parameter
-//       IMDB_DIR = IMDB_DIR.replace (/\//g, "@"); // For sub-directories
-//       var xhr = new XMLHttpRequest ();
-// //console.log("requestNames:IMBD_DIR",IMDB_DIR);
-//       xhr.open ('GET', 'imagelist/' + IMDB_DIR, true, null, null); // URL matches server-side routes.js
-//       setReqHdr (xhr, 2);
-//       var allfiles = [];
-//       xhr.onload = function () {
-//         if (this.status >= 200 && this.status < 300) {
-//           var Fobj = EmberObject.extend ({
-//             orig: '',  // for orig-file path (...jpg|tif|png|...)
-//             show: '',  // for show-file path (_show_...png)
-//             mini: '',  // for mini-file path (_mini_...png)
-//             name: '',  // Orig-file base name without extension
-//             txt1: 'description', // for metadata
-//             txt2: 'creator',     // for metadata
-//             symlink: ' ',        // SPACE, else the value for linkto
-//             linkto: '',          //   which is set in refreshAll
-//             albname: ''          //   "
-//           });
-//           var NEPF = 7; // Number of properties in Fobj
-//           var result = xhr.response;
-//           result = result.trim ().split ('\n'); // result is vectorised
-//           var i = 0, j = 0;
-//           var n_files = result.length/NEPF;
-//           if (n_files < 1) { // Covers all weird outcomes
-//             result = [];
-//             n_files = 0;
-//             $ ('.showCount .numShown').text (' 0');
-//             $ ('.showCount .numHidden').text (' 0');
-//             $ ('.showCount .numMarked').text ('0');
-//             $ ("span.ifZero").hide ();
-//             $ ('#navKeys').text ('false'); // Protecs from unintended use of L/R arrows
-//           }
-//           for (i=0; i<n_files; i++) {
-//             if (result [j + 4]) {result [j + 4] = result [j + 4].replace (/&lt;br&gt;/g,"<br>");}
-//             var f = Fobj.create ({
-//               orig: result [j],
-//               show: result [j + 1],
-//               mini: result [j + 2],
-//               name: result [j + 3],
-//               txt1: htmlSafe (result [j + 4]),
-//               txt2: htmlSafe (result [j + 5]),
-//               symlink: result [j + 6],
-//             });
-//             if (f.txt1.toString () === "-") {f.txt1 = "";}
-//             if (f.txt2.toString () === "-") {f.txt2 = "";}
-//             j = j + NEPF;
-//             allfiles.pushObject (f);
-//           }
-//           later ( ( () => {
-//             $ (".showCount:first").show ();
-//             $ (".miniImgs").show ();
-//             if (n_files < 1) {
-//               $ ("#toggleName").hide ();
-//               $ ("#toggleHide").hide ();
-//             }
-//             else {
-//               $ ("#toggleName").show ();
-//               if (allow.adminAll || allow.imgHidden) $ ("#toggleHide").show ();
-//             }
-//             later ( ( () => {
-//               that.actions.setAllow (); // Fungerar hyfsat ...?
-//             }), 2000);
-//           }), 2000);
-//           //userLog ('INFO received');
-//           resolve (allfiles); // Return file-list object array
-//         } else {
-//           reject ({
-//             status: this.status,
-//             statusText: xhr.statusText
-//           });
-//         }
-//       };
-//       xhr.onerror = function () {
-//         reject ({
-//           status: this.status,
-//           statusText: xhr.statusText
-//         });
-//       };
-//       xhr.send ();
-//     })
-//     .then ()
-//     .catch (error => {
-//       console.error ("requestNames", error.message);
-//     });
-//   },
-
-
 
 }
 
@@ -170,6 +68,8 @@ class SubAlbums extends Component {
   imdbDirs = (i) => {
     return this.z.imdbDirs[i];
   }
+
+  // this.z.allNames = await this.z.requestNames();
 
   imdbLabels = (i) => {
     return this.z.imdbLabels[i];
@@ -212,4 +112,38 @@ class SubAlbums extends Component {
     </p>
   </template>
 
+}
+
+class MiniImages extends Component {
+  @service('common-storage') z;
+  @service intl;
+
+  <template>
+    <div class="miniImgs" style="display:flex;flex-wrap:wrap;padding:0;
+      align-items:normal;justify-content:center;"
+      {{sortableGroup
+        direction='grid'
+        onChange=this.reorderItems
+        itemVisualClass=this.itemVisualClass
+        handleVisualClass=this.handleVisualClass
+      }}
+    >
+      {{#each this.z.allNames as |item|}}
+        <div class="img_mini"
+          {{sortableItem
+            model=item
+            spacing=0
+            distance=5
+          }}
+        >
+        let pic = '<img src="' + p + '" class="left-click" title="" draggable="false" ondragstart="return false">'
+          <img src={{item.mini}} class="left-click" title="" draggable="false" ondragstart="return false"><br>
+          <div class="img_name">
+            {{item.name}}
+          </div>
+          {{!-- <span class='handle' {{sortableHandle}}>&varr;</span> --}}
+        </div>
+      {{/each}}
+    </div>
+  </template>
 }

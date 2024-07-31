@@ -26,6 +26,7 @@ module.exports = function(app) { // Start module.exports
   let picFound = '' // Name of special(temporary) search result album
   let toold = 60 // Max lifetime(min:s) after last access of a temporary search result album
   let show_imagedir = false // For debug data(base) directories
+  let allfiles = [] // For /imagelist use
 
   // ===== Make a synchronous shell command formally 'asynchronous'(cf. asynchronous execP)
   let cmdasync = async(cmd) => {return execSync(cmd)}
@@ -43,7 +44,7 @@ module.exports = function(app) { // Start module.exports
   
   const LF = '\n'
 
-  //#region = code regions, only for the editors's minilist!
+  //#region = code regions, only for the editors's minilist in the right margin!
   //#region start route
   // ##### R O U T I N G  E N T R I E S
   // Check 'Express route tester'!
@@ -56,16 +57,14 @@ module.exports = function(app) { // Start module.exports
         IMDB_DIR = decodeURIComponent( req.get('imdbdir') )
         IMDB = IMDB_HOME + '/' + IMDB_ROOT
         picFound = req.get('picfound')
-        // Remove all too old picFound(search result) catalogs, NOTE their added random <.01yz>
-        // let picFoundBaseName = picFound.replace(/\.[^.]{4}$/, '')
-        // let cmd = 'find -L ' + IMDB + ' -type d -name "' + picFoundBaseName + '*" -amin +' + toold + ' | xargs rm -rf'
+        // Remove too old picFound (search result tmp) catalogs (with added random .01yz)
         let cmd = 'find -L ' + IMDB + ' -type d -name "' + '§*" -amin +' + toold + ' | xargs rm -rf'
-        console.log(LF + cmd)
+        // console.log(LF + cmd)
         // await cmdasync(cmd) // ger direktare diagnos
         await execP(cmd)
       }
     }
-    console.log(LF + BGRE + decodeURIComponent(req.originalUrl) + RSET);
+    console.log(LF + BGRE + decodeURIComponent(req.originalUrl) + RSET)
     console.log('  WWW_ROOT:', WWW_ROOT)
     console.log(' IMDB_HOME:', IMDB_HOME)
     console.log('      IMDB:', IMDB)
@@ -126,7 +125,7 @@ module.exports = function(app) { // Start module.exports
         let al = rows[0].allow.length
         for (let i=0;i<al;i++) {
           for (let j=0;j<rows.length;j++) {
-            // allowances += '     ' +(rows[j].allow)[i].replace(/0/g, '⋅').replace(/1/g, '@') // overkill
+            // allowances += '     ' +(rows[j].allow)[i].replace)(/0/g, '⋅').replace(/1/g, '@') // overkill
             if (j) { var space = '     ' } else { space = '    ' }
             allowances += space +(rows[j].allow)[i].replace('0', '.').replace('1', 'x')
           }
@@ -217,7 +216,7 @@ module.exports = function(app) { // Start module.exports
           // one to be used as "subdirectory label"
           for (let i=0; i<dirlist.length; i++) {
 
-            cmd = "echo -n `find " + IMDB + dirlist[i] + " -maxdepth 1 -type l -name '_mini_*' | grep -c ''`";
+            cmd = "echo -n `find " + IMDB + dirlist[i] + " -maxdepth 1 -type l -name '_mini_*' | grep -c ''`"
             let nlinks =(await execP(cmd))/1 // Get no of linked images
             cmd = "echo -n `ls " + IMDB + dirlist[i] + "/_mini_* 2>/dev/null`"
             let pics = await execP(cmd) // Get all images
@@ -304,7 +303,12 @@ module.exports = function(app) { // Start module.exports
     allfiles = undefined
     //OLD: IMDB_DIR = req.params.imagedir.replace(/@/g, "/")
 
+    console.log('IMAGELIST')
+
     findFiles(IMDB_DIR).then(async function(files) {
+
+      console.log('files from FINDFILES:', files)
+
       if (!files) {files = []}
       var origlist = ''
       //files.forEach(function(file) { not recommended
@@ -415,7 +419,7 @@ module.exports = function(app) { // Start module.exports
   // ===== Remove from a directory path array each entry not pointing
   // to an album, which contains a file named '.imdb', and return
   // the remaining album directory list. NOTE: Both returns(*) are required!
-  let areAlbums = async(dirlist) => {
+  let areAlbums = async (dirlist) => {
     let fd, albums = []
     return Promise.mapSeries(dirlist, async(album) => { //(*) CAN use mapSeries here but don't understand why!?
       try {
@@ -442,8 +446,15 @@ module.exports = function(app) { // Start module.exports
 
   // ===== Read a directory's file content; when passing remove broken links
   function findFiles(dirName) {
+
+    console.log('FINDFILES')
+    console.log('rln' + IMDB + dirName)
+
     return fs.readdirAsync('rln' + IMDB + dirName).map(function(fileName) { // Cannot use mapSeries here(why?)
       var filepath = path.join(IMDB + dirName, fileName)
+
+      console.log('filepath:', filepath)
+
       var brli = brokenLink(filepath) // refers to server root
       if (brli) {
         rmPic(filepath) // may hopefully also work for removing any single file ...
@@ -451,7 +462,7 @@ module.exports = function(app) { // Start module.exports
       }
       return fs.statAsync('rln' + filepath).then(function(stat) {
         if (stat.mode & 0o100000) {
-          // See 'man 2 stat': S_IFREG bitmask for 'Regular file'
+          // See 'man 2 stat': S_IFREG bitmask for 'Regular file', and google more!
           return filepath
         } else {
           return path.join(path.dirname(filepath), ".ignore") // fake dotted file
@@ -470,13 +481,17 @@ module.exports = function(app) { // Start module.exports
 
   // ===== Make a package of orig, show, mini, and plain filenames, metadata, and symlink flag=origin
   async function pkgfilenames(origlist) {
+
+    console.log('PKGFILENAMES')
+    console.log('origlist:', origlist)
+
     if (origlist) {
       let files = origlist.split('\n')
       allfiles = ''
       for (let file of files) {
         execSync('pentaxdebug ' + file) // Pentax metadata bug fix is done here
         let pkg = await pkgonefile(file)
-        //console.log("pkg\n" + pkg);
+        //console.log("pkg\n" + pkg)
         allfiles += '\n' + pkg
       }
       console.log('Showfiles•minifiles•metadata...')
@@ -637,20 +652,20 @@ module.exports = function(app) { // Start module.exports
   function occurrences(string, subString, allowOverlapping) {
     string += "";
     subString += "";
-    if (subString.length <= 0) return(string.length + 1);
+    if (subString.length <= 0) return(string.length + 1)
 
     var n = 0,
       pos = 0,
       step = allowOverlapping ? 1 : subString.length;
 
     while(true) {
-      pos = string.indexOf(subString, pos);
+      pos = string.indexOf(subString, pos)
       if (pos >= 0) {
         ++n;
         pos += step;
       } else break;
     }
-  //console.log(subString, n);
+  //console.log(subString, n)
     return n;
   }
 

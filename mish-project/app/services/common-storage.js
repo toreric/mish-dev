@@ -16,11 +16,11 @@ export default class CommonStorageService extends Service {
   @tracked  freeUsers = 'guest...'; //user names without passwords (set by DialogLogin)
   @tracked  imdbCoco = '';          //content counters etc. for imdbDirs (*)
   @tracked  albumHistory = [0];     //album index visit history
-  @tracked  imdbDir = '';           //actual/current (sub)album directory (sever IMDB_DIR)
+  @tracked  imdbDir = '';           //actual/current (sub)album directory (server IMDB_DIR)
   @tracked  imdbDirIndex = 0;       //actual/current (sub)album directory index
         get imdbDirName() {
-              if (this.imdbDir) {
-                return this.imdbDir.replace(/^(.*\/)*([^/]+)$/, '$2').replace(/_/g, '&nbsp;');
+              if (this.imdbRoot) {
+                return (this.imdbRoot + this.imdbDir).replace(/^(.*\/)*([^/]+)$/, '$2').replace(/_/g, '&nbsp;');
               } else {
                 return '';
               }
@@ -61,8 +61,23 @@ export default class CommonStorageService extends Service {
   // and <flag> is empty or "*". The <flag> indicates a hidden album,
   // which needs permission for access
 
-    //   #region Allowance
-  //== Allowances properties/methods
+  //   #region View vars.
+  //== Miniature and show images etc. information
+
+  @tracked  navKeys = false; // Protects from unintended use of L/R arrows
+  @tracked  allFiles = [];
+
+  @tracked  numHidden = ' 0';
+  @tracked  numMarked = '0';
+  @tracked  numShown = ' 0';
+  @tracked  b = '';
+  @tracked  c = '';
+  @tracked  d = '';
+  @tracked  e = '';
+
+
+  //   #region Allowance
+  //== Allowances variables/properties/methods
 
   // allowvalue is the source of the 'allow' property values, reset at login
   @tracked allowvalue = "0".repeat (this.allowance.length);
@@ -93,7 +108,7 @@ export default class CommonStorageService extends Service {
     "notesView",    // +  " view   "              NOTE *
     "saveChanges",  // +  " save order/changes (= saveOrder)
     "setSetting",   // +  " change settings
-    "textEdit"      // +  " edit image texts (metadata)
+    "textEdit"      // +  " edit image texts (metadata) and hidden albums
                     //
                     // o = not yet used
   ];
@@ -182,7 +197,7 @@ export default class CommonStorageService extends Service {
     this.openAlbum(index);
   }
 
-  openAlbum = (i) => {
+  openAlbum = async (i) => {
     i = Number(i); // important!
     if (i === 0) this.albumHistory = [0]; // Recover from possible "browser disorder"
     this.imdbDir = this.imdbDirs[i];
@@ -203,6 +218,8 @@ export default class CommonStorageService extends Service {
       if (selected.nodeName !== 'DIV') break;
       selected.style.display = '';
     }
+    this.loli('allFiles from getImages()')
+    this.allFiles = await this.getImages();
   }
 
   toggleBackg = () => {
@@ -273,7 +290,7 @@ export default class CommonStorageService extends Service {
 
   //   #region Server
   //== Server tasks
-
+  //#region login
   getCredentials = async (username) => {
     username = username.trim();
     // this.loli(this.userName);
@@ -307,13 +324,13 @@ export default class CommonStorageService extends Service {
       console.error(error.message);
     });
   }
-
+  //#region rootdir
   getAlbumRoots = async () => {
     // Propose root directory (requestDirs)
     return new Promise ( (resolve, reject) => {
       var xhr = new XMLHttpRequest ();
       xhr.open ('GET', 'rootdir/', true, null, null);
-      xhr.setRequestHeader('username', encodeURIComponent(this.username));
+      xhr.setRequestHeader('username', encodeURIComponent(this.userName));
       xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
       xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
       xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
@@ -343,18 +360,18 @@ export default class CommonStorageService extends Service {
       }
     });
   }
-
-  getAlbumDirs = async (hidden) => {
+  //#region imdbdirs
+  getAlbumDirs = async (getHidden) => {
     // Get album collections or albums if thisDir is an album root
     return new Promise((resolve, reject) => {
       // ===== XMLHttpRequest returning user credentials
       var xhr = new XMLHttpRequest();
       xhr.open('GET', 'imdbdirs/', true, null, null);
-      xhr.setRequestHeader('username', encodeURIComponent(this.username));
+      xhr.setRequestHeader('username', encodeURIComponent(this.userName));
       xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
       xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
       xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
-      xhr.setRequestHeader('hidden', hidden ? 'true' : 'false');
+      xhr.setRequestHeader('hidden', getHidden ? 'true' : 'false');
       xhr.onload = function() {
         let res = xhr.response;
         resolve(res);
@@ -370,6 +387,119 @@ export default class CommonStorageService extends Service {
       console.error(error.message);
     });
   }
+  //#region imagelist
+  // WAS: requestNames = async () => { // ===== Request the file information list
+  getImages = async () => { // ===== Get the image files information list
+    // NEPF = number of entries (lines) per file in the plain text-line-result list
+    // ('namedata') from the server. The main information (e.g. metadata) is retreived
+    // from each image file. It is reordered into 'newdata' in 'sortnames' order, as
+    // far as possible; 'sortnames' is cleaned from non-existent (removed) files and
+    // extended with new (added) files, in order as is. So far, the sort order is
+    // 'sortnames' with hideFlag (and albumIndex?)
+    var that = this;
+    return new Promise((resolve, reject) => {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', 'imagelist/', true, null, null);
+      xhr.setRequestHeader('username', encodeURIComponent(this.userName));
+      xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
+      xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
+      xhr.setRequestHeader('picfound', this.picFound); // All 'widhtin 255' characters
+      xhr.onload = function() {
+        var allfiles = [];
+        console.log('ALLFILES 0');
+        console.log(allfiles);
+        that.loli(allfiles, 'color:yellow');
+        if (this.status >= 200 && this.status < 300) {
+          // var Fobj = EmberObject.extend ({
+          //   orig: '',  // for orig-file path (...jpg|tif|png|...)
+          //   show: '',  // for show-file path (_show_...png)
+          //   mini: '',  // for mini-file path (_mini_...png)
+          //   name: '',  // Orig-file base name without extension
+          //   txt1: 'description', // for metadata
+          //   txt2: 'creator',     // for metadata
+          //   symlink: ' ',        // SPACE, else the value for linkto
+          //   linkto: '',          //   which is set in refreshAll
+          //   albname: ''          //   "
+          // });
+          var NEPF = 7; // Number of rows per file in xhr.response
+          var result = xhr.response;
+          result = result.trim ().split ('\n'); // result is vectorised
+          var i = 0, j = 0;
+          var n_files = result.length/NEPF;
+          if (n_files < 1) { // Covers all weird outcomes
+            console.log('ALLFILES 1');
+            result = [];
+            n_files = 0;
+            // document.querySelectorAll('.showCount .numShown').innerHTML(' 0');
+            // document.querySelectorAll('.showCount .numHidden').innerHTML(' 0');
+            // document.querySelectorAll('.showCount .numMarked').innerHTML('0');
+            that.numShown = ' 0';
+            that.numHidden = ' 0';
+            that.numMarked = '0';
+            // //document.querySelectorAll("span.ifZero").style.display = 'hide';
+            // document.querySelectorAll('#navKeys').text ('false');
+            that.navKeys = false; // Protects from unintended use of L/R arrows
+          }
+          for (i=0; i<n_files; i++) {
+            console.log('ALLFILES 1+');
+            result [j + 4] = result [j + 4].replace (/&lt;br&gt;/g,'<br>'); // j + 5??
+            var f = {
+              orig: result[j],        // orig-file path (...jpg|tif|png|...)
+              show: result[j + 1],    // show-file path (_show_...png)
+              mini: result[j + 2],    // mini-file path (_mini_...png)
+              name: result[j + 3],    // Orig-file base name without extension
+              txt1: htmlSafe(result [j + 4]), // xmp.dc.description metadata
+              txt2: htmlSafe(result [j + 5]), // xmp.dc.creator metadata
+              symlink: result[j + 6], // SPACE, else the value for linkto
+              linkto: '',             // which is set in refreshAll
+              albname: ''             // "
+            };
+            if (f.txt1.toString() === "-") {f.txt1 = "";}
+            if (f.txt2.toString() === "-") {f.txt2 = "";}
+            j = j + NEPF;
+            allfiles.push(f);
+          }
+
+          // //document.querySelector(".showCount:first").style.display = '';
+          document.querySelector(".miniImgs").style.display = '';
+          if (n_files < 1) {
+            document.querySelector("#toggleName").style.display = 'none';
+            document.querySelector("#toggleHide").style.display = 'none';
+          }
+          else {
+            document.querySelector("#toggleName").style.display = '';
+            if (allow.adminAll || allow.imgHidden) document.querySelector("#toggleHide").style.display = '';
+          }
+          that.allowFunc();
+          // later ( ( () => {
+          //   that.actions.setAllow (); // Fungerar hyfsat ...?
+          // }), 2000);
+
+          //userLog ('INFO received');
+          console.log('ALLFILES 2');
+          console.log(allfiles);
+          that.loli(allfiles, 'color:yellow');
+          resolve (allfiles); // Return file-list object array
+        } else {
+          reject ({
+            status: this.status,
+            statusText: xhr.statusText
+          });
+        }
+      };
+      xhr.onerror = function () {
+        reject ({
+          status: this.status,
+          statusText: xhr.statusText
+        });
+      };
+      xhr.send ();
+    })
+    .then ()
+    .catch (error => {
+      console.error ("In rqstNms:", error.message);
+    });
+  }
 
   //   #region Menus
   //== Menu utilities
@@ -377,21 +507,23 @@ export default class CommonStorageService extends Service {
   openMainMenu = async () => {
     var menuMain = document.getElementById("menuMain");
     var menuButton = document.getElementById("menuButton");
-    menuMain.style.display = "";
+    menuMain.style.display = '';
     await new Promise (z => setTimeout (z, 9)); // slow response
     menuButton.innerHTML = '<span class="menu">×</span>';
     await new Promise (z => setTimeout (z, 9)); // slow response
     this.loli('opened main menu');
+    return '';
   }
 
   closeMainMenu = async (p) => {
     var menuMain = document.getElementById("menuMain");
     var menuButton = document.getElementById("menuButton");
-    menuMain.style.display = "none";
+    menuMain.style.display = 'none';
     await new Promise (z => setTimeout (z, 9)); // slow response
     menuButton.innerHTML = '<span class="menu">☰</span>';
     await new Promise (z => setTimeout (z, 9)); // slow response
     this.loli('closed main menu, ' + p);
+    return '';
   }
 
   //   #region Dialogs

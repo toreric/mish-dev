@@ -20,27 +20,21 @@ const SA = '‡';  // SUBALBUM indicator, NOTE! set in server (routes.js)
 // Detect closing Esc key for menuMain or open dialogs
 const detectEsc = (event) => {
   if (event.keyCode === 27) { // Esc key
-    var tmp0 = document.getElementById('menuButton');
-    var tmp1 = document.getElementById('menuMain');
-    if (tmp1.style.display !== 'none') {
-      tmp1.style.display = 'none';
-      tmp0.innerHTML = '<span class="menu">☰</span>';
-      console.log('-"-: closed main menu');
-    } else {
-      // An open <dialog> has an 'open' attribue
-      var tmp = document.querySelectorAll('dialog');
-      for (let i=0; i<tmp.length; i++) {
-        // Check if any open dialog
-        if (tmp[i].hasAttribute('open')) {
-          tmp[i].close();
-          console.log('-"-: closed ' + tmp[i].id);
-        }
-      }
-    }
+    closeMainMenu();
   }
 }
 document.addEventListener ('keydown', detectEsc, false);
 
+// Close the main menu
+const closeMainMenu = () => {
+  var tmp0 = document.getElementById('menuButton');
+  var tmp1 = document.getElementById('menuMain');
+  if (tmp1.style.display !== 'none') {
+    tmp1.style.display = 'none';
+    tmp0.innerHTML = '<span class="menu">☰</span>';
+    console.log('-"-: closed main menu');
+  }
+}
 
 
 export class MenuMain extends Component {
@@ -66,16 +60,21 @@ export class MenuMain extends Component {
     this.z.imdbDirs = arr.splice(0, n);
     this.z.imdbCoco = arr.splice(0, n);
     this.z.imdbLabels = arr.splice(0, n);
-    this.z.loli('imdbCoco ' + n + LF + this.z.imdbCoco.join(LF));
-    this.z.loli('imdbDirs ' + n + LF + this.z.imdbDirs.join(LF));
+    this.z.loli('imdbCoco ' + n + LF + this.z.imdbCoco.join(LF), 'color:yellow');
+    this.z.loli('imdbDirs ' + n + LF + this.z.imdbDirs.join(LF), 'color:yellow');
     // this.z.loli('imdbLabels ' + n + LF + this.z.imdbLabels.join(LF));
+    // this.z.loli(this.z.imdbDirs, 'color:green');
 
-    const data = this.z.imdbDirs;
+    // let data = structuredClone(this.z.imdbDirs);
+    let data =[...this.z.imdbDirs];
+    let root = this.z.imdbRoot;
     for (let i=0;i<data.length;i++) {
-      data[i] = this.z.imdbRoot + data[i]; // amend the root catalog
+      data[i] = root + data[i]; // amend the root catalog
     }
-    // this.z.loli(data);
+
     // this.z.loli('imdbRoot/imdbDirs ' + n + LF + data.join(LF));
+    // this.z.loli(data);
+    // this.z.loli(this.z.imdbDirs, 'color:red');
 
     //begin https://stackoverflow.com/questions/72006110/convert-file-path-into-object
     // Convert the album directory list 'data' to a JS tree. Modifications are:
@@ -103,6 +102,8 @@ export class MenuMain extends Component {
     //end https://stackoverflow.com/questions/72006110/convert-file-path-into-object
 
     this.z.imdbTree = result;
+
+    // this.z.loli(this.z.imdbDirs);
     // console.log(result);
     // this.z.loli('imdbTree ' + n + LF + JSON.stringify(result, null, 2)); //human readable
     await new Promise (z => setTimeout (z, 199)); // Wait for album tree to settle
@@ -118,6 +119,8 @@ export class MenuMain extends Component {
     this.hasHidden = anyHidden(); // if there are any hidden-without-allowance albums
     this.z.openAlbum(0); // Select the root album
     this.z.closeMainMenu('after opening root album'); // Close the main menu
+
+    // this.z.loli(this.z.imdbDirs);
   }
 
   // The @tree argument for Tree component
@@ -263,8 +266,6 @@ export class MenuMain extends Component {
             <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title={{t 'showselectedtext'}} {{on "click" (fn this.showSelected)}}>{{t 'showselected'}}</a>
           </span>
         </span>
-
-
         <Tree @tree={{this.tree}} />
         {{#if this.z.imdbRoot}}
           <p style="font-size:77%;vertical-align:top;line-height:1.1rem;margin:0 0.2rem 0 3rem">

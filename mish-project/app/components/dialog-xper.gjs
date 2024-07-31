@@ -17,8 +17,6 @@ import sortableItem from 'ember-sortable/modifiers/sortable-item';
 
 export const dialogXperId = "dialogXper";
 
-// var saveRoot = 'vepjf8';
-
 class SortExample extends Component {
   @service('common-storage') z;
   @service intl;
@@ -42,12 +40,12 @@ class SortExample extends Component {
         ix++;
       }
     }
-    this.z.loli(JSON.stringify(this.items, null, '  ')); // Checked!
+    // this.z.loli(JSON.stringify(this.items, null, '  ')); // Checked!
     // await new Promise (z => setTimeout (z, 666));
     let tmp = this.z.imdbLabels.join('<br>');
     return tmp;
     //      return tmp.slice(0, 0); // hide
-  } // Doesn't need the fn helper within {{{}}} in the template, why?
+  } // Doesn't need the fn helper within {{}} in the template, why?
 
   reorderItems = (itemModels, draggedModel) => {
     this.items = itemModels;
