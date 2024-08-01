@@ -174,17 +174,17 @@ export class DialogLogin extends Component {
           </div>
         </header>
         <main style="text-align:center;padding:0 0.25rem 0 0.25rem">
-          <p alt="Delvis kopierat från dialogLogin">
+          <p info="Partly copied from dialogLogin">
             {{t 'dialog.login.text1'}} <span>{{this.z.userName}}</span>
             {{t 'with'}} [<span>{{this.z.userStatus}}</span>]-{{t 'rights'}}.
             {{t 'dialog.rights.text0'}}
           </p>
           <p style="text-align:left;font-size:85%">
-            <pre alt="PRE keeps line feeds" style="font-family:'Andale Mono','Cascadia Mono';font-size:97%;margin:0">{{this.allowances}}</pre>{{t 'dialog.rights.footnote1'}}<br>{{t 'dialog.rights.footnote2'}}
+            <pre info="PRE keeps line feeds" style="font-family:'Andale Mono','Cascadia Mono';font-size:97%;margin:0">{{this.allowances}}</pre>{{t 'dialog.rights.footnote1'}}<br>{{t 'dialog.rights.footnote2'}}
             <br>{{t 'dialog.rights.footnote3'}}
           </p>
           <p style="text-align:left;font-size:85%;font-weight:bold">
-            {{t 'dialog.rights.text1'}}<br>{{t 'dialog.rights.text2'}}<br>{{t 'dialog.rights.text3'}}<br>{{t 'dialog.rights.text4'}}
+            {{t 'dialog.rights.text1'}}<br>{{t 'dialog.rights.text2'}}<br>{{t 'dialog.rights.text3'}}<br>{{t 'dialog.rights.text4'}}<br>
           </p>
         </main>
         <footer data-dialog-draggable>

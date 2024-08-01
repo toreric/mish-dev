@@ -118,6 +118,20 @@ class MiniImages extends Component {
   @service('common-storage') z;
   @service intl;
 
+  reorderItems = (itemModels, draggedModel) => {
+    this.items = itemModels;
+    this.lastDragged = draggedModel;
+  }
+
+  handleVisualClass = {
+    UP: 'sortable-handle-up',
+    DOWN: 'sortable-handle-down',
+    LEFT: 'sortable-handle-left',
+    RIGHT: 'sortable-handle-right',
+  };
+
+  itemVisualClass = 'sortable-item--active';
+
   <template>
     <div class="miniImgs" style="display:flex;flex-wrap:wrap;padding:0;
       align-items:normal;justify-content:center;"
@@ -128,7 +142,7 @@ class MiniImages extends Component {
         handleVisualClass=this.handleVisualClass
       }}
     >
-      {{#each this.z.allNames as |item|}}
+      {{#each this.z.allFiles as |item|}}
         <div class="img_mini"
           {{sortableItem
             model=item
@@ -136,7 +150,6 @@ class MiniImages extends Component {
             distance=5
           }}
         >
-        let pic = '<img src="' + p + '" class="left-click" title="" draggable="false" ondragstart="return false">'
           <img src={{item.mini}} class="left-click" title="" draggable="false" ondragstart="return false"><br>
           <div class="img_name">
             {{item.name}}

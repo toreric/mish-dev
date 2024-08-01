@@ -483,10 +483,13 @@ module.exports = function(app) { // Start module.exports
   async function pkgfilenames(origlist) {
 
     console.log('PKGFILENAMES')
-    console.log('origlist:', origlist)
+    console.log('origlist: \n' + origlist)
 
     if (origlist) {
       let files = origlist.split('\n')
+
+      console.log('origlist:', files)
+
       allfiles = ''
       for (let file of files) {
         execSync('pentaxdebug ' + file) // Pentax metadata bug fix is done here
@@ -501,6 +504,9 @@ module.exports = function(app) { // Start module.exports
     }
   }
   async function pkgonefile(file) {
+
+    console.log('PKGONEFILE', file)
+
     let origfile = file
     let symlink = await symlinkFlag(origfile)
     let fileObj = path.parse(origfile)
@@ -637,6 +643,21 @@ module.exports = function(app) { // Start module.exports
       }
     })
     return 'DELETED'
+  }
+
+  // ===== Return a symlink flag value, value = & or source file
+  function symlinkFlag (file) {
+    return new Promise (function (resolve, reject) {
+      fs.lstat (file, function (err, stats) {
+        if (err) {
+          console.error ('symlinkFlag', err.message)
+        } else if (stats.isSymbolicLink ()) {
+          resolve (execSync ("readlink " + file).toString ().trim ())
+        } else {
+          resolve ('&') // normal file
+        }
+      })
+    })
   }
 
   // THIS FUNCTION IS NEVER USED

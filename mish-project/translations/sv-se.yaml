@@ -133,7 +133,7 @@ dialog:
     error: Felaktigt användarnamn eller nyckelord, försök igen!
   rights:
     header: Lista över användarrättigheter och deras innebörd, samt rättsliga användarvillkor längst ner
-    text0: "Närmast sifferkolumnen visas de gällande rättigheterna:"
+    text0: "Kryssen vid sifferkolumnen visar de gällande rättigheterna:"
     text1: Du får se och använda bilderna för eget bruk men inte distribuera dem vidare.
     text2: Du får inte heller använda dem för något kommersiellt eller vinstdrivande syfte.
     text3: Du åtar dig att respektera tillämplig upphovsrättslagstiftning och att inte överlåta bilder till tredje part.

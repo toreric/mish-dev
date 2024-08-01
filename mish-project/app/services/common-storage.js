@@ -3,6 +3,7 @@
 import Service from '@ember/service';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import { htmlSafe } from '@ember/template';
 
 export default class CommonStorageService extends Service {
   @service intl;
@@ -133,7 +134,7 @@ export default class CommonStorageService extends Service {
     `textEdit:     ${this.intl.t('textEdit')}`
   ];}
 
-  allowFunc = () => { // Called from Welcome after login
+  allowFunc = () => { // Called from Welcome and dialogLogin after login
     var allow = this.allow;
     var allowance = this.allowance;
     var allowvalue = this.allowvalue;
@@ -218,8 +219,10 @@ export default class CommonStorageService extends Service {
       if (selected.nodeName !== 'DIV') break;
       selected.style.display = '';
     }
-    this.loli('allFiles from getImages()')
+    this.loli('allFiles from getImages()');
     this.allFiles = await this.getImages();
+    this.loli(this.allFiles, 'color:lightgreen');
+    console.log(this.allFiles);
   }
 
   toggleBackg = () => {
@@ -405,22 +408,12 @@ export default class CommonStorageService extends Service {
       xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
       xhr.setRequestHeader('picfound', this.picFound); // All 'widhtin 255' characters
       xhr.onload = function() {
+        var allow = that.allow;
         var allfiles = [];
         console.log('ALLFILES 0');
         console.log(allfiles);
         that.loli(allfiles, 'color:yellow');
         if (this.status >= 200 && this.status < 300) {
-          // var Fobj = EmberObject.extend ({
-          //   orig: '',  // for orig-file path (...jpg|tif|png|...)
-          //   show: '',  // for show-file path (_show_...png)
-          //   mini: '',  // for mini-file path (_mini_...png)
-          //   name: '',  // Orig-file base name without extension
-          //   txt1: 'description', // for metadata
-          //   txt2: 'creator',     // for metadata
-          //   symlink: ' ',        // SPACE, else the value for linkto
-          //   linkto: '',          //   which is set in refreshAll
-          //   albname: ''          //   "
-          // });
           var NEPF = 7; // Number of rows per file in xhr.response
           var result = xhr.response;
           result = result.trim ().split ('\n'); // result is vectorised
@@ -436,12 +429,11 @@ export default class CommonStorageService extends Service {
             that.numShown = ' 0';
             that.numHidden = ' 0';
             that.numMarked = '0';
-            // //document.querySelectorAll("span.ifZero").style.display = 'hide';
+            // ///document.querySelectorAll("span.ifZero").style.display = 'hide';
             // document.querySelectorAll('#navKeys').text ('false');
             that.navKeys = false; // Protects from unintended use of L/R arrows
           }
           for (i=0; i<n_files; i++) {
-            console.log('ALLFILES 1+');
             result [j + 4] = result [j + 4].replace (/&lt;br&gt;/g,'<br>'); // j + 5??
             var f = {
               orig: result[j],        // orig-file path (...jpg|tif|png|...)
@@ -452,7 +444,7 @@ export default class CommonStorageService extends Service {
               txt2: htmlSafe(result [j + 5]), // xmp.dc.creator metadata
               symlink: result[j + 6], // SPACE, else the value for linkto
               linkto: '',             // which is set in refreshAll
-              albname: ''             // "
+              albname: ''             // "    (short name for symlink's original album)
             };
             if (f.txt1.toString() === "-") {f.txt1 = "";}
             if (f.txt2.toString() === "-") {f.txt2 = "";}
@@ -460,7 +452,7 @@ export default class CommonStorageService extends Service {
             allfiles.push(f);
           }
 
-          // //document.querySelector(".showCount:first").style.display = '';
+          // ///document.querySelector(".showCount:first").style.display = '';
           document.querySelector(".miniImgs").style.display = '';
           if (n_files < 1) {
             document.querySelector("#toggleName").style.display = 'none';
@@ -468,12 +460,8 @@ export default class CommonStorageService extends Service {
           }
           else {
             document.querySelector("#toggleName").style.display = '';
-            if (allow.adminAll || allow.imgHidden) document.querySelector("#toggleHide").style.display = '';
+            if (allow.imgHidden) document.querySelector("#toggleHide").style.display = '';
           }
-          that.allowFunc();
-          // later ( ( () => {
-          //   that.actions.setAllow (); // Fungerar hyfsat ...?
-          // }), 2000);
 
           //userLog ('INFO received');
           console.log('ALLFILES 2');
@@ -497,7 +485,7 @@ export default class CommonStorageService extends Service {
     })
     .then ()
     .catch (error => {
-      console.error ("In rqstNms:", error.message);
+      console.error ("In getImages:", error.message);
     });
   }
 

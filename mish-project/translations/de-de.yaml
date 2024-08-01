@@ -132,7 +132,7 @@ dialog:
     error: Falscher Benutzername oder Passwort, erneut versuchen!
   rights:
     header: Liste der Nutzerrechte und ihrer Bedeutung, mit rechtliche Nutzungsbedingungen unten
-    text0: "Aktuelle Rechte sind neben der Zahlenspalte angezeigt:"
+    text0: "Aktuelle Rechte sind neben der Zahlenspalte mit Kreuzen angezeigt:"
     text1: Es ist Ihnen gestattet, die Bilder für Ihren eigenen Gebrauch zu sehen und zu besitzen, sie jedoch nicht weiter zu verbreiten.
     text2: Sie dürfen sie auch nicht für kommerzielle oder gewinnbringende Zwecke verwenden.
     text3: Sie verpflichten sich, die geltenden Urheberrechtsgesetze zu respektieren und Bilder nicht an Dritte weiterzugeben.
