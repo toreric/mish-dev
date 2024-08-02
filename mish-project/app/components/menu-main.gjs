@@ -66,7 +66,7 @@ export class MenuMain extends Component {
     // this.z.loli(this.z.imdbDirs, 'color:green');
 
     // let data = structuredClone(this.z.imdbDirs);
-    let data =[...this.z.imdbDirs];
+    let data = [...this.z.imdbDirs];
     let root = this.z.imdbRoot;
     for (let i=0;i<data.length;i++) {
       data[i] = root + data[i]; // amend the root catalog

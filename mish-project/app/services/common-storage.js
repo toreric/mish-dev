@@ -205,11 +205,13 @@ export default class CommonStorageService extends Service {
     this.imdbDirIndex = i;
     let h = this.albumHistory;
     if (h.length > 0 && h[h.length - 1] !== i) this.albumHistory.push(i);
-    this.loli('opened album ' + i + ' ' + this.imdbDir, 'color:lightgreen' );
+    let a = this.imdbRoot + '/' + this.imdbDir;
+    this.loli('opened album ' + i + ' ' + a, 'color:lightgreen' );
     // Reset colors in the album tree of the main menu
     for (let tmp of document.querySelectorAll('span.album')) {
       tmp.style.color = '';
     }
+    // Set color mark on the selected album and make it visible
     document.querySelector('span.album.a' + i).style.color = '#f46aff';
     let selected = document.querySelector('div.album.a' + i);
     selected.style.display = '';

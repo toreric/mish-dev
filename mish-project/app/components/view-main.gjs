@@ -69,12 +69,6 @@ class SubAlbums extends Component {
     return this.z.imdbDirs[i];
   }
 
-  // this.z.allNames = await this.z.requestNames();
-
-  imdbLabels = (i) => {
-    return this.z.imdbLabels[i];
-  }
-
   dirName = (i) => {
     return this.z.imdbDirs[i].replace(/^(.*\/)*([^/]+)$/, '$2').replace(/_/g, ' ');
   }
@@ -92,7 +86,6 @@ class SubAlbums extends Component {
           <span title={{this.z.imdbDir}}>
             <b>”{{{this.z.imdbDirName}}}”</b>
             {{t 'has'}} {{this.nsub}} {{this.sual}}
-            {{!-- <a {{on 'click' (fn this.z.alertMess this.naddTxt this.naddHdr)}}>{{this.nadd}}</a> --}}
             <span title={{t 'plusExplain'}}>{{this.nadd}}</span>
           </span>
           <br>
@@ -100,9 +93,7 @@ class SubAlbums extends Component {
             <div class="subAlbum" title={{this.imdbDirs i}}
               {{on 'click' (fn this.z.openAlbum i)}}>
               <a class="imDir" style="background:transparent" title-2="Album ”{{this.dirName i}}”">
-                {{!-- {{#if (eq '' (fn this.imdbLabels i))}} --}}
                   <img src={{this.setLabel i}} alt="Album ”{{this.dirName i}}”"><br>
-                {{!-- {{/if}} --}}
                 <span style="font-size:85%;color:{{this.z.subColor}}">{{this.dirName i}}</span>
               </a>
             </div>
@@ -117,6 +108,17 @@ class SubAlbums extends Component {
 class MiniImages extends Component {
   @service('common-storage') z;
   @service intl;
+
+  @tracked lastDragged;
+  @tracked items = [];
+
+  allFiles = () => {
+    this.items = [];
+    let m = this.z.allFiles.length;
+    for (let i=0;i<m;i++) {
+      this.items.push({mini: this.z.allFiles[i].mini, name: this.z.allFiles[i].name});
+    }
+  }
 
   reorderItems = (itemModels, draggedModel) => {
     this.items = itemModels;
@@ -133,16 +135,27 @@ class MiniImages extends Component {
   itemVisualClass = 'sortable-item--active';
 
   <template>
+
+    <p>
+      {{#if this.z.imdbRoot}}
+        Press to (re)load images for
+        <button type="button" {{on 'click' this.allFiles}}>{{{this.z.imdbDirName}}}</button>
+      {{else}}
+        Please select an album collection!
+      {{/if }}
+    </p>
+
     <div class="miniImgs" style="display:flex;flex-wrap:wrap;padding:0;
-      align-items:normal;justify-content:center;"
+      align-items:normal;justify-content:left;position:relative"
       {{sortableGroup
         direction='grid'
         onChange=this.reorderItems
+        disabled=false
         itemVisualClass=this.itemVisualClass
         handleVisualClass=this.handleVisualClass
       }}
     >
-      {{#each this.z.allFiles as |item|}}
+      {{#each this.items as |item|}}
         <div class="img_mini"
           {{sortableItem
             model=item
@@ -150,7 +163,7 @@ class MiniImages extends Component {
             distance=5
           }}
         >
-          <img src={{item.mini}} class="left-click" title="" draggable="false" ondragstart="return false"><br>
+          <img src={{item.mini}} class="left-click" title=""><br>
           <div class="img_name">
             {{item.name}}
           </div>
@@ -158,5 +171,6 @@ class MiniImages extends Component {
         </div>
       {{/each}}
     </div>
+    <p>The last dragged item: {{this.lastDragged.name}}</p>
   </template>
 }
