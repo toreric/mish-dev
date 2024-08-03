@@ -165,6 +165,7 @@ reloadApp: Reload the app!
 select:
   language: Select language
   languagetext: English
+spinwait: W A I T — or stop with a click if it spins too long
 time:
   text: The time is
   buildstamp: Ember development server

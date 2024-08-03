@@ -164,6 +164,7 @@ reloadApp: Ladda om appen!
 select:
   language: Välj språk
   languagetext: Svenska
+spinwait: V Ä N T A — eller stoppa med klick om det snurrar för länge
 time:
   text: Klockan är
   buildstamp: Ember development server

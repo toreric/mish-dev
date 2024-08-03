@@ -173,6 +173,12 @@ class MiniImages extends Component {
           <div class="img_name">
             {{item.name}}
           </div>
+          <div class="img_txt1" draggable="false" ondragstart="return false" title-2="{{item.txt1}}">
+            {{item.txt1}}
+          </div>
+          <div class="img_txt2" draggable="false" ondragstart="return false" title-2="{{item.txt2}}">
+            {{item.txt2}}
+          </div>
           {{!-- <span class='handle' {{sortableHandle}}>&varr;</span> --}}
         </div>
       {{/each}}
