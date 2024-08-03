@@ -53,6 +53,7 @@ subalbum:  Unteralbum
 subalbums: Unteralben
 with: mit
 
+albumcollselect: Bitte eine Albumsammlung auswählen!
 albumSelectInfo: "Eine Albumsammlung hier auswählen,
                  falls diese nicht bereits vorausgewählt ist.
                  Möglicherweise gibt es noch mehr

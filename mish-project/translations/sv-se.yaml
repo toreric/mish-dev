@@ -53,6 +53,7 @@ subalbum:  underalbum
 subalbums: underalbum
 with: med
 
+albumcollselect: Vänligen välj en albumsamling!
 albumSelectInfo: "Välj här en album-
                  samling om den inte
                  redan är förvald.

@@ -53,6 +53,7 @@ subalbum:  subalbum
 subalbums: subalbums
 with: with
 
+albumcollselect: Please select an album collection!
 albumSelectInfo: "Select here an album
                   collection if it isn't
                   already preselected.

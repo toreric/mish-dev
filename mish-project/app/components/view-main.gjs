@@ -3,8 +3,8 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
-import { eq } from 'ember-truth-helpers';
+// import { action } from '@ember/object';
+// import { eq } from 'ember-truth-helpers';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
@@ -13,7 +13,6 @@ import sortableGroup from 'ember-sortable/modifiers/sortable-group';
 import sortableItem from 'ember-sortable/modifiers/sortable-item';
 
 import { dialogAlertId } from './dialog-alert';
-// import EmberTooltip from './ember-tooltip';
 
 const LF = '\n'; // LINE_FEED
 const SA = '‡';  // SUBALBUM indicator, NOTE! set in server (routes.js)
@@ -116,7 +115,9 @@ class MiniImages extends Component {
     this.items = [];
     let m = this.z.allFiles.length;
     for (let i=0;i<m;i++) {
-      this.items.push({mini: this.z.allFiles[i].mini, name: this.z.allFiles[i].name});
+      // this.items.push({img: this.z.allFiles[i].mini, name: this.z.allFiles[i].name});
+      this.items.push(this.z.allFiles[i]);
+      this.lastDragged = '';
     }
   }
 
@@ -138,14 +139,18 @@ class MiniImages extends Component {
 
     <p>
       {{#if this.z.imdbRoot}}
-        Press to (re)load images for
-        <button type="button" {{on 'click' this.allFiles}}>{{{this.z.imdbDirName}}}</button>
+        <span style="display:none">Press to (re)load images for
+        <button id="loadMiniImages" type="button" {{on 'click' this.allFiles}}>{{{this.z.imdbDirName}}}</button></span>
+
+        Last dragged item: {{this.lastDragged.name}}
+
       {{else}}
-        Please select an album collection!
+        {{t 'albumcollselect'}}
       {{/if }}
     </p>
 
-    <div class="miniImgs" style="display:flex;flex-wrap:wrap;padding:0;
+    <div>
+    <div class="alb_mini" style="width:;display:flex;flex-wrap:wrap;padding:0;
       align-items:normal;justify-content:left;position:relative"
       {{sortableGroup
         direction='grid'
@@ -163,7 +168,8 @@ class MiniImages extends Component {
             distance=5
           }}
         >
-          <img src={{item.mini}} class="left-click" title=""><br>
+          <img src="{{item.mini}}" class="left-click" title="" draggable="false" ondragstart="return false">
+          <br>
           <div class="img_name">
             {{item.name}}
           </div>
@@ -171,6 +177,7 @@ class MiniImages extends Component {
         </div>
       {{/each}}
     </div>
-    <p>The last dragged item: {{this.lastDragged.name}}</p>
+    </div>
+
   </template>
 }
