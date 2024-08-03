@@ -832,13 +832,12 @@ div.settings a:hover {
 .nameNew {
   background: #f0f0b0;
 }
-.spinner {
-  display: none;
+img.spinner {
   position: fixed !important;
-  left: 0.35em;
-  top: 0.55em;
-  height: 3em;
-  width: 3em;
+  left: 25%;
+  top: 25%;
+  height: 50%;
+  width: 50%;
   border-radius: 50%;
   background-color: transparent;
   z-index: 1500;

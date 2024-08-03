@@ -222,7 +222,11 @@ export default class CommonStorageService extends Service {
       selected.style.display = '';
     }
     this.loli('allFiles from getImages()');
+
+    document.querySelector('img.spinner').style.display = '';
     this.allFiles = await this.getImages();
+    document.querySelector('img.spinner').style.display = 'none';
+
     this.loli(this.allFiles, 'color:lightgreen');
     console.log(this.allFiles);
     // await new Promise (z => setTimeout (z, 1500)); // await allFiles/getImages?

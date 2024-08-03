@@ -20,6 +20,7 @@ import { default as Header } from './header';
 import { Language } from './language';
 import { MenuMain } from './menu-main';
 import { ViewMain } from './view-main';
+import { Spinner } from './spinner';
 
 import { dialogLoginId } from './dialog-login';
 import { dialogRightsId } from './dialog-login';
@@ -150,5 +151,6 @@ export default class extends Welcome {
     <DialogHelp />
     <DialogAlert />
     <DialogXper />
+    <Spinner />
   </template>;
 }
