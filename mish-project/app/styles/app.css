@@ -834,10 +834,10 @@ div.settings a:hover {
 }
 img.spinner {
   position: fixed !important;
-  left: 25%;
-  top: 25%;
-  height: 50%;
-  width: 50%;
+  left: 30%;
+  top: 30%;
+  height: 40%;
+  width: 40%;
   border-radius: 50%;
   background-color: transparent;
   z-index: 1500;
@@ -1194,15 +1194,15 @@ img[alt] {
   z-index: 2;
 }
 /* *** CSS tooltip title-2 for multiliners */
-*[title-2] {
+[title-2] {
   position: relative;
 }
-*[title-2]:hover::after,
-*[title-2]:active::after {
+[title-2]:hover::after,
+[title-2]:active::after {
   content: attr(title-2);
   position: absolute;
   left: 0;
-  top: 102%;
+  top: 100%;
   text-align: left;
   border: 0.5px #888 solid;
   border-radius: 3px;
@@ -1293,28 +1293,21 @@ img[alt] {
   margin-bottom: 0px;
 }
 .img_mini .img_txt1,
-.img_mini .img_txt2 {
+.img_mini .img_txt2,
+.img_mini .img_txt1 *,
+.img_mini .img_txt2 * {
   font-size: 84%;
-  height: 1.2em;
+  height: 1.1rem;
   font-weight: normal;
   text-align: left;
-  white-space: normal;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -o-text-overflow: ellipsis;
+  white-space: nowrap;
   color: white;
   position: relative;
-  margin: 0;
-  padding: 0;
   background: transparent;
 }
 .img_txt1 a,
 .img_txt2 a {
   color: lightskyblue;
-}
-.img_mini .img_txt1 *,
-.img_mini .img_txt2 * {
-  background: transparent;
 }
 .img_mini .img_name {
   font-size: 84%;
@@ -1322,12 +1315,12 @@ img[alt] {
   color: #fd0;
   text-align: left;
   cursor: default;
-  margin: -1rem 0 0 0;
-  padding: 0 0.25rem 0.1rem 0;
+  margin: 0;
+  padding: 0 0.25rem 0 0;
   border-radius: 3px;
 }
 .img_mini .img_name:hover {
-  color: #d80;
+  color: #ff3;
   background-color: #3b3b3b;
   width: max-content;
 }
@@ -1337,19 +1330,18 @@ img[alt] {
 }
 .img_txt1,
 .img_txt2 {
-  cursor: text;
+  cursor: default;
   text-align: left;
-  line-height: 1.19em;
-  margin: 0;
+  /* line-height: 1.19rem; */
   color: #fff;
 }
 .img_txt1 {
   font-style: normal;
-  margin-top: 0.05em;
+  margin: 0.2rem 0 0 0;
 }
 .img_txt2 {
   font-style: italic;
-  margin-bottom: 0.15em;
+  margin-bottom: -0.2rem;
 }
 #pathOrig {
   display: block;
@@ -1439,20 +1431,7 @@ img.mark {
 .markTrue {
   position: absolute;
   width: 20px;
-  height: aning, and legal terms of use at the bottom
-
-  You are now logged in as gast with [guest]-rights. The current rights are shown next to the number column:
-
-  admin edit editall editext guest setter viewer
-  ──────────────────────────────────────────────                Allowed to
-      x     .     .     .     .     .     .     . 1 = adminAll:     do anything
-      .     .     x     .     .     .     .     . 2 = albumEdit:    make/erase albums
-      .     .     .     .     .     .     .     . 3 = appendixEdit: (edit appendices +4)¹
-      .     .     .     .     .     .     .     . 4 = appendixView: (view appendices)¹
-      .     x     .     .     .     .     .     . 5 = delcreLink:   move to another album, make/erase links
-      .     .     x     .     .     .     .     . 6 = deleteImg:    erase images +5
-      .     .     .     .     .     .     .     . 7 = imgEdit:      (edit images)¹
-      .     x     x     x     x     .     .     x 8 = 20px;
+  height: 20px;
   border: 0;
   top: 0px;
   right: 0px;

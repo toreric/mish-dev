@@ -21,7 +21,6 @@ const SA = '‡';  // SUBALBUM indicator, NOTE! set in server (routes.js)
 const detectEsc = (event) => {
   if (event.keyCode === 27) { // Esc key
     closeMainMenu();
-    document.querySelector('img.spinner').style.display = 'hide';
   }
 }
 document.addEventListener ('keydown', detectEsc, false);

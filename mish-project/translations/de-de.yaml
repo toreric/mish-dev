@@ -163,7 +163,7 @@ reloadApp: Die App neu laden!
 select:
   language: Sprache wählen
   languagetext: Deutsch
-spinwait: W A R T E N — oder mit einem Klick stoppen, wenn es zu lange dreht
+spinwait: W A R T E N — oder mit einem Klick abbrechen, wenn es zu lange dreht
 time:
   text: "Zeitangabe:"
   buildstamp: Ember development server

@@ -8,6 +8,7 @@ import { tracked } from '@glimmer/tracking';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
+import { htmlSafe } from '@ember/template';
 
 import sortableGroup from 'ember-sortable/modifiers/sortable-group';
 import sortableItem from 'ember-sortable/modifiers/sortable-item';
@@ -126,6 +127,15 @@ class MiniImages extends Component {
     this.lastDragged = draggedModel;
   }
 
+  shortenNoTags = (txt) => {
+    let tmp = txt.toString().replace(/<(?:.|\n)*?>/gm, ""); // Remove <tags>
+    return tmp.slice(0, 23);
+  }
+
+  noTags = (txt) => {
+    return txt.toString().replace(/<(?:.|\n)*?>/gm, ""); // Remove <tags>
+  }
+
   handleVisualClass = {
     UP: 'sortable-handle-up',
     DOWN: 'sortable-handle-down',
@@ -150,8 +160,9 @@ class MiniImages extends Component {
     </p>
 
     <div>
-    <div class="alb_mini" style="width:;display:flex;flex-wrap:wrap;padding:0;
-      align-items:normal;justify-content:left;position:relative"
+    <div class="alb_mini" style="width:;display:flex;
+      flex-wrap:wrap;padding:0;align-items:baseline;
+      justify-content:left;position:relative"
       {{sortableGroup
         direction='grid'
         onChange=this.reorderItems
@@ -169,15 +180,14 @@ class MiniImages extends Component {
           }}
         >
           <img src="{{item.mini}}" class="left-click" title="" draggable="false" ondragstart="return false">
-          <br>
-          <div class="img_name">
+          <div class="img_name" style="display:none">
             {{item.name}}
           </div>
-          <div class="img_txt1" draggable="false" ondragstart="return false" title-2="{{item.txt1}}">
-            {{item.txt1}}
+          <div class="img_txt1" draggable="false" ondragstart="return false" title-2="{{this.noTags item.txt1}}">
+            {{this.shortenNoTags item.txt1}}
           </div>
-          <div class="img_txt2" draggable="false" ondragstart="return false" title-2="{{item.txt2}}">
-            {{item.txt2}}
+          <div class="img_txt2" draggable="false" ondragstart="return false" title-2="{{this.noTags item.txt2}}">
+            {{this.shortenNoTags item.txt2}}
           </div>
           {{!-- <span class='handle' {{sortableHandle}}>&varr;</span> --}}
         </div>

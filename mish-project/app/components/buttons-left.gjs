@@ -23,6 +23,12 @@ export class ButtonsLeft extends Component {
     }
   }
 
+  toggleNameView = () => {
+    let value = document.querySelector('div.img_name').style.display ? '' : 'none';
+    for (let name of document.querySelectorAll('div.img_name')) {
+      name.style.display = value;
+    }
+  }
 
   <template>
 
@@ -38,7 +44,7 @@ export class ButtonsLeft extends Component {
 
       <a id="reLd" class="smBu" title={{t 'buttons.left.reload'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'reload')}} src="/images/reload.png"></a>
 
-      <a id="toggleName" class="smBu" title={{t 'buttons.left.name'}} draggable="false" ondragstart="return false" style="display:" {{on 'click' (fn this.someFunction 'toggleNameView')}}>N</a>
+      <a id="toggleName" class="smBu" title={{t 'buttons.left.name'}} draggable="false" ondragstart="return false" style="display:" {{on 'click' (fn this.toggleNameView)}}>N</a>
 
       <a id="toggleHide" class="smBu" title={{t 'buttons.left.hide'}} draggable="false" ondragstart="return false" style="display:" {{on 'click' (fn this.someFunction 'toggleHideFlagged')}}></a>
 
