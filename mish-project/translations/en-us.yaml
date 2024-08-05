@@ -47,6 +47,7 @@ has: has
 intlcode: en-us
 light: light
 no: no
+missing: (missing) NOTE never used
 plus: plus
 rights: rights
 subalbum:  subalbum

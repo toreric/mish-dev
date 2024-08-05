@@ -15,7 +15,7 @@ export class Spinner extends Component {
   }
 
   <template>
-    <img src="/images/spinner.svg" class="spinner" draggable="false" ondragstart="return false" {{on 'click' this.hideSpinner}} style="display: " title="{{t 'spinwait'}}">
+    <img src="/images/spinner.svg" class="spinner" draggable="false" ondragstart="return false" {{on 'click' this.hideSpinner}} style="display:none" title="{{t 'spinwait'}}">
   </template>;
 
 }

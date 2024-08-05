@@ -129,11 +129,12 @@ class MiniImages extends Component {
 
   shortenNoTags = (txt) => {
     let tmp = txt.toString().replace(/<(?:.|\n)*?>/gm, ""); // Remove <tags>
-    return tmp.slice(0, 23);
+    return tmp.slice(0, 23) ? tmp.slice(0, 23) : '&nbsp;';
   }
 
   noTags = (txt) => {
-    return txt.toString().replace(/<(?:.|\n)*?>/gm, ""); // Remove <tags>
+    let tmp = txt.toString().replace(/<(?:.|\n)*?>/gm, ""); // Remove <tags>
+    return tmp ? tmp : ' ';
   }
 
   handleVisualClass = {
@@ -147,19 +148,18 @@ class MiniImages extends Component {
 
   <template>
 
-    <p>
-      {{#if this.z.imdbRoot}}
+    {{#if this.z.imdbRoot}}
+      <p>
         <span style="display:none">Press to (re)load images for
         <button id="loadMiniImages" type="button" {{on 'click' this.allFiles}}>{{{this.z.imdbDirName}}}</button></span>
-
         Last dragged item: {{this.lastDragged.name}}
-
-      {{else}}
+      </p>
+    {{else}}
+      <p style="text-align:center">
         {{t 'albumcollselect'}}
-      {{/if }}
-    </p>
+      </p>
+    {{/if }}
 
-    <div>
     <div class="alb_mini" style="width:;display:flex;
       flex-wrap:wrap;padding:0;align-items:baseline;
       justify-content:left;position:relative"
@@ -184,15 +184,14 @@ class MiniImages extends Component {
             {{item.name}}
           </div>
           <div class="img_txt1" draggable="false" ondragstart="return false" title-2="{{this.noTags item.txt1}}">
-            {{this.shortenNoTags item.txt1}}
+            {{{this.shortenNoTags item.txt1}}}
           </div>
           <div class="img_txt2" draggable="false" ondragstart="return false" title-2="{{this.noTags item.txt2}}">
-            {{this.shortenNoTags item.txt2}}
+            {{{this.shortenNoTags item.txt2}}}
           </div>
           {{!-- <span class='handle' {{sortableHandle}}>&varr;</span> --}}
         </div>
       {{/each}}
-    </div>
     </div>
 
   </template>

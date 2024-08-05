@@ -46,6 +46,7 @@ guest: gast
 has: hat
 intlcode: de-de
 light: licht
+missing: (fehlt)
 no: keine
 plus: plus
 rights: Rechte

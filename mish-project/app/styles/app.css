@@ -834,10 +834,10 @@ div.settings a:hover {
 }
 img.spinner {
   position: fixed !important;
-  left: 30%;
-  top: 30%;
-  height: 40%;
-  width: 40%;
+  left: 35%;
+  top: 35%;
+  height: 30%;
+  width: 30%;
   border-radius: 50%;
   background-color: transparent;
   z-index: 1500;
@@ -892,7 +892,7 @@ div[aria-describedby="textareas"] {
   left: 5px;
   width: 1rem;
   background: transparent;
-  z-index: 2;
+  z-index: 5;
 }
 /*#questionMark {
   position: relative; Makes it visible in the layer above (why?)
@@ -1191,7 +1191,7 @@ img[alt] {
   line-height: 16.5px !important;
   font-variant: normal;
   white-space: nowrap;
-  z-index: 2;
+  z-index: 7;
 }
 /* *** CSS tooltip title-2 for multiliners */
 [title-2] {
@@ -1207,7 +1207,7 @@ img[alt] {
   border: 0.5px #888 solid;
   border-radius: 3px;
   background-color: #cef;
-  padding: 1.5px 2px 3px 5px;
+  padding: 1.5px 2px 3px 3px;
   color: #000;
   font-family: Georgia, "Times New Roman", Times, serif !important;
   font-weight: normal;
@@ -1217,7 +1217,7 @@ img[alt] {
   word-break: keep-all;
   white-space: normal;
   float: left;
-  z-index:2;
+  z-index:7;
 }
 .rootQuest[title-2]:hover::after {
   width: 160px;
@@ -1267,7 +1267,6 @@ img[alt] {
   background: #3b3b3b;
   display: inline-block;
   position: relative;
-  justify-content: center;
   text-align: left;
   padding: 0.5em;
   margin: 1.25px;
@@ -1275,9 +1274,6 @@ img[alt] {
   border-radius: 4px;
   width: 151px;
   z-index: 5;
-}
-.img_mini:hover {
-  z-index: 10;
 }
 .img_mini.symlink {
   border-bottom: 1px solid #0b0;
@@ -1313,16 +1309,17 @@ img[alt] {
   font-size: 84%;
   white-space: nowrap;
   color: #fd0;
+  background-color: #3b3b3b;
+  width: max-content;
   text-align: left;
   cursor: default;
   margin: 0;
   padding: 0 0.25rem 0 0;
   border-radius: 3px;
 }
-.img_mini .img_name:hover {
-  color: #ff3;
-  background-color: #3b3b3b;
-  width: max-content;
+.img_mini .img_name:hover, .img_mini:hover {
+  z-index: 10;
+  color: #ff4;
 }
 .js-draggableObject.show-inline.ember-view:hover {
   position: relative;
