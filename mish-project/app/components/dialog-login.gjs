@@ -58,10 +58,10 @@ export class DialogLogin extends Component {
         this.z.imdbPath = '';
         this.z.imdbRoot = '';
         this.z.imdbTree = null;
-        this.z.closeDialog(dialogLoginId);
         this.z.openMainMenu();
         document.querySelector('.mainMenu select').focus();
       }
+      this.z.closeDialog(dialogLoginId);
 
     } else {
       document.getElementById('logInError').style.display = '';
@@ -182,7 +182,7 @@ export class DialogLogin extends Component {
           </p>
           <p style="text-align:left;font-size:85%">
             <pre info="PRE keeps line feeds" style="font-family:'Andale Mono','Cascadia Mono';font-size:97%;margin:0">{{this.allowances}}</pre>{{t 'dialog.rights.footnote1'}}<br>{{t 'dialog.rights.footnote2'}}
-            <br>{{t 'dialog.rights.footnote3'}}
+            <br>{{t 'dialog.rights.footnote3'}}<br>
           </p>
           <p style="text-align:left;font-size:85%;font-weight:bold">
             {{t 'dialog.rights.text1'}}<br>{{t 'dialog.rights.text2'}}<br>{{t 'dialog.rights.text3'}}<br>{{t 'dialog.rights.text4'}}<br>
