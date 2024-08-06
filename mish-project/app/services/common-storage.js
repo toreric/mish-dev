@@ -249,7 +249,9 @@ export default class CommonStorageService extends Service {
     }
     document.querySelector('body').style.background = this.bkgrColor;
     document.querySelector('body').style.color = this.textColor;
-  }
+    for (let a of document.querySelectorAll('.sameBackground')) a.style.background = this.bkgrColor;
+    for (let a of document.querySelectorAll('.sameBackground')) a.style.color = this.textColor;
+}
 
   loli = (text, style) => { // loli = log list with user name
     console.log(this.userName + ': %c' + text, style);
@@ -272,6 +274,11 @@ export default class CommonStorageService extends Service {
     return n.toString();
   }
 
+  removeUnderscore = (textString, noHTML) => {
+    return textString.replace (/_/g, noHTML ? " " : "&nbsp;");
+  }
+
+  //#region cookies
   // Cookie names are mish_lang, mish_bkgr, ...
   setCookie = (cname, cvalue, exminutes) => {
     if (exminutes) {
@@ -301,6 +308,14 @@ export default class CommonStorageService extends Service {
 
   //   #region Server
   //== Server tasks
+
+
+
+
+
+
+
+
   //#region login
   getCredentials = async (username) => {
     username = username.trim();
@@ -450,12 +465,30 @@ export default class CommonStorageService extends Service {
               name: result[j + 3],    // Orig-file base name without extension
               txt1: htmlSafe(result [j + 4]), // xmp.dc.description metadata
               txt2: htmlSafe(result [j + 5]), // xmp.dc.creator metadata
-              symlink: result[j + 6], // SPACE, else the value for linkto
-              linkto: '',             // which is set in refreshAll
+              symlink: result[j + 6], // & or else, the value for linkto
+              linkto: '',             // which is set when reorganized below
               albname: ''             // "    (short name for symlink's original album)
             };
             if (f.txt1.toString() === "-") {f.txt1 = "";}
             if (f.txt2.toString() === "-") {f.txt2 = "";}
+            // From the server: f.symlink=& for ordinary files, else it is the linked-to
+            // relative file path. This is reorganized as follows:
+            //
+            if (f.symlink === '&') {
+              f.symlink = '';
+            } else {
+              f.linkto = f.orig;
+              let tmp = f.symlink;
+              f.orig = tmp;
+              f.symlink = 'symlink';
+              tmp = tmp.replace (/^([.]*\/)+/, that.imdbRoot + "/").replace (/^([^/]*\/)*([^/]+)\/[^/]+$/, "$2");
+              that.loli(f.orig, 'color:red');
+              that.loli(f.linkto, 'color:orange');
+              f.albname = that.removeUnderscore(tmp, true);
+              that.loli(f.albname, 'color:yellow');
+              // tmp = tmp.replace (/^([.]*\/)+/, $ ("#imdbRoot").text () + "/").replace (/^([^/]*\/)*([^/]+)\/[^/]+$/, "$2");
+              // newdata [i].albname = removeUnderscore (tmp, true);
+            }
             j = j + NEPF;
             allfiles.push(f);
           }

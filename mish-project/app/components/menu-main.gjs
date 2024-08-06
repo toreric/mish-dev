@@ -222,18 +222,18 @@ export class MenuMain extends Component {
 
     <div id="menuMain" class="mainMenu" onclick="return false" draggable="false" ondragstart="return false" style="display:none">
 
-      <p onclick="return false" draggable="false" ondragstart="return false" title="Sökning">
+      <p onclick="return false" draggable="false" ondragstart="return false" title-2="Sökning">
         <a class="search" {{on "click" (fn this.findText)}}>Finn bilder <span style="font:normal 1em monospace!important">[F]</span></a>
       </p><br>
 
-      <p onclick="return false" draggable="false" ondragstart="return false" title="Favoritskötsel">
+      <p onclick="return false" draggable="false" ondragstart="return false" title-2="Favoritskötsel">
         <a id ="favorites" {{on "click" (fn this.seeFavorites)}}>Favoritbilder</a>
       </p><br>
 
       <p onclick="return false" draggable="false" ondragstart="return false">
         <a class="" style="color: white;cursor: default">
 
-          <select id="rootSel" title={{t 'albumcollinfo'}} {{on 'change' this.selectRoot}} {{on 'mousedown' (fn this.z.closeDialog dialogAlertId)}}>
+          <select id="rootSel" title-2={{t 'albumcollinfo'}} {{on 'change' this.selectRoot}} {{on 'mousedown' (fn this.z.closeDialog dialogAlertId)}}>
             <option value="" selected disabled hidden>{{t 'selalbumcoll'}}</option>
             {{#each this.z.imdbRoots as |rootChoice|}}
               <option value={{rootChoice}} selected={{eq this.z.imdbRoot rootChoice}}>{{rootChoice}}</option>
@@ -244,12 +244,12 @@ export class MenuMain extends Component {
         </a>
       </p><br>
 
-      <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title={{t 'albumcareinfo'}}>
+      <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title-2="{{t 'albumcareinfo'}} {{t 'for'}} {{this.z.imdbRoot}}{{this.z.imdbDir}}">
     {{!-- return this.intl.t('albumcare') + ' ”' + this.z.imdbDirName + '”'; --}}
-        <a {{on "click" (fn this.albumEdit)}}>{{t 'albumcare'}} <span title={{this.z.imdbDir}}>”{{{this.z.imdbDirName}}}”</span></a>
+        <a {{on "click" (fn this.albumEdit)}}>{{t 'albumcare'}} <span title="">”{{{this.z.imdbDirName}}}”</span></a>
       </p><br>
 
-      <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title={{t 'albumcollshow'}}>
+      <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title-2={{t 'albumcollshow'}}>
         <a {{on "click" (fn this.toggleAlbumTree)}}>{{t 'albumcoll'}} ”{{this.z.imdbRoot}}”</a>
       </p>
 
@@ -259,11 +259,11 @@ export class MenuMain extends Component {
           <span style="margin:0.2rem;padding:0.1rem 0.2rem;float:right" title=""><em>{{t 'totalImgNumber'}}</em>:&nbsp;{{this.totalImgNumber}}</span>
 
           <span>
-            <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title={{t 'closeallalb'}} {{on "click" (fn this.closeAll)}}>{{t 'all'}} {{CL}}</a>
+            <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title-2={{t 'closeallalb'}} {{on "click" (fn this.closeAll)}}>{{t 'all'}} {{CL}}</a>
 
-            <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title={{t 'openallalb'}} {{on "click" (fn this.openAll)}}>{{t 'all'}} {{OP}}</a>
+            <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title-2={{t 'openallalb'}} {{on "click" (fn this.openAll)}}>{{t 'all'}} {{OP}}</a>
 
-            <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title={{t 'showselectedtext'}} {{on "click" (fn this.showSelected)}}>{{t 'showselected'}}</a>
+            <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title-2={{t 'showselectedtext'}} {{on "click" (fn this.showSelected)}}>{{t 'showselected'}}</a>
           </span>
         </span>
         <Tree @tree={{this.tree}} />

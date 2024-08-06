@@ -55,10 +55,16 @@ class Welcome extends Component {
   }
   getCred = async () => {
     if (!this.z.userStatus) { // only once
-      this.z.initBrowser(); // Manipulate browser arrow
-      // Set default background
+      this.z.initBrowser(); // Manipulate browser back-arrow
+
+      // Set default background and text colors
+      // Question: Why misfunctions this (here and below) for '.sameBackground'
+      // elements, while the same code DOES in the 'this.z.toggleBackg' function?
       document.querySelector('body').style.background = this.z.bkgrColor;
       document.querySelector('body').style.color = this.z.textColor;
+      for (let a of document.querySelectorAll('.sameBackground')) a.style.background = this.bkgrColor;
+      for (let a of document.querySelectorAll('.sameBackground')) a.style.color = this.textColor;
+
       // Set a guest user and corresponding allowances
       let allowances = await this.z.getCredentials('Get allowances');
       console.log(allowances);
@@ -92,6 +98,8 @@ class Welcome extends Component {
       }
       document.querySelector('body').style.background = this.z.bkgrColor;
       document.querySelector('body').style.color = this.z.textColor;
+      for (let a of document.querySelectorAll('.sameBackground')) a.style.background = this.bkgrColor;
+      for (let a of document.querySelectorAll('.sameBackground')) a.style.color = this.textColor;
     }
     this.z.openMainMenu();
   }
@@ -104,47 +112,51 @@ const executeOnInsert = modifier((element, [component]) => {
 
 export default class extends Welcome {
   <template>
-    <div {{executeOnInsert this}} style="display:flex;justify-content:space-between;margin:0 0.25rem 0 4rem">
-      {{! Html inserted here will appear beneath the buildStamp div }}
-      <h1 style="margin:0 4rem 0 0;display:inline">{{t "header"}}</h1>
-      <span>
 
-        <button type="button" title="Xperimental" style="background:blueviolet" {{on 'click' (fn this.z.toggleDialog dialogXperId)}}>&nbsp;</button>
+    <div style="position:fixed;top:0;left:0;width:100%;z-index:8">
+      <div {{executeOnInsert this}} class="sameBackground" style="display:flex;justify-content:space-between;margin:0 0.25rem 0 4rem">
+        {{! Html inserted here will appear beneath the buildStamp div }}
+        <h1 style="margin:0 4rem 0 0;display:inline">{{t "header"}}</h1>
+        <span>
 
-        <button type="button" title={{t 'button.backgtitle'}} {{on 'click' (fn this.z.toggleBackg)}}>{{t 'dark'}}/{{t 'light'}}</button>
+          <button type="button" title="Xperimental" style="background:blueviolet" {{on 'click' (fn this.z.toggleDialog dialogXperId)}}>&nbsp;</button>
 
-        <button type="button" {{on 'click' (fn this.openRights)}}>{{t 'button.rightsinfo'}}</button>
+          <button type="button" title={{t 'button.backgtitle'}} {{on 'click' (fn this.z.toggleBackg)}}>{{t 'dark'}}/{{t 'light'}}</button>
 
-        <button type="button" {{on 'click' (fn this.openLogIn)}}>{{t 'button.optlogin'}}</button>
+          <button type="button" {{on 'click' (fn this.openRights)}}>{{t 'button.rightsinfo'}}</button>
 
-      </span>
-      <span>
-        {{t 'loggedIn'}}: <b>{{this.z.userName}}</b> {{t 'with'}} [{{this.z.userStatus}}]-{{t 'rights'}}
-      </span>
+          <button type="button" {{on 'click' (fn this.openLogIn)}}>{{t 'button.optlogin'}}</button>
+
+        </span> &nbsp;
+
+        <span>
+          {{t 'loggedIn'}}: <b>{{this.z.userName}}</b> {{t 'with'}} [{{this.z.userStatus}}]-{{t 'rights'}}
+        </span>
+      </div>
+
+      <div class="sameBackground" style="display:flex;justify-content:space-between;margin:0 0 0 4rem;padding:0 0.25rem 0.125rem 0;border-bottom:1.2pt solid white">
+        <Language />
+        <span>
+
+          {{!-- NOTE: This link is for emergency only if the browser's back arrow fails due
+          to problems in the initBrowser-goBack cooperation in the CommonStorage service:
+          <a {{on 'click' (fn this.z.goBack)}}>&nbsp;&lt;- go back&nbsp;</a> --}}
+
+          {{#if this.z.imdbRoot}}
+            <b>”{{this.z.imdbRoot}}”</b>
+          {{else}}
+            {{t 'noCollSelected'}}
+          {{/if}}
+
+        </span>
+        <span>{{t 'time.text'}}
+          <span><Clock @locale={{this.z.intlCodeCurr}} /></span>
+        </span>
+      </div>
     </div>
-
-    <div style="display:flex;justify-content:space-between;margin:0 0.25rem 0 4rem">
-      <Language />
-      <span>
-
-        {{!-- NOTE: This link is for emergency only if the browser's back arrow fails due
-        to problems in the initBrowser-goBack cooperation in the CommonStorage service:
-        <a {{on 'click' (fn this.z.goBack)}}>&nbsp;&lt;- go back&nbsp;</a> --}}
-
-        {{#if this.z.imdbRoot}}
-          <b>”{{this.z.imdbRoot}}”</b>
-        {{else}}
-          {{t 'noCollSelected'}}
-        {{/if}}
-
-      </span>
-      <span>{{t 'time.text'}}
-        <span><Clock @locale={{this.z.intlCodeCurr}} /></span>
-      </span>
-    </div>
+    <ButtonsLeft />
     <Header />
     <ViewMain />
-    <ButtonsLeft />
     <MenuMain />
     <DialogLogin />
     <DialogText />

@@ -1001,7 +1001,7 @@ div[aria-describedby="textareas"] {
   border-radius: 2px;
   text-align: left;
   background: #222;
-  opacity: 0.9;
+  opacity: 0.95;
   z-index: 12;
 }
 .mainMenu p {
@@ -1028,7 +1028,7 @@ div[aria-describedby="textareas"] {
 .mainMenu p a {
   text-decoration: none;
   font-weight: bold;
-  opacity: 0.9;
+  opacity: 0.95;
   font-size: 90%;
   border: 0.5px solid lightgray;
   border-radius: inherit;
@@ -1197,6 +1197,7 @@ img[alt] {
 /* *** CSS tooltip title-2 for multiliners */
 [title-2] {
   position: relative;
+  opacity: 1;
 }
 [title-2]:hover::after,
 [title-2]:active::after {
@@ -1207,7 +1208,7 @@ img[alt] {
   text-align: left;
   border: 0.5px #888 solid;
   border-radius: 3px;
-  background-color: #cef;
+  background-color: #bef;
   padding: 1.5px 2px 3px 3px;
   color: #000;
   font-family: Georgia, "Times New Roman", Times, serif !important;
@@ -1319,7 +1320,7 @@ img[alt] {
   border-radius: 3px;
 }
 .img_mini .img_name:hover, .img_mini:hover {
-  z-index: 10;
+  z-index: 6;
   color: #ff4;
 }
 .js-draggableObject.show-inline.ember-view:hover {
@@ -1680,7 +1681,7 @@ input[type="radio"] + label {
 div.settings {
   position: absolute;
   background: inherit;
-  opacity: 0.9;
+  opacity: 0.95;
   display: block;
   font-family: Tahoma, Verdana, Geneva, sans-serif;
   font-size: 75%;

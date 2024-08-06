@@ -83,15 +83,14 @@ class SubAlbums extends Component {
     <p class='albumsHdr' draggable="false" ondragstart="return false">
       <div class="miniImgs">
         {{#if this.z.imdbRoot}}
-          <span title={{this.z.imdbDir}}>
+          <span title-2="{{this.z.imdbRoot}}{{this.z.imdbDir}}">
             <b>”{{{this.z.imdbDirName}}}”</b>
             {{t 'has'}} {{this.nsub}} {{this.sual}}
-            <span title={{t 'plusExplain'}}>{{this.nadd}}</span>
+            <span title-2={{t 'plusExplain'}}>{{this.nadd}}</span>
           </span>
           <br>
           {{#each this.z.subaIndex as |i|}}
-            <div class="subAlbum" title={{this.imdbDirs i}}
-              {{on 'click' (fn this.z.openAlbum i)}}>
+            <div class="subAlbum" title="" {{on 'click' (fn this.z.openAlbum i)}}>
               <a class="imDir" style="background:transparent" title-2="Album ”{{this.dirName i}}”">
                   <img src={{this.setLabel i}} alt="Album ”{{this.dirName i}}”"><br>
                 <span style="font-size:85%;color:{{this.z.subColor}}">{{this.dirName i}}</span>

@@ -40,6 +40,7 @@ textEdit:     Untertiteln bearbeiten/speichern, ausgeblendete Alben anzeigen³
 
 all: Alle
 dark: Dunkel
+for: für
 #NOTE: Choose a guest: value which exists in the _imdb_settings.sqlite 'user' table!
 #      Else use instead the standard name guest!
 guest: gast
