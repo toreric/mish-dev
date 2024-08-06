@@ -152,7 +152,8 @@ dialog:
       modal: Modales Textfenster öffnen
     toggle: Textfenster öffnen/schließen
 erase: löschen
-goto: Gehe zu
+gotext: Original in
+goto: Gehe zum
 header: Mish Bildergalerie
 hello:
   world:  Guten Tag, Welt!

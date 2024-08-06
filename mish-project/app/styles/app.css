@@ -1278,7 +1278,7 @@ img[alt] {
   z-index: 5;
 }
 .img_mini.symlink {
-  border-bottom: 1px solid #0b0;
+  border-bottom: 1.5px solid #0b0;
 }
 /* Image size-limits */
 .img_mini img {
@@ -1470,8 +1470,8 @@ img.mark {
 button.goAlbum {
   display: none;
   position: absolute;
-  left: -137.5px;
-  top: 0.55em;
+  left: 0.55rem;
+  top: 0.55rem;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 80%;
   padding: 0 0.25em 0.15em 0.25em;

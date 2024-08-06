@@ -4,7 +4,7 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 // import { action } from '@ember/object';
-// import { eq } from 'ember-truth-helpers';
+import { eq } from 'ember-truth-helpers';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
@@ -126,39 +126,42 @@ class MiniImages extends Component {
     this.lastDragged = draggedModel;
   }
 
-  shortenNoTags = (txt) => {
-    let tmp = txt.toString().replace(/<(?:.|\n)*?>/gm, ""); // Remove <tags>
-    return tmp.slice(0, 23) ? tmp.slice(0, 23) : '&nbsp;';
-  }
-
   noTags = (txt) => {
     let tmp = txt.toString().replace(/<(?:.|\n)*?>/gm, ""); // Remove <tags>
     return tmp ? tmp : ' ';
   }
 
-  handleVisualClass = {
-    UP: 'sortable-handle-up',
-    DOWN: 'sortable-handle-down',
-    LEFT: 'sortable-handle-left',
-    RIGHT: 'sortable-handle-right',
-  };
+  noTagsShort = (txt) => {
+    let tmp = txt.toString().replace(/<(?:.|\n)*?>/gm, ""); // Remove <tags>
+    return tmp.slice(0, 23) ? tmp.slice(0, 23) : '&nbsp;';
+  }
+
+  homeAlbum = (path) => { // was parAlb
+    let dir = path.replace(/^([.]*\/)*/, '/').replace(/\/[^/]+$/, '');
+    this.z.loli('Find the home album for ' + path + '=>' + dir);
+    this.z.openAlbum(this.z.imdbDirs.indexOf(dir));
+  }
 
   itemVisualClass = 'sortable-item--active';
 
   <template>
 
     {{#if this.z.imdbRoot}}
-      <p>
-        <span style="display:none">Press to (re)load images for
-        <button id="loadMiniImages" type="button" {{on 'click' this.allFiles}}>{{{this.z.imdbDirName}}}</button></span>
-        Last dragged item: {{this.lastDragged.name}}
-      </p>
+
+      {{!-- Here is an invisible button for album images load, used
+            programmatically by z.openAlbum, display it for manual use! --}}
+      <p><span style="display:none">Press to (re)load images for
+      <button id="loadMiniImages" type="button" {{on 'click' this.allFiles}}>{{{this.z.imdbDirName}}}</button></span>
+      Last dragged item: {{this.lastDragged.name}}</p>
+
     {{else}}
-      <p style="text-align:center">
-        {{t 'albumcollselect'}}
-      </p>
+
+      {{!-- Remind of choosing a root collection/album --}}
+      <p style="text-align:center">{{t 'albumcollselect'}}</p>
+
     {{/if }}
 
+    {{!-- The album's thumnail images are a display group --}}
     <div class="alb_mini" style="width:;display:flex;
       flex-wrap:wrap;padding:0;align-items:baseline;
       justify-content:left;position:relative"
@@ -167,28 +170,42 @@ class MiniImages extends Component {
         onChange=this.reorderItems
         disabled=false
         itemVisualClass=this.itemVisualClass
-        handleVisualClass=this.handleVisualClass
       }}
     >
+      {{!-- The thumnail images are displayed --}}
       {{#each this.items as |item|}}
-        <div class="img_mini"
+        <div class="img_mini {{item.symlink}}"
           {{sortableItem
             model=item
             spacing=0
             distance=5
           }}
         >
-          <img src="{{item.mini}}" class="left-click" title="" draggable="false" ondragstart="return false">
+          {{!-- Arrange the go-to-origin-button for linked images --}}
+          {{#if item.symlink}}
+            <button class="goAlbum" title-2="{{t 'gotext'}} ”{{item.albname}}”" {{on 'click' (fn this.homeAlbum item.orig)}}> {{t 'goto'}} </button>
+          {{/if}}
+
+          {{!-- Here comes the thumbnails --}}
+          <img src="{{item.mini}}" class="left-click" title="{{this.z.imdbRoot}}{{item.linkto}}" draggable="false" ondragstart="return false">
+
+          {{!-- This is the image name, should be unique --}}
           <div class="img_name" style="display:none">
             {{item.name}}
           </div>
+
+          {{!-- The text for Xmp.dc.description metadata --}}
           <div class="img_txt1" draggable="false" ondragstart="return false" title-2="{{this.noTags item.txt1}}">
-            {{{this.shortenNoTags item.txt1}}}
+            {{{this.noTagsShort item.txt1}}}
           </div>
+
+          {{!-- The text for Xmp.dc.creator metadata --}}
           <div class="img_txt2" draggable="false" ondragstart="return false" title-2="{{this.noTags item.txt2}}">
-            {{{this.shortenNoTags item.txt2}}}
+            {{{this.noTagsShort item.txt2}}}
+
           </div>
           {{!-- <span class='handle' {{sortableHandle}}>&varr;</span> --}}
+
         </div>
       {{/each}}
     </div>

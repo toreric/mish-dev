@@ -205,7 +205,7 @@ export default class CommonStorageService extends Service {
     this.imdbDirIndex = i;
     let h = this.albumHistory;
     if (h.length > 0 && h[h.length - 1] !== i) this.albumHistory.push(i);
-    let a = this.imdbRoot + '/' + this.imdbDir;
+    let a = this.imdbRoot + this.imdbDir;
     this.loli('opened album ' + i + ' ' + a, 'color:lightgreen' );
     // Reset colors in the album tree of the main menu
     for (let tmp of document.querySelectorAll('span.album')) {
@@ -221,7 +221,6 @@ export default class CommonStorageService extends Service {
       if (selected.nodeName !== 'DIV') break;
       selected.style.display = '';
     }
-    this.loli('allFiles from getImages()');
 
     document.querySelector('img.spinner').style.display = '';
     this.allFiles = await this.getImages();
@@ -229,7 +228,6 @@ export default class CommonStorageService extends Service {
 
     this.loli(this.allFiles, 'color:lightgreen');
     console.log(this.allFiles);
-    // await new Promise (z => setTimeout (z, 1500)); // await allFiles/getImages?
     document.getElementById('loadMiniImages').click();
   }
 
@@ -471,24 +469,30 @@ export default class CommonStorageService extends Service {
             };
             if (f.txt1.toString() === "-") {f.txt1 = "";}
             if (f.txt2.toString() === "-") {f.txt2 = "";}
+
             // From the server: f.symlink=& for ordinary files, else it is the linked-to
             // relative file path. This is reorganized as follows:
-            //
+            f.linkto = f.orig; // The real file path
             if (f.symlink === '&') {
               f.symlink = '';
             } else {
-              f.linkto = f.orig;
               let tmp = f.symlink;
-              f.orig = tmp;
+              f.orig = tmp; // The actual path in this context
               f.symlink = 'symlink';
-              tmp = tmp.replace (/^([.]*\/)+/, that.imdbRoot + "/").replace (/^([^/]*\/)*([^/]+)\/[^/]+$/, "$2");
-              that.loli(f.orig, 'color:red');
-              that.loli(f.linkto, 'color:orange');
+              tmp = tmp.replace(/^([.]*\/)+/, that.imdbRoot + "/").replace(/^([^/]*\/)*([^/]+)\/[^/]+$/, "$2");
               f.albname = that.removeUnderscore(tmp, true);
-              that.loli(f.albname, 'color:yellow');
-              // tmp = tmp.replace (/^([.]*\/)+/, $ ("#imdbRoot").text () + "/").replace (/^([^/]*\/)*([^/]+)\/[^/]+$/, "$2");
-              // newdata [i].albname = removeUnderscore (tmp, true);
             }
+
+            // Explanations among printouts, the namings may seem weird!
+            let tmp = f.symlink ? f.symlink : 'ordinary';
+            that.loli(tmp, 'color:white');
+            // The real file reference, if symlink: it's resolution (from here):
+            that.loli('  reference (orig): ' + f.orig, 'color:brown');
+            // The real file path (root to be added),same as f.orig if ordinary:
+            that.loli(' formally (linkto): ' + f.linkto, 'color:orange');
+            // This file's real album's readable short name:
+            that.loli('in album (albname): ' + f.albname, 'color:yellow');
+
             j = j + NEPF;
             allfiles.push(f);
           }
@@ -538,8 +542,8 @@ export default class CommonStorageService extends Service {
     var menuButton = document.getElementById("menuButton");
     menuMain.style.display = '';
     await new Promise (z => setTimeout (z, 9)); // slow response
-    menuButton.innerHTML = '<span class="menu">×</span>';
     await new Promise (z => setTimeout (z, 9)); // slow response
+    menuButton.innerHTML = '<span class="menu">×</span>';
     this.loli('opened main menu');
     return '';
   }

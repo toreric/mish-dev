@@ -56,6 +56,7 @@ export class MenuMain extends Component {
     let arr = tmp.split(LF);
     let aboutNode = arr.shift();
     this.z.imdbPath = arr.shift();
+    this.z.loli('imdPath: ' + this.z.imdbPath, 'color:orange');
     let n = arr.length/3;
     this.z.imdbDirs = arr.splice(0, n);
     this.z.imdbCoco = arr.splice(0, n);
@@ -101,10 +102,10 @@ export class MenuMain extends Component {
     const result = Object.values(tree.root);
     //end https://stackoverflow.com/questions/72006110/convert-file-path-into-object
 
+    console.log(result);
     this.z.imdbTree = result;
-
+    this.z.loli(this.z.imdbTree);
     // this.z.loli(this.z.imdbDirs);
-    // console.log(result);
     // this.z.loli('imdbTree ' + n + LF + JSON.stringify(result, null, 2)); //human readable
     await new Promise (z => setTimeout (z, 199)); // Wait for album tree to settle
     this.closeAll(); // fold all nodes except 0
