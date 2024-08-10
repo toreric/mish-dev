@@ -56,6 +56,8 @@ subalbums: underalbum
 with: med
 
 albumcollselect: Vänligen välj en albumsamling!
+albumMissing: Det här albumet kan inte visas, kanske<br>
+              på grund av otillräckliga rättigheter
 albumSelectInfo: "Välj här en album-
                  samling om den inte
                  redan är förvald.

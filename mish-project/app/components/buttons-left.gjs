@@ -12,22 +12,24 @@ import { dialogHelpId } from './dialog-help';
 // Left buttons, most without href attribute
 export class ButtonsLeft extends Component {
   @service('common-storage') z;
+  @service intl;
 
   someFunction = (param) => {this.z.loli(param);}
 
   toggleMainMenu = () => {
     if (document.getElementById("menuMain").style.display === "") {
-      this.z.closeMainMenu('main menu button');
+      this.z.closeMainMenu('main menu button'); // with msg
     } else {
       this.z.openMainMenu();
     }
   }
 
   toggleNameView = () => {
-    let value = document.querySelector('div.img_name').style.display ? '' : 'none';
+    let value = this.z.displayNames ? 'none' : '';
     for (let name of document.querySelectorAll('div.img_name')) {
       name.style.display = value;
     }
+    this.z.displayNames = value;
   }
 
   <template>
@@ -36,7 +38,7 @@ export class ButtonsLeft extends Component {
 
     <div id="smallButtons" draggable="false" ondragstart="return false" style="z-index:10">
 
-      <a id="menuButton" class="smBu" title-2={{t 'buttons.left.main'}} draggable="false" ondragstart="return false" {{on 'click' this.toggleMainMenu}} style="font-family: Comic Sans MS;width:2rem;line-height:80%"><span class="menu">☰</span></a>
+      <a id="menuButton" class="smBu" title-2={{t 'buttons.left.main'}} draggable="false" ondragstart="return false" {{on 'click' this.toggleMainMenu}} style="font-family: Comic Sans MS;width:2rem;line-height:80%"><span class="menu">𝌆</span></a>
 
       <a id="questionMark" class="smBu" title-2={{t 'buttons.left.help'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.z.toggleDialog dialogHelpId false)}}>?</a>
 

@@ -11,6 +11,7 @@ import { makeDialogDraggable } from 'dialog-draggable';
 
 import { Clock } from './clock';
 import { ButtonsLeft } from './buttons-left';
+import { ButtonsRight } from './buttons-right';
 import { DialogAlert } from './dialog-alert';
 import { DialogHelp } from './dialog-help';
 import { DialogLogin } from './dialog-login'
@@ -32,12 +33,26 @@ const CRLF = '&#13;&#10;'; // May be used in 'title': the only mod.possible!
 
 makeDialogDraggable();
 
+const resetBorders = () => { //Copy of this.z.resetBorders()
+  // Reset all mini-image borders and SRC attributes
+  var minObj = document.querySelectorAll('.img_mini img.left-click');
+  for (let min of minObj) {
+    min.style.border = '0.25px solid #888';
+    min.classList.remove('dotted');
+  }
+}
+
+// Detect any mouse click
+document.addEventListener('click', (event) => {
+  resetBorders();
+});
+
 // Detect closing click outside menuMain (tricky case!)
 document.addEventListener('mousedown', (event) => {
   var tmp0 = document.getElementById('menuButton');
   var tmp1 = document.getElementById('menuMain');
   if (tmp1.style.display !== 'none' && event.target !== tmp0 && event.target !== tmp1 && !tmp0.contains(event.target) && !tmp1.contains(event.target)) {
-    tmp0.innerHTML = '<span class="menu">☰</span>';
+    tmp0.innerHTML = '<span class="menu">𝌆</span>';
     tmp1.style.display = 'none';
     console.log('-"-: closed main menu');
   }
@@ -113,9 +128,11 @@ const executeOnInsert = modifier((element, [component]) => {
 export default class extends Welcome {
   <template>
 
-    <div style="position:fixed;top:0;left:0;width:100%;z-index:8">
-      <div {{executeOnInsert this}} class="sameBackground" style="display:flex;justify-content:space-between;margin:0 0.25rem 0 4rem">
-        {{! Html inserted here will appear beneath the buildStamp div }}
+    <div style="position:relative;top:0.5rem;left:0;width:100%;z-index:-2">
+      <div {{executeOnInsert this}} class="sameBackground" style="display:flex;justify-content:space-between;margin:-0.9rem 3.25rem 0 4rem;padding-top:0.5rem">
+        {{!-- Html inserted here will appear above upon the buildStamp div --}}
+        {{!-- So, better give some visibility space for the buildstamp:    --}}
+        {{!-- <div style="background:transparent;height:0.75rem;width:100%">&nbsp;</div><br> --}}
         <h1 style="margin:0 4rem 0 0;display:inline">{{t "header"}}</h1>
         <span>
 
@@ -134,12 +151,13 @@ export default class extends Welcome {
         </span>
       </div>
 
-      <div class="sameBackground" style="display:flex;justify-content:space-between;margin:0 0 0 4rem;padding:0 0.25rem 0.125rem 0;border-bottom:1.2pt solid white">
+      <div class="sameBackground" style="display:flex;justify-content:space-between;margin:0 3.25rem 0 4rem">
         <Language />
         <span>
 
-          {{!-- NOTE: This link is for emergency only if the browser's back arrow fails due
-          to problems in the initBrowser-goBack cooperation in the CommonStorage service:
+          {{!-- NOTE: This link is for emergency only if the browser's back arrow fails
+          due to problems in the initBrowser-goBack cooperation in the CommonStorage
+          service:
           <a {{on 'click' (fn this.z.goBack)}}>&nbsp;&lt;- go back&nbsp;</a> --}}
 
           {{#if this.z.imdbRoot}}
@@ -154,7 +172,9 @@ export default class extends Welcome {
         </span>
       </div>
     </div>
+    <div id='highUp'></div>
     <ButtonsLeft />
+    <ButtonsRight />
     <Header />
     <ViewMain />
     <MenuMain />
@@ -164,5 +184,6 @@ export default class extends Welcome {
     <DialogAlert />
     <DialogXper />
     <Spinner />
+    <div id='lowDown'></div>
   </template>;
 }

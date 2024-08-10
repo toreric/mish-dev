@@ -42,7 +42,7 @@ export default class CommonStorageService extends Service {
   @tracked  picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
   @tracked  picName = 'IMG_1234a2023_nov_19'; //actual/current image name
   @tracked  subColor = '#aef'; //subalbum legends
-        get subaIndex() {
+        get subaIndex() { //subalbum index array for 'presentation thumbnails'
               let subindex = [];
               for (let i=this.imdbDirIndex+1;i<this.imdbDirs.length;i++) {
                 if (this.imdbDirs[i] && this.imdbDirs[i].startsWith(this.imdbDir)) {
@@ -74,7 +74,7 @@ export default class CommonStorageService extends Service {
   @tracked  b = '';
   @tracked  c = '';
   @tracked  d = '';
-  @tracked  e = '';
+  displayNames = 'none';
 
 
   //   #region Allowance
@@ -199,6 +199,10 @@ export default class CommonStorageService extends Service {
   }
 
   openAlbum = async (i) => {
+    this.alertRemove();
+    this.cleanMiniImgs();
+    document.querySelector('img.spinner').style.display = '';
+
     i = Number(i); // important!
     if (i === 0) this.albumHistory = [0]; // Recover from possible "browser disorder"
     this.imdbDir = this.imdbDirs[i];
@@ -221,14 +225,13 @@ export default class CommonStorageService extends Service {
       if (selected.nodeName !== 'DIV') break;
       selected.style.display = '';
     }
-
-    document.querySelector('img.spinner').style.display = '';
     this.allFiles = await this.getImages();
-    document.querySelector('img.spinner').style.display = 'none';
 
     this.loli(this.allFiles, 'color:lightgreen');
     console.log(this.allFiles);
+
     document.getElementById('loadMiniImages').click();
+    document.querySelector('img.spinner').style.display = 'none';
   }
 
   toggleBackg = () => {
@@ -255,6 +258,10 @@ export default class CommonStorageService extends Service {
     console.log(this.userName + ': %c' + text, style);
   }
 
+  cleanMiniImgs = () => { // Clean any displayed
+    for (let pic of document.querySelectorAll('div.img_mini')) pic.remove();
+  }
+
   alertMess = async (mess, hdr) => {
     this.infoHeader = this.intl.t('infoHeader'); // default header
     if (hdr) this.infoHeader = hdr;
@@ -262,8 +269,16 @@ export default class CommonStorageService extends Service {
     this.openDialog('dialogAlert');
     // this.openModalDialog('dialogAlert');
   }
+  alertRemove = () => {
+    this.closeDialog('dialogAlert');
+  }
 
-  totalNumber = () => { // of original images
+  albumAllImg = (i) => { // number of original + symlink images in album 'i'
+    let c = this.imdbCoco[i];
+    return eval(c.replace(/^.*(\(.+\)).*$/, '$1'));
+  }
+
+  totalOrigImg = () => { // number of original images in total
     let n = 0;
     let c = this.imdbCoco;
     for (let i=0;i<c.length;i++) {
@@ -274,6 +289,64 @@ export default class CommonStorageService extends Service {
 
   removeUnderscore = (textString, noHTML) => {
     return textString.replace (/_/g, noHTML ? " " : "&nbsp;");
+  }
+
+  escapeDots = (textString) => {
+    // Used for file names when used in CSS, #<id> etc.
+    return textString.replace (/\./g, "\\.");
+  }
+
+  resetBorders = () => { // Reset all mini-image borders and SRC attributes
+    var minObj = document.querySelectorAll('.img_mini img.left-click');
+    for (let min of minObj) {
+      min.style.border = '0.25px solid #888';
+      min.classList.remove('dotted');
+    }
+    // Resetting all minifile SRC attributes ascertains that any minipic is shown
+    // (maybe created just now, e.g. at upload, any outside-click will show them)
+    // NOTE: Is this outdated?
+    for (var i=0; i<minObj.length; i++) {
+      var minipic = minObj[i].src;
+      minObj[i].removeAttribute('src');
+      minObj[i].setAttribute('src', minipic);
+    }
+  }
+  markBorders = (picName) => { // Mark a mini-image border
+    document.querySelector('#i' + this.escapeDots(picName) + ' img.left-click').classList.add('dotted');
+  }
+
+  // Position to a minipic and highlight its border
+  gotoMinipic = (namepic) => {
+    let hs = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    let h2 = hs/2;
+    let p = document.getElementById('i' + this.escapeDots(namepic));
+    let y = p.offsetTop ? p.offsetTop : 0;
+    y = p.offsetHeight ? y + p.offsetHeight/2 : y;
+    let t = document.getElementById('highUp').offsetTop;
+    let b = document.getElementById('lowDown').offsetTop;
+    y -= h2;
+    if (y < t) y = t;
+    if (y > b - hs) y = b - hs;
+    scrollTo(null, y + 100);
+    this.resetBorders(); // Reset all borders
+    this.markBorders(namepic); // Mark this one
+    //   timer = setTimeout (repeater, 500);
+    //   if (spinner.style.display === "none") {
+    //     clearTimeout (timer);
+    //     let p = $ ("#i" + escapeDots (namepic));
+    //     let y;
+    //     if (p.offset ()) y = p.offset ().top + p.height ()/2;
+    //     let t = $ ("#highUp").offset ().top;
+    //     let b = $ ("#lowDown").offset ().top;
+    //     y -= h2;
+    //     if (y < t) y = t;
+    //     if (y > b - hs) y = b - hs;
+    //     await new Promise (z => setTimeout (z, 321));
+    //     scrollTo (null, y);
+    //     resetBorders (); // Reset all borders
+    //     markBorders (namepic); // Mark this one
+    //   }
+    // } ());
   }
 
   //#region cookies
@@ -483,15 +556,15 @@ export default class CommonStorageService extends Service {
               f.albname = that.removeUnderscore(tmp, true);
             }
 
-            // Explanations among printouts, the namings may seem weird!
-            let tmp = f.symlink ? f.symlink : 'ordinary';
-            that.loli(tmp, 'color:white');
-            // The real file reference, if symlink: it's resolution (from here):
-            that.loli('  reference (orig): ' + f.orig, 'color:brown');
-            // The real file path (root to be added),same as f.orig if ordinary:
-            that.loli(' formally (linkto): ' + f.linkto, 'color:orange');
-            // This file's real album's readable short name:
-            that.loli('in album (albname): ' + f.albname, 'color:yellow');
+            // Explanations among printouts, the namings may seem weird - be careful!
+            // let tmp = f.symlink ? f.symlink : 'ordinary';
+            // that.loli(tmp, 'color:white');
+            // // The real file reference, if symlink: it's resolution (from here):
+            // that.loli('  reference (orig): ' + f.orig, 'color:brown');
+            // // The real file path (root to be added),same as f.orig if ordinary:
+            // that.loli(' formally (linkto): ' + f.linkto, 'color:orange');
+            // // This file's real album's readable short name:
+            // that.loli('in album (albname): ' + f.albname, 'color:yellow');
 
             j = j + NEPF;
             allfiles.push(f);
@@ -548,14 +621,14 @@ export default class CommonStorageService extends Service {
     return '';
   }
 
-  closeMainMenu = async (p) => {
+  closeMainMenu = async (msg) => {
     var menuMain = document.getElementById("menuMain");
     var menuButton = document.getElementById("menuButton");
     menuMain.style.display = 'none';
     await new Promise (z => setTimeout (z, 9)); // slow response
-    menuButton.innerHTML = '<span class="menu">☰</span>';
+    menuButton.innerHTML = '<span class="menu">𝌆</span>';
     await new Promise (z => setTimeout (z, 9)); // slow response
-    this.loli('closed main menu, ' + p);
+    this.loli('closed main menu, ' + msg);
     return '';
   }
 

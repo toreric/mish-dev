@@ -169,7 +169,7 @@ export class MenuMain extends Component {
   // album root/collection (imdbRoot) is chosen (then open it)
   checkRoot = () => {
     if (document.getElementById('dialogAlert').hasAttribute('open')) {
-      this.z.closeDialog('dialogAlert');
+      this.z.alertRemove();
       return true;
     }
     if (!this.z.imdbRoot) {
@@ -215,7 +215,7 @@ export class MenuMain extends Component {
 
   // Count the number of images in this album
   totalImgNumber = () => {
-    let a = this.z.totalNumber();
+    let a = this.z.totalOrigImg();
     return a;
   }
 
@@ -234,7 +234,7 @@ export class MenuMain extends Component {
       <p onclick="return false" draggable="false" ondragstart="return false">
         <a class="" style="color: white;cursor: default">
 
-          <select id="rootSel" title-2={{t 'albumcollinfo'}} {{on 'change' this.selectRoot}} {{on 'mousedown' (fn this.z.closeDialog dialogAlertId)}}>
+          <select id="rootSel" title-2={{t 'albumcollinfo'}} {{on 'change' this.selectRoot}} {{on 'mousedown' (fn this.z.alertRemove)}}>
             <option value="" selected disabled hidden>{{t 'selalbumcoll'}}</option>
             {{#each this.z.imdbRoots as |rootChoice|}}
               <option value={{rootChoice}} selected={{eq this.z.imdbRoot rootChoice}}>{{rootChoice}}</option>
@@ -251,7 +251,7 @@ export class MenuMain extends Component {
       </p><br>
 
       <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title-2={{t 'albumcollshow'}}>
-        <a {{on "click" (fn this.toggleAlbumTree)}}>{{t 'albumcoll'}} ”{{this.z.imdbRoot}}”</a>
+        <a {{on "click" (fn this.toggleAlbumTree)}}><pre style="margin:0">{{t 'albumcoll'}} ”{{this.z.imdbRoot}}”     ⌵  </pre></a>
       </p>
 
 

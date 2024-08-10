@@ -56,6 +56,9 @@ subalbums: Unteralben
 with: mit
 
 albumcollselect: Bitte eine Albumsammlung auswählen!
+albumMissing: Dieses Album kann, möglicherweise<br>
+              aufgrund unzureichender Rechte,<br>
+              nicht angezeigt werden
 albumSelectInfo: "Eine Albumsammlung hier auswählen,
                  falls diese nicht bereits vorausgewählt ist.
                  Möglicherweise gibt es noch mehr

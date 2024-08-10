@@ -36,13 +36,13 @@ class SubAlbums extends Component {
   @service('common-storage') z;
   @service intl;
 
-  get nsub() {
+  get nsub() { // No of subalbums to this album
     let res =  this.z.subaIndex.length;
     if (res < 1) res = this.intl.t('no'); // 'inget'
     return res;
   }
 
-  get sual() {
+  get sual() { // Subalbum(s) text
     if (this.z.subaIndex.length === 1) {
       return this.intl.t('subalbum');
     } else {
@@ -50,7 +50,7 @@ class SubAlbums extends Component {
     }
   }
 
-  get nadd() {
+  get nadd() { // No of addititonal subsub...albums to this album
     // this.z.loli(this.z.imdbDirIndex);
     let coco = '';
     if (this.z.imdbCoco) coco = this.z.imdbCoco[this.z.imdbDirIndex];
@@ -111,7 +111,7 @@ class MiniImages extends Component {
   @tracked lastDragged;
   @tracked items = [];
 
-  allFiles = () => {
+  allFiles = () => { // Copies 'allFiles' to 'items'
     this.items = [];
     let m = this.z.allFiles.length;
     for (let i=0;i<m;i++) {
@@ -136,10 +136,24 @@ class MiniImages extends Component {
     return tmp.slice(0, 23) ? tmp.slice(0, 23) : '&nbsp;';
   }
 
-  homeAlbum = (path) => { // was parAlb
+  homeAlbum = async (path, fileName) => { // was parAlb
+    // Convert the relative path of the linked-file target,
+    // to conform with z.imdbDirs server list, rooted at album root
     let dir = path.replace(/^([.]*\/)*/, '/').replace(/\/[^/]+$/, '');
-    this.z.loli('Find the home album for ' + path + '=>' + dir);
-    this.z.openAlbum(this.z.imdbDirs.indexOf(dir));
+    let name = path.replace(/^([^/]*\/)*([^/]+)\/[^/]+$/, "$2")
+    // dir is the home album (w index i) for path
+    let i = this.z.imdbDirs.indexOf(dir);
+    if (i < 0) {
+      this.z.alertRemove();
+      this.z.alertMess(this.intl.t('albumMissing') + ':<br><br><p style="width:100%;text-align:center;margin:0">”' + this.z.removeUnderscore(name) + '”</p>');
+      return false;
+    } else {
+      this.z.openAlbum(i);
+      let size = this.z.albumAllImg(i);
+      // Allow for the rendering of mini images and preload of view images
+      await new Promise (z => setTimeout (z, size*60 + 100));
+      this.z.gotoMinipic(fileName);
+    }
   }
 
   itemVisualClass = 'sortable-item--active';
@@ -174,7 +188,7 @@ class MiniImages extends Component {
     >
       {{!-- The thumnail images are displayed --}}
       {{#each this.items as |item|}}
-        <div class="img_mini {{item.symlink}}"
+        <div id="i{{item.name}}" class="img_mini {{item.symlink}}"
           {{sortableItem
             model=item
             spacing=0
@@ -183,14 +197,14 @@ class MiniImages extends Component {
         >
           {{!-- Arrange the go-to-origin-button for linked images --}}
           {{#if item.symlink}}
-            <button class="goAlbum" title-2="{{t 'gotext'}} ”{{item.albname}}”" {{on 'click' (fn this.homeAlbum item.orig)}}> {{t 'goto'}} </button>
+            <button class="goAlbum" title-2="{{t 'gotext'}} ”{{item.albname}}”" {{on 'click' (fn this.homeAlbum item.orig item.name)}}> {{t 'goto'}} </button>
           {{/if}}
 
-          {{!-- Here comes the thumbnails --}}
+          {{!-- Here comes the thumbnail --}}
           <img src="{{item.mini}}" class="left-click" title="{{this.z.imdbRoot}}{{item.linkto}}" draggable="false" ondragstart="return false">
 
           {{!-- This is the image name, should be unique --}}
-          <div class="img_name" style="display:none">
+          <div class="img_name" style="display:{{this.z.displayName}}">
             {{item.name}}
           </div>
 
