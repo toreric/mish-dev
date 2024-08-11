@@ -17,18 +17,15 @@ export class ButtonsRight extends Component {
 
   <template>
 
-    <!-- ///// RIGHT BUTTONS (NOTE: without href attributes) /////  -->
+    {{!-- RIGHT BUTTONS without href attribute --}}
     <div class="nav_links" draggable="false" ondragstart="return false">
-      <!-- NEXT-ARROW-BUTTONS -->
-      <a class="nav_" draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'showNext true')}} title="Nästa
-bild [>]">&gt;</a> &nbsp;<br>
-      <a class="nav_" draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'showNext false')}} title="Föregående
-bild [<]">&lt;</a> &nbsp;<br>
-      <!-- CLOSE AND GO BACK TO MINIPICS -->
-      <a class="nav_" id="go_back" title="Återgå
-[Esc]"{{on 'click' (fn this.someFunction 'hideShow')}} src="/images/grid.svg"> </a> &nbsp;<br>
+      {{!-- NEXT-ARROW-BUTTONS --}}
+      <a class="nav_" draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'showNext true')}} title="{{t 'gonext'}}">&gt;</a> &nbsp;<br>
+      <a class="nav_" draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'showNext false')}} title="{{t 'goprev'}}">&lt;</a> &nbsp;<br>
+      {{!-- CLOSE AND GO BACK TO MINIPICS --}}
+      <a class="nav_" id="go_back" title="{{t 'gomini'}}"{{on 'click' (fn this.someFunction 'hideShow')}} src="/images/grid.svg"> </a> &nbsp;<br>
 
-      {{!-- <!-- AUTO-SLIDE-SHOW SELECT -->
+      {{!-- AUTO-SLIDE-SHOW SELECT
       <a class="nav_ toggleAuto" draggable="false" ondragstart="return false" {{action 'toggleAuto'}} style="font-size:1.2em;font-family:monospace" title="Automatiskt
     bildbyte [A]">AUTO</a><br>
       <!-- AUTO-SLIDE-SHOW SPEED SELECT -->

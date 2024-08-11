@@ -11,12 +11,13 @@ export default class CommonStorageService extends Service {
   //   #region Variables
   //== Significant Mish system global variables
 
+  @tracked  aboutThis = 'MISH ';    //info about this version etc. for footer
+  @tracked  albumHistory = [0];     //album index visit history
   @tracked  bkgrColor = '#111';     //default background color
   @tracked  credentials = '';       //user credentials: \n-string from db
         get defaultUserName() { return `${this.intl.t('guest')}`; }
   @tracked  freeUsers = 'guest...'; //user names without passwords (set by DialogLogin)
   @tracked  imdbCoco = '';          //content counters etc. for imdbDirs (*)
-  @tracked  albumHistory = [0];     //album index visit history
   @tracked  imdbDir = '';           //actual/current (sub)album directory (server IMDB_DIR)
   @tracked  imdbDirIndex = 0;       //actual/current (sub)album directory index
         get imdbDirName() {
@@ -66,15 +67,16 @@ export default class CommonStorageService extends Service {
   //== Miniature and show images etc. information
 
   @tracked  navKeys = false; // Protects from unintended use of L/R arrows
-  @tracked  allFiles = [];
+  @tracked  allFiles = [];   // Image file information object
 
+  @tracked  maxWarning = 0; // Maximum number if images in an album (recommendation)
   @tracked  numHidden = ' 0';
   @tracked  numMarked = '0';
   @tracked  numShown = ' 0';
   @tracked  b = '';
   @tracked  c = '';
   @tracked  d = '';
-  displayNames = 'none';
+  @tracked  displayNames = '';
 
 
   //   #region Allowance
@@ -150,7 +152,7 @@ export default class CommonStorageService extends Service {
     if (allow.deleteImg) {  // NOTE *  If ...
       allow.delcreLink = 1; // NOTE *  then set this too
       i = allowance.indexOf("delcreLink");
-      // Also set the source value (in this way since allowvalue[i] = "1" in't allowed: compiler error: "4 is read-only" if 4 = the index value)
+      // Also set the source value (in this way since allowvalue[i] = "1" isn't allowed: compiler error: "4 is read-only" if 4 = the index value)
       allowvalue = allowvalue.slice(0, i - allowvalue.length) + "1" + allowvalue.slice(i + 1 - allowvalue.length);
     }
     if (allow.notesEdit) { // NOTE *  If ...
@@ -232,7 +234,18 @@ export default class CommonStorageService extends Service {
 
     document.getElementById('loadMiniImages').click();
     document.querySelector('img.spinner').style.display = 'none';
-  }
+    if (this.allFiles.length > this.maxWarning && this.allow.imgUpload) {
+      this.alertMess(this.intl.t('sizewarning') + ' ' + this.maxWarning + ' ' + this.intl.t('images') + '!');
+    }
+    // Preload the show images
+    let preloadShowImg = []; // Preload show images:
+    for (let file of this.allFiles) {
+      let img = new Image();
+      img.src = "rln" + file.show;
+      preloadShowImg.push(img);
+    }
+    console.log(preloadShowImg);
+}
 
   toggleBackg = () => {
     if (this.bkgrColor === '#cbcbcb') {
@@ -250,8 +263,8 @@ export default class CommonStorageService extends Service {
     }
     document.querySelector('body').style.background = this.bkgrColor;
     document.querySelector('body').style.color = this.textColor;
-    for (let a of document.querySelectorAll('.sameBackground')) a.style.background = this.bkgrColor;
-    for (let a of document.querySelectorAll('.sameBackground')) a.style.color = this.textColor;
+    // for (let a of document.querySelectorAll('.sameBackground')) a.style.background = this.bkgrColor;
+    // for (let a of document.querySelectorAll('.sameBackground')) a.style.color = this.textColor;
 }
 
   loli = (text, style) => { // loli = log list with user name
@@ -262,9 +275,8 @@ export default class CommonStorageService extends Service {
     for (let pic of document.querySelectorAll('div.img_mini')) pic.remove();
   }
 
-  alertMess = async (mess, hdr) => {
+  alertMess = async (mess) => {
     this.infoHeader = this.intl.t('infoHeader'); // default header
-    if (hdr) this.infoHeader = hdr;
     this.infoMessage = mess;
     this.openDialog('dialogAlert');
     // this.openModalDialog('dialogAlert');
@@ -386,6 +398,36 @@ export default class CommonStorageService extends Service {
 
 
 
+  //#region execute
+  execute = async (command) => { // Execute on the server, return a promise
+    return new Promise ( (resolve, reject) => {
+      command = command.replace (/%/g, "%25");
+      var xhr = new XMLHttpRequest ();
+      xhr.open ('GET', 'execute/', true, null, null);
+      xhr.setRequestHeader('command', encodeURIComponent(command));
+      xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
+      xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
+      xhr.setRequestHeader('picfound', this.picFound); // All 'widhtin 255' characters
+      xhr.onload = function () {
+        if (this.status >= 200 && this.status < 300) {
+          var data = xhr.response.trim ();
+          resolve (data);
+        } else {
+          reject ({
+            status: this.status,
+            statusText: xhr.statusText
+          });
+        }
+      };
+      xhr.onerror = function () {
+        reject ({
+          status: this.status,
+          statusText: xhr.statusText
+        });
+      };
+      xhr.send ();
+    });
+  }
 
   //#region login
   getCredentials = async (username) => {
@@ -556,7 +598,7 @@ export default class CommonStorageService extends Service {
               f.albname = that.removeUnderscore(tmp, true);
             }
 
-            // Explanations among printouts, the namings may seem weird - be careful!
+            // // Explanations among printouts, the namings may seem weird - be careful!
             // let tmp = f.symlink ? f.symlink : 'ordinary';
             // that.loli(tmp, 'color:white');
             // // The real file reference, if symlink: it's resolution (from here):

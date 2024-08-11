@@ -32,7 +32,7 @@ module.exports = function(app) { // Start module.exports
   let cmdasync = async(cmd) => {return execSync(cmd)}
   // ===== ABOUT COMMAND EXECUTION
   // ===== `execP` provides a non-blocking, promise-based approach to executing commands, which is generally preferred in Node.js applications for better performance and easier asynchronous handling.
-  // ===== `cmdasync`, using `execSync`, offers a synchronous alternative that blocks the event loop, which might be useful in specific scenarios but is generally not recommended for most use cases due to its blocking nature. `a = await cmdasync(cmd)` and `a = execSync(cmd)` achieve the same end result of executing a command synchronously. The usage differs based on the context(asynchronous with `await` for `cmdasync` versus direct synchronous call for `execSync`). The choice between them depends on whether you're working within an asynchronous function and your preference for error handling and code style.
+  // ===== `cmdasync`, using `execSync`, offers a synchronous alternative that blocks the event loop, which might be useful in specific scenarios but is generally not recommended for most use cases due to its blocking nature. `a = await cmdasync(cmd)` and `a = execSync(cmd)` achieve the same end result of executing a command synchronously. The usage differs based on the context (asynchronous with `await` for `cmdasync` versus direct synchronous call for `execSync`). The choice between them depends on whether you're working within an asynchronous function and your preference for error handling and code style.
 
   // 30 black, 31 red, 32 green, 33 yellow, 34 blue, 35 magenta, 36 cyan, 37 white, 0 default
   // Add '1;' for bright, e.g. '\x1b[1;33m' is bright yellow, while '\x1b[31m' is red, etc.
@@ -83,10 +83,32 @@ module.exports = function(app) { // Start module.exports
     next() // pass control to the next handler
   })
 
+  //region execute
+  // ##### Execute a shell command
+  app.get ('/execute', async (req, res) => {
+    var cmd = decodeURIComponent(req.get('command'))
+    console.log(BYEL + cmd + RSET)
+    try {
+      // NOTE: exec seems to use ``-ticks, not $()
+      // Hence don't pass "`" if you don't escape it
+      cmd = cmd.replace (/`/g, "\\`")
+      // console.log(BYEL + cmd + RSET)
+      var resdata = await execP (cmd)
+      res.location ('/')
+      res.send (resdata)
+      //res.end ()
+    } catch (err) {
+      /*console.error ("`" + cmd + "`")
+      console.error (err.message)
+      res.location ('/')*/
+      res.send (err.message)
+    }
+  })
+
   //#region login
   // ##### Return a user's credentials for login, or return
   //       all available user statuses and their allowances
-  app.get('/login',(req, res) => {
+  app.get('/login', (req, res) => {
     var name = decodeURIComponent(req.get('username'))
     console.log('  userName: "' + name + '"')
     var password = ''
@@ -303,11 +325,11 @@ module.exports = function(app) { // Start module.exports
     allfiles = undefined
     //OLD: IMDB_DIR = req.params.imagedir.replace(/@/g, "/")
 
-    console.log('IMAGELIST')
+    // console.log('IMAGELIST')
 
     findFiles(IMDB_DIR).then(async function(files) {
 
-      console.log('files from FINDFILES:', files)
+      // console.log('files from FINDFILES:', files)
 
       if (!files) {files = []}
       var origlist = ''
@@ -447,13 +469,13 @@ module.exports = function(app) { // Start module.exports
   // ===== Read a directory's file content; when passing remove broken links
   function findFiles(dirName) {
 
-    console.log('FINDFILES')
-    console.log('rln' + IMDB + dirName)
+    // console.log('FINDFILES')
+    // console.log('rln' + IMDB + dirName)
 
     return fs.readdirAsync('rln' + IMDB + dirName).map(function(fileName) { // Cannot use mapSeries here(why?)
       var filepath = path.join(IMDB + dirName, fileName)
 
-      console.log('filepath:', filepath)
+      // console.log('filepath:', filepath)
 
       var brli = brokenLink(filepath) // refers to server root
       if (brli) {
@@ -488,7 +510,7 @@ module.exports = function(app) { // Start module.exports
     if (origlist) {
       let files = origlist.split('\n')
 
-      console.log('origlist:', files)
+      // console.log('origlist:', files)
 
       allfiles = ''
       for (let file of files) {
@@ -505,7 +527,7 @@ module.exports = function(app) { // Start module.exports
   }
   async function pkgonefile(file) {
 
-    console.log('PKGONEFILE', file)
+    // console.log('PKGONEFILE', file)
 
     let origfile = file
     let symlink = await symlinkFlag(origfile)
@@ -546,7 +568,7 @@ module.exports = function(app) { // Start module.exports
       txt12 = txt12 +'\n'+ tmp
     }
     // Triggers browser autorefresh but no meaning to refresh symlinks:
-    let qrn = '?' + Math.random().toString(36).substr(2,4)
+    let qrn = '?' + Math.random().toString(36).substring(2,6)
     if (symlink !== '&') {qrn = ''}
     // origfile without root-link-name, nov 2014, e.g. imdb/aa/bb => aa/bb :
     // origfile without the whole IMDB-path, jan 2022:

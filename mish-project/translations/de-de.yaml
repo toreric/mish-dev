@@ -45,6 +45,8 @@ for: für
 #      Else use instead the standard name guest!
 guest: gast
 has: hat
+home: zum anfang von
+images: Bilder
 intlcode: de-de
 light: licht
 missing: (fehlt)
@@ -155,6 +157,12 @@ dialog:
       modal: Modales Textfenster öffnen
     toggle: Textfenster öffnen/schließen
 erase: löschen
+gomini: "Zurück\n
+        [Esc]"
+gonext: "Nächstes\n
+        Bild [>]"
+goprev: "Vorheriges\n
+        Bild [<]"
 gotext: Original in
 goto: Gehe zum
 header: Mish Bildergalerie
@@ -169,6 +177,7 @@ reloadApp: Die App neu laden!
 select:
   language: Sprache wählen
   languagetext: Deutsch
+sizewarning: M E N G E N W A R N U N G<br><br>Mehr als
 spinwait: W A R T E N — oder mit einem Klick abbrechen, wenn es zu lange dreht
 time:
   text: "Zeitangabe:"

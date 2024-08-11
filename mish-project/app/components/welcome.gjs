@@ -70,15 +70,13 @@ class Welcome extends Component {
   }
   getCred = async () => {
     if (!this.z.userStatus) { // only once
-      this.z.initBrowser(); // Manipulate browser back-arrow
 
-      // Set default background and text colors
-      // Question: Why misfunctions this (here and below) for '.sameBackground'
-      // elements, while the same code DOES in the 'this.z.toggleBackg' function?
-      document.querySelector('body').style.background = this.z.bkgrColor;
-      document.querySelector('body').style.color = this.z.textColor;
-      for (let a of document.querySelectorAll('.sameBackground')) a.style.background = this.bkgrColor;
-      for (let a of document.querySelectorAll('.sameBackground')) a.style.color = this.textColor;
+      // Settings
+      this.z.initBrowser();   // Manipulate browser back-arrow
+      this.z.maxWarning = 20; // Set recommended album size
+
+      // Read the build stamp file
+      this.z.aboutThis = 'MISH ' + await this.z.execute('cat buildstamp.txt');
 
       // Set a guest user and corresponding allowances
       let allowances = await this.z.getCredentials('Get allowances');
@@ -113,8 +111,8 @@ class Welcome extends Component {
       }
       document.querySelector('body').style.background = this.z.bkgrColor;
       document.querySelector('body').style.color = this.z.textColor;
-      for (let a of document.querySelectorAll('.sameBackground')) a.style.background = this.bkgrColor;
-      for (let a of document.querySelectorAll('.sameBackground')) a.style.color = this.textColor;
+      // for (let a of document.querySelectorAll('.sameBackground')) a.style.background = this.bkgrColor;
+      // for (let a of document.querySelectorAll('.sameBackground')) a.style.color = this.textColor;
     }
     this.z.openMainMenu();
   }
@@ -127,8 +125,9 @@ const executeOnInsert = modifier((element, [component]) => {
 
 export default class extends Welcome {
   <template>
+    <div id='highUp'></div>
 
-    <div style="position:relative;top:0.5rem;left:0;width:100%;z-index:-2">
+    <div style="position:relative;top:0.5rem;left:0;width:100%">
       <div {{executeOnInsert this}} class="sameBackground" style="display:flex;justify-content:space-between;margin:-0.9rem 3.25rem 0 4rem;padding-top:0.5rem">
         {{!-- Html inserted here will appear above upon the buildStamp div --}}
         {{!-- So, better give some visibility space for the buildstamp:    --}}
@@ -155,12 +154,18 @@ export default class extends Welcome {
         <Language />
         <span>
 
-          {{!-- NOTE: This link is for emergency only if the browser's back arrow fails
-          due to problems in the initBrowser-goBack cooperation in the CommonStorage
-          service:
+          {{!-- NOTE: This extra commented-out  link is for emergency only if the
+          browser's back arrow fails due to problems in the initBrowser-goBack
+          cooperation in the CommonStorage service:
           <a {{on 'click' (fn this.z.goBack)}}>&nbsp;&lt;- go back&nbsp;</a> --}}
 
           {{#if this.z.imdbRoot}}
+            {{#if this.z.imdbDir}}
+              <a class="" {{on 'click' (fn this.z.openAlbum 0)}}>
+                ⌂
+                <span style="font-variant:all-small-caps;font-family:Arial,Helvetica,sans-serif;font-size:85%">{{t 'home'}}&nbsp;</span>
+              </a>
+            {{/if}}
             <b>”{{this.z.imdbRoot}}”</b>
           {{else}}
             {{t 'noCollSelected'}}
@@ -172,7 +177,6 @@ export default class extends Welcome {
         </span>
       </div>
     </div>
-    <div id='highUp'></div>
     <ButtonsLeft />
     <ButtonsRight />
     <Header />
@@ -184,6 +188,8 @@ export default class extends Welcome {
     <DialogAlert />
     <DialogXper />
     <Spinner />
+
     <div id='lowDown'></div>
+    <p style="width:100%;text-align:center">{{this.z.aboutThis}}</p>
   </template>;
 }

@@ -2141,7 +2141,7 @@ a {
 }
 a:hover {
   text-decoration: none;
-  color: #7df;
+  color: deeppink;
 }
 .dropzone .dz-preview .dz-remove {
   background-color: white;

@@ -45,6 +45,8 @@ for: för
 #      Else use instead the standard name guest!
 guest: gäst
 has: har
+images: bilder
+home: till början av
 intlcode: sv-se
 light: ljus
 missing: (saknas)
@@ -155,6 +157,12 @@ dialog:
       modal: Öppna modalt textfönster
     toggle: Öppna/stäng textfönster
 erase: radera
+gomini: "Återgå\n
+        [Esc]"
+gonext: "Nästa\n
+        bild [>]"
+goprev: "Föregående\n
+        bild [<]"
 gotext: originalet i
 goto: Gå till
 header: Mish bildgalleri
@@ -169,6 +177,7 @@ reloadApp: Ladda om appen!
 select:
   language: Välj språk
   languagetext: Svenska
+sizewarning: M Ä N G D V A R N I N G<br><br>Fler än
 spinwait: V Ä N T A — eller stoppa med klick om det snurrar för länge
 time:
   text: Klockan är

@@ -146,7 +146,7 @@ class MiniImages extends Component {
     if (i < 0) {
       this.z.alertRemove();
       this.z.alertMess(this.intl.t('albumMissing') + ':<br><br><p style="width:100%;text-align:center;margin:0">”' + this.z.removeUnderscore(name) + '”</p>');
-      return false;
+      return;
     } else {
       this.z.openAlbum(i);
       let size = this.z.albumAllImg(i);

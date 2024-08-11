@@ -55,6 +55,7 @@ export class MenuMain extends Component {
     let tmp = await this.z.getAlbumDirs(allow.textEdit);
     let arr = tmp.split(LF);
     let aboutNode = arr.shift();
+    this.z.aboutThis += ' using ' + aboutNode;
     this.z.imdbPath = arr.shift();
     this.z.loli('imdPath: ' + this.z.imdbPath, 'color:orange');
     let n = arr.length/3;

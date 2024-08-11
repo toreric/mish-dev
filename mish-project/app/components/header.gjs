@@ -1,4 +1,5 @@
-//== Mish Header component
+//== Mish temporary Header component
+//   NOTE: this is a testing component to be eventually removed!
 
 import Component from '@glimmer/component';
 import { fn } from '@ember/helper';
@@ -32,8 +33,9 @@ export default class Header extends Component {
     {{this.z.intlCodeCurr}} {{t "price_banner" product='A (1)' price=76.5}}
     <span style="font-size:85%">&nbsp; &nbsp; &nbsp; Default laguage is set in <strong style="font-size:85%">routes/application.js</strong></span> --}}
 
-    {{! Dialog-testing buttons }}
     <p>
+      Dialog-testing buttons:
+      &nbsp;
       <button type="button" {{on 'click' (fn this.z.toggleDialog dialogTextId 0)}}>{{t 'dialog.text.toggle'}}</button>
       <button type="button" {{on 'click' (fn this.z.openDialog dialogTextId 1)}}>{{t 'dialog.text.open.origpos'}}</button>
       &nbsp;
