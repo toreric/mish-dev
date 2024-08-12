@@ -53,7 +53,7 @@ export class DialogXper extends Component {
         </button><div style="display:flex;justify-content:center">
           <div title-2="Här visas CSS: title-2">
           <br>&nbsp; <br>
-            Förvisning av<br>CSS: title-2
+            För visning av<br>CSS: title-2
           </div>
         </div>
         <br>

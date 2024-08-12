@@ -144,9 +144,11 @@ class MiniImages extends Component {
     // dir is the home album (w index i) for path
     let i = this.z.imdbDirs.indexOf(dir);
     if (i < 0) {
-      this.z.alertRemove();
-      this.z.alertMess(this.intl.t('albumMissing') + ':<br><br><p style="width:100%;text-align:center;margin:0">”' + this.z.removeUnderscore(name) + '”</p>');
-      return;
+      if (document.getElementById(dialogAlertId).open) {
+        this.z.alertRemove();
+      } else {
+        this.z.alertMess(this.intl.t('albumMissing') + ':<br><br><p style="width:100%;text-align:center;margin:0">”' + this.z.removeUnderscore(name) + '”</p>');
+      }
     } else {
       this.z.openAlbum(i);
       let size = this.z.albumAllImg(i);

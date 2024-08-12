@@ -77,8 +77,8 @@ class Welcome extends Component {
       this.z.initBrowser();   // Manipulate browser back-arrow
       this.z.maxWarning = 20; // Set recommended album size
 
-      // Read the build stamp files (nodestamp.txt may be initially missing)
-      this.z.aboutThis = 'Mish ' + await this.z.execute('cat buildstamp.txt') + ' ' + await this.z.execute('cat nodestamp.txt');
+      // Read the build stamp files (nodestamp.txt may be initially missing) etc.
+      this.z.aboutThis = 'Mish ' + await this.z.execute('cat buildstamp.txt') + ' ' + await this.z.execute('cat nodestamp.txt') + ' and Glimmer by Ember<br>' + await this.z.execute('head -n1 LICENSE.txt');
 
       // Set a guest user and corresponding allowances
       let allowances = await this.z.getCredentials('Get allowances');
@@ -165,7 +165,7 @@ export default class extends Welcome {
             {{#if this.z.imdbDir}}
               <a class="" {{on 'click' (fn this.z.openAlbum 0)}}>
                 ⌂
-                <span style="font-variant:all-small-caps;font-family:Arial,Helvetica,sans-serif;font-size:85%">{{t 'home'}}&nbsp;</span>
+                <span style="font-variant:all-small-caps;font-family:Arial,Helvetica,sans-serif;font-size:90%">{{t 'home'}}&nbsp;</span>
               </a>
             {{/if}}
             <b>”{{this.z.imdbRoot}}”</b>
@@ -192,8 +192,8 @@ export default class extends Welcome {
     <Spinner />
 
     <div id='lowDown'></div>
-    <p style="text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:70%">
-      {{this.z.aboutThis}}
+    <p style="text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:77%">
+      {{{this.z.aboutThis}}}
       <br>
       <a id="do_mail" style="font-size:2rem;margin:0" class="smBu" title={{t 'buttons.left.mail'}} {{on 'click' (fn this.someFunction 'doMail')}} src="/images/mail.svg">
       </a>
