@@ -62,6 +62,8 @@ class Welcome extends Component {
   @service('common-storage') z;
   @service intl;
 
+  someFunction = (param) => {this.z.loli(param);}
+
   openRights = () => {
     this.z.openModalDialog(dialogRightsId, 0);
   }
@@ -75,8 +77,8 @@ class Welcome extends Component {
       this.z.initBrowser();   // Manipulate browser back-arrow
       this.z.maxWarning = 20; // Set recommended album size
 
-      // Read the build stamp file
-      this.z.aboutThis = 'MISH ' + await this.z.execute('cat buildstamp.txt');
+      // Read the build stamp files (nodestamp.txt may be initially missing)
+      this.z.aboutThis = 'Mish ' + await this.z.execute('cat buildstamp.txt') + ' ' + await this.z.execute('cat nodestamp.txt');
 
       // Set a guest user and corresponding allowances
       let allowances = await this.z.getCredentials('Get allowances');
@@ -128,7 +130,7 @@ export default class extends Welcome {
     <div id='highUp'></div>
 
     <div style="position:relative;top:0.5rem;left:0;width:100%">
-      <div {{executeOnInsert this}} class="sameBackground" style="display:flex;justify-content:space-between;margin:-0.9rem 3.25rem 0 4rem;padding-top:0.5rem">
+      <div {{executeOnInsert this}} class="sameBackground" style="display:flex;justify-content:space-between;margin:0 3.25rem 0 4rem">
         {{!-- Html inserted here will appear above upon the buildStamp div --}}
         {{!-- So, better give some visibility space for the buildstamp:    --}}
         {{!-- <div style="background:transparent;height:0.75rem;width:100%">&nbsp;</div><br> --}}
@@ -190,6 +192,15 @@ export default class extends Welcome {
     <Spinner />
 
     <div id='lowDown'></div>
-    <p style="width:100%;text-align:center">{{this.z.aboutThis}}</p>
+    <p style="text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:70%">
+      {{this.z.aboutThis}}
+      <br>
+      <a id="do_mail" style="font-size:2rem;margin:0" class="smBu" title={{t 'buttons.left.mail'}} {{on 'click' (fn this.someFunction 'doMail')}} src="/images/mail.svg">
+      </a>
+
+      <a id="netMeeting" class="smBu" title={{t 'buttons.left.meet'}}
+      href="https://meet.jit.si/Minnenfr%C3%A5nS%C3%A4var%C3%A5dalenochHolm%C3%B6n" target="jitsi_window" draggable="false" ondragstart="return false" style="font-size:1.85rem;margin:0;padding:0 0.4rem 0.3rem 0.2rem" onclick="this.hide">▣</a>
+
+    </p>
   </template>;
 }

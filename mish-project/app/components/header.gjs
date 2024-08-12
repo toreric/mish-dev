@@ -15,7 +15,7 @@ export default class Header extends Component {
   @service('common-storage') z;
   @service intl;
 
-  <template><div style="margin:0.25rem 4rem 0 4rem;padding:0">
+  <template><div class="tmpHeader" style="margin:0 4rem;padding:0;display:none">
 
     {{!-- <p class="buttons">
       <span>&nbsp; &nbsp; &nbsp; Testing: </span>

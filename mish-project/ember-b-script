@@ -6,7 +6,7 @@
 prodcat="../public/"
 messcat="../"
 # Produce a build stamp message
-mestxt='BUILD '`date +%y%m%d-%H%M`
+mestxt='build '`date +%y%m%d-%H%M`
 echo "${mestxt} during work "
 echo "${mestxt} during work " > ${messcat}buildstamp.txt
 ember b -prod --output-path=$prodcat --watch true
@@ -14,9 +14,9 @@ ember b -prod --output-path=$prodcat --watch true
 # NOTE: If --watch true is set, the lines below don't
 # process until build watch is broken manually with ^C
 echo "Producing build timestamp ..."
-mestxt='BUILD '`date +%y%m%d-%H%M`
+mestxt='build '`date +%y%m%d-%H%M`
 echo $mestxt
-hint=' · NOTE: Not for MS IE · '
+hint=' · Not for MS IE · '
 echo $mestxt$hint > ${messcat}buildstamp.txt
 # cat ${prodcat}index.html | sed "s&\ *<body>\$&<body><div id=\"buildStamp\">$mestxt$hint</div>&" > /tmp/index.html
 # cp -v /tmp/index.html ${prodcat}index.html

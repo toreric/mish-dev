@@ -53,12 +53,12 @@ export class ButtonsLeft extends Component {
 
       <a id="saveOrder" class="smBu" title={{t 'buttons.left.save'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'saveOrder(true)')}}>S</a>
 
-      <a id="do_mail" class="smBu" title={{t 'buttons.left.mail'}} {{on 'click' (fn this.someFunction 'doMail')}} src="/images/mail.svg" style="display:"></a>
+      {{!-- <a id="do_mail" class="smBu" title={{t 'buttons.left.mail'}} {{on 'click' (fn this.someFunction 'doMail')}} src="/images/mail.svg" style="display:"></a> --}}
 
       <a class="smBu" draggable="false" ondragstart="return false" title={{t 'buttons.left.up'}} style="font:bold 190% sans-serif;line-height:90%" onclick="window.scrollTo(0,0)">↑</a>
 
-      <a id="netMeeting" class="smBu" title={{t 'buttons.left.meet'}}
-      href="https://meet.jit.si/Minnenfr%C3%A5nS%C3%A4var%C3%A5dalenochHolm%C3%B6n" target="jitsi_window" draggable="false" ondragstart="return false" style="display:;padding:0 0.25em 0.2em 0.125em;line-height:1.25em" onclick="this.hide">▣</a>
+      {{!-- <a id="netMeeting" class="smBu" title={{t 'buttons.left.meet'}}
+      href="https://meet.jit.si/Minnenfr%C3%A5nS%C3%A4var%C3%A5dalenochHolm%C3%B6n" target="jitsi_window" draggable="false" ondragstart="return false" style="display:;padding:0 0.25em 0.2em 0.125em;line-height:1.25em" onclick="this.hide">▣</a> --}}
 
     </div>
   </template>

@@ -162,16 +162,22 @@ class MiniImages extends Component {
 
     {{#if this.z.imdbRoot}}
 
-      {{!-- Here is an invisible button for album images load, used
-            programmatically by z.openAlbum, display it for manual use! --}}
-      <p><span style="display:none">Press to (re)load images for
-      <button id="loadMiniImages" type="button" {{on 'click' this.allFiles}}>{{{this.z.imdbDirName}}}</button></span>
-      Last dragged item: {{this.lastDragged.name}}</p>
+      <p class="tmpHeader" style="display:none">
+
+        {{!-- Here is an invisible button for album images load, used
+        programmatically by z.openAlbum, display it for manual use! --}}
+        <span style="display:none">
+          Press to (re)load images for
+          <button id="loadMiniImages" type="button" {{on 'click' this.allFiles}}>{{{this.z.imdbDirName}}}</button>
+        </span>
+
+        Last dragged item: {{this.lastDragged.name}}
+      </p>
 
     {{else}}
 
       {{!-- Remind of choosing a root collection/album --}}
-      <p style="text-align:center">{{t 'albumcollselect'}}</p>
+      <p style="text-align:center;margin-right:4rem">{{t 'albumcollselect'}}</p>
 
     {{/if }}
 

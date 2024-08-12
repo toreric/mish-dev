@@ -54,10 +54,12 @@ export class MenuMain extends Component {
     // Retreive album tree of this collection, arg.=true if hidden allowed
     let tmp = await this.z.getAlbumDirs(allow.textEdit);
     let arr = tmp.split(LF);
-    let aboutNode = arr.shift();
-    this.z.aboutThis += ' using ' + aboutNode;
+
+    // The two first lines (shifted off) have other information
+    await this.z.execute('echo "' + arr.shift() + '" > nodestamp.txt');
     this.z.imdbPath = arr.shift();
     this.z.loli('imdPath: ' + this.z.imdbPath, 'color:orange');
+
     let n = arr.length/3;
     this.z.imdbDirs = arr.splice(0, n);
     this.z.imdbCoco = arr.splice(0, n);

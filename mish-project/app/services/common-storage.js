@@ -11,7 +11,7 @@ export default class CommonStorageService extends Service {
   //   #region Variables
   //== Significant Mish system global variables
 
-  @tracked  aboutThis = 'MISH ';    //info about this version etc. for footer
+  @tracked  aboutThis = '»Mish« ';  //info (to be changed) about Mish build version etc.
   @tracked  albumHistory = [0];     //album index visit history
   @tracked  bkgrColor = '#111';     //default background color
   @tracked  credentials = '';       //user credentials: \n-string from db

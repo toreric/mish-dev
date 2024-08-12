@@ -25,6 +25,15 @@ export class DialogXper extends Component {
     }
   }
 
+  toggleTmpHeader = () => {
+    let elem = document.querySelector('.tmpHeader');
+    let disp = 'none';
+    if (elem.style.display) {
+      disp = '';
+    }
+    for(elem of document.querySelectorAll('.tmpHeader')) elem.style.display = disp;
+  }
+
   <template>
     <dialog id="dialogXper" {{on 'keydown' this.detectEscClose}}>
       <header data-dialog-draggable>
@@ -36,13 +45,22 @@ export class DialogXper extends Component {
         </div>
       </header>
       <main style="text-align:center" style="text-align:center;min-height:10rem">
-        <div style="display:flex;justify-content:center">
-          <div title-2="Endast för visning av CSS: title-2">
+
+        <br>
+        <br>
+        <button type="button" {{on 'click' this.toggleTmpHeader}}>
+          Dölj/visa tillfälligt
+        </button><div style="display:flex;justify-content:center">
+          <div title-2="Här visas CSS: title-2">
           <br>&nbsp; <br>
-            Endast för<br>visning av<br>CSS: title-2
+            Förvisning av<br>CSS: title-2
           </div>
         </div>
         <br>
+        <br>
+        <br>
+        <br>
+
       </main>
       <footer data-dialog-draggable>
         <button type="button" {{on 'click' (fn this.z.closeDialog dialogXperId)}}>{{t 'button.close'}}</button>&nbsp;

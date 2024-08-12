@@ -285,7 +285,7 @@ ul.context-menu--left li.context-menu__item--disabled span {
   display: inline;
 }
 button {
-  border: 0.5px;
+  border: 1.2px solid #888;
   border-radius: 4px;
   cursor: pointer;
 }
@@ -294,7 +294,7 @@ button.dz-buttton:focus {
   border: 0px !important;
 }
 button:focus {
-  border: 1.2px solid #666;
+  border: 1.2px solid #444;
 }
 .ui-menu {
   min-width: 50px;
@@ -899,7 +899,7 @@ div[aria-describedby="textareas"] {
 /*#questionMark {
   position: relative; Makes it visible in the layer above (why?)
 }*/
-#smallButtons a.smBu {
+a.smBu {
   display: inline-block;
   width: 0.85em;
   height: 1em;
@@ -930,12 +930,12 @@ div[aria-describedby="textareas"] {
   height: 0.95em;
   padding: 0;
 }
-#smallButtons a.smBu:hover {
+a.smBu:hover {
   text-decoration: none;
   animation-name: bluefade;
   animation-duration: 0.4s; /* for toutchs */
 }
-#smallButtons a#goTop,
+a#goTop,
 #goTop0 {
   background-color: #444;
   background-image: url(/images/arrUp.png);
@@ -943,14 +943,14 @@ div[aria-describedby="textareas"] {
   background-repeat: no-repeat !important;
   background-position: center !important;
 }
-#smallButtons a#reLd {
+a#reLd {
   background-color: #444;
   background-image: url(/images/reload.png);
   background-size: 0.8em 0.8em !important;
   background-repeat: no-repeat !important;
   background-position: center !important;
 }
-#smallButtons a#do_mail,
+a#do_mail,
 #do_mail0 {
   background-color: #444;
   background-image: url(/images/mail.svg);
@@ -958,12 +958,12 @@ div[aria-describedby="textareas"] {
   background-repeat: no-repeat !important;
   background-position: center !important;
 }
-#smallButtons a#goTop:hover,
-#smallButtons a#toggleHide:hover,
-#smallButtons a#reLd:hover {
+a#goTop:hover,
+a#toggleHide:hover,
+#reLd:hover {
   background-color: #555;
 }
-#smallButtons a#toggleHide,
+a#toggleHide,
 #toggleHide0 {
   background-color: #444;
   background-image: url(/images/eyes-blue.png);
@@ -971,7 +971,7 @@ div[aria-describedby="textareas"] {
   background-repeat: no-repeat !important;
   background-position: center !important;
 }
-#smallButtons a#menuButton {
+a#menuButton {
   background-color: #0085ff;
 }
 #menuButton span.menu {
@@ -984,12 +984,12 @@ div[aria-describedby="textareas"] {
   padding: 0;
   margin: 0 0 -0.2rem 0;
   opacity: 0.5;
-  border: 1px solid darkgray;
+  border: 1px solid #fff;
   border-radius: 2px;
 }
 .langflags.active img {
   opacity: 1;
-  border-color: #333;
+  border: 1.2px solid #999;
 }
 .mainMenu {
   position: fixed;
@@ -1098,7 +1098,7 @@ button[disabled] {
 .albumsHdr {
   background-color: transparent;
   text-align: left;
-  margin: 0;
+  margin: 1.75rem 0 0 0;
 }
 .subAlbum {
   background: transparent;
@@ -1696,7 +1696,7 @@ div.settings {
 }
 select {
   cursor: pointer;
-  border: 0px;
+  border: 1.2px solid #888;
   border-radius: 2.5px;
   background: #ddd;
 }
