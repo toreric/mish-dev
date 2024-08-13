@@ -12,8 +12,7 @@ export class ButtonsRight extends Component {
   @service('common-storage') z;
   @service intl;
 
-  someFunction = (param) => {this.z.loli(param);}
-
+  someFunction = (param) => {this.z.loli(param, 'color:red');}
 
   <template>
 
@@ -23,7 +22,7 @@ export class ButtonsRight extends Component {
       <a class="nav_" draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'showNext true')}} title="{{t 'gonext'}}">&gt;</a> &nbsp;<br>
       <a class="nav_" draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'showNext false')}} title="{{t 'goprev'}}">&lt;</a> &nbsp;<br>
       {{!-- CLOSE AND GO BACK TO MINIPICS --}}
-      <a class="nav_" id="go_back" title="{{t 'gomini'}}"{{on 'click' (fn this.someFunction 'hideShow')}} src="/images/grid.svg"> </a> &nbsp;<br>
+      <a class="nav_" id="go_back" title="{{t 'gomini'}}"{{on 'click' (fn this.z.showImage false)}} src="/images/grid.svg"> </a> &nbsp;<br>
 
       {{!-- AUTO-SLIDE-SHOW SELECT
       <a class="nav_ toggleAuto" draggable="false" ondragstart="return false" {{action 'toggleAuto'}} style="font-size:1.2em;font-family:monospace" title="Automatiskt

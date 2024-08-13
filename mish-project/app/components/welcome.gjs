@@ -62,7 +62,7 @@ class Welcome extends Component {
   @service('common-storage') z;
   @service intl;
 
-  someFunction = (param) => {this.z.loli(param);}
+  someFunction = (param) => {this.z.loli(param, 'color:red');}
 
   openRights = () => {
     this.z.openModalDialog(dialogRightsId, 0);

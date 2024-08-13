@@ -9,6 +9,9 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 import { htmlSafe } from '@ember/template';
+import he from 'he';
+// USE: <div title={{he.decode 'text'}}></div> he = HTML entities
+// or  txt = he.decode('text')  or  txt = he.encode('text')
 
 import sortableGroup from 'ember-sortable/modifiers/sortable-group';
 import sortableItem from 'ember-sortable/modifiers/sortable-item';
@@ -24,10 +27,8 @@ export class ViewMain extends Component {
   @service intl;
 
   <template>
-    <div style="margin:0 0 0 4rem;width:auto;height:auto">
       <SubAlbums />
       <MiniImages />
-    </div>
   </template>
 
 }
@@ -81,7 +82,7 @@ class SubAlbums extends Component {
 
   <template>
     <p class='albumsHdr' draggable="false" ondragstart="return false">
-      <div class="miniImgs">
+      <div class="miniImgs albs">
         {{#if this.z.imdbRoot}}
           <span title-2="{{this.z.imdbRoot}}{{this.z.imdbDir}}">
             <b>”{{{this.z.imdbDirName}}}”</b>
@@ -128,6 +129,7 @@ class MiniImages extends Component {
 
   noTags = (txt) => {
     let tmp = txt.toString().replace(/<(?:.|\n)*?>/gm, ""); // Remove <tags>
+    tmp = he.decode(tmp); // for attributes
     return tmp ? tmp : ' ';
   }
 
@@ -158,78 +160,98 @@ class MiniImages extends Component {
     }
   }
 
+  someFunction = (param) => {this.z.loli(param, 'color:red');}
+
   itemVisualClass = 'sortable-item--active';
 
   <template>
 
-    {{#if this.z.imdbRoot}}
+    <div style="margin:0 0 0 4rem;width:auto;height:auto">
 
-      <p class="tmpHeader" style="display:none">
+      {{#if this.z.imdbRoot}}
 
-        {{!-- Here is an invisible button for album images load, used
-        programmatically by z.openAlbum, display it for manual use! --}}
-        <span style="display:none">
-          Press to (re)load images for
-          <button id="loadMiniImages" type="button" {{on 'click' this.allFiles}}>{{{this.z.imdbDirName}}}</button>
-        </span>
+        <p class="tmpHeader" style="display:none">
 
-        Last dragged item: {{this.lastDragged.name}}
-      </p>
+          {{!-- Here is an invisible button for album images load, used
+          programmatically by z.openAlbum, display it for manual use! --}}
+          <span style="display:none">
+            Press to (re)load images for
+            <button id="loadMiniImages" type="button" {{on 'click' this.allFiles}}>{{{this.z.imdbDirName}}}</button>
+          </span>
 
-    {{else}}
+          Last dragged item: {{this.lastDragged.name}}
+        </p>
 
-      {{!-- Remind of choosing a root collection/album --}}
-      <p style="text-align:center;margin-right:4rem">{{t 'albumcollselect'}}</p>
+      {{else}}
 
-    {{/if }}
+        {{!-- Remind of choosing a root collection/album --}}
+        <p style="text-align:center;margin-right:4rem">{{t 'albumcollselect'}}</p>
 
-    {{!-- The album's thumnail images are a display group --}}
-    <div class="alb_mini" style="width:;display:flex;
-      flex-wrap:wrap;padding:0;align-items:baseline;
-      justify-content:left;position:relative"
-      {{sortableGroup
-        direction='grid'
-        onChange=this.reorderItems
-        disabled=false
-        itemVisualClass=this.itemVisualClass
-      }}
-    >
-      {{!-- The thumnail images are displayed --}}
-      {{#each this.items as |item|}}
-        <div id="i{{item.name}}" class="img_mini {{item.symlink}}"
-          {{sortableItem
-            model=item
-            spacing=0
-            distance=5
-          }}
-        >
-          {{!-- Arrange the go-to-origin-button for linked images --}}
-          {{#if item.symlink}}
-            <button class="goAlbum" title-2="{{t 'gotext'}} ”{{item.albname}}”" {{on 'click' (fn this.homeAlbum item.orig item.name)}}> {{t 'goto'}} </button>
-          {{/if}}
+      {{/if }}
 
-          {{!-- Here comes the thumbnail --}}
-          <img src="{{item.mini}}" class="left-click" title="{{this.z.imdbRoot}}{{item.linkto}}" draggable="false" ondragstart="return false">
+      {{!-- The album's thumnail images are a display group --}}
+      <div class="miniImgs imgs" style="width:;display:flex;
+        flex-wrap:wrap;padding:0;align-items:baseline;
+        justify-content:left;position:relative"
+        {{sortableGroup
+          direction='grid'
+          onChange=this.reorderItems
+          disabled=false
+          itemVisualClass=this.itemVisualClass
+        }}
+      >
+        {{!-- The thumnail images are displayed --}}
+        {{#each this.items as |item|}}
+          <div class="img_mini {{item.symlink}}" id="i{{item.name}}"
+            {{sortableItem
+              model=item
+              spacing=0
+              distance=5
+            }}
+          >
+            {{!-- Arrange the go-to-origin-button for linked images --}}
+            {{#if item.symlink}}
+              <button class="goAlbum" title-2="{{t 'gotext'}} ”{{item.albname}}”" {{on 'click' (fn this.homeAlbum item.orig item.name)}}> {{t 'goto'}} </button>
+            {{/if}}
 
-          {{!-- This is the image name, should be unique --}}
-          <div class="img_name" style="display:{{this.z.displayName}}">
-            {{item.name}}
+            {{!-- Here comes the thumbnail --}}
+            <img src="{{item.mini}}" class="left-click" title="{{this.z.imdbRoot}}{{item.linkto}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage item.name item.show)}}>
+
+            {{!-- This is the image name, should be unique --}}
+            <div class="img_name" style="display:{{this.z.displayName}}">
+              {{item.name}}
+            </div>
+
+            {{!-- The text from Xmp.dc.description metadata --}}
+            <div class="img_txt1" draggable="false" ondragstart="return false" title-2={{this.noTags item.txt1}}>
+              {{{this.noTagsShort item.txt1}}}
+            </div>
+
+            {{!-- The text from Xmp.dc.creator metadata --}}
+            <div class="img_txt2" draggable="false" ondragstart="return false" title-2={{this.noTags item.txt2}}>
+              {{{this.noTagsShort item.txt2}}}
+
+            </div>
+            {{!-- <span class='handle' {{sortableHandle}}>&varr;</span> --}}
+
           </div>
+        {{/each}}
+      </div>
+    </div>
 
-          {{!-- The text for Xmp.dc.description metadata --}}
-          <div class="img_txt1" draggable="false" ondragstart="return false" title-2="{{this.noTags item.txt1}}">
-            {{{this.noTagsShort item.txt1}}}
-          </div>
+    {{!-- The album's slideshow images come here --}}
+    <div class="img_show" id="d{{this.z.picName}}" draggable="false" style="display:none">
+      <div id="link_show" draggable="false">
 
-          {{!-- The text for Xmp.dc.creator metadata --}}
-          <div class="img_txt2" draggable="false" ondragstart="return false" title-2="{{this.noTags item.txt2}}">
-            {{{this.noTagsShort item.txt2}}}
+        <img src="" draggable="false" ondragstart="return false">
 
-          </div>
-          {{!-- <span class='handle' {{sortableHandle}}>&varr;</span> --}}
+        <a style="top:-2.1em; left:0%; width:100%; border:0;" draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'hideShow')}}><p>återgå <span style="font:normal 1em Arial!important">[esc]</span></p></a>
 
-        </div>
-      {{/each}}
+        <a style="top: 0%; left: 0%; width: 50%; height: 100%;" draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'showNext false')}}><p>föregående<br><span style="font:normal 1em Arial!important">[&lt;]</span></p><br>&nbsp;<br>&nbsp;</a>
+
+        <a style="top: 0%; left: 50%; width: 50%; height: 100%; border-left:0;" draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'showNext true')}}><p>nästa<br><span style="font:normal 1em Arial!important">[&gt;]</span></p><br>&nbsp;<br>&nbsp;</a>
+
+      </div>
     </div>
 
   </template>

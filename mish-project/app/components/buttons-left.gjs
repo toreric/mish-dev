@@ -14,7 +14,7 @@ export class ButtonsLeft extends Component {
   @service('common-storage') z;
   @service intl;
 
-  someFunction = (param) => {this.z.loli(param);}
+  someFunction = (param) => {this.z.loli(param, 'color:red');}
 
   toggleMainMenu = () => {
     if (document.getElementById("menuMain").style.display === "") {

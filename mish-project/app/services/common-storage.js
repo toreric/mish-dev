@@ -41,8 +41,8 @@ export default class CommonStorageService extends Service {
         get picFoundBaseName() { return `${this.intl.t('picfound')}`; }
   // The found pics temporary catalog name is amended with a random 4-code:
   @tracked  picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
-  @tracked  picName = 'IMG_1234a2023_nov_19'; //actual/current image name
-  @tracked  subColor = '#aef'; //subalbum legends
+  @tracked  picName = 'IMG_0'; //actual/current image name
+  @tracked  subColor = '#aef'; //subalbum legends color
         get subaIndex() { //subalbum index array for 'presentation thumbnails'
               let subindex = [];
               for (let i=this.imdbDirIndex+1;i<this.imdbDirs.length;i++) {
@@ -241,7 +241,7 @@ export default class CommonStorageService extends Service {
     let preloadShowImg = []; // Preload show images:
     for (let file of this.allFiles) {
       let img = new Image();
-      img.src = "rln" + file.show;
+      img.src = 'rln' + file.show;
       preloadShowImg.push(img);
     }
     console.log(preloadShowImg);
@@ -316,7 +316,7 @@ export default class CommonStorageService extends Service {
     }
     // Resetting all minifile SRC attributes ascertains that any minipic is shown
     // (maybe created just now, e.g. at upload, any outside-click will show them)
-    // NOTE: Is this outdated?
+    // NOTE: Is this outdated 2024?
     for (var i=0; i<minObj.length; i++) {
       var minipic = minObj[i].src;
       minObj[i].removeAttribute('src');
@@ -360,6 +360,33 @@ export default class CommonStorageService extends Service {
     //   }
     // } ());
   }
+
+    // showImage(false) will close
+    showImage = async (name, path) => {
+      if (name) {
+        // Set the actual picName, do not forget!
+        this.picName = name;
+        // Close the thumbnail view
+        document.querySelector('.miniImgs.imgs').style.display = 'none';
+        // Load the show image source path and set it's id="dname"
+        let pic = document.querySelector('#link_show img');
+        pic.src = 'rln' + path;
+        pic.setAttribute('id', 'd' + name)
+        // Open the show image view
+        document.querySelector('.img_show').style.display = 'flex';
+      } else {
+        // Close the show image view
+        document.querySelector('.img_show').style.display = 'none';
+        // Open the thumbnail view
+        document.querySelector('.miniImgs.imgs').style.display = 'flex';
+        // Get the actual pcName (perhaps another than before)
+        // await new Promise (z => setTimeout (z, 199));
+        this.picName = (document.querySelector('.img_show').getAttribute('id')).slice(1);
+        // Outline the closed image
+        // await new Promise (z => setTimeout (z, 199));
+        this.markBorders(this.picName);
+      }
+    }
 
   //#region cookies
   // Cookie names are mish_lang, mish_bkgr, ...
