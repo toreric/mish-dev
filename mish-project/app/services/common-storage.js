@@ -69,7 +69,7 @@ export default class CommonStorageService extends Service {
   @tracked  navKeys = false; // Protects from unintended use of L/R arrows
   @tracked  allFiles = [];   // Image file information object
 
-  @tracked  maxWarning = 0; // Maximum number if images in an album (recommendation)
+  @tracked  maxWarning = 0; // Rec. max number of images in an album, set in Welcome
   @tracked  numHidden = ' 0';
   @tracked  numMarked = '0';
   @tracked  numShown = ' 0';
@@ -203,6 +203,11 @@ export default class CommonStorageService extends Service {
   openAlbum = async (i) => {
     this.alertRemove();
     this.cleanMiniImgs();
+    // Close the show image view
+    document.querySelector('.img_show').style.display = 'none';
+    // Open the thumbnail view
+    document.querySelector('.miniImgs.imgs').style.display = 'flex';
+    // Display the spinner
     document.querySelector('img.spinner').style.display = '';
 
     i = Number(i); // important!
@@ -231,9 +236,11 @@ export default class CommonStorageService extends Service {
 
     this.loli(this.allFiles, 'color:lightgreen');
     console.log(this.allFiles);
-
+    // Use the hidden load button on components ViewMain>MiniImages
     document.getElementById('loadMiniImages').click();
+    // Then hide the spinner
     document.querySelector('img.spinner').style.display = 'none';
+    // Warn for too many images, if relevant
     if (this.allFiles.length > this.maxWarning && this.allow.imgUpload) {
       this.alertMess(this.intl.t('sizewarning') + ' ' + this.maxWarning + ' ' + this.intl.t('images') + '!');
     }
@@ -323,70 +330,69 @@ export default class CommonStorageService extends Service {
       minObj[i].setAttribute('src', minipic);
     }
   }
-  markBorders = (picName) => { // Mark a mini-image border
+  markBorders = async (picName) => { // Mark a mini-image border
+    // this.loli('markBorders here: ', 'color:red');
+    // this.loli('picName 2: ' + picName, 'color:red');
+    await new Promise (z => setTimeout (z, 199)); // Allow the dom to settle
     document.querySelector('#i' + this.escapeDots(picName) + ' img.left-click').classList.add('dotted');
   }
 
   // Position to a minipic and highlight its border
   gotoMinipic = (namepic) => {
     let hs = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    // this.loli('hs=' + hs, 'color:red');
     let h2 = hs/2;
+    // this.loli('h2=' + h2, 'color:red');
     let p = document.getElementById('i' + this.escapeDots(namepic));
+    // this.loli('p=' + p, 'color:red');
     let y = p.offsetTop ? p.offsetTop : 0;
+    // this.loli('y=' + y, 'color:red');
     y = p.offsetHeight ? y + p.offsetHeight/2 : y;
+    // this.loli('y=' + y, 'color:red');
     let t = document.getElementById('highUp').offsetTop;
+    // this.loli('top=' + t, 'color:red');
     let b = document.getElementById('lowDown').offsetTop;
+    // this.loli('bottom=' + b, 'color:red');
     y -= h2;
+    // this.loli('y-h2=' + y, 'color:red');
     if (y < t) y = t;
-    if (y > b - hs) y = b - hs;
-    scrollTo(null, y + 100);
+    // if (y > b - hs) y = b - hs;
+    scrollTo(null, y);
     this.resetBorders(); // Reset all borders
     this.markBorders(namepic); // Mark this one
-    //   timer = setTimeout (repeater, 500);
-    //   if (spinner.style.display === "none") {
-    //     clearTimeout (timer);
-    //     let p = $ ("#i" + escapeDots (namepic));
-    //     let y;
-    //     if (p.offset ()) y = p.offset ().top + p.height ()/2;
-    //     let t = $ ("#highUp").offset ().top;
-    //     let b = $ ("#lowDown").offset ().top;
-    //     y -= h2;
-    //     if (y < t) y = t;
-    //     if (y > b - hs) y = b - hs;
-    //     await new Promise (z => setTimeout (z, 321));
-    //     scrollTo (null, y);
-    //     resetBorders (); // Reset all borders
-    //     markBorders (namepic); // Mark this one
-    //   }
-    // } ());
   }
 
-    // showImage(false) will close
-    showImage = async (name, path) => {
-      if (name) {
-        // Set the actual picName, do not forget!
-        this.picName = name;
-        // Close the thumbnail view
-        document.querySelector('.miniImgs.imgs').style.display = 'none';
-        // Load the show image source path and set it's id="dname"
-        let pic = document.querySelector('#link_show img');
-        pic.src = 'rln' + path;
-        pic.setAttribute('id', 'd' + name)
-        // Open the show image view
-        document.querySelector('.img_show').style.display = 'flex';
-      } else {
-        // Close the show image view
-        document.querySelector('.img_show').style.display = 'none';
-        // Open the thumbnail view
-        document.querySelector('.miniImgs.imgs').style.display = 'flex';
-        // Get the actual pcName (perhaps another than before)
-        // await new Promise (z => setTimeout (z, 199));
-        this.picName = (document.querySelector('.img_show').getAttribute('id')).slice(1);
-        // Outline the closed image
-        // await new Promise (z => setTimeout (z, 199));
-        this.markBorders(this.picName);
-      }
+  // Open or close the named show image, path = its path in the current album
+  // showImage('','') will close the show image and open thumbnails
+  showImage = async (name, path) => {
+    if (name) {
+      // this.loli('show name: ' + name, 'color:red');
+      // this.loli('show path: ' + path, 'color:red');
+      // Set the actual picName, do not forget!
+      this.picName = name;
+      // Close the thumbnail view
+      document.querySelector('.miniImgs.imgs').style.display = 'none';
+      // Load the show image source path and set it's id="dname"
+      let pic = document.querySelector('#link_show img');
+      pic.src = 'rln' + path;
+      pic.setAttribute('id', 'd' + name);
+      // Open the show image view
+      document.querySelector('.img_show').style.display = 'flex';
+    } else {
+      if (document.querySelector('.img_show').style.display === 'none') return;
+      // Close the show image view
+      document.querySelector('.img_show').style.display = 'none';
+      // Open the thumbnail view
+      document.querySelector('.miniImgs.imgs').style.display = 'flex';
+      // Get the actual pcName (perhaps another than before)
+      // this.loli('picName 0: ' + this.picName, 'color:red');
+      this.picName = (document.querySelector('.img_show').getAttribute('id')).slice(1);
+      // this.loli('picName 1: ' + this.picName, 'color:red');
+      // this.loli('markBorders next', 'color:red');
+      // Outline the closed image
+      this.gotoMinipic(this.picName);
     }
+  }
 
   //#region cookies
   // Cookie names are mish_lang, mish_bkgr, ...

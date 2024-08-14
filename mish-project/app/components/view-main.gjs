@@ -160,6 +160,12 @@ class MiniImages extends Component {
     }
   }
 
+  dragStarted = (item) => {
+    this.z.loli(`dragStarted: ${item.name}`, 'color:red');
+    console.log(item);
+    document.querySelector('#i' + this.z.escapeDots(item.name) + ' img.left-click').removeEventListener('click', this.z.showImage, true);
+  }
+
   someFunction = (param) => {this.z.loli(param, 'color:red');}
 
   itemVisualClass = 'sortable-item--active';
@@ -207,6 +213,7 @@ class MiniImages extends Component {
               model=item
               spacing=0
               distance=5
+              onDragStart=this.dragStarted
             }}
           >
             {{!-- Arrange the go-to-origin-button for linked images --}}
@@ -245,11 +252,11 @@ class MiniImages extends Component {
 
         <img src="" draggable="false" ondragstart="return false">
 
-        <a style="top:-2.1em; left:0%; width:100%; border:0;" draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'hideShow')}}><p>återgå <span style="font:normal 1em Arial!important">[esc]</span></p></a>
+        <a style="top:-2.5rem; left:0%; width:100%; border:0;" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage '')}}><p>{{t 'return'}} <span style="font:normal 1rem Arial!important">[Esc]</span></p></a>
 
-        <a style="top: 0%; left: 0%; width: 50%; height: 100%;" draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'showNext false')}}><p>föregående<br><span style="font:normal 1em Arial!important">[&lt;]</span></p><br>&nbsp;<br>&nbsp;</a>
+        <a style="top: 0%; left: 0%; width: 50%; height: 100%;" draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'showNext false')}}><p>{{t 'previous'}}<br><span style="font:normal 1rem Arial!important">[&lt;]</span></p><br>&nbsp;<br>&nbsp;</a>
 
-        <a style="top: 0%; left: 50%; width: 50%; height: 100%; border-left:0;" draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'showNext true')}}><p>nästa<br><span style="font:normal 1em Arial!important">[&gt;]</span></p><br>&nbsp;<br>&nbsp;</a>
+        <a style="top: 0%; left: 50%; width: 50%; height: 100%; border-left:0;" draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'showNext true')}}><p>{{t 'next'}}<br><span style="font:normal 1rem Arial!important">[&gt;]</span></p><br>&nbsp;<br>&nbsp;</a>
 
       </div>
     </div>

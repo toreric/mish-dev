@@ -7,7 +7,7 @@ prodcat="../public/"
 messcat="../"
 # Produce a build stamp message
 mestxt='build '`date +%y%m%d-%H%M`
-echo "${mestxt} during work with " > ${messcat}buildstamp.txt
+echo "${mestxt} during work with" > ${messcat}buildstamp.txt
 ember b -prod --output-path=$prodcat --watch true
 
 # NOTE: If --watch true is set, the lines below don't

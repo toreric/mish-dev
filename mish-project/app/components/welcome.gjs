@@ -44,6 +44,15 @@ const resetBorders = () => { //Copy of this.z.resetBorders()
 
 // Detect any mouse click
 document.addEventListener('click', (event) => {
+  console.log(event.target.className);
+  if (event.target.className !== 'img_show') {
+    return;
+  } else {
+    // Close the show image view
+    document.querySelector('.img_show').style.display = 'none';
+    // Open the thumbnail view
+    document.querySelector('.miniImgs.imgs').style.display = 'flex';
+  }
   resetBorders();
 });
 
@@ -75,7 +84,7 @@ class Welcome extends Component {
 
       // Settings
       this.z.initBrowser();   // Manipulate browser back-arrow
-      this.z.maxWarning = 20; // Set recommended album size
+      this.z.maxWarning = 20; // Set recommended album size, about 100
 
       // Read the build stamp files (nodestamp.txt may be initially missing) etc.
       this.z.aboutThis = 'Mish ' + await this.z.execute('cat buildstamp.txt') + ' ' + await this.z.execute('cat nodestamp.txt') + ' and Glimmer by Ember<br>' + await this.z.execute('head -n1 LICENSE.txt');

@@ -1382,7 +1382,8 @@ img[alt] {
   position: relative;
   justify-content: center;
   text-align: center;
-  z-index: 10;
+  z-index: 0;
+  margin-top: 1.5rem;
 }
 .img_show img:first-of-type {
   display: block;

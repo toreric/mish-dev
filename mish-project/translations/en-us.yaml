@@ -49,9 +49,12 @@ home: to the beginning of
 images: images
 intlcode: en-us
 light: light
-no: no
 missing: (missing) NOTE never used
+next: next
+no: no
 plus: plus
+previous: previous
+return: return
 rights: rights
 subalbum:  subalbum
 subalbums: subalbums
