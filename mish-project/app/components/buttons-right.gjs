@@ -14,6 +14,14 @@ export class ButtonsRight extends Component {
 
   someFunction = (param) => {this.z.loli(param, 'color:red');}
 
+  toggleNavInfo = () => {
+    if (document.querySelector('.toggleNavInfo').style.opacity === '0') {
+      document.querySelector('.toggleNavInfo').style.opacity = '1';
+    } else {
+      document.querySelector('.toggleNavInfo').style.opacity = '0';
+    }
+  }
+
   <template>
 
     {{!-- RIGHT BUTTONS without href attribute --}}
@@ -23,7 +31,9 @@ export class ButtonsRight extends Component {
       <a class="nav_" draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'showNext false')}} title="{{t 'goprev'}}">&lt;</a> &nbsp;<br>
       {{!-- CLOSE AND GO BACK TO MINIPICS --}}
       {{!-- this.z.showImage without argument closes the show image --}}
-      <a class="nav_" id="go_back" title="{{t 'gomini'}}"{{on 'click' (fn this.z.showImage '')}} src="/images/grid.svg"> </a> &nbsp;<br>
+      <a class="nav_" id="go_back" title="{{t 'gomini'}}" {{on 'click' (fn this.z.showImage '')}} src="/images/grid.svg"> </a> &nbsp;<br>
+      <!-- HELP -->
+      <a class="nav_ qnav_" draggable="false" {{on 'click' (fn this.toggleNavInfo)}}>?</a> &nbsp;<br>
 
       {{!-- AUTO-SLIDE-SHOW SELECT
       <a class="nav_ toggleAuto" draggable="false" ondragstart="return false" {{action 'toggleAuto'}} style="font-size:1.2em;font-family:monospace" title="Automatiskt
@@ -35,8 +45,6 @@ export class ButtonsRight extends Component {
         <a class="speedBase nav_" {{action 'speedBase'}} title="Välj per bild
     eller bildtextrad">&nbsp;per<br>&nbsp;text-&nbsp;<br>&nbsp;rad</a>
       </span><br>
-      <!-- HELP -->
-      <a class="nav_ qnav_" draggable="false" {{action 'toggleNav'}}>?</a> &nbsp;<br>
       <!-- FULL SIZE -->
       <a class="nav_" id="full_size" draggable="false" {{action 'fullSize'}} title="Full storlek
     i nytt fönster" style="font-size:200%;line-height:80%;padding:0.3em 0.33em 0.25em 0.3em">&#9974;</a> &nbsp; <br>

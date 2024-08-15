@@ -42,11 +42,10 @@ const resetBorders = () => { //Copy of this.z.resetBorders()
   }
 }
 
-// Detect any mouse click
+// Detect any mouse click CAN THIS BE MOVED TO INSIDE the Welcome template???
 document.addEventListener('click', (event) => {
   console.log(event.target.className);
   if (event.target.className !== 'img_show') {
-    return;
   } else {
     // Close the show image view
     document.querySelector('.img_show').style.display = 'none';
@@ -54,6 +53,7 @@ document.addEventListener('click', (event) => {
     document.querySelector('.miniImgs.imgs').style.display = 'flex';
   }
   resetBorders();
+  // document.querySelector('.toggleNavInfo').style.display = 'none';
 });
 
 // Detect closing click outside menuMain (tricky case!)

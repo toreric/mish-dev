@@ -338,7 +338,7 @@ export default class CommonStorageService extends Service {
   }
 
   // Position to a minipic and highlight its border
-  gotoMinipic = (namepic) => {
+  gotoMinipic = async (namepic) => {
     let hs = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
     // this.loli('hs=' + hs, 'color:red');
     let h2 = hs/2;
@@ -359,11 +359,12 @@ export default class CommonStorageService extends Service {
     // if (y > b - hs) y = b - hs;
     scrollTo(null, y);
     this.resetBorders(); // Reset all borders
+    await new Promise (z => setTimeout (z, 99));
     this.markBorders(namepic); // Mark this one
   }
 
   // Open or close the named show image, path = its path in the current album
-  // showImage('','') will close the show image and open thumbnails
+  // showImage('') will close the show image and open thumbnails
   showImage = async (name, path) => {
     if (name) {
       // this.loli('show name: ' + name, 'color:red');
@@ -378,6 +379,8 @@ export default class CommonStorageService extends Service {
       pic.setAttribute('id', 'd' + name);
       // Open the show image view
       document.querySelector('.img_show').style.display = 'flex';
+      // Hide the navigation overlay information
+      document.querySelector('.toggleNavInfo').style.opacity = '0';
     } else {
       if (document.querySelector('.img_show').style.display === 'none') return;
       // Close the show image view

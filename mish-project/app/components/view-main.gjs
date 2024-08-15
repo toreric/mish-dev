@@ -163,7 +163,17 @@ class MiniImages extends Component {
   dragStarted = (item) => {
     this.z.loli(`dragStarted: ${item.name}`, 'color:red');
     console.log(item);
-    document.querySelector('#i' + this.z.escapeDots(item.name) + ' img.left-click').removeEventListener('click', this.z.showImage, true);
+    // document.querySelector('#i' + this.z.escapeDots(item.name) + ' img.left-click').removeEventListener('click', this.z.showImage, false);
+  }
+
+  dragStopped = (item) => {
+    this.z.loli(`dragStopped: ${item.name}`, 'color:red');
+    // Close the show image view
+    document.querySelector('.img_show').style.display = 'none';
+    // Open the thumbnail view
+    document.querySelector('.miniImgs.imgs').style.display = 'flex';
+    this.z.resetBorders();
+    this.z.markBorders(item.name);
   }
 
   someFunction = (param) => {this.z.loli(param, 'color:red');}
@@ -214,6 +224,7 @@ class MiniImages extends Component {
               spacing=0
               distance=5
               onDragStart=this.dragStarted
+              onDragStop=this.dragStopped
             }}
           >
             {{!-- Arrange the go-to-origin-button for linked images --}}
@@ -251,13 +262,13 @@ class MiniImages extends Component {
       <div id="link_show" draggable="false">
 
         <img src="" draggable="false" ondragstart="return false">
+        <div class="toggleNavInfo" style="opacity:0">
+          <a style="top:-2.5rem; left:0%; width:100%; border:0;" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage '')}}><p>{{t 'return'}} <span style="font:normal 1rem Arial!important">[Esc]</span></p></a>
 
-        <a style="top:-2.5rem; left:0%; width:100%; border:0;" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage '')}}><p>{{t 'return'}} <span style="font:normal 1rem Arial!important">[Esc]</span></p></a>
+          <a style="top: 0%; left: 0%; width: 50%; height: 100%;" draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'showNext false')}}><p>{{t 'previous'}}<br><span style="font:normal 1rem Arial!important">[&lt;]</span></p><br>&nbsp;<br>&nbsp;</a>
 
-        <a style="top: 0%; left: 0%; width: 50%; height: 100%;" draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'showNext false')}}><p>{{t 'previous'}}<br><span style="font:normal 1rem Arial!important">[&lt;]</span></p><br>&nbsp;<br>&nbsp;</a>
-
-        <a style="top: 0%; left: 50%; width: 50%; height: 100%; border-left:0;" draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'showNext true')}}><p>{{t 'next'}}<br><span style="font:normal 1rem Arial!important">[&gt;]</span></p><br>&nbsp;<br>&nbsp;</a>
-
+          <a style="top: 0%; left: 50%; width: 50%; height: 100%; border-left:0;" draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'showNext true')}}><p>{{t 'next'}}<br><span style="font:normal 1rem Arial!important">[&gt;]</span></p><br>&nbsp;<br>&nbsp;</a>
+        </div>
       </div>
     </div>
 
