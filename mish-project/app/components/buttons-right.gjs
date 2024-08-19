@@ -22,15 +22,40 @@ export class ButtonsRight extends Component {
     }
   }
 
+  showNext = (forward) => {
+    // var minObj = document.querySelectorAll('.img_mini img.left-click');
+    // var ims = document.querySelectorAll('.img_mini');
+    // for (let im from ims)
+    var actual = document.querySelector('#i' + this.z.picName);
+    if (forward) {
+      var next = actual.nextElementSibling;
+      if (next) {
+        var nextName = (next.getAttribute('id')).slice(1);
+      } else {
+        next = actual.parentElement.firstElementChild;
+        if (next) nextName = (next.getAttribute('id')).slice(1);
+      }
+      if (nextName) {
+        for (let file of this.z.allFiles) {
+          if (file.name === nextName) {
+            var path = file.show;
+            break;
+          }
+        }
+        this.z.showImage(nextName, path);
+      }
+    }
+  }
+
   <template>
 
     {{!-- RIGHT BUTTONS without href attribute --}}
     <div class="nav_links" draggable="false" ondragstart="return false">
       {{!-- NEXT-ARROW-BUTTONS --}}
-      <a class="nav_" draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'showNext true')}} title="{{t 'gonext'}}">&gt;</a> &nbsp;<br>
+      <a class="nav_" draggable="false" ondragstart="return false" {{on 'click' (fn this.showNext true)}} title="{{t 'gonext'}}">&gt;</a> &nbsp;<br>
       <a class="nav_" draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'showNext false')}} title="{{t 'goprev'}}">&lt;</a> &nbsp;<br>
       {{!-- CLOSE AND GO BACK TO MINIPICS --}}
-      {{!-- this.z.showImage without argument closes the show image --}}
+      {{!-- this.z.showImage '' closes the show image --}}
       <a class="nav_" id="go_back" title="{{t 'gomini'}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage '')}} src="/images/grid.svg"> </a> &nbsp;<br>
       <!-- HELP -->
       <a class="nav_ qnav_" draggable="false" {{on 'click' (fn this.toggleNavInfo)}}>?</a> &nbsp;<br>

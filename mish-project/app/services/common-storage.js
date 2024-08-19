@@ -340,11 +340,11 @@ export default class CommonStorageService extends Service {
       minObj[i].setAttribute('src', minipic);
     }
   }
-  markBorders = async (picName) => { // Mark a mini-image border
+  markBorders = async (namepic) => { // Mark a mini-image border
     // this.loli('markBorders here: ', 'color:red');
-    // this.loli('picName 2: ' + picName, 'color:red');
+    // this.loli('namepic 2: ' + namepic, 'color:red');
     await new Promise (z => setTimeout (z, 199)); // Allow the dom to settle
-    document.querySelector('#i' + this.escapeDots(picName) + ' img.left-click').classList.add('dotted');
+    document.querySelector('#i' + this.escapeDots(namepic) + ' img.left-click').classList.add('dotted');
   }
 
   // Position to a minipic and highlight its border

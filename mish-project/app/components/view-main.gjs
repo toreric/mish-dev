@@ -163,7 +163,6 @@ class MiniImages extends Component {
   dragStarted = (item) => {
     this.z.loli(`dragStarted: ${item.name}`, 'color:red');
     console.log(item);
-    // document.querySelector('#i' + this.z.escapeDots(item.name) + ' img.left-click').removeEventListener('click', this.z.showImage, false);
   }
 
   dragStopped = (item) => {
@@ -263,6 +262,7 @@ class MiniImages extends Component {
 
         <p style="margin:0;line-height:0;font-family:sans-serif">ᵛ</p>
         <img src="" draggable="false" ondragstart="return false">
+
         <div class="toggleNavInfo" style="opacity:0">
           <a class="navReturn" style="top:-2.5rem; left:0%; width:100%; border:0;" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage '')}}><p>{{t 'return'}} <span style="font:normal 1rem Arial!important">[Esc]</span></p></a>
 

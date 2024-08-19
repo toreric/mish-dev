@@ -34,7 +34,6 @@ const CRLF = '&#13;&#10;'; // May be used in 'title': the only mod.possible!
 makeDialogDraggable();
 
 // Detect closing click outside menuMain (tricky case!)
-// Dito to close the view image, cf. this.z.showImage('')
 document.addEventListener('mousedown', (event) => {
   var tmp0 = document.getElementById('menuButton');
   var tmp1 = document.getElementById('menuMain');
@@ -43,6 +42,7 @@ document.addEventListener('mousedown', (event) => {
     tmp1.style.display = 'none';
     console.log('-"-: closed main menu');
   }
+// Dito to close the view image, cf. this.z.showImage('')
   if (
     event.target.classList.contains('img_show') ||
     event.target.classList.contains('footer') || // NOTE: footer in Welcome
