@@ -33,30 +33,8 @@ const CRLF = '&#13;&#10;'; // May be used in 'title': the only mod.possible!
 
 makeDialogDraggable();
 
-const resetBorders = () => { //Copy of this.z.resetBorders()
-  // Reset all mini-image borders and SRC attributes
-  var minObj = document.querySelectorAll('.img_mini img.left-click');
-  for (let min of minObj) {
-    min.style.border = '0.25px solid #888';
-    min.classList.remove('dotted');
-  }
-}
-
-// Detect any mouse click CAN THIS BE MOVED TO INSIDE the Welcome template???
-document.addEventListener('click', (event) => {
-  console.log(event.target.className);
-  if (event.target.className !== 'img_show') {
-  } else {
-    // Close the show image view
-    document.querySelector('.img_show').style.display = 'none';
-    // Open the thumbnail view
-    document.querySelector('.miniImgs.imgs').style.display = 'flex';
-  }
-  resetBorders();
-  // document.querySelector('.toggleNavInfo').style.display = 'none';
-});
-
 // Detect closing click outside menuMain (tricky case!)
+// Dito to close the view image, cf. this.z.showImage('')
 document.addEventListener('mousedown', (event) => {
   var tmp0 = document.getElementById('menuButton');
   var tmp1 = document.getElementById('menuMain');
@@ -64,6 +42,22 @@ document.addEventListener('mousedown', (event) => {
     tmp0.innerHTML = '<span class="menu">𝌆</span>';
     tmp1.style.display = 'none';
     console.log('-"-: closed main menu');
+  }
+  if (
+    event.target.classList.contains('img_show') ||
+    event.target.classList.contains('footer') || // NOTE: footer in Welcome
+    document.querySelector('.footer').contains(event.target) ||
+    document.querySelector('.toggleNavInfo').contains(event.target) ||
+    document.querySelector('.nav_links').contains(event.target)
+  ) return;
+
+  if (document.querySelector('.img_show').style.display !== 'none') {
+    // Close the show image view
+    document.querySelector('.img_show').style.display = 'none';
+    // Open the thumbnail view
+    document.querySelector('.miniImgs.imgs').style.display = 'flex';
+    console.log('event.target:');
+    console.log(event.target);
   }
 });
 
@@ -122,13 +116,38 @@ class Welcome extends Component {
       }
       document.querySelector('body').style.background = this.z.bkgrColor;
       document.querySelector('body').style.color = this.z.textColor;
-      // for (let a of document.querySelectorAll('.sameBackground')) a.style.background = this.bkgrColor;
-      // for (let a of document.querySelectorAll('.sameBackground')) a.style.color = this.textColor;
     }
     this.z.openMainMenu();
   }
 
+  // // Detect any mouse click
+  // anyMouseClick = (event) => {
+  //   this.z.loli('anyMouseClick event.target:', 'color:red');
+  //   console.log(event.target);
+  // }
+
+  // // Detect certain keys pressed
+  // detectKeys = (event) => {
+  //   this.z.loli('detectKeys event.target:', 'color:red');
+  //   console.log(event.target);
+  //   if (event.keyCode === 27) { // Esc key
+  //     this.z.closeMainMenu();
+  //   }
+  // }
 }
+
+// document.addEventListener('click', (event) => {
+//   console.log(event.target.className);
+//   if (event.target.className !== 'img_show') {
+//   } else {
+//     // Close the show image view
+//     document.querySelector('.img_show').style.display = 'none';
+//     // Open the thumbnail view
+//     document.querySelector('.miniImgs.imgs').style.display = 'flex';
+//   }
+//   this.z.resetBorders();
+//   // document.querySelector('.toggleNavInfo').style.display = 'none';
+// });
 
 const executeOnInsert = modifier((element, [component]) => {
   component.getCred();
@@ -136,6 +155,7 @@ const executeOnInsert = modifier((element, [component]) => {
 
 export default class extends Welcome {
   <template>
+
     <div id='highUp'></div>
 
     <div style="position:relative;top:0.5rem;left:0;width:100%">
@@ -201,9 +221,10 @@ export default class extends Welcome {
     <Spinner />
 
     <div id='lowDown'></div>
-    <p style="text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:77%">
+    <p class="footer" style="text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:77%" {{on 'click' (fn this.z.showImage '')}}>
       {{{this.z.aboutThis}}}
       <br>
+
       <a id="do_mail" style="font-size:2rem;margin:0" class="smBu" title={{t 'buttons.left.mail'}} {{on 'click' (fn this.someFunction 'doMail')}} src="/images/mail.svg">
       </a>
 
@@ -211,5 +232,6 @@ export default class extends Welcome {
       href="https://meet.jit.si/Minnenfr%C3%A5nS%C3%A4var%C3%A5dalenochHolm%C3%B6n" target="jitsi_window" draggable="false" ondragstart="return false" style="font-size:1.85rem;margin:0;padding:0 0.4rem 0.3rem 0.2rem" onclick="this.hide">▣</a>
 
     </p>
+
   </template>;
 }

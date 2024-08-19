@@ -17,14 +17,6 @@ const OP = '⊕'; // OPENS
 const CL = '⊖'; // CLOSES
 const SA = '‡';  // SUBALBUM indicator, NOTE! set in server (routes.js)
 
-// Detect closing Esc key for menuMain or open dialogs
-const detectEsc = (event) => {
-  if (event.keyCode === 27) { // Esc key
-    closeMainMenu();
-  }
-}
-document.addEventListener ('keydown', detectEsc, false);
-
 // Close the main menu
 const closeMainMenu = () => {
   var tmp0 = document.getElementById('menuButton');
@@ -224,7 +216,7 @@ export class MenuMain extends Component {
 
   <template>
 
-    <div id="menuMain" class="mainMenu" onclick="return false" draggable="false" ondragstart="return false" style="display:none">
+    <div id="menuMain" class="mainMenu" onclick="return false" draggable="false" ondragstart="return false" style="display:none" {{on 'keydown' this.z.detectKeys}}>
 
       <p onclick="return false" draggable="false" ondragstart="return false" title-2="Sökning">
         <a class="search" {{on "click" (fn this.findText)}}>Finn bilder <span style="font:normal 1em monospace!important">[F]</span></a>
@@ -249,7 +241,6 @@ export class MenuMain extends Component {
       </p><br>
 
       <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title-2="{{t 'albumcareinfo'}} {{t 'for'}} {{this.z.imdbRoot}}{{this.z.imdbDir}}">
-    {{!-- return this.intl.t('albumcare') + ' ”' + this.z.imdbDirName + '”'; --}}
         <a {{on "click" (fn this.albumEdit)}}>{{t 'albumcare'}} <span title="">”{{{this.z.imdbDirName}}}”</span></a>
       </p><br>
 

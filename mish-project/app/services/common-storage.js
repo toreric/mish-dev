@@ -272,7 +272,17 @@ export default class CommonStorageService extends Service {
     document.querySelector('body').style.color = this.textColor;
     // for (let a of document.querySelectorAll('.sameBackground')) a.style.background = this.bkgrColor;
     // for (let a of document.querySelectorAll('.sameBackground')) a.style.color = this.textColor;
-}
+  }
+
+  // Detect certain keys pressed
+  detectKeys = (event) => {
+    this.loli('detectKeys event.target:', 'color:orange');
+    console.log(event.target);
+    if (event.keyCode === 27) { // Esc key
+      this.closeMainMenu();
+    }
+  }
+
 
   loli = (text, style) => { // loli = log list with user name
     console.log(this.userName + ': %c' + text, style);
@@ -310,7 +320,7 @@ export default class CommonStorageService extends Service {
     return textString.replace (/_/g, noHTML ? " " : "&nbsp;");
   }
 
-  escapeDots = (textString) => {
+  escapeDots = (textString) => { // Cf. CSS.escape()
     // Used for file names when used in CSS, #<id> etc.
     return textString.replace (/\./g, "\\.");
   }
@@ -353,7 +363,7 @@ export default class CommonStorageService extends Service {
     // this.loli('top=' + t, 'color:red');
     let b = document.getElementById('lowDown').offsetTop;
     // this.loli('bottom=' + b, 'color:red');
-    y -= h2;
+    y -= h2 - 150;
     // this.loli('y-h2=' + y, 'color:red');
     if (y < t) y = t;
     // if (y > b - hs) y = b - hs;
@@ -371,6 +381,8 @@ export default class CommonStorageService extends Service {
       // this.loli('show path: ' + path, 'color:red');
       // Set the actual picName, do not forget!
       this.picName = name;
+      // Outline and position the soon invisible thumbnail
+      this.gotoMinipic(name);
       // Close the thumbnail view
       document.querySelector('.miniImgs.imgs').style.display = 'none';
       // Load the show image source path and set it's id="dname"
@@ -387,11 +399,8 @@ export default class CommonStorageService extends Service {
       document.querySelector('.img_show').style.display = 'none';
       // Open the thumbnail view
       document.querySelector('.miniImgs.imgs').style.display = 'flex';
-      // Get the actual pcName (perhaps another than before)
-      // this.loli('picName 0: ' + this.picName, 'color:red');
-      this.picName = (document.querySelector('.img_show').getAttribute('id')).slice(1);
-      // this.loli('picName 1: ' + this.picName, 'color:red');
-      // this.loli('markBorders next', 'color:red');
+      // // Get the actual picName (perhaps another than before) - unnecessary?
+      // this.picName = (document.querySelector('.img_show').getAttribute('id')).slice(1);
       // Outline the closed image
       this.gotoMinipic(this.picName);
     }
@@ -582,17 +591,13 @@ export default class CommonStorageService extends Service {
       xhr.onload = function() {
         var allow = that.allow;
         var allfiles = [];
-        console.log('ALLFILES 0');
-        console.log(allfiles);
-        that.loli(allfiles, 'color:yellow');
-        if (this.status >= 200 && this.status < 300) {
+       if (this.status >= 200 && this.status < 300) {
           var NEPF = 7; // Number of rows per file in xhr.response
           var result = xhr.response;
           result = result.trim ().split ('\n'); // result is vectorised
           var i = 0, j = 0;
           var n_files = result.length/NEPF;
           if (n_files < 1) { // Covers all weird outcomes
-            console.log('ALLFILES 1');
             result = [];
             n_files = 0;
             // document.querySelectorAll('.showCount .numShown').innerHTML(' 0');
@@ -660,9 +665,6 @@ export default class CommonStorageService extends Service {
           }
 
           //userLog ('INFO received');
-          console.log('ALLFILES 2');
-          console.log(allfiles);
-          that.loli(allfiles, 'color:yellow');
           resolve (allfiles); // Return file-list object array
         } else {
           reject ({
