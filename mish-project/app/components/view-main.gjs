@@ -28,7 +28,7 @@ export class ViewMain extends Component {
 
   <template>
       <SubAlbums />
-      <MiniImages />
+      <AllImages />
   </template>
 
 }
@@ -105,7 +105,7 @@ class SubAlbums extends Component {
 
 }
 
-class MiniImages extends Component {
+class AllImages extends Component {
   @service('common-storage') z;
   @service intl;
 
@@ -175,13 +175,12 @@ class MiniImages extends Component {
     this.z.markBorders(item.name);
   }
 
-  someFunction = (param) => {this.z.loli(param, 'color:red');}
-
   itemVisualClass = 'sortable-item--active';
 
   <template>
 
-    <div style="margin:0 0 0 4rem;width:auto;height:auto">
+    <div style="margin:0 0 0 4rem;width:auto;height:auto" {{on 'mousedown' this.z.resetBorders}}>
+
 
       {{#if this.z.imdbRoot}}
 
@@ -225,6 +224,7 @@ class MiniImages extends Component {
               onDragStart=this.dragStarted
               onDragStop=this.dragStopped
             }}
+            {{on 'mousedown' this.z.resetBorders}}
           >
             {{!-- Arrange the go-to-origin-button for linked images --}}
             {{#if item.symlink}}
@@ -266,9 +266,9 @@ class MiniImages extends Component {
         <div class="toggleNavInfo" style="opacity:0">
           <a class="navReturn" style="top:-2.5rem; left:0%; width:100%; border:0;" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage '')}}><p>{{t 'return'}} <span style="font:normal 1rem Arial!important">[Esc]</span></p></a>
 
-          <a style="top: 0%; left: 0%; width: 49.5%; height: 99.5%;" draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'showNext false')}}><p>{{t 'previous'}}<br><span style="font:normal 1rem Arial!important">[&lt;]</span></p><br>&nbsp;<br>&nbsp;</a>
+          <a style="top: 0%; left: 0%; width: 49.5%; height: 99.5%;" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showNext false)}}><p>{{t 'previous'}}<br><span style="font:normal 1rem Arial!important">[&lt;]</span></p><br>&nbsp;<br>&nbsp;</a>
 
-          <a style="top: 0%; left: 50%; width: 50%; height: 99.5%; border-left:0;" draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'showNext true')}}><p>{{t 'next'}}<br><span style="font:normal 1rem Arial!important">[&gt;]</span></p><br>&nbsp;<br>&nbsp;</a>
+          <a style="top: 0%; left: 50%; width: 50%; height: 99.5%; border-left:0;" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showNext true)}}><p>{{t 'next'}}<br><span style="font:normal 1rem Arial!important">[&gt;]</span></p><br>&nbsp;<br>&nbsp;</a>
         </div>
 
       </div>

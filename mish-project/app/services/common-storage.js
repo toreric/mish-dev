@@ -41,9 +41,9 @@ export default class CommonStorageService extends Service {
         get picFoundBaseName() { return `${this.intl.t('picfound')}`; }
   // The found pics temporary catalog name is amended with a random 4-code:
   @tracked  picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
-  @tracked  picName = 'IMG_0'; //actual/current image name
+  @tracked  picName = '';      //actual/current image name
   @tracked  subColor = '#aef'; //subalbum legends color
-        get subaIndex() { //subalbum index array for 'presentation thumbnails'
+        get subaIndex() {      //subalbum index array for 'presentation thumbnails'
               let subindex = [];
               for (let i=this.imdbDirIndex+1;i<this.imdbDirs.length;i++) {
                 if (this.imdbDirs[i] && this.imdbDirs[i].startsWith(this.imdbDir)) {
@@ -234,9 +234,9 @@ export default class CommonStorageService extends Service {
     }
     this.allFiles = await this.getImages();
 
-    this.loli(this.allFiles, 'color:lightgreen');
-    console.log(this.allFiles);
-    // Use the hidden load button on components ViewMain>MiniImages
+    // this.loli(this.allFiles, 'color:lightgreen');
+    // console.log(this.allFiles);
+    // Use the hidden load button in components ViewMain>MiniImages
     document.getElementById('loadMiniImages').click();
     // Then hide the spinner
     document.querySelector('img.spinner').style.display = 'none';
@@ -251,8 +251,10 @@ export default class CommonStorageService extends Service {
       img.src = 'rln' + file.show;
       preloadShowImg.push(img);
     }
-    console.log(preloadShowImg);
-}
+    // console.log(preloadShowImg);
+    // Prepare for an arrow key hit by setting 'this.picName' as the last in album
+    this.picName = this.allFiles[this.allFiles.length - 1].name;
+  }
 
   toggleBackg = () => {
     if (this.bkgrColor === '#cbcbcb') {
@@ -403,6 +405,41 @@ export default class CommonStorageService extends Service {
       // this.picName = (document.querySelector('.img_show').getAttribute('id')).slice(1);
       // Outline the closed image
       this.gotoMinipic(this.picName);
+    }
+  }
+
+  // Show the next or previous slideshow image
+  showNext = async (forward) => {
+    var next, nextName;
+    var actual = document.querySelector('#i' + this.picName);
+    var allFiles = this.allFiles;
+    if (forward) {
+      next = actual.nextElementSibling;
+      if (next) {
+        nextName = (next.getAttribute('id')).slice(1);
+      } else {
+        next = actual.parentElement.firstElementChild;
+        if (next) nextName = (next.getAttribute('id')).slice(1);
+      }
+    } else { // backward
+      next = actual.previousElementSibling;
+      if (next) {
+        nextName = (next.getAttribute('id')).slice(1);
+      } else {
+        next = actual.parentElement.lastElementChild;
+        if (next) nextName = (next.getAttribute('id')).slice(1);
+      }
+    }
+    if (nextName) {
+      // console.log(allFiles);
+      let i = allFiles.findIndex(all => {return all.name === nextName;});
+      // this.loli('index=' + i);
+      let path = '';
+      if (i > -1) {
+        await new Promise (z => setTimeout (z, 2));
+        path = allFiles[i].show;
+        this.showImage(nextName, path);
+      }
     }
   }
 
