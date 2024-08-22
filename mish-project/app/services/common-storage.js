@@ -253,7 +253,9 @@ export default class CommonStorageService extends Service {
     }
     // console.log(preloadShowImg);
     // Prepare for an arrow key hit by setting 'this.picName' as the last in album
-    this.picName = this.allFiles[this.allFiles.length - 1].name;
+    if (this.allFiles.length > 0) {
+      this.picName = this.allFiles[this.allFiles.length - 1].name;
+    } else this.picName = '';
   }
 
   toggleBackg = () => {
@@ -330,12 +332,11 @@ export default class CommonStorageService extends Service {
   resetBorders = () => { // Reset all mini-image borders and SRC attributes
     var minObj = document.querySelectorAll('.img_mini img.left-click');
     for (let min of minObj) {
-      min.style.border = '0.25px solid #888';
       min.classList.remove('dotted');
     }
     // Resetting all minifile SRC attributes ascertains that any minipic is shown
     // (maybe created just now, e.g. at upload, any outside-click will show them)
-    // NOTE: Is this outdated 2024?
+    // NOTE: Is this outdated 2024? We'll see.
     for (var i=0; i<minObj.length; i++) {
       var minipic = minObj[i].src;
       minObj[i].removeAttribute('src');
@@ -395,7 +396,11 @@ export default class CommonStorageService extends Service {
       document.querySelector('.img_show').style.display = 'flex';
       // Hide the navigation overlay information
       document.querySelector('.toggleNavInfo').style.opacity = '0';
+      // Show the right side buttons
+      document.querySelector('.nav_links').style.display = '';
     } else {
+      // Hide the right side buttons
+      document.querySelector('.nav_links').style.display = 'none';
       if (document.querySelector('.img_show').style.display === 'none') return;
       // Close the show image view
       document.querySelector('.img_show').style.display = 'none';

@@ -23,6 +23,7 @@ import { MenuMain } from './menu-main';
 import { ViewMain } from './view-main';
 import { Spinner } from './spinner';
 
+import { dialogHelpId } from './dialog-help';
 import { dialogLoginId } from './dialog-login';
 import { dialogRightsId } from './dialog-login';
 import { dialogXperId } from './dialog-xper';
@@ -33,6 +34,52 @@ const CRLF = '&#13;&#10;'; // May be used in 'title': the only mod.possible!
 
 makeDialogDraggable();
 
+// Detect various keys
+document.addEventListener('keydown', (event) => {
+  var key = event.keyCode;
+  // console.log('Key ' + key + ' pressed');
+  switch(key) {
+    case 27:  // Esc
+      resetBorders();
+      if (!document.querySelector('#menuMain').style.display)
+        document.querySelector('#menuButton').click();
+      document.querySelector('#go_back').click();
+      break;
+    case 37:  // <
+      document.querySelector('.nav_.prev').click();
+      break;
+    case 39:  // >
+      document.querySelector('.nav_.next').click();
+      break;
+    case 65:  // A
+      break;
+    case 70:  // F
+      break;
+    case 112: // F1
+      toggleDialog(dialogHelpId);
+  }
+});
+
+const resetBorders = () => { //copy from z
+  var minObj = document.querySelectorAll('.img_mini img.left-click');
+  for (let min of minObj) {
+    min.classList.remove('dotted');
+  }
+}
+const toggleDialog = (dialogId, origPos) => { //copy from z
+  let diaObj = document.getElementById(dialogId);
+  let what = 'closed ';
+  if (diaObj.hasAttribute("open")) {
+    diaObj.close();
+  } else {
+    what = 'opened ';
+    if (origPos) diaObj.style.display = '';
+    diaObj.show();
+  }
+  console.log('-"-: ' + what + dialogId);
+  // this.loli(what + dialogId);
+}
+
 // Detect closing click outside menuMain (tricky case!)
 document.addEventListener('mousedown', (event) => {
   var tmp0 = document.getElementById('menuButton');
@@ -42,22 +89,22 @@ document.addEventListener('mousedown', (event) => {
     tmp1.style.display = 'none';
     console.log('-"-: closed main menu');
   }
-// Dito to close the view image, cf. this.z.showImage('')
-  if (
+  // Dito to close the view image, cf. this.z.showImage('')
+  if ( // Here are dedicated closers:
     event.target.classList.contains('img_show') ||
     event.target.classList.contains('footer') || // NOTE: footer in Welcome
     document.querySelector('.footer').contains(event.target) ||
     document.querySelector('.toggleNavInfo').contains(event.target) ||
     document.querySelector('.nav_links').contains(event.target)
   ) return;
-
+  // Close click outside those dedicated :
   if (document.querySelector('.img_show').style.display !== 'none') {
     // Close the show image view
     document.querySelector('.img_show').style.display = 'none';
     // Open the thumbnail view
     document.querySelector('.miniImgs.imgs').style.display = 'flex';
-    console.log('event.target:');
-    console.log(event.target);
+    // console.log('event.target:');
+    // console.log(event.target);
   }
 });
 
@@ -119,35 +166,7 @@ class Welcome extends Component {
     }
     this.z.openMainMenu();
   }
-
-  // // Detect any mouse click
-  // anyMouseClick = (event) => {
-  //   this.z.loli('anyMouseClick event.target:', 'color:red');
-  //   console.log(event.target);
-  // }
-
-  // // Detect certain keys pressed
-  // detectKeys = (event) => {
-  //   this.z.loli('detectKeys event.target:', 'color:red');
-  //   console.log(event.target);
-  //   if (event.keyCode === 27) { // Esc key
-  //     this.z.closeMainMenu();
-  //   }
-  // }
 }
-
-// document.addEventListener('click', (event) => {
-//   console.log(event.target.className);
-//   if (event.target.className !== 'img_show') {
-//   } else {
-//     // Close the show image view
-//     document.querySelector('.img_show').style.display = 'none';
-//     // Open the thumbnail view
-//     document.querySelector('.miniImgs.imgs').style.display = 'flex';
-//   }
-//   this.z.resetBorders();
-//   // document.querySelector('.toggleNavInfo').style.display = 'none';
-// });
 
 const executeOnInsert = modifier((element, [component]) => {
   component.getCred();

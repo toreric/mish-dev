@@ -21,7 +21,6 @@ import { dialogAlertId } from './dialog-alert';
 const LF = '\n'; // LINE_FEED
 const SA = '‡';  // SUBALBUM indicator, NOTE! set in server (routes.js)
 
-
 export class ViewMain extends Component {
   @service('common-storage') z;
   @service intl;
@@ -175,6 +174,11 @@ class AllImages extends Component {
     this.z.markBorders(item.name);
   }
 
+  txt = (no, name) => {
+    return name + ': <b>Text ' + no + '</b>';
+  }
+
+
   itemVisualClass = 'sortable-item--active';
 
   <template>
@@ -258,19 +262,37 @@ class AllImages extends Component {
 
     {{!-- The album's slideshow images come here --}}
     <div class="img_show" id="d{{this.z.picName}}" draggable="false" style="display:none" {{on 'click' (fn this.z.showImage '')}}>
+      <div>
       <div id="link_show" draggable="false">
-
         <p style="margin:0;line-height:0;font-family:sans-serif">ᵛ</p>
         <img src="" draggable="false" ondragstart="return false">
 
         <div class="toggleNavInfo" style="opacity:0">
           <a class="navReturn" style="top:-2.5rem; left:0%; width:100%; border:0;" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage '')}}><p>{{t 'return'}} <span style="font:normal 1rem Arial!important">[Esc]</span></p></a>
 
-          <a style="top: 0%; left: 0%; width: 49.5%; height: 99.5%;" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showNext false)}}><p>{{t 'previous'}}<br><span style="font:normal 1rem Arial!important">[&lt;]</span></p><br>&nbsp;<br>&nbsp;</a>
+          <a style="top: 0%; left: 0%; width: 49.5%; height: 99.5%;"
+          draggable="false" ondragstart="return false"
+          {{on 'click' (fn this.z.showNext false)}}>
+            <p>{{t 'previous'}}<br><span style="font:normal 1rem Arial!important">[&lt;]</span></p><br>&nbsp;<br>&nbsp;
+          </a>
 
-          <a style="top: 0%; left: 50%; width: 50%; height: 99.5%; border-left:0;" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showNext true)}}><p>{{t 'next'}}<br><span style="font:normal 1rem Arial!important">[&gt;]</span></p><br>&nbsp;<br>&nbsp;</a>
+          <a style="top: 0%; left: 50%; width: 50%; height: 99.5%; border-left:0;"
+          draggable="false" ondragstart="return false"
+          {{on 'click' (fn this.z.showNext true)}}>
+            <p>{{t 'next'}}<br><span style="font:normal 1rem Arial!important">[&gt;]</span></p><br>&nbsp;<br>&nbsp;
+          </a>
+        </div>
+      </div>
+
+        {{!-- The text from Xmp.dc.description metadata --}}
+        <div class="img_txt1" draggable="false" ondragstart="return false" title=>
+          {{{this.txt 1 this.z.picName}}}
         </div>
 
+        {{!-- The text from Xmp.dc.creator metadata --}}
+        <div class="img_txt2" draggable="false" ondragstart="return false" title=>
+          {{{this.txt 2 this.z.picName}}}
+        </div>
       </div>
     </div>
 

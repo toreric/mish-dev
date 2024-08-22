@@ -1285,7 +1285,7 @@ img[alt] {
 .img_mini img {
   display: block;
   cursor: pointer;
-  border: 1px solid #888;
+  border: 0.25px solid #888;
   max-width: 150px;
   max-height: 150px;
   margin: auto;
@@ -1388,7 +1388,7 @@ img[alt] {
 .img_show img:first-of-type {
   display: block;
   cursor: default;
-  border: 1px solid gray;
+  border: 1px solid #808080;
   max-width: 640px;
   max-height: 640px;
   margin: auto;
@@ -1414,7 +1414,7 @@ img.mark {
   background: transparent;
   z-index: 6;
 }
-.markFalseShow {
+.markFalseShow {show
   position: absolute;
   width: 20px;
   height: 20px;
@@ -1433,7 +1433,7 @@ img.mark {
 .markTrue {
   position: absolute;
   width: 20px;
-  height: 20px;
+  height: 20px;show
   border: 0;
   top: 0px;
   right: 0px;
