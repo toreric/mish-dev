@@ -18,7 +18,7 @@ export class ButtonsLeft extends Component {
 
   toggleMainMenu = () => {
     if (document.getElementById("menuMain").style.display === "") {
-      this.z.closeMainMenu('main menu button'); // with msg
+      this.z.closeMainMenu('');
     } else {
       this.z.openMainMenu();
     }

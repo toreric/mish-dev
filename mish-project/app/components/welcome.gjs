@@ -81,31 +81,39 @@ const toggleDialog = (dialogId, origPos) => { //copy from z
 }
 
 // Detect closing click outside menuMain (tricky case!)
-document.addEventListener('mousedown', (event) => {
+document.addEventListener('click', async (event) => {
+  var tgt = event.target;
+  console.log('event.target:', tgt);
   var tmp0 = document.getElementById('menuButton');
   var tmp1 = document.getElementById('menuMain');
-  if (tmp1.style.display !== 'none' && event.target !== tmp0 && event.target !== tmp1 && !tmp0.contains(event.target) && !tmp1.contains(event.target)) {
+  if (tmp1.style.display !== 'none' && tgt !== tmp0 && tgt !== tmp1 && !tmp0.contains(tgt) && !tmp1.contains(tgt)) {
     tmp0.innerHTML = '<span class="menu">𝌆</span>';
     tmp1.style.display = 'none';
     console.log('-"-: closed main menu');
   }
+  await new Promise (z => setTimeout (z, 29)); // Just by suspicion
   // Dito to close the view image, cf. this.z.showImage('')
-  if ( // Here are dedicated closers:
-    event.target.classList.contains('img_show') ||
-    event.target.classList.contains('footer') || // NOTE: footer in Welcome
-    document.querySelector('.footer').contains(event.target) ||
-    document.querySelector('.toggleNavInfo').contains(event.target) ||
-    document.querySelector('.nav_links').contains(event.target)
+  if ( // Here are non-closers:
+    tgt.classList.contains('img_show') ||
+    tgt.classList.contains('img_name') ||
+    tgt.classList.contains('img_txt1') ||
+    tgt.classList.contains('img_txt2') ||
+    // Here are dedicated closers, will close themselves:
+    tgt.classList.contains('footer') || // NOTE: footer in Welcome
+    document.querySelector('.footer').contains(tgt) ||
+    document.querySelector('.toggleNavInfo').contains(tgt) ||
+    document.querySelector('.nav_links').contains(tgt)
   ) return;
-  // Close click outside those dedicated :
+  // Click outside those dedicated :
   if (document.querySelector('.img_show').style.display !== 'none') {
     // Close the show image view
     document.querySelector('.img_show').style.display = 'none';
     // Open the thumbnail view
     document.querySelector('.miniImgs.imgs').style.display = 'flex';
-    // console.log('event.target:');
-    // console.log(event.target);
+    // console.log('tgt:');
+    // console.log(tgt);
   }
+  return;
 });
 
 class Welcome extends Component {

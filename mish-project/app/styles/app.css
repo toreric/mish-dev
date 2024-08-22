@@ -1371,8 +1371,7 @@ img[alt] {
   background-color: #beebff;
 }
 .img_show .img_name {
-  display: none;
-  color: #fe0;
+  color: #fd0;
   text-align: left;
   cursor: default;
   font-size: 95%;

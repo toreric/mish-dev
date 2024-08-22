@@ -380,6 +380,7 @@ export default class CommonStorageService extends Service {
   // showImage('') will close the show image and open thumbnails
   showImage = async (name, path) => {
     if (name) {
+      await new Promise (z => setTimeout (z, 19)); // Just by suspicion
       // this.loli('show name: ' + name, 'color:red');
       // this.loli('show path: ' + path, 'color:red');
       // Set the actual picName, do not forget!
@@ -737,8 +738,8 @@ export default class CommonStorageService extends Service {
     var menuButton = document.getElementById("menuButton");
     menuMain.style.display = '';
     await new Promise (z => setTimeout (z, 9)); // slow response
-    await new Promise (z => setTimeout (z, 9)); // slow response
     menuButton.innerHTML = '<span class="menu">×</span>';
+    await new Promise (z => setTimeout (z, 9)); // slow response
     this.loli('opened main menu');
     return '';
   }
@@ -750,7 +751,7 @@ export default class CommonStorageService extends Service {
     await new Promise (z => setTimeout (z, 9)); // slow response
     menuButton.innerHTML = '<span class="menu">𝌆</span>';
     await new Promise (z => setTimeout (z, 9)); // slow response
-    this.loli('closed main menu, ' + msg);
+    this.loli('closed main menu ' + msg);
     return '';
   }
 
