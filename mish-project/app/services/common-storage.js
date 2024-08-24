@@ -63,6 +63,7 @@ export default class CommonStorageService extends Service {
   // and <flag> is empty or "*". The <flag> indicates a hidden album,
   // which needs permission for access
 
+
   //   #region View vars.
   //== Miniature and show images etc. information
 
@@ -378,21 +379,24 @@ export default class CommonStorageService extends Service {
 
   // Open or close the named show image, path = its path in the current album
   // showImage('') will close the show image and open thumbnails
-  showImage = async (name, path) => {
+  showImage = async (name, path, e) => {
+    if (e) e.stopPropagation();
     if (name) {
       await new Promise (z => setTimeout (z, 19)); // Just by suspicion
       // this.loli('show name: ' + name, 'color:red');
       // this.loli('show path: ' + path, 'color:red');
       // Set the actual picName, do not forget!
       this.picName = name;
-      // Outline and position the soon invisible thumbnail
-      this.gotoMinipic(name);
-      // Close the thumbnail view
+    // // Outline the soon invisible thumbnail
+    // this.resetBorders(); // Reset all borders
+    // await new Promise (z => setTimeout (z, 99));
+    // this.markBorders(name); // Mark this one
+        // Close the thumbnail view
       document.querySelector('.miniImgs.imgs').style.display = 'none';
       // Load the show image source path and set it's id="dname"
       let pic = document.querySelector('#link_show img');
       pic.src = 'rln' + path;
-      pic.setAttribute('id', 'd' + name);
+  // pic.setAttribute('id', 'd' + name); //err! dup id!
       // Open the show image view
       document.querySelector('.img_show').style.display = 'flex';
       // Hide the navigation overlay information
@@ -415,7 +419,8 @@ export default class CommonStorageService extends Service {
   }
 
   // Show the next or previous slideshow image
-  showNext = async (forward) => {
+  showNext = async (forward, e) => {
+    if (e) e.stopPropagation();
     var next, nextName;
     var actual = document.querySelector('#i' + this.picName);
     var allFiles = this.allFiles;
@@ -442,6 +447,7 @@ export default class CommonStorageService extends Service {
       // this.loli('index=' + i);
       let path = '';
       if (i > -1) {
+        this.picName = nextName;
         await new Promise (z => setTimeout (z, 2));
         path = allFiles[i].show;
         this.showImage(nextName, path);
@@ -733,7 +739,8 @@ export default class CommonStorageService extends Service {
   //   #region Menus
   //== Menu utilities
 
-  openMainMenu = async () => {
+  openMainMenu = async (e) => {
+    if (e) e.stopPropagation();
     var menuMain = document.getElementById("menuMain");
     var menuButton = document.getElementById("menuButton");
     menuMain.style.display = '';

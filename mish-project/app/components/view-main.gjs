@@ -178,6 +178,10 @@ class AllImages extends Component {
     return name + ': <b>Text ' + no + '</b>';
   }
 
+  editext = (event) => {
+    event.stopPropagation();
+    // catches clicks
+  }
 
   itemVisualClass = 'sortable-item--active';
 
@@ -284,19 +288,28 @@ class AllImages extends Component {
           </div>
         </div>
 
-        {{!-- This is the image name, should be unique --}}
-        <div class="img_name" style="display:">
-          {{this.z.picName}}
-        </div>
+        <div id="link_texts" draggable="false">
+          {{!-- This is the image name, should be unique --}}
+          <div class="img_name" style="display:"
+            draggable="false" ondragstart="return false" title=""
+            {{on 'click' this.editext}}
+          >
+            {{this.z.picName}}
+          </div>
 
-        {{!-- The text from Xmp.dc.description metadata --}}
-        <div class="img_txt1" draggable="false" ondragstart="return false" title=>
-          {{{this.txt 1 this.z.picName}}}
-        </div>
+          {{!-- The text from Xmp.dc.description metadata --}}
+          <div class="img_txt1" draggable="false" ondragstart="return false" title=""
+            {{on 'click' this.editext}}
+          >
+            {{{this.txt 1 this.z.picName}}}
+          </div>
 
-        {{!-- The text from Xmp.dc.creator metadata --}}
-        <div class="img_txt2" draggable="false" ondragstart="return false" title=>
-          {{{this.txt 2 this.z.picName}}}
+          {{!-- The text from Xmp.dc.creator metadata --}}
+          <div class="img_txt2" draggable="false" ondragstart="return false" title=""
+            {{on 'click' this.editext}}
+          >
+            {{{this.txt 2 this.z.picName}}}
+          </div>
         </div>
       </div>
     </div>

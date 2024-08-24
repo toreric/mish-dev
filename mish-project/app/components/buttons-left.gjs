@@ -16,7 +16,8 @@ export class ButtonsLeft extends Component {
 
   someFunction = (param) => {this.z.loli(param, 'color:red');}
 
-  toggleMainMenu = () => {
+  toggleMainMenu = (e) => {
+    if (e) e.stopPropagation();
     if (document.getElementById("menuMain").style.display === "") {
       this.z.closeMainMenu('');
     } else {
@@ -24,7 +25,8 @@ export class ButtonsLeft extends Component {
     }
   }
 
-  toggleNameView = () => {
+  toggleNameView = (e) => {
+    if (e) e.stopPropagation();
     let value = this.z.displayNames ? '' : 'none';
     for (let name of document.querySelectorAll('div.img_name')) {
       name.style.display = value;
@@ -53,12 +55,7 @@ export class ButtonsLeft extends Component {
 
       <a id="saveOrder" class="smBu" title={{t 'buttons.left.save'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.someFunction 'saveOrder(true)')}}>S</a>
 
-      {{!-- <a id="do_mail" class="smBu" title={{t 'buttons.left.mail'}} {{on 'click' (fn this.someFunction 'doMail')}} src="/images/mail.svg" style="display:"></a> --}}
-
       <a class="smBu" draggable="false" ondragstart="return false" title={{t 'buttons.left.up'}} style="font:bold 190% sans-serif;line-height:90%" onclick="window.scrollTo(0,0)">↑</a>
-
-      {{!-- <a id="netMeeting" class="smBu" title={{t 'buttons.left.meet'}}
-      href="https://meet.jit.si/Minnenfr%C3%A5nS%C3%A4var%C3%A5dalenochHolm%C3%B6n" target="jitsi_window" draggable="false" ondragstart="return false" style="display:;padding:0 0.25em 0.2em 0.125em;line-height:1.25em" onclick="this.hide">▣</a> --}}
 
     </div>
   </template>

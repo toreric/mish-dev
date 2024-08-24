@@ -80,39 +80,42 @@ const toggleDialog = (dialogId, origPos) => { //copy from z
   // this.loli(what + dialogId);
 }
 
-// Detect closing click outside menuMain (tricky case!)
-document.addEventListener('click', async (event) => {
+// Here ALL bubbling mousedowns, even programatically clicks, are caught!
+document.addEventListener('mousedown', async (event) => {
+  console.log('event:', event);
   var tgt = event.target;
-  console.log('event.target:', tgt);
-  var tmp0 = document.getElementById('menuButton');
-  var tmp1 = document.getElementById('menuMain');
-  if (tmp1.style.display !== 'none' && tgt !== tmp0 && tgt !== tmp1 && !tmp0.contains(tgt) && !tmp1.contains(tgt)) {
-    tmp0.innerHTML = '<span class="menu">𝌆</span>';
-    tmp1.style.display = 'none';
-    console.log('-"-: closed main menu');
-  }
-  await new Promise (z => setTimeout (z, 29)); // Just by suspicion
-  // Dito to close the view image, cf. this.z.showImage('')
-  if ( // Here are non-closers:
+ if ( // Here are non-closers:
     tgt.classList.contains('img_show') ||
     tgt.classList.contains('img_name') ||
     tgt.classList.contains('img_txt1') ||
     tgt.classList.contains('img_txt2') ||
-    // Here are dedicated closers, will close themselves:
+    // Here are dedicated closers, will do something by themselves
     tgt.classList.contains('footer') || // NOTE: footer in Welcome
     document.querySelector('.footer').contains(tgt) ||
     document.querySelector('.toggleNavInfo').contains(tgt) ||
-    document.querySelector('.nav_links').contains(tgt)
-  ) return;
-  // Click outside those dedicated :
-  if (document.querySelector('.img_show').style.display !== 'none') {
-    // Close the show image view
-    document.querySelector('.img_show').style.display = 'none';
-    // Open the thumbnail view
-    document.querySelector('.miniImgs.imgs').style.display = 'flex';
-    // console.log('tgt:');
-    // console.log(tgt);
+    document.querySelector('.nav_links').contains(tgt) ||
+    document.querySelector('#link_texts').contains(tgt)
+  ) {
+    return;
   }
+
+  // console.log('event:', event);
+  resetBorders();
+
+  // Detect closing click outside menuMain (tricky case!)
+  var tmp0 = document.getElementById('menuButton');
+  var tmp1 = document.getElementById('menuMain');
+  if (
+    tmp1.style.display !== 'none' &&
+    tgt !== tmp0 &&
+    tgt !== tmp1 &&
+    !tmp0.contains(tgt) &&
+    !tmp1.contains(tgt)
+  ) document.querySelector('#menuButton').click();
+
+  // Close the show image view, if open
+  document.querySelector('#go_back').click();
+  console.log('RETURN 2 mousedown')
   return;
 });
 

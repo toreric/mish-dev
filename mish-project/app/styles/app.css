@@ -2142,7 +2142,7 @@ a {
 }
 a:hover {
   text-decoration: none;
-  color: deeppink;
+  color: #5dabdf;
 }
 .dropzone .dz-preview .dz-remove {
   background-color: white;
