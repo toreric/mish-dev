@@ -171,6 +171,8 @@ goto: Gå till
 header: Mish bildgalleri
 hello:
   world:  Goddag hela världen!
+imageFirst: första bilden
+imageLast:  sista bilden
 infoHeader: Information
 loggedIn: Inloggad
 noCollSelected: Ingen albumsamling har valts

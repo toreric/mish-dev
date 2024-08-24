@@ -173,6 +173,8 @@ goto: Go to
 header: Mish picture gallery
 hello:
   world:  Hello World!
+imageFirst: first image
+imageLast:  last image
 infoHeader: Information
 loggedIn: Logged in
 noCollSelected: No album collection selected

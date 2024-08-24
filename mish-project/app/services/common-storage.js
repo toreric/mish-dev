@@ -18,7 +18,7 @@ export default class CommonStorageService extends Service {
         get defaultUserName() { return `${this.intl.t('guest')}`; }
   @tracked  freeUsers = 'guest...'; //user names without passwords (set by DialogLogin)
   @tracked  imdbCoco = '';          //content counters etc. for imdbDirs (*)
-  @tracked  imdbDir = '';           //actual/current (sub)album directory (server IMDB_DIR)
+  @tracked  imdbDir = '';           //actual/current (sub)album directory (IMDB_DIR)
   @tracked  imdbDirIndex = 0;       //actual/current (sub)album directory index
         get imdbDirName() {
               if (this.imdbRoot) {
@@ -68,16 +68,18 @@ export default class CommonStorageService extends Service {
   //== Miniature and show images etc. information
 
   @tracked  navKeys = false; // Protects from unintended use of L/R arrows
-  @tracked  allFiles = [];   // Image file information object
-
-  @tracked  maxWarning = 0; // Rec. max number of images in an album, set in Welcome
+  @tracked  allFiles = [];   // Image file information object, changes with imdbDir
+  @tracked  edgeImage = '';  // Text indicating first/last image
+  // Recommended max. number of images in an album, set in Welcome (perhaps 100):
+  @tracked  maxWarning = 0;
+  // Dynamic album information:
   @tracked  numHidden = ' 0';
   @tracked  numMarked = '0';
   @tracked  numShown = ' 0';
   @tracked  b = '';
   @tracked  c = '';
   @tracked  d = '';
-  @tracked  displayNames = '';
+  @tracked  displayNames = 'none'; // Image name display switch
 
 
   //   #region Allowance
@@ -398,12 +400,13 @@ export default class CommonStorageService extends Service {
       pic.src = 'rln' + path;
   // pic.setAttribute('id', 'd' + name); //err! dup id!
       // Open the show image view
-      document.querySelector('.img_show').style.display = 'flex';
+      document.querySelector('.img_show').style.display = 'table';
       // Hide the navigation overlay information
       document.querySelector('.toggleNavInfo').style.opacity = '0';
       // Show the right side buttons
       document.querySelector('.nav_links').style.display = '';
     } else {
+      this.edgeImage = '';
       // Hide the right side buttons
       document.querySelector('.nav_links').style.display = 'none';
       if (document.querySelector('.img_show').style.display === 'none') return;
@@ -422,7 +425,7 @@ export default class CommonStorageService extends Service {
   showNext = async (forward, e) => {
     if (e) e.stopPropagation();
     var next, nextName;
-    var actual = document.querySelector('#i' + this.picName);
+    var actual = document.querySelector('#i' + this.escapeDots(this.picName));
     var allFiles = this.allFiles;
     if (forward) {
       next = actual.nextElementSibling;
@@ -452,6 +455,11 @@ export default class CommonStorageService extends Service {
         path = allFiles[i].show;
         this.showImage(nextName, path);
       }
+      // allFiles doesn't reflect DOM content, it may be rearranged
+      this.edgeImage = '';
+      actual = document.querySelector('#i' + this.escapeDots(this.picName));
+      if (!actual.nextElementSibling) this.edgeImage = this.intl.t('imageLast');
+      if (!actual.previousElementSibling) this.edgeImage = this.intl.t('imageFirst');
     }
   }
 

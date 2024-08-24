@@ -14,6 +14,10 @@ const dialogTextKeywordsId = 'dialogTextKeywords';
 //== Component DialogText with <dialog> tags
 //== Note: 'data-dialog-draggable' is triggered with makeDialogDraggable() in welcome.gjs
 
+document.addEventListener('mousedown', async (e) => {
+  e.stopPropagation();
+});
+
 export class DialogText extends Component {
   @service('common-storage') z;
 
@@ -25,7 +29,8 @@ export class DialogText extends Component {
 
   // Detect closing Esc key and handle (child) dialogs
   detectEscClose = async (e) => {
-   if (e.keyCode === 27) { // Esc key
+    e.stopPropagation();
+    if (e.keyCode === 27) { // Esc key
       let tmp1 = document.getElementById(dialogTextNotesId);
       let tmp2 = document.getElementById(dialogTextKeywordsId);
       // There are 2 child dialogs
@@ -43,6 +48,7 @@ export class DialogText extends Component {
 
   // Detect closing click outside a dialog-draggable modal dialog
   detectClickOutside = (e) => {
+    e.stopPropagation();
     if (!navigator.userAgent.includes("Firefox")) return; // Only Firefox can do this
     let tgt = e.target.id;
     if (tgt === dialogTextId || tgt === dialogTextNotesId || tgt === dialogTextKeywordsId) {

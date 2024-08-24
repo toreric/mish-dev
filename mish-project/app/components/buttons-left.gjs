@@ -27,10 +27,7 @@ export class ButtonsLeft extends Component {
 
   toggleNameView = (e) => {
     if (e) e.stopPropagation();
-    let value = this.z.displayNames ? '' : 'none';
-    for (let name of document.querySelectorAll('div.img_name')) {
-      name.style.display = value;
-    }
+    let value = this.z.displayNames ? '' : 'block';
     this.z.displayNames = value;
   }
 

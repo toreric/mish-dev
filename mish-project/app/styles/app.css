@@ -1308,6 +1308,9 @@ img[alt] {
 .img_txt2 a {
   color: lightskyblue;
 }
+.img_name {
+  display:none;
+}
 .img_mini .img_name {
   font-size: 84%;
   white-space: nowrap;

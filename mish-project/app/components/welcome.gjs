@@ -42,8 +42,8 @@ document.addEventListener('keydown', (event) => {
     case 27:  // Esc
       resetBorders();
       if (!document.querySelector('#menuMain').style.display)
-        document.querySelector('#menuButton').click();
-      document.querySelector('#go_back').click();
+        document.querySelector('#menuButton').click(); //close menu
+      document.querySelector('#go_back').click(); //close view image
       break;
     case 37:  // <
       document.querySelector('.nav_.prev').click();
@@ -80,26 +80,23 @@ const toggleDialog = (dialogId, origPos) => { //copy from z
   // this.loli(what + dialogId);
 }
 
-// Here ALL bubbling mousedowns, even programatically clicks, are caught!
+// ALL bubbling mousedowns are caught, even programmatical clicks!
 document.addEventListener('mousedown', async (event) => {
-  console.log('event:', event);
+  // console.log('event:', event);
   var tgt = event.target;
- if ( // Here are non-closers:
-    tgt.classList.contains('img_show') ||
-    tgt.classList.contains('img_name') ||
-    tgt.classList.contains('img_txt1') ||
-    tgt.classList.contains('img_txt2') ||
-    // Here are dedicated closers, will do something by themselves
+  if (
+   // Will do something by themselves or not
     tgt.classList.contains('footer') || // NOTE: footer in Welcome
     document.querySelector('.footer').contains(tgt) ||
+    document.querySelector('#upperButtons').contains(tgt) ||
+    document.querySelector('#smallButtons').contains(tgt) ||
+    document.querySelector('.img_show').contains(tgt) ||
     document.querySelector('.toggleNavInfo').contains(tgt) ||
     document.querySelector('.nav_links').contains(tgt) ||
     document.querySelector('#link_texts').contains(tgt)
   ) {
     return;
   }
-
-  // console.log('event:', event);
   resetBorders();
 
   // Detect closing click outside menuMain (tricky case!)
@@ -115,7 +112,6 @@ document.addEventListener('mousedown', async (event) => {
 
   // Close the show image view, if open
   document.querySelector('#go_back').click();
-  console.log('RETURN 2 mousedown')
   return;
 });
 
@@ -134,9 +130,13 @@ class Welcome extends Component {
   getCred = async () => {
     if (!this.z.userStatus) { // only once
 
-      // Settings
-      this.z.initBrowser();   // Manipulate browser back-arrow
-      this.z.maxWarning = 20; // Set recommended album size, about 100
+      // Various settings
+      this.z.initBrowser();         // Manipulate browser back-arrow
+      this.z.maxWarning = 20;       // Set recommended album size, about 100
+      this.z.displayNames = 'none'; // Hide image names
+      // Awake the system!
+      await new Promise (z => setTimeout (z, 99));
+      document.querySelector('#toggleName').click();
 
       // Read the build stamp files (nodestamp.txt may be initially missing) etc.
       this.z.aboutThis = 'Mish ' + await this.z.execute('cat buildstamp.txt') + ' ' + await this.z.execute('cat nodestamp.txt') + ' and Glimmer by Ember<br>' + await this.z.execute('head -n1 LICENSE.txt');
@@ -188,7 +188,7 @@ export default class extends Welcome {
 
     <div id='highUp'></div>
 
-    <div style="position:relative;top:0.5rem;left:0;width:100%">
+    <div id="upperButtons" style="position:relative;top:0;left:0;width:100%;padding-top:0.5rem">
       <div {{executeOnInsert this}} class="sameBackground" style="display:flex;justify-content:space-between;margin:0 3.25rem 0 4rem">
         {{!-- Html inserted here will appear above upon the buildStamp div --}}
         {{!-- So, better give some visibility space for the buildstamp:    --}}
@@ -254,6 +254,9 @@ export default class extends Welcome {
     <p class="footer" style="text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:77%" {{on 'click' (fn this.z.showImage '')}}>
       {{{this.z.aboutThis}}}
       <br>
+
+      <p style="font:small-caps 0.9rem sans-serif;color:#ff1493;display:inline">
+        {{this.z.edgeImage}} &nbsp; </p>
 
       <a id="do_mail" style="font-size:2rem;margin:0" class="smBu" title={{t 'buttons.left.mail'}} {{on 'click' (fn this.someFunction 'doMail')}} src="/images/mail.svg">
       </a>

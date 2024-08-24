@@ -175,7 +175,17 @@ class AllImages extends Component {
   }
 
   txt = (no, name) => {
-    return name + ': <b>Text ' + no + '</b>';
+    let i = this.z.allFiles.findIndex(all => {return all.name === name;});
+    let r = '';
+    if (i > -1) {
+      if (no === 1) {
+        r = this.z.allFiles[i].txt1;
+      } else {
+        r = this.z.allFiles[i].txt2;
+      }
+    }
+    return r;
+    // return name + ': <b>Text ' + no + '</b>';
   }
 
   editext = (event) => {
@@ -243,7 +253,7 @@ class AllImages extends Component {
             <img src="{{item.mini}}" class="left-click" title="{{this.z.imdbRoot}}{{item.linkto}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage item.name item.show)}}>
 
             {{!-- This is the image name, should be unique --}}
-            <div class="img_name" style="display:">
+            <div class="img_name" style="display:{{this.z.displayNames}}">
               {{item.name}}
             </div>
 
@@ -264,9 +274,9 @@ class AllImages extends Component {
       </div>
     </div>
 
-    {{!-- The album's slideshow images come here --}}
-    <div class="img_show" id="d{{this.z.picName}}" draggable="false" style="display:none" {{on 'click' (fn this.z.showImage '')}}>
-      <div>
+    {{!-- The album's slideshow image comes here --}}
+    <div class="img_show" id="d{{this.z.picName}}" draggable="false" style="display:none;margin:1.5rem auto 0px auto" {{on 'click' (fn this.z.showImage '')}}>
+
         <div id="link_show" draggable="false">
           <p style="margin:0;line-height:0;font-family:sans-serif">ᵛ</p>
           <img src="" draggable="false" ondragstart="return false">
@@ -288,12 +298,10 @@ class AllImages extends Component {
           </div>
         </div>
 
-        <div id="link_texts" draggable="false">
+        <div id="link_texts" draggable="false" style="display:table-caption;
+          caption-side:bottom;background:#3b3b3b;padding:0 0 0.4rem 0.3rem">
           {{!-- This is the image name, should be unique --}}
-          <div class="img_name" style="display:"
-            draggable="false" ondragstart="return false" title=""
-            {{on 'click' this.editext}}
-          >
+          <div class="img_name" style="display:{{this.z.displayNames}}" draggable="false" ondragstart="return false" title="" {{on 'click' this.editext}}>
             {{this.z.picName}}
           </div>
 
@@ -311,7 +319,7 @@ class AllImages extends Component {
             {{{this.txt 2 this.z.picName}}}
           </div>
         </div>
-      </div>
+
     </div>
 
   </template>
