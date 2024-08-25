@@ -109,17 +109,7 @@ class AllImages extends Component {
   @service intl;
 
   @tracked lastDragged;
-  @tracked items = [];
-
-  allFiles = () => { // Copies 'allFiles' to 'items'
-    this.items = [];
-    let m = this.z.allFiles.length;
-    for (let i=0;i<m;i++) {
-      // this.items.push({img: this.z.allFiles[i].mini, name: this.z.allFiles[i].name});
-      this.items.push(this.z.allFiles[i]);
-      this.lastDragged = '';
-    }
-  }
+  @tracked items = []; // NOTE: Used for allFiles duplication, below
 
   reorderItems = (itemModels, draggedModel) => {
     this.items = itemModels;
@@ -174,23 +164,34 @@ class AllImages extends Component {
     this.z.markBorders(item.name);
   }
 
+  // Copies 'allFiles' to 'items' by real value duplication
+  allFiles = () => {
+    this.items = [];
+    let m = this.z.allFiles.length;
+    for (let i=0;i<m;i++) {
+      // this.items.push({img: this.z.allFiles[i].mini, name: this.z.allFiles[i].name});
+      this.items.push(this.z.allFiles[i]);
+      this.lastDragged = '';
+    }
+  }
+
   txt = (no, name) => {
-    let i = this.z.allFiles.findIndex(all => {return all.name === name;});
+    let i = this.items.findIndex(item => {return item.name === name;});
     let r = '';
     if (i > -1) {
       if (no === 1) {
-        r = this.z.allFiles[i].txt1;
+        r = this.items[i].txt1;
       } else {
-        r = this.z.allFiles[i].txt2;
+        r = this.items[i].txt2;
       }
     }
     return r;
-    // return name + ': <b>Text ' + no + '</b>';
   }
 
+  // Edit the image texts using DialogText
   editext = (event) => {
     event.stopPropagation();
-    // catches clicks
+    // todo, catches clicks so far
   }
 
   itemVisualClass = 'sortable-item--active';
@@ -275,7 +276,7 @@ class AllImages extends Component {
     </div>
 
     {{!-- The album's slideshow image comes here --}}
-    <div class="img_show" id="d{{this.z.picName}}" draggable="false" style="display:none;margin:1.5rem auto 0px auto" {{on 'click' (fn this.z.showImage '')}}>
+    <div class="img_show" id="d{{this.z.picName}}" draggable="false" style="display:none;margin:1.5rem auto" {{on 'click' (fn this.z.showImage '')}}>
 
         <div id="link_show" draggable="false">
           <p style="margin:0;line-height:0;font-family:sans-serif">ᵛ</p>

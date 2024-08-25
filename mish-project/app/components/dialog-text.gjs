@@ -11,12 +11,12 @@ export const dialogTextId = 'dialogText';
 const dialogTextNotesId = 'dialogTextNotes';
 const dialogTextKeywordsId = 'dialogTextKeywords';
 
-//== Component DialogText with <dialog> tags
-//== Note: 'data-dialog-draggable' is triggered with makeDialogDraggable() in welcome.gjs
-
 document.addEventListener('mousedown', async (e) => {
   e.stopPropagation();
 });
+
+//== Component DialogText with <dialog> tags
+//== Note: 'data-dialog-draggable' is triggered with makeDialogDraggable() in welcome.gjs
 
 export class DialogText extends Component {
   @service('common-storage') z;
@@ -125,7 +125,7 @@ export class DialogText extends Component {
 }
 
 //== Virtual keys for some missing characters on common keyboards
-// (Should this be i18nd? Or extended to include all needs for langages offered?)
+// (Should this be i15d? Or extended to include all needs for langages offered?)
 
 const VirtualKeys = <template>
   <div class="" style='padding:0.1em'>

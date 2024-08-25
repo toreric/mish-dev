@@ -223,8 +223,7 @@ export default class extends Welcome {
           {{#if this.z.imdbRoot}}
             {{#if this.z.imdbDir}}
               <a class="" {{on 'click' (fn this.z.openAlbum 0)}}>
-                ⌂
-                <span style="font-variant:all-small-caps;font-family:Arial,Helvetica,sans-serif;font-size:90%">{{t 'home'}}&nbsp;</span>
+                <span style="font:small-caps 0.9rem sans-serif">⌂&nbsp;{{t 'home'}}&nbsp;</span>
               </a>
             {{/if}}
             <b>”{{this.z.imdbRoot}}”</b>
@@ -238,6 +237,7 @@ export default class extends Welcome {
         </span>
       </div>
     </div>
+
     <ButtonsLeft />
     <ButtonsRight />
     <Header />
@@ -251,12 +251,13 @@ export default class extends Welcome {
     <Spinner />
 
     <div id='lowDown'></div>
-    <p class="footer" style="text-align:center;font-family:Arial,Helvetica,sans-serif;font-size:77%" {{on 'click' (fn this.z.showImage '')}}>
+    <p style="font:small-caps 0.9rem sans-serif;color:#ff1493;text-align:center">
+      {{this.z.edgeImage}}
+    </p>
+
+    <p class="footer" style="text-align:center;font:small-caps 77% sans-serif" {{on 'click' (fn this.z.showImage '')}}>
       {{{this.z.aboutThis}}}
       <br>
-
-      <p style="font:small-caps 0.9rem sans-serif;color:#ff1493;display:inline">
-        {{this.z.edgeImage}} &nbsp; </p>
 
       <a id="do_mail" style="font-size:2rem;margin:0" class="smBu" title={{t 'buttons.left.mail'}} {{on 'click' (fn this.someFunction 'doMail')}} src="/images/mail.svg">
       </a>

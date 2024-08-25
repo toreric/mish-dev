@@ -235,11 +235,13 @@ export default class CommonStorageService extends Service {
       if (selected.nodeName !== 'DIV') break;
       selected.style.display = '';
     }
+    // Retreive information for every image file from the server:
     this.allFiles = await this.getImages();
+        // this.loli(this.allFiles, 'color:lightgreen');
+        // console.log(this.allFiles);
 
-    // this.loli(this.allFiles, 'color:lightgreen');
-    // console.log(this.allFiles);
-    // Use the hidden load button in components ViewMain>MiniImages
+    // The hidden load button in components ViewMain > AllImages will
+    // push the allFiles content into the thumbnail template:
     document.getElementById('loadMiniImages').click();
     // Then hide the spinner
     document.querySelector('img.spinner').style.display = 'none';
@@ -254,8 +256,8 @@ export default class CommonStorageService extends Service {
       img.src = 'rln' + file.show;
       preloadShowImg.push(img);
     }
-    // console.log(preloadShowImg);
-    // Prepare for an arrow key hit by setting 'this.picName' as the last in album
+        // console.log(preloadShowImg);
+    // Prepare for an arrow key hit by setting 'this.picName' to the last in album
     if (this.allFiles.length > 0) {
       this.picName = this.allFiles[this.allFiles.length - 1].name;
     } else this.picName = '';
@@ -277,8 +279,6 @@ export default class CommonStorageService extends Service {
     }
     document.querySelector('body').style.background = this.bkgrColor;
     document.querySelector('body').style.color = this.textColor;
-    // for (let a of document.querySelectorAll('.sameBackground')) a.style.background = this.bkgrColor;
-    // for (let a of document.querySelectorAll('.sameBackground')) a.style.color = this.textColor;
   }
 
   // Detect certain keys pressed
@@ -392,20 +392,19 @@ export default class CommonStorageService extends Service {
     if (e) e.stopPropagation();
     if (name) {
       await new Promise (z => setTimeout (z, 19)); // Just by suspicion
-      // this.loli('show name: ' + name, 'color:red');
-      // this.loli('show path: ' + path, 'color:red');
+          // this.loli('show name: ' + name, 'color:red');
+          // this.loli('show path: ' + path, 'color:red');
       // Set the actual picName, do not forget!
       this.picName = name;
-    // // Outline the soon invisible thumbnail
-    // this.resetBorders(); // Reset all borders
-    // await new Promise (z => setTimeout (z, 99));
-    // this.markBorders(name); // Mark this one
-        // Close the thumbnail view
+          // // Outline the soon invisible thumbnail
+          // this.resetBorders(); // Reset all borders
+          // await new Promise (z => setTimeout (z, 99));
+          // this.markBorders(name); // Mark this one
+      // Close the thumbnail view
       document.querySelector('.miniImgs.imgs').style.display = 'none';
       // Load the show image source path and set it's id="dname"
       let pic = document.querySelector('#link_show img');
       pic.src = 'rln' + path;
-  // pic.setAttribute('id', 'd' + name); //err! dup id!
       // Open the show image view
       document.querySelector('.img_show').style.display = 'table';
       // Hide the navigation overlay information
@@ -421,8 +420,6 @@ export default class CommonStorageService extends Service {
       document.querySelector('.img_show').style.display = 'none';
       // Open the thumbnail view
       document.querySelector('.miniImgs.imgs').style.display = 'flex';
-      // // Get the actual picName (perhaps another than before) - unnecessary?
-      // this.picName = (document.querySelector('.img_show').getAttribute('id')).slice(1);
       // Outline the closed image
       this.gotoMinipic(this.picName);
     }
