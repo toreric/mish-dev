@@ -348,18 +348,25 @@ export default class CommonStorageService extends Service {
   }
   markBorders = async (namepic) => { // Mark a mini-image border
     // this.loli('markBorders here: ', 'color:red');
-    // this.loli('namepic 2: ' + namepic, 'color:red');
+    // this.loli('namepic: ' + namepic, 'color:red');
     await new Promise (z => setTimeout (z, 199)); // Allow the dom to settle
     document.querySelector('#i' + this.escapeDots(namepic) + ' img.left-click').classList.add('dotted');
   }
 
   // Position to a minipic and highlight its border
   gotoMinipic = async (namepic) => {
+    // this.loli('gotoMinipic here: ', 'color:yellow');
+    // this.loli('namepic: ' + namepic, 'color:yellow');
     let hs = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
     // this.loli('hs=' + hs, 'color:red');
     let h2 = hs/2;
     // this.loli('h2=' + h2, 'color:red');
-    let p = document.getElementById('i' + this.escapeDots(namepic));
+    // let id = '#i' + this.escapeDots(namepic);
+    // this.loli('id: ' + id, 'color:yellow');
+    // await new Promise (z => setTimeout (z, 66));
+    // let p = document.querySelector(id);
+    // NOTE: No escapeDots for getElementById:
+    let p = document.getElementById('i' + namepic);
     // this.loli('p=' + p, 'color:red');
     let y = p.offsetTop ? p.offsetTop : 0;
     // this.loli('y=' + y, 'color:red');
@@ -749,8 +756,8 @@ export default class CommonStorageService extends Service {
 
   openMainMenu = async (e) => {
     if (e) e.stopPropagation();
-    var menuMain = document.getElementById("menuMain");
-    var menuButton = document.getElementById("menuButton");
+    var menuMain = document.getElementById('menuMain');
+    var menuButton = document.getElementById('menuButton');
     menuMain.style.display = '';
     await new Promise (z => setTimeout (z, 9)); // slow response
     menuButton.innerHTML = '<span class="menu">×</span>';
@@ -760,8 +767,8 @@ export default class CommonStorageService extends Service {
   }
 
   closeMainMenu = async (msg) => {
-    var menuMain = document.getElementById("menuMain");
-    var menuButton = document.getElementById("menuButton");
+    var menuMain = document.getElementById('menuMain');
+    var menuButton = document.getElementById('menuButton');
     menuMain.style.display = 'none';
     await new Promise (z => setTimeout (z, 9)); // slow response
     menuButton.innerHTML = '<span class="menu">𝌆</span>';
