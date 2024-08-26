@@ -371,6 +371,24 @@ module.exports = function(app) { // Start module.exports
     })
   })
 
+  //#region sortlist
+  // ##### Get sorted file name list
+  app.get ('/sortlist', async function(req, res) {
+    var imdbtxtpath = IMDB + IMDB_DIR + '/_imdb_order.txt'
+    try { // Create _imdb_order.txt if missing
+      fd = await fs.openAsync (imdbtxtpath, 'r') // check
+      await fs.closeAsync (fd)
+    } catch (err) {
+      fd = await fs.openAsync (imdbtxtpath, 'w') // create
+      await fs.closeAsync (fd)
+      execSync ('chmod 664 ' + imdbtxtpath)
+    }
+    fs.readFileAsync (imdbtxtpath)
+    .then (names => {
+        // console.log ('/sortlist/:names' +'\n'+ names) // names <buffer> here converts to <text>
+      res.send (names) // Sent buffer arrives as text
+    }).then (console.info ('File order sent from server'))
+  })
 
   //#region Functions
 
@@ -647,7 +665,7 @@ module.exports = function(app) { // Start module.exports
     let picfile = path.parse(fileName).base
     let pngname = path.parse(fileName).name + '.png'
     let imdbImdbDir = path.parse(fileName).dir
-    let IMDB_PATH =(IMDB + IMDB_DIR)
+    let IMDB_PATH = (IMDB + IMDB_DIR)
     let tmp = 'Directory mismatch when "' + fileName.slice(IMDB.length) + '" is deleted'
     if (imdbImdbDir !== IMDB_PATH) console.log('INFO: ' + RED + tmp + RSET)
     fs.unlinkAsync(imdbImdbDir + '/' + picfile) // File not found isn't caught!

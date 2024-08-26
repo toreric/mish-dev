@@ -86,8 +86,7 @@ document.addEventListener('mousedown', async (event) => {
   var tgt = event.target;
   if (
    // Will do something by themselves or not
-    tgt.classList.contains('footer') || // NOTE: footer in Welcome
-    document.querySelector('.footer').contains(tgt) ||
+    event.button !== 0 ||// 0=left, 1=wheel, 2=right
     document.querySelector('#upperButtons').contains(tgt) ||
     document.querySelector('#smallButtons').contains(tgt) ||
     document.querySelector('.img_show').contains(tgt) ||
@@ -239,23 +238,17 @@ export default class extends Welcome {
     </div>
 
     <ButtonsLeft />
+    <MenuMain />
     <ButtonsRight />
     <Header />
     <ViewMain />
-    <MenuMain />
-    <DialogLogin />
-    <DialogText />
-    <DialogHelp />
-    <DialogAlert />
-    <DialogXper />
-    <Spinner />
 
     <div id='lowDown'></div>
     <p style="font:small-caps 0.9rem sans-serif;color:#ff1493;text-align:center">
       {{this.z.edgeImage}}
     </p>
 
-    <p class="footer" style="text-align:center;font:small-caps 77% sans-serif" {{on 'click' (fn this.z.showImage '')}}>
+    <p class="footer" style="text-align:center;font:77% sans-serif">
       {{{this.z.aboutThis}}}
       <br>
 
@@ -266,6 +259,13 @@ export default class extends Welcome {
       href="https://meet.jit.si/Minnenfr%C3%A5nS%C3%A4var%C3%A5dalenochHolm%C3%B6n" target="jitsi_window" draggable="false" ondragstart="return false" style="font-size:1.85rem;margin:0;padding:0 0.4rem 0.3rem 0.2rem" onclick="this.hide">▣</a>
 
     </p>
+
+    <DialogLogin />
+    <DialogText />
+    <DialogHelp />
+    <DialogAlert />
+    <DialogXper />
+    <Spinner />
 
   </template>;
 }

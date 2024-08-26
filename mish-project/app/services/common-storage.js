@@ -22,7 +22,8 @@ export default class CommonStorageService extends Service {
   @tracked  imdbDirIndex = 0;       //actual/current (sub)album directory index
         get imdbDirName() {
               if (this.imdbRoot) {
-                return (this.imdbRoot + this.imdbDir).replace(/^(.*\/)*([^/]+)$/, '$2').replace(/_/g, '&nbsp;');
+                return (this.imdbRoot + this.imdbDir).replace(/^(.*\/)*([^/]+)$/, '$2');
+                //.replace(/_/g, '&nbsp;'); to be compared with picFound!
               } else {
                 return '';
               }
@@ -32,7 +33,7 @@ export default class CommonStorageService extends Service {
   @tracked  imdbPath = '';          //userDir+imdbRoot = absolut path to album root
   @tracked  imdbRoot = '';          //chosen album root directory (collection)
         get imdbRootsPrep() { return `${this.intl.t('reloadApp')}`; } // advice!
-  @tracked  imdbRoots = [this.imdbRootsPrep]; //avalable album root directories
+  @tracked  imdbRoots = [this.imdbRootsPrep]; //available album root directories
   @tracked  imdbTree = null;                  //will have the imdbDirs object tree
   @tracked  infoHeader = 'Header text';       //for information dialog
   @tracked  infoMessage = 'No information';   //for information dialog
@@ -349,7 +350,7 @@ export default class CommonStorageService extends Service {
   markBorders = async (namepic) => { // Mark a mini-image border
     // this.loli('markBorders here: ', 'color:red');
     // this.loli('namepic: ' + namepic, 'color:red');
-    await new Promise (z => setTimeout (z, 199)); // Allow the dom to settle
+    await new Promise (z => setTimeout (z, 255)); // Allow the dom to settle
     document.querySelector('#i' + this.escapeDots(namepic) + ' img.left-click').classList.add('dotted');
   }
 
@@ -632,6 +633,81 @@ export default class CommonStorageService extends Service {
       console.error(error.message);
     });
   }
+  //#region sortlist
+  requestOrder = async () => {
+    // Request the sort order list of image files
+    return new Promise ( (resolve, reject) => {
+      var that = this;
+      var xhr = new XMLHttpRequest ();
+      xhr.open ('GET', 'sortlist/', true, null, null);
+      xhr.setRequestHeader('username', encodeURIComponent(this.userName));
+      xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
+      xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
+      xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
+      xhr.onload = async function () {
+        if (this.status >= 200 && this.status < 300) {
+          var data = xhr.response.trim ();
+          if (data.slice (0, 8) === '{"error"') {
+            data = "Error!"; // This error text may also be generated elsewhere
+          }
+          var tmpName = that.imdbDirName;
+          if (data === "Error!") {
+            if (tmpName === that.picFound) {
+              // Regenerate the picFound album since it has probably timed out
+              let lpath = that.imdbPath + "/" + that.picFound;
+              await execute ("rm -rf " +lpath+ "&&mkdir -m0775 " +lpath+ "&&touch " +lpath+ "/.imdb&&chmod 664 " +lpath+ "/.imdb");
+            }
+          } else {
+            //error message
+          }
+          // var tmpName = that.get ("albumName");
+          // tmpName = extractContent (tmpName); // Don't accumulate HTML
+          // if (tmpName === that.get ("imdbRoot")) {
+          //   document.title = 'Mish: ' + removeUnderscore (that.get ("imdbRoot"), true);
+          // } else {
+          //   // Do not display the random suffix if this is the search result album
+          //   var tmpIndex = tmpName.indexOf(picFound);
+          //   if (tmpIndex === 0) {
+          //     tmpName = tmpName.replace (/\.[^.]{4}$/, "");
+          //   }
+          //   document.title = 'Mish: ' + removeUnderscore (that.get ("imdbRoot") + " — " + tmpName, true);
+          // }
+          // $ ("#sortOrder").text (data);
+          // tmpName = removeUnderscore (tmpName); // Improve readability
+          // that.set ("jstreeHdr", "");
+          // if (data === "Error!") {
+          //   if (tmpIndex === 0) { // Regenerate the picFound album since it has probably timed out
+          //     let lpath = $ ("#imdbPath").text () + "/" + $ ("#picFound").text ();
+          //     await execute ("rm -rf " +lpath+ "&&mkdir -m0775 " +lpath+ "&&touch " +lpath+ "/.imdb&&chmod 664 " +lpath+ "/.imdb");
+          //   } else {
+          //     tmpName += " &mdash; <em style=\"color:#d00;background:transparent\">just nu oåtkomligt</em>" // i18n
+          //     that.set ("albumName", tmpName);
+          //     $ ("#imdbDir").text ("");
+          //   }
+          // }
+          resolve (data); // Return file-name text lines
+          console.log ("ORDER received");
+        } else {
+          resolve ("Error!");
+          reject ({
+            status: this.status,
+            statusText: xhr.statusText
+          });
+        }
+      };
+      xhr.onerror = function () {
+        resolve ("Error!");
+        reject ({
+          status: this.status,
+          statusText: xhr.statusText
+        });
+      };
+      xhr.send ();
+    }).catch (error => {
+      console.error (error.message);
+    });
+  }
+
   //#region imagelist
   // WAS: requestNames = async () => { // ===== Request the file information list
   getImages = async () => { // ===== Get the image files information list
