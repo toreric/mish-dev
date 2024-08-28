@@ -5,6 +5,8 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { htmlSafe } from '@ember/template';
 
+const LF = '\n'; // LINE_FEED
+
 export default class CommonStorageService extends Service {
   @service intl;
 
@@ -236,18 +238,36 @@ export default class CommonStorageService extends Service {
 
     // Retreive information for every image file from the server:
     this.allFiles = await this.getImages();
-    this.loli(this.allFiles, 'color:lightgreen');
-    console.log(this.allFiles);
+        // this.loli(this.allFiles, 'color:lightgreen');
+        // console.log(this.allFiles);
 
     // Get the image order information from the server:
     this.sortOrder = await this.requestOrder();
-    this.loli('sortOrder:\n' + this.sortOrder, 'color:yellow');
+        // this.loli('sortOrder:\n' + this.sortOrder, 'color:yellow');
 
     // Now arrange allFiles according to sortOrder before populating DOM
-    // =================================================================
+    let allFiles = this.allFiles;
+    let newFiles = [];
+    let order = this.sortOrder.split(LF);
+    let name, k;
+        // this.loli(order);
+    for (let ord of order) {
+      name = ord.split(',')[0]
+      k = allFiles.findIndex(all => {return all.name === name;});
+          // this.loli(k + ' ' + name, 'color:brown')
+      if (k > -1) {
+        newFiles.push(allFiles[k]);
+        allFiles[k] = '';
+      }
+    }
+    for (let file of allFiles) {
+      if (file) newFiles.push(file);
+    }
+    this.allFiles = newFiles;
 
-    // The hidden load button in components ViewMain > AllImages will
-    // push the allFiles content into the thumbnail template:
+    // Populate the DOM with mini images
+    // The hidden load button in component(s) ViewMain > AllImages will
+    // "push the allFiles content" into the thumbnail template:
     document.getElementById('loadMiniImages').click();
     // Then hide the spinner
     document.querySelector('img.spinner').style.display = 'none';
@@ -264,7 +284,8 @@ export default class CommonStorageService extends Service {
       preloadShowImg.push(img);
     }
         // console.log(preloadShowImg);
-    // Prepare for an arrow key hit by setting 'this.picName' to the last in album
+    // Prepare for an initial arrow key hit by setting
+    // 'this.picName' to the last in album
     if (this.allFiles.length > 0) {
       this.picName = this.allFiles[this.allFiles.length - 1].name;
     } else this.picName = '';

@@ -196,6 +196,22 @@ class AllImages extends Component {
 
   itemVisualClass = 'sortable-item--active';
 
+
+  //=================================================================================
+  // Requires: ember install ember-draggable-modifiers
+  //=================================================================================
+  move = ({ source: { data: draggedItem }, target: { data: dropTarget, edge } }) => {
+    this.items = removeItem(this.items, draggedItem);
+
+    if (edge === 'top') {
+      this.items = insertBefore(this.items, dropTarget, draggedItem);
+    } else {
+      this.items = insertAfter(this.items, dropTarget, draggedItem);
+    }
+  }
+  //=================================================================================
+
+
   <template>
 
     <div style="margin:0 0 0 4rem;width:auto;height:auto" {{on 'mousedown' this.z.resetBorders}}>
