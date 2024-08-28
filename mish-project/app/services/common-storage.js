@@ -43,6 +43,7 @@ export default class CommonStorageService extends Service {
   // The found pics temporary catalog name is amended with a random 4-code:
   @tracked  picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
   @tracked  picName = '';      //actual/current image name
+  @tracked  sortOrder = '';    //file order information table of imdbDir
   @tracked  subColor = '#aef'; //subalbum legends color
         get subaIndex() {      //subalbum index array for 'presentation thumbnails'
               let subindex = [];
@@ -86,19 +87,13 @@ export default class CommonStorageService extends Service {
   //   #region Allowance
   //== Allowances variables/properties/methods
 
-  // allowvalue is the source of the 'allow' property values, reset at login
-  @tracked allowvalue = "0".repeat (this.allowance.length);
+  @tracked allow = {}; // The allow object is defined by allowFunc()
 
-  // Infotext retreived from _imdb_settings.sqlite datbase in dialog-login
+  // Rights text table retreived from _imdb_settings.sqlite datbase and
+  // initially assembled by the server on demand from the login dialog
   @tracked allowances = '';
 
-  // zeroSet = () => { // Will this be needed any more?
-  //   this.allowvalue = ('0'.repeat (this.allowance.length));
-  // }
-
-  @tracked allow = {};
-
-  @tracked allowance = [     //  'allow' order
+  @tracked allowance = [  // defines the order of 'allow'
                     //
     "adminAll",     // + allow EVERYTHING
     "albumEdit",    // +  " create/delete album directories
@@ -120,8 +115,10 @@ export default class CommonStorageService extends Service {
                     // o = not yet used
   ];
 
-  // allowText = [ // IMPORTANT: Ordered as 'allow'z!
-  get allowText() { return [
+  // allowvalue is the source of the 'allow' property values, reset at login
+  @tracked allowvalue = "0".repeat (this.allowance.length);
+
+  get allowText() { return [  // IMPORTANT: Ordered as 'allow'!
     `adminAll:     ${this.intl.t('adminAll')}`,
     `albumEdit:    ${this.intl.t('albumEdit')}`,
     `appendixEdit: ${this.intl.t('appendixEdit')}`,
@@ -205,10 +202,10 @@ export default class CommonStorageService extends Service {
   }
 
   openAlbum = async (i) => {
-    this.alertRemove();
-    this.cleanMiniImgs();
+    this.alertRemove(); // remove possible alert dialog
+    this.cleanMiniImgs(); // remove thumbnails
     // Close the show image view
-    document.querySelector('.img_show').style.display = 'none';
+    document.querySelector('.img_show').style.display = 'none'; //was 'table'
     // Open the thumbnail view
     document.querySelector('.miniImgs.imgs').style.display = 'flex';
     // Display the spinner
@@ -236,10 +233,18 @@ export default class CommonStorageService extends Service {
       if (selected.nodeName !== 'DIV') break;
       selected.style.display = '';
     }
+
     // Retreive information for every image file from the server:
     this.allFiles = await this.getImages();
-        // this.loli(this.allFiles, 'color:lightgreen');
-        // console.log(this.allFiles);
+    this.loli(this.allFiles, 'color:lightgreen');
+    console.log(this.allFiles);
+
+    // Get the image order information from the server:
+    this.sortOrder = await this.requestOrder();
+    this.loli('sortOrder:\n' + this.sortOrder, 'color:yellow');
+
+    // Now arrange allFiles according to sortOrder before populating DOM
+    // =================================================================
 
     // The hidden load button in components ViewMain > AllImages will
     // push the allFiles content into the thumbnail template:
@@ -250,6 +255,7 @@ export default class CommonStorageService extends Service {
     if (this.allFiles.length > this.maxWarning && this.allow.imgUpload) {
       this.alertMess(this.intl.t('sizewarning') + ' ' + this.maxWarning + ' ' + this.intl.t('images') + '!');
     }
+
     // Preload the show images
     let preloadShowImg = []; // Preload show images:
     for (let file of this.allFiles) {
@@ -402,7 +408,7 @@ export default class CommonStorageService extends Service {
           // await new Promise (z => setTimeout (z, 99));
           // this.markBorders(name); // Mark this one
       // Close the thumbnail view
-      document.querySelector('.miniImgs.imgs').style.display = 'none';
+      document.querySelector('.miniImgs.imgs').style.display = 'none'; //was 'flex'
       // Load the show image source path and set it's id="dname"
       let pic = document.querySelector('#link_show img');
       pic.src = 'rln' + path;
@@ -418,7 +424,7 @@ export default class CommonStorageService extends Service {
       document.querySelector('.nav_links').style.display = 'none';
       if (document.querySelector('.img_show').style.display === 'none') return;
       // Close the show image view
-      document.querySelector('.img_show').style.display = 'none';
+      document.querySelector('.img_show').style.display = 'none'; //was 'table'
       // Open the thumbnail view
       document.querySelector('.miniImgs.imgs').style.display = 'flex';
       // Outline the closed image
