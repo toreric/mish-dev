@@ -64,6 +64,7 @@
     "ember-cli-terser": "^4.0.2",
     "ember-context-menu": "^0.5.2",
     "ember-drag-drop": "^1.0.0",
+    "ember-draggable-modifiers": "^1.0.0",
     "ember-focus-trap": "^1.1.0",
     "ember-intl": "^7.0.4",
     "ember-load-initializers": "^2.1.2",

@@ -205,7 +205,6 @@ export default class CommonStorageService extends Service {
 
   openAlbum = async (i) => {
     this.alertRemove(); // remove possible alert dialog
-    this.cleanMiniImgs(); // remove thumbnails
     // Close the show image view
     document.querySelector('.img_show').style.display = 'none'; //was 'table'
     // Open the thumbnail view
@@ -265,6 +264,7 @@ export default class CommonStorageService extends Service {
     }
     this.allFiles = newFiles;
 
+    this.cleanMiniImgs(); // remove any old thumbnails
     // Populate the DOM with mini images
     // The hidden load button in component(s) ViewMain > AllImages will
     // "push the allFiles content" into the thumbnail template:
@@ -358,6 +358,12 @@ export default class CommonStorageService extends Service {
   escapeDots = (textString) => { // Cf. CSS.escape()
     // Used for file names when used in CSS, #<id> etc.
     return textString.replace (/\./g, "\\.");
+  }
+
+  handsomize = (name) => {
+    let tmp = name.replace(/_/g, ' ');
+    if (tmp[1] === '§') tmp = tmp.replace(/\.[^.]+$/, '');
+    return tmp;
   }
 
   resetBorders = () => { // Reset all mini-image borders and SRC attributes
@@ -758,7 +764,7 @@ export default class CommonStorageService extends Service {
        if (this.status >= 200 && this.status < 300) {
           var NEPF = 7; // Number of rows per file in xhr.response
           var result = xhr.response;
-          result = result.trim ().split ('\n'); // result is vectorised
+          result = result.trim ().split (LF); // result is vectorised
           var i = 0, j = 0;
           var n_files = result.length/NEPF;
           if (n_files < 1) { // Covers all weird outcomes

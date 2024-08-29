@@ -13,8 +13,11 @@ import he from 'he';
 // USE: <div title={{he.decode 'text'}}></div> he = HTML entities
 // or  txt = he.decode('text')  or  txt = he.encode('text')
 
-import sortableGroup from 'ember-sortable/modifiers/sortable-group';
-import sortableItem from 'ember-sortable/modifiers/sortable-item';
+import sortableItem from 'ember-draggable-modifiers/modifiers/sortable-item';
+import { insertBefore, insertAfter, removeItem } from 'ember-draggable-modifiers/utils/array';
+
+// import sortableGroup from 'ember-sortable/modifiers/sortable-group';
+// import sortableItem from 'ember-sortable/modifiers/sortable-item';
 
 import { dialogAlertId } from './dialog-alert';
 
@@ -194,7 +197,7 @@ class AllImages extends Component {
     // todo, catches clicks so far
   }
 
-  itemVisualClass = 'sortable-item--active';
+  // itemVisualClass = 'sortable-item--active';
 
 
   //=================================================================================
@@ -215,7 +218,6 @@ class AllImages extends Component {
   <template>
 
     <div style="margin:0 0 0 4rem;width:auto;height:auto" {{on 'mousedown' this.z.resetBorders}}>
-
 
       {{#if this.z.imdbRoot}}
 
@@ -238,27 +240,15 @@ class AllImages extends Component {
 
       {{/if }}
 
-      {{!-- The album's thumnail images are a display group --}}
+      {{!-- The album's div with thumnail images --}}
       <div class="miniImgs imgs" style="width:;display:flex;
         flex-wrap:wrap;padding:0;align-items:baseline;
         justify-content:left;position:relative"
-        {{sortableGroup
-          direction='grid'
-          onChange=this.reorderItems
-          disabled=false
-          itemVisualClass=this.itemVisualClass
-        }}
       >
         {{!-- The thumnail images are displayed --}}
         {{#each this.items as |item|}}
           <div class="img_mini {{item.symlink}}" id="i{{item.name}}"
-            {{sortableItem
-              model=item
-              spacing=0
-              distance=5
-              onDragStart=this.dragStarted
-              onDragStop=this.dragStopped
-            }}
+            {{sortableItem data=item onDrop=this.move}}
             {{on 'mousedown' this.z.resetBorders}}
           >
             {{!-- Arrange the go-to-origin-button for linked images --}}

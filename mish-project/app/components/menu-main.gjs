@@ -241,7 +241,7 @@ export class MenuMain extends Component {
       </p><br>
 
       <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title-2="{{t 'albumcareinfo'}} {{t 'for'}} {{this.z.imdbRoot}}{{this.z.imdbDir}}">
-        <a {{on "click" (fn this.albumEdit)}}>{{t 'albumcare'}} <span title="">”{{{this.z.imdbDirName}}}”</span></a>
+        <a {{on "click" (fn this.albumEdit)}}>{{t 'albumcare'}} <span title="">”{{{fn this.z.handsomize this.z.imdbDirName}}}”</span></a>
       </p><br>
 
       <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title-2={{t 'albumcollshow'}}>

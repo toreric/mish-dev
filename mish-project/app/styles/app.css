@@ -1535,6 +1535,7 @@ button.goAlbum:hover {
 }
 .nav_links .nav_:hover {
   text-decoration: none;
+  color: deeppink;
 }
 .nav_links .qnav_ {
   padding: 0.1rem 0.45rem 0rem 0.4rem;
