@@ -145,21 +145,14 @@ class Welcome extends Component {
       console.log(allowances);
       this.z.allowances = allowances;
 
-     // Get all recorded user statuses and their allowances + passwordless users
-      let cred = (await this.z.getCredentials('Get user name')).split(LF);
-      this.z.userStatus = cred[1];
-      this.z.allowvalue = cred[2];
-      this.z.freeUsers = cred[3];
-      this.z.allowFunc(); // SET ALLOWANCES PATTERN important!
-
-      // Get album-collection-qualified catalogs
-      let roots = await this.z.getAlbumRoots();
-      this.z.imdbRoots = roots.split(LF);
-
       // Language cookie
       let lng = this.z.getCookie('mish_lang');
       if (lng) this.intl.setLocale([lng]);
       this.z.intlCodeCurr = lng;
+      // this.z.checkPicFound(); // Should reflect chosen language
+      // this.z.loli(this.z.picFound,'color:pink');
+      // Each language should update it's found pics name
+      // this.z.picFound = this.z.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
       // Background cookie
       if (this.z.getCookie('mish_bkgr') === 'dark') {
         this.z.bkgrColor = '#111';
@@ -173,6 +166,18 @@ class Welcome extends Component {
       }
       document.querySelector('body').style.background = this.z.bkgrColor;
       document.querySelector('body').style.color = this.z.textColor;
+
+      // NOTE: Language should be set before getCredentials()
+      // Get all recorded user statuses and their allowances + passwordless users
+      let cred = (await this.z.getCredentials('Get user name')).split(LF);
+      this.z.userStatus = cred[1];
+      this.z.allowvalue = cred[2];
+      this.z.freeUsers = cred[3];
+      this.z.allowFunc(); // SET ALLOWANCES PATTERN important!
+
+      // Get album-collection-qualified catalogs
+      let roots = await this.z.getAlbumRoots();
+      this.z.imdbRoots = roots.split(LF);
     }
     this.z.openMainMenu();
   }

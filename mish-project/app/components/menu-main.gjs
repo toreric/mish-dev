@@ -51,6 +51,8 @@ export class MenuMain extends Component {
     await this.z.execute('echo "' + arr.shift() + '" > nodestamp.txt');
     this.z.imdbPath = arr.shift();
     this.z.loli('imdPath: ' + this.z.imdbPath, 'color:orange');
+    // Check the picFound album status
+    this.z.checkPicFound(); // Should reflect chosen language
 
     let n = arr.length/3;
     this.z.imdbDirs = arr.splice(0, n);

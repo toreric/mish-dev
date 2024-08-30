@@ -4,6 +4,7 @@ import Service from '@ember/service';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { htmlSafe } from '@ember/template';
+import { replace } from 'tar';
 
 const LF = '\n'; // LINE_FEED
 
@@ -25,20 +26,19 @@ export default class CommonStorageService extends Service {
         get imdbDirName() {
               if (this.imdbRoot) {
                 return (this.imdbRoot + this.imdbDir).replace(/^(.*\/)*([^/]+)$/, '$2');
-                //.replace(/_/g, '&nbsp;'); to be compared with picFound!
               } else {
                 return '';
               }
             }
   @tracked  imdbDirs = [''];        //available album directories at imdbRoot
   @tracked  imdbLabels = [''];      //thumbnail labels for imdbDirs (paths)
-  @tracked  imdbPath = '';          //userDir+imdbRoot = absolut path to album root
+  @tracked  imdbPath = this.userDir + this.imdbRoot; //userDir+imdbRoot = absolut path to album root
   @tracked  imdbRoot = '';          //chosen album root directory (collection)
         get imdbRootsPrep() { return `${this.intl.t('reloadApp')}`; } // advice!
   @tracked  imdbRoots = [this.imdbRootsPrep]; //available album root directories
   @tracked  imdbTree = null;                  //will have the imdbDirs object tree
-  @tracked  infoHeader = 'Header text';       //for information dialog
-  @tracked  infoMessage = 'No information';   //for information dialog
+  @tracked  infoHeader = 'Header text';       //for the alert dialog DialogAlert
+  @tracked  infoMessage = 'No information';   //for the alert dialog DialogAlert
         get intlCode() { return `${this.intl.t('intlcode')}`; }
   @tracked  intlCodeCurr = this.intlCode;     // language code
         get picFoundBaseName() { return `${this.intl.t('picfound')}`; }
@@ -318,6 +318,20 @@ export default class CommonStorageService extends Service {
     }
   }
 
+  // The name of picFound should reflect the chosen language
+  checkPicFound = async () => {
+    let cmd = 'ls -d1 rln' + this.imdbPath +'/'+ this.picFoundBaseName +'*';
+    let picFound = await this.execute(cmd);
+    if (picFound.slice(0, 4) !== 'rln/') { // None found, make a new
+      this.picFound = this.z.picFoundBaseName +"."+ Math.random().toString(36).slice(2,6);
+    } else { // Take the first
+      this.picFound = picFound.split(LF)[0].replace(/^.*\/([^/]+)$/, '$1');
+    }
+    this.loli(this.picFound,'color:red');
+    this.loli(picFound,'color:red');
+    console.log(picFound.split(LF))
+    // this.picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
+  }
 
   loli = (text, style) => { // loli = log list with user name
     console.log(this.userName + ': %c' + text, style);
@@ -362,7 +376,7 @@ export default class CommonStorageService extends Service {
 
   handsomize = (name) => {
     let tmp = name.replace(/_/g, ' ');
-    if (tmp[1] === '§') tmp = tmp.replace(/\.[^.]+$/, '');
+    if (tmp[0] === '§') tmp = tmp.replace(/\.[^.]+$/, '').slice(1);
     return tmp;
   }
 
@@ -683,41 +697,6 @@ export default class CommonStorageService extends Service {
           if (data.slice (0, 8) === '{"error"') {
             data = "Error!"; // This error text may also be generated elsewhere
           }
-          var tmpName = that.imdbDirName;
-          if (data === "Error!") {
-            if (tmpName === that.picFound) {
-              // Regenerate the picFound album since it has probably timed out
-              let lpath = that.imdbPath + "/" + that.picFound;
-              await execute ("rm -rf " +lpath+ "&&mkdir -m0775 " +lpath+ "&&touch " +lpath+ "/.imdb&&chmod 664 " +lpath+ "/.imdb");
-            }
-          } else {
-            //error message
-          }
-          // var tmpName = that.get ("albumName");
-          // tmpName = extractContent (tmpName); // Don't accumulate HTML
-          // if (tmpName === that.get ("imdbRoot")) {
-          //   document.title = 'Mish: ' + removeUnderscore (that.get ("imdbRoot"), true);
-          // } else {
-          //   // Do not display the random suffix if this is the search result album
-          //   var tmpIndex = tmpName.indexOf(picFound);
-          //   if (tmpIndex === 0) {
-          //     tmpName = tmpName.replace (/\.[^.]{4}$/, "");
-          //   }
-          //   document.title = 'Mish: ' + removeUnderscore (that.get ("imdbRoot") + " — " + tmpName, true);
-          // }
-          // $ ("#sortOrder").text (data);
-          // tmpName = removeUnderscore (tmpName); // Improve readability
-          // that.set ("jstreeHdr", "");
-          // if (data === "Error!") {
-          //   if (tmpIndex === 0) { // Regenerate the picFound album since it has probably timed out
-          //     let lpath = $ ("#imdbPath").text () + "/" + $ ("#picFound").text ();
-          //     await execute ("rm -rf " +lpath+ "&&mkdir -m0775 " +lpath+ "&&touch " +lpath+ "/.imdb&&chmod 664 " +lpath+ "/.imdb");
-          //   } else {
-          //     tmpName += " &mdash; <em style=\"color:#d00;background:transparent\">just nu oåtkomligt</em>" // i18n
-          //     that.set ("albumName", tmpName);
-          //     $ ("#imdbDir").text ("");
-          //   }
-          // }
           resolve (data); // Return file-name text lines
           console.log ("ORDER received");
         } else {

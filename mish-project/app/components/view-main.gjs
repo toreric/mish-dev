@@ -87,7 +87,7 @@ class SubAlbums extends Component {
       <div class="miniImgs albs">
         {{#if this.z.imdbRoot}}
           <span title-2="{{this.z.imdbRoot}}{{this.z.imdbDir}}">
-            <b>”{{{this.z.imdbDirName}}}”</b>
+            <b>”{{{this.z.handsomize this.z.imdbDirName}}}”</b>
             {{t 'has'}} {{this.nsub}} {{this.sual}}
             <span title-2={{t 'plusExplain'}}>{{this.nadd}}</span>
           </span>

@@ -170,7 +170,7 @@ goprev: "Previous\n
         image [<]"
 gotext: the original in
 goto: Go to
-header: Mish picture gallery
+header: Mish image gallery
 hello:
   world:  Hello World!
 imageFirst: first image
@@ -195,4 +195,4 @@ write:
   description: 'Caption: When Where What Who'
   keywords: "Information about planned future addition:
              Keywords being stored as metadata for search key use"
-  notes: Notes not shown with the picture
+  notes: Notes not shown with the image

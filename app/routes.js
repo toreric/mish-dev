@@ -24,7 +24,6 @@ module.exports = function(app) { // Start module.exports
   let IMDB_DIR = ''  // Actual image database(sub)directory
   let IMDB = ''
   let picFound = '' // Name of special(temporary) search result album
-  let toold = 60 // Max lifetime(min:s) after last access of a temporary search result album
   let show_imagedir = false // For debug data(base) directories
   let allfiles = [] // For /imagelist use
 
@@ -42,7 +41,9 @@ module.exports = function(app) { // Start module.exports
   const RED  = '\x1b[31m'   // Red
   const RSET = '\x1b[0m'    // Reset
   
-  const LF = '\n'
+  const LF = '\n' // Line Feed == New Line
+  // Max lifetime(minutes) after last access of a temporary search result album:
+  const toold = 60
 
   //#region = code regions, only for the editors's minilist in the right margin!
   //#region start route
@@ -57,6 +58,7 @@ module.exports = function(app) { // Start module.exports
         IMDB_DIR = decodeURIComponent( req.get('imdbdir') )
         IMDB = IMDB_HOME + '/' + IMDB_ROOT
         picFound = req.get('picfound')
+        // The server AUTOMATICALLY removes old search result temporary albums:
         // Remove too old picFound (search result tmp) catalogs (with added random .01yz)
         let cmd = 'find -L ' + IMDB + ' -type d -name "' + '§*" -amin +' + toold + ' | xargs rm -rf'
         // console.log(LF + cmd)
@@ -484,7 +486,7 @@ module.exports = function(app) { // Start module.exports
     })
   }
 
-  // ===== Read a directory's file content; when passing remove broken links
+  // ===== Read a directory's file content; also remove broken links
   function findFiles(dirName) {
 
     // console.log('FINDFILES')
