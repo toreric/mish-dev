@@ -20,10 +20,10 @@ export default class CommonStorageService extends Service {
   @tracked  credentials = '';       //user credentials: \n-string from db
         get defaultUserName() { return `${this.intl.t('guest')}`; }
   @tracked  freeUsers = 'guest...'; //user names without passwords (set by DialogLogin)
-  @tracked  imdbCoco = '';          //content counters etc. for imdbDirs (*)
+  @tracked  imdbCoco = '';          //content counters etc. for imdbDirs, see (*) below
   @tracked  imdbDir = '';           //actual/current (sub)album directory (IMDB_DIR)
   @tracked  imdbDirIndex = 0;       //actual/current (sub)album directory index
-        get imdbDirName() {
+        get imdbDirName() {         //the last-in-path album name of imdbRoot+imdbDir
               if (this.imdbRoot) {
                 return (this.imdbRoot + this.imdbDir).replace(/^(.*\/)*([^/]+)$/, '$2');
               } else {
@@ -47,7 +47,7 @@ export default class CommonStorageService extends Service {
   @tracked  picName = '';      //actual/current image name
   @tracked  sortOrder = '';    //file order information table of imdbDir
   @tracked  subColor = '#aef'; //subalbum legends color
-        get subaIndex() {      //subalbum index array for 'presentation thumbnails'
+        get subaIndex() {      //subalbum index array for imdbLabels
               let subindex = [];
               for (let i=this.imdbDirIndex+1;i<this.imdbDirs.length;i++) {
                 if (this.imdbDirs[i] && this.imdbDirs[i].startsWith(this.imdbDir)) {
@@ -61,7 +61,8 @@ export default class CommonStorageService extends Service {
   @tracked  textColor = '#fff';               //default text color
   @tracked  userDir = '/path/to/albums';      //maybe your home dir., server start argument!
   @tracked  userName = this.defaultUserName;  // May be changed in other ways (e.g. logins)
-  @tracked  userStatus = '';
+  @tracked  userStatus = ''; // A logged in user has a certain allowance status
+
   // (*) imdbCoco format is "(<npics>[+<nlinked>]) [<nsubdirs>] [<flag>]"
   // where <npics> = images, <nlinks> = linked images, <nsubdirs> = subalums,
   // and <flag> is empty or "*". The <flag> indicates a hidden album,
@@ -318,20 +319,23 @@ export default class CommonStorageService extends Service {
     }
   }
 
-  // The name of picFound should reflect the chosen language
-  checkPicFound = async () => {
-    let cmd = 'ls -d1 rln' + this.imdbPath +'/'+ this.picFoundBaseName +'*';
-    let picFound = await this.execute(cmd);
-    if (picFound.slice(0, 4) !== 'rln/') { // None found, make a new
-      this.picFound = this.z.picFoundBaseName +"."+ Math.random().toString(36).slice(2,6);
-    } else { // Take the first
-      this.picFound = picFound.split(LF)[0].replace(/^.*\/([^/]+)$/, '$1');
-    }
-    this.loli(this.picFound,'color:red');
-    this.loli(picFound,'color:red');
-    console.log(picFound.split(LF))
-    // this.picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
-  }
+  // // The name of picFound should reflect the chosen language
+  // checkPicFound = async () => {
+  //   let cmd = 'ls -d1 rln' + this.imdbPath +'/'+ this.picFoundBaseName +'*';
+  //   let picFound = await this.execute(cmd);
+  //   if (picFound.slice(0, 4) !== 'rln/') { // None found, make a new
+  //     this.picFound = this.picFoundBaseName +"."+ Math.random().toString(36).slice(2,6);
+  //     let pfp = 'rln' + this.imdbPath +'/'+ this.picFound;
+  //     cmd = 'rm -rf ' + pfp + ' && mkdir ' + pfp + ' && touch ' + pfp + '/.imdb';
+  //     await this.execute(cmd);
+  //   } else { // Take the first
+  //     this.picFound = picFound.split(LF)[0].replace(/^.*\/([^/]+)$/, '$1');
+  //   }
+  //   this.loli(this.picFound,'color:red');
+  //   this.loli(picFound,'color:red');
+  //   console.log(picFound.split(LF))
+  //   // this.picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
+  // }
 
   loli = (text, style) => { // loli = log list with user name
     console.log(this.userName + ': %c' + text, style);
@@ -698,7 +702,7 @@ export default class CommonStorageService extends Service {
             data = "Error!"; // This error text may also be generated elsewhere
           }
           resolve (data); // Return file-name text lines
-          console.log ("ORDER received");
+          // console.log ("ORDER received");
         } else {
           resolve ("Error!");
           reject ({

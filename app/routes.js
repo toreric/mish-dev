@@ -524,8 +524,8 @@ module.exports = function(app) { // Start module.exports
   // ===== Make a package of orig, show, mini, and plain filenames, metadata, and symlink flag=origin
   async function pkgfilenames(origlist) {
 
-    console.log('PKGFILENAMES')
-    console.log('origlist: \n' + origlist)
+          // console.log('PKGFILENAMES')
+          // console.log('origlist: \n' + origlist)
 
     if (origlist) {
       let files = origlist.split('\n')

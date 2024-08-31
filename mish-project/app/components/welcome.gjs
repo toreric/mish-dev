@@ -126,6 +126,8 @@ class Welcome extends Component {
   openLogIn = () => {
     this.z.openModalDialog(dialogLoginId, 0);
   }
+
+  // To be executed only once before a user is defined with userStatus
   getCred = async () => {
     if (!this.z.userStatus) { // only once
 
@@ -133,26 +135,28 @@ class Welcome extends Component {
       this.z.initBrowser();         // Manipulate browser back-arrow
       this.z.maxWarning = 20;       // Set recommended album size, about 100
       this.z.displayNames = 'none'; // Hide image names
-      // Awake the system!
-      await new Promise (z => setTimeout (z, 99));
-      document.querySelector('#toggleName').click();
+      await new Promise (z => setTimeout (z, 99)); // Before awakening the system
+      document.querySelector('#toggleName').click(); // Initially hide (donowhy)
 
       // Read the build stamp files (nodestamp.txt may be initially missing) etc.
       this.z.aboutThis = 'Mish ' + await this.z.execute('cat buildstamp.txt') + ' ' + await this.z.execute('cat nodestamp.txt') + ' and Glimmer by Ember<br>' + await this.z.execute('head -n1 LICENSE.txt');
 
       // Set a guest user and corresponding allowances
       let allowances = await this.z.getCredentials('Get allowances');
-      console.log(allowances);
+      console.log(allowances); // this is the text table of rights
       this.z.allowances = allowances;
 
       // Language cookie
       let lng = this.z.getCookie('mish_lang');
       if (lng) this.intl.setLocale([lng]);
       this.z.intlCodeCurr = lng;
+      this.z.picFound = this.z.picFoundBaseName +"."+ Math.random().toString(36)
+        .slice(2,6); // Each language must update it's found pics name
+
       // this.z.checkPicFound(); // Should reflect chosen language
-      // this.z.loli(this.z.picFound,'color:pink');
-      // Each language should update it's found pics name
-      // this.z.picFound = this.z.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
+      // let dummy = this.z.picFound;
+      // this.z.loli(dummy, 'color:deeppink');
+
       // Background cookie
       if (this.z.getCookie('mish_bkgr') === 'dark') {
         this.z.bkgrColor = '#111';

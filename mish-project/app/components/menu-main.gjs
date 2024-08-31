@@ -40,39 +40,39 @@ export class MenuMain extends Component {
   selectRoot = async (event) => { // Album root = collection
     this.z.imdbRoot = event.target.value;
     this.z.imdbDir = this.z.imdbRoot; // The root is assumed initially selected
-    this.z.loli('IMDB_ROOT set to ' + this.z.imdbRoot, 'color:green');
+    this.z.loli('IMDB_ROOT (imdbRoot) set to ' + this.z.imdbRoot, 'color:green');
     const allow = this.z.allow; // PERMISSIONS
 
-    // Retreive album tree of this collection, arg.=true if hidden allowed
+    // Retreive the albums list of this collection (root album).
+    // If the argment is false, _imdb_ignore.txt in the chosen
+    // root album is read by the server, and mentioned albums
+    // with subalbums are removed from the list:
     let tmp = await this.z.getAlbumDirs(allow.textEdit);
     let arr = tmp.split(LF);
 
     // The two first lines (shifted off) have other information
     await this.z.execute('echo "' + arr.shift() + '" > nodestamp.txt');
     this.z.imdbPath = arr.shift();
-    this.z.loli('imdPath: ' + this.z.imdbPath, 'color:orange');
-    // Check the picFound album status
-    this.z.checkPicFound(); // Should reflect chosen language
+    this.z.loli('IMDB (imdbPath) set to ' + this.z.imdbPath, 'color:orange');
 
     let n = arr.length/3;
-    this.z.imdbDirs = arr.splice(0, n);
-    this.z.imdbCoco = arr.splice(0, n);
-    this.z.imdbLabels = arr.splice(0, n);
-    this.z.loli('imdbCoco ' + n + LF + this.z.imdbCoco.join(LF), 'color:yellow');
-    this.z.loli('imdbDirs ' + n + LF + this.z.imdbDirs.join(LF), 'color:yellow');
-    // this.z.loli('imdbLabels ' + n + LF + this.z.imdbLabels.join(LF));
-    // this.z.loli(this.z.imdbDirs, 'color:green');
+    this.z.imdbDirs = arr.splice(0, n); // album paths (without root)
+    this.z.imdbCoco = arr.splice(0, n); // album content counts
+    this.z.imdbLabels = arr.splice(0, n); // album labels (thumbnail paths)
+        // this.z.loli('imdbCoco ' + n + LF + this.z.imdbCoco.join(LF), 'color:yellow');
+        // this.z.loli('imdbDirs ' + n + LF + this.z.imdbDirs.join(LF), 'color:yellow');
+        // this.z.loli('imdbLabels ' + n + LF + this.z.imdbLabels.join(LF));
+        // this.z.loli(this.z.imdbDirs, 'color:green');
 
-    // let data = structuredClone(this.z.imdbDirs);
-    let data = [...this.z.imdbDirs];
+    // let data = structuredClone(this.z.imdbDirs); // alt. clone-copy
+    let data = [...this.z.imdbDirs]; // clone-copy albums
     let root = this.z.imdbRoot;
     for (let i=0;i<data.length;i++) {
-      data[i] = root + data[i]; // amend the root catalog
+      data[i] = root + data[i]; // amend the root catalog name
     }
-
-    // this.z.loli('imdbRoot/imdbDirs ' + n + LF + data.join(LF));
-    // this.z.loli(data);
-    // this.z.loli(this.z.imdbDirs, 'color:red');
+        // this.z.loli('imdbRoot/imdbDirs ' + n + LF + data.join(LF));
+        // this.z.loli(data);
+        // this.z.loli(this.z.imdbDirs, 'color:red');
 
     //begin https://stackoverflow.com/questions/72006110/convert-file-path-into-object
     // Convert the album directory list 'data' to a JS tree. Modifications are:
@@ -99,11 +99,11 @@ export class MenuMain extends Component {
     const result = Object.values(tree.root);
     //end https://stackoverflow.com/questions/72006110/convert-file-path-into-object
 
-    console.log(result);
+        // console.log(result);
     this.z.imdbTree = result;
-    this.z.loli(this.z.imdbTree);
-    // this.z.loli(this.z.imdbDirs);
-    // this.z.loli('imdbTree ' + n + LF + JSON.stringify(result, null, 2)); //human readable
+        // this.z.loli(this.z.imdbTree);
+        // this.z.loli(this.z.imdbDirs);
+        // this.z.loli('imdbTree ' + n + LF + JSON.stringify(result, null, 2)); //human readable
     await new Promise (z => setTimeout (z, 199)); // Wait for album tree to settle
     this.closeAll(); // fold all nodes except 0
 
@@ -117,8 +117,7 @@ export class MenuMain extends Component {
     this.hasHidden = anyHidden(); // if there are any hidden-without-allowance albums
     this.z.openAlbum(0); // Select the root album
     this.z.closeMainMenu('after opening root album'); // Close the main menu
-
-    // this.z.loli(this.z.imdbDirs);
+        // this.z.loli(this.z.imdbDirs);
   }
 
   // The @tree argument for Tree component

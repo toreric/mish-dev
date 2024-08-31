@@ -25,10 +25,9 @@ export class Language extends Component {
       this.z.userName = this.z.defaultUserName;
       this.z.loli('userName is ' + this.z.userName);
     }
-    // this.z.checkPicFound(); // Should reflect chosen language
-    // this.z.loli(this.z.picFound,'color:lightblue');
-    // Each language should update it's found pics name
-    // this.z.picFound = this.z.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
+    // Not rational to change the picFound name just for a temporary language change!
+        // this.z.picFound = this.z.picFoundBaseName +"."+ Math.random().toString(36)
+        //   .slice(2,6); // Each language must update it's found pics name
   }
 
   changeLanguage = async (event) => {
