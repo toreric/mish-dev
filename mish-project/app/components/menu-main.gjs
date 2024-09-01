@@ -40,7 +40,7 @@ export class MenuMain extends Component {
   selectRoot = async (event) => { // Album root = collection
     this.z.imdbRoot = event.target.value;
     this.z.imdbDir = this.z.imdbRoot; // The root is assumed initially selected
-    this.z.loli('IMDB_ROOT (imdbRoot) set to ' + this.z.imdbRoot, 'color:green');
+    this.z.loli('IMDB_ROOT (imdbRoot) set to ' + this.z.imdbRoot, 'color:orange');
     const allow = this.z.allow; // PERMISSIONS
 
     // Retreive the albums list of this collection (root album).
@@ -53,7 +53,7 @@ export class MenuMain extends Component {
     // The two first lines (shifted off) have other information
     await this.z.execute('echo "' + arr.shift() + '" > nodestamp.txt');
     this.z.imdbPath = arr.shift();
-    this.z.loli('IMDB (imdbPath) set to ' + this.z.imdbPath, 'color:orange');
+        // this.z.loli('IMDB (imdbPath) set to ' + this.z.imdbPath, 'color:red');
 
     let n = arr.length/3;
     this.z.imdbDirs = arr.splice(0, n); // album paths (without root)
@@ -128,21 +128,21 @@ export class MenuMain extends Component {
   // Search album texts to find images
   findText = () => {
     if (this.checkRoot()) return;
-    this.z.loli('findText');
+    this.z.loli('findText', 'color:red');
     // ...todo
   }
 
   // Manage favorite image lists
   seeFavorites = () => {
     if (this.checkRoot()) return;
-    this.z.loli('seeFavorites');
+    this.z.loli('seeFavorites', 'color:red');
     // ...todo
   }
 
   // Edit or create albums etc.
   albumEdit = () => {
     if (this.checkRoot()) return;
-    this.z.loli('albumEdit');
+    this.z.loli('albumEdit', 'color:red');
     // ...todo
   }
 

@@ -84,15 +84,21 @@ const toggleDialog = (dialogId, origPos) => { //copy from z
 document.addEventListener('mousedown', async (event) => {
   // console.log('event:', event);
   var tgt = event.target;
+  console.log(tgt);
   if (
-   // Will do something by themselves or not
+    // Will do something by themselves or not
     event.button !== 0 ||// 0=left, 1=wheel, 2=right
     document.querySelector('#upperButtons').contains(tgt) ||
     document.querySelector('#smallButtons').contains(tgt) ||
     document.querySelector('.img_show').contains(tgt) ||
     document.querySelector('.toggleNavInfo').contains(tgt) ||
     document.querySelector('.nav_links').contains(tgt) ||
-    document.querySelector('#link_texts').contains(tgt)
+    document.querySelector('#link_texts').contains(tgt) ||
+    // tgt.tagName === 'BODY' || // outside all
+    tgt.tagName === 'DIALOG' || // outside modal dialogs
+    tgt.parentElement != null && tgt.parentElement.tagName === 'DIALOG' ||
+    tgt.parentElement != null && tgt.parentElement.parentElement != null && tgt.parentElement.parentElement.tagName === 'DIALOG' ||
+    tgt.parentElement != null && tgt.parentElement.parentElement != null && tgt.parentElement.parentElement.parentElement != null && tgt.parentElement.parentElement.parentElement.tagName === 'DIALOG'
   ) {
     return;
   }
@@ -129,6 +135,7 @@ class Welcome extends Component {
 
   // To be executed only once before a user is defined with userStatus
   getCred = async () => {
+    await new Promise (z => setTimeout (z, 99)); // Allow userStatus to settle
     if (!this.z.userStatus) { // only once
 
       // Various settings
@@ -152,10 +159,6 @@ class Welcome extends Component {
       this.z.intlCodeCurr = lng;
       this.z.picFound = this.z.picFoundBaseName +"."+ Math.random().toString(36)
         .slice(2,6); // Each language must update it's found pics name
-
-      // this.z.checkPicFound(); // Should reflect chosen language
-      // let dummy = this.z.picFound;
-      // this.z.loli(dummy, 'color:deeppink');
 
       // Background cookie
       if (this.z.getCookie('mish_bkgr') === 'dark') {
@@ -198,9 +201,6 @@ export default class extends Welcome {
 
     <div id="upperButtons" style="position:relative;top:0;left:0;width:100%;padding-top:0.5rem">
       <div {{executeOnInsert this}} class="sameBackground" style="display:flex;justify-content:space-between;margin:0 3.25rem 0 4rem">
-        {{!-- Html inserted here will appear above upon the buildStamp div --}}
-        {{!-- So, better give some visibility space for the buildstamp:    --}}
-        {{!-- <div style="background:transparent;height:0.75rem;width:100%">&nbsp;</div><br> --}}
         <h1 style="margin:0 4rem 0 0;display:inline">{{t "header"}}</h1>
         <span>
 

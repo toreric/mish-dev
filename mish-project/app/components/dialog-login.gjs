@@ -180,7 +180,7 @@ export class DialogLogin extends Component {
             {{t 'dialog.rights.text0'}}
           </p>
           <p style="text-align:left;font-size:85%">
-            <pre info="PRE keeps line feeds" style="font-family:'Andale Mono','Cascadia Mono';font-size:97%;margin:0">{{this.allowances}}</pre>{{t 'dialog.rights.footnote1'}}<br>{{t 'dialog.rights.footnote2'}}
+            <pre info="PRE keeps line feeds" style="font-family:'Andale Mono','Cascadia Mono',mono;font-size:97%;margin:0">{{this.allowances}}</pre>{{t 'dialog.rights.footnote1'}}<br>{{t 'dialog.rights.footnote2'}}
             <br>{{t 'dialog.rights.footnote3'}}<br>
           </p>
           <p style="text-align:left;font-size:85%;font-weight:bold">
