@@ -217,7 +217,7 @@ export class MenuMain extends Component {
 
   <template>
 
-    <div id="menuMain" class="mainMenu" onclick="return false" draggable="false" ondragstart="return false" style="display:none" {{on 'keydown' this.z.detectKeys}}>
+    <div id="menuMain" class="mainMenu" onclick="return false" draggable="false" ondragstart="return false" style="display:none">
 
       <p onclick="return false" draggable="false" ondragstart="return false" title-2="Sökning">
         <a class="search" {{on "click" (fn this.findText)}}>Finn bilder <span style="font:normal 1em monospace!important">[F]</span></a>

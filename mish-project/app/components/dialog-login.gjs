@@ -78,6 +78,7 @@ export class DialogLogin extends Component {
 
   // Detect login Enter key
    detectLogInEnter = (e) => {
+    e.stopPropagation();
     if (e.keyCode === 13) { // Enter key
       this.logIn();
     }
@@ -85,6 +86,7 @@ export class DialogLogin extends Component {
 
   // Detect closing Esc key and handle dialog
   detectEscClose = (e) => {
+    e.stopPropagation();
     if (e.keyCode === 27) { // Esc key
       this.z.closeDialog(dialogLoginId);
     }
@@ -92,6 +94,7 @@ export class DialogLogin extends Component {
 
   // Detect closing click outside a dialog-draggable modal dialog
   detectClickOutside = (e) => {
+    e.stopPropagation();
     // this.z.loli(navigator.userAgent);
     if (!navigator.userAgent.includes("Firefox")) return; // Only Firefox can do this
     let tgt = e.target.id;

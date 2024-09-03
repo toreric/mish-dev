@@ -310,33 +310,6 @@ export default class CommonStorageService extends Service {
     document.querySelector('body').style.color = this.textColor;
   }
 
-  // Detect certain keys pressed
-  detectKeys = (event) => {
-    this.loli('detectKeys event.target:', 'color:orange');
-    console.log(event.target);
-    if (event.keyCode === 27) { // Esc key
-      this.closeMainMenu();
-    }
-  }
-
-  // // The name of picFound should reflect the chosen language
-  // checkPicFound = async () => {
-  //   let cmd = 'ls -d1 rln' + this.imdbPath +'/'+ this.picFoundBaseName +'*';
-  //   let picFound = await this.execute(cmd);
-  //   if (picFound.slice(0, 4) !== 'rln/') { // None found, make a new
-  //     this.picFound = this.picFoundBaseName +"."+ Math.random().toString(36).slice(2,6);
-  //     let pfp = 'rln' + this.imdbPath +'/'+ this.picFound;
-  //     cmd = 'rm -rf ' + pfp + ' && mkdir ' + pfp + ' && touch ' + pfp + '/.imdb';
-  //     await this.execute(cmd);
-  //   } else { // Take the first
-  //     this.picFound = picFound.split(LF)[0].replace(/^.*\/([^/]+)$/, '$1');
-  //   }
-  //   this.loli(this.picFound,'color:red');
-  //   this.loli(picFound,'color:red');
-  //   console.log(picFound.split(LF))
-  //   // this.picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
-  // }
-
   loli = (text, style) => { // loli = log list with user name
     console.log(this.userName + ': %c' + text, style);
   }
@@ -596,8 +569,7 @@ export default class CommonStorageService extends Service {
       // this.imdbDir = '';  // Empty it
       this.imdbRoot = ''; // Empty it
     }
-    // this.loli(username + ' (parameter)');
-    if (username === 'Get allowances') username = '';
+    if (username === 'Get allowances') username = ''; // for all users
     return new Promise((resolve, reject) => {
       // ===== XMLHttpRequest returning user credentials
       var xhr = new XMLHttpRequest();

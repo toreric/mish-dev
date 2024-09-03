@@ -15,6 +15,7 @@ export class DialogAlert extends Component {
 
   // Detect closing Esc key
   detectEscClose = (e) => {
+    e.stopPropagation();
     if (e.keyCode === 27) { // Esc key
       if (document.getElementById(dialogAlertId).open) this.z.closeDialog(dialogAlertId);
     }
@@ -22,6 +23,7 @@ export class DialogAlert extends Component {
 
   // Detect closing click outside a dialog-draggable modal dialog
   detectClickOutside = (e) => {
+    e.stopPropagation();
     // this.z.loli(navigator.userAgent);
     if (!navigator.userAgent.includes("Firefox")) return; // Only Firefox can do this
     let tgt = e.target.id;

@@ -61,18 +61,18 @@ module.exports = function(app) { // Start module.exports
         // The server AUTOMATICALLY removes old search result temporary albums:
         // Remove too old picFound (search result tmp) catalogs (with added random .01yz)
         let cmd = 'find -L ' + IMDB + ' -type d -name "' + '§*" -amin +' + toold + ' | xargs rm -rf'
-        // console.log(LF + cmd)
         // await cmdasync(cmd) // ger direktare diagnos
         await execP(cmd)
+        // console.log(BYEL + cmd + RSET)
       }
     }
-    console.log(LF + BGRE + decodeURIComponent(req.originalUrl) + RSET)
-    console.log('  WWW_ROOT:', WWW_ROOT)
-    console.log(' IMDB_HOME:', IMDB_HOME)
-    console.log('      IMDB:', IMDB)
-    console.log(' IMDB_ROOT:', IMDB_ROOT)
-    console.log('  IMDB_DIR:', IMDB_DIR)
-    console.log('  picFound:', picFound)
+    console.log(BGRE + decodeURIComponent(req.originalUrl) + RSET)
+    // console.log('  WWW_ROOT:', WWW_ROOT)
+    // console.log(' IMDB_HOME:', IMDB_HOME)
+    // console.log('      IMDB:', IMDB)
+    // console.log(' IMDB_ROOT:', IMDB_ROOT)
+    // console.log('  IMDB_DIR:', IMDB_DIR)
+    // console.log('  picFound:', picFound)
     if (show_imagedir) {
       console.log(req.params)
       console.log(req.hostname)
@@ -94,7 +94,6 @@ module.exports = function(app) { // Start module.exports
       // NOTE: exec seems to use ``-ticks, not $()
       // Hence don't pass "`" if you don't escape it
       cmd = cmd.replace (/`/g, "\\`")
-      // console.log(BYEL + cmd + RSET)
       var resdata = await execP (cmd)
       res.location ('/')
       res.send (resdata)
@@ -112,12 +111,12 @@ module.exports = function(app) { // Start module.exports
   //       all available user statuses and their allowances
   app.get('/login', (req, res) => {
     var name = decodeURIComponent(req.get('username'))
-    console.log('  userName: "' + name + '"')
     var password = ''
     var status = ''
     var allow = ''
     try {
       if (name) {
+        console.log('  userName: "' + name + '"')
         let row = setdb.prepare('SELECT pass, status FROM user WHERE name = $name').get({name: name})
         if (row) {
           password = row.pass
@@ -140,6 +139,7 @@ module.exports = function(app) { // Start module.exports
         res.send(password +LF+ status +LF+ allow +LF+ freeUsers)
 
       } else { // Send all recorded user statuses and their allowances, formatted
+        console.log('Get the table of user rights')
         let rows = setdb.prepare('SELECT * FROM class ORDER BY status').all()
         var allowances = ''
         for (let j=0;j<rows.length;j++) {
@@ -194,11 +194,11 @@ module.exports = function(app) { // Start module.exports
     let allowHidden = req.get('hidden')
     // Refresh picFound: the shell commands must execute in sequence
     let pif = IMDB + '/' + picFound
-    // console.log(pif)
     let cmd = 'rm -rf ' + pif + ' && mkdir ' + pif + ' && touch ' + pif + '/.imdb'
-    console.log(LF + cmd)
     // await cmdasync(cmd) // better diagnosis
     await execP(cmd)
+    // console.log(BYEL + cmd + RSET)
+    console.log('Refreshed the picFound tmp album')
     setTimeout(function() {
       allDirs().then(dirlist => { // dirlist entries start with the root album
         areAlbums(dirlist).then(async dirlist => {

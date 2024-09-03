@@ -36,11 +36,16 @@ makeDialogDraggable();
 
 // Detect various keys
 document.addEventListener('keydown', (event) => {
+  event.stopPropagation();
   var key = event.keyCode;
-  // console.log('Key ' + key + ' pressed');
+      // console.log('Key ' + key + ' pressed');
   switch(key) {
     case 27:  // Esc
+          // console.log(event.target);
       resetBorders();
+      for (let d of document.querySelectorAll('dialog')) {
+        if (d.hasAttribute("open")) break;
+      }
       if (!document.querySelector('#menuMain').style.display)
         document.querySelector('#menuButton').click(); //close menu
       document.querySelector('#go_back').click(); //close view image
@@ -77,14 +82,13 @@ const toggleDialog = (dialogId, origPos) => { //copy from z
     diaObj.show();
   }
   console.log('-"-: ' + what + dialogId);
-  // this.loli(what + dialogId);
 }
 
 // ALL bubbling mousedowns are caught, even programmatical clicks!
 document.addEventListener('mousedown', async (event) => {
-  // console.log('event:', event);
+      // console.log('event:', event);
+      // console.log(event.target);
   var tgt = event.target;
-  console.log(tgt);
   if (
     // Will do something by themselves or not
     event.button !== 0 ||// 0=left, 1=wheel, 2=right
@@ -93,6 +97,7 @@ document.addEventListener('mousedown', async (event) => {
     document.querySelector('.img_show').contains(tgt) ||
     document.querySelector('.toggleNavInfo').contains(tgt) ||
     document.querySelector('.nav_links').contains(tgt) ||
+    document.querySelector('.tmpHeader').contains(tgt) ||
     document.querySelector('#link_texts').contains(tgt) ||
     // tgt.tagName === 'BODY' || // outside all
     tgt.tagName === 'DIALOG' || // outside modal dialogs

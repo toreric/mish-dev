@@ -111,12 +111,12 @@ class AllImages extends Component {
   @service('common-storage') z;
   @service intl;
 
-  @tracked lastDragged;
+  // @tracked lastDragged; // for ember-sortable
   @tracked items = []; // NOTE: Used for allFiles duplication, below
 
-  reorderItems = (itemModels, draggedModel) => {
-    this.items = itemModels;
-    this.lastDragged = draggedModel;
+  detectEsc = (event) => {
+    event.stopPropagation();
+    if (event.keyCode === 27) this.z.resetBorders(); // Esc
   }
 
   noTags = (txt) => {
@@ -152,29 +152,35 @@ class AllImages extends Component {
     }
   }
 
-  dragStarted = (item) => {
-    this.z.loli(`dragStarted: ${item.name}`, 'color:red');
-    console.log(item);
-  }
+  // // For ember-sortable:
 
-  dragStopped = (item) => {
-    this.z.loli(`dragStopped: ${item.name}`, 'color:red');
-    // Close the show image view
-    document.querySelector('.img_show').style.display = 'none';
-    // Open the thumbnail view
-    document.querySelector('.miniImgs.imgs').style.display = 'flex';
-    this.z.resetBorders();
-    this.z.markBorders(item.name);
-  }
+  // reorderItems = (itemModels, draggedModel) => {
+  //   this.items = itemModels;
+  //   this.lastDragged = draggedModel;
+  // }
 
-  // Copies 'allFiles' to 'items' by real value duplication
+  // dragStarted = (item) => {
+  //   this.z.loli(`dragStarted: ${item.name}`, 'color:red');
+  //   console.log(item);
+  // }
+
+  // dragStopped = (item) => {
+  //   this.z.loli(`dragStopped: ${item.name}`, 'color:red');
+  //   // Close the show image view
+  //   document.querySelector('.img_show').style.display = 'none';
+  //   // Open the thumbnail view
+  //   document.querySelector('.miniImgs.imgs').style.display = 'flex';
+  //   this.z.resetBorders();
+  //   this.z.markBorders(item.name);
+  // }
+
+  // Copies 'allFiles' to 'items' by real-value duplication
   allFiles = () => {
+    // this.lastDragged = '';
     this.items = [];
     let m = this.z.allFiles.length;
     for (let i=0;i<m;i++) {
-      // this.items.push({img: this.z.allFiles[i].mini, name: this.z.allFiles[i].name});
       this.items.push(this.z.allFiles[i]);
-      this.lastDragged = '';
     }
   }
 
@@ -201,7 +207,7 @@ class AllImages extends Component {
 
 
   //=================================================================================
-  // Requires: ember install ember-draggable-modifiers
+  // Requires: ember install ember-draggable-modifiers (before: ember-sortable)
   //=================================================================================
   move = ({ source: { data: draggedItem }, target: { data: dropTarget, edge } }) => {
     this.items = removeItem(this.items, draggedItem);
@@ -217,7 +223,7 @@ class AllImages extends Component {
 
   <template>
 
-    <div style="margin:0 0 0 4rem;width:auto;height:auto" {{on 'mousedown' this.z.resetBorders}}>
+    <div style="margin:0 2rem;width:auto;height:auto" {{on 'mousedown' this.z.resetBorders}} {{on 'keydown' this.detectEsc}}>
 
       {{#if this.z.imdbRoot}}
 
@@ -229,8 +235,7 @@ class AllImages extends Component {
             Press to (re)load images for
             <button id="loadMiniImages" type="button" {{on 'click' this.allFiles}}>{{{this.z.imdbDirName}}}</button>
           </span>
-
-          Last dragged item: {{this.lastDragged.name}}
+          {{!-- Last dragged item: {{this.lastDragged.name}} --}}
         </p>
 
       {{else}}
@@ -243,7 +248,7 @@ class AllImages extends Component {
       {{!-- The album's div with thumnail images --}}
       <div class="miniImgs imgs" style="width:;display:flex;
         flex-wrap:wrap;padding:0;align-items:baseline;
-        justify-content:left;position:relative"
+        justify-content:center;position:relative"
       >
         {{!-- The thumnail images are displayed --}}
         {{#each this.items as |item|}}
