@@ -280,11 +280,11 @@ export default class CommonStorageService extends Service {
     document.querySelector('.albumsHdr').style.display = '';
     // Warn for too many images, if relevant
     if (this.allFiles.length > this.maxWarning && this.allow.imgUpload) {
-      this.alertMess(this.intl.t('sizewarning') + ' ' + this.maxWarning + ' ' + this.intl.t('images') + '!');
+      this.alertMess(this.intl.t('sizewarning') + ' ' + this.maxWarning + ' ' + this.intl.t('images') + '!', 6);
     }
 
     // Preload the show images
-    let preloadShowImg = []; // Preload show images:
+    let preloadShowImg = [];
     for (let file of this.allFiles) {
       let img = new Image();
       img.src = 'rln' + file.show;
@@ -324,11 +324,15 @@ export default class CommonStorageService extends Service {
     for (let pic of document.querySelectorAll('div.img_mini')) pic.remove();
   }
 
-  alertMess = async (mess) => {
+  alertMess = async (mess, sec) => {
     this.infoHeader = this.intl.t('infoHeader'); // default header
     this.infoMessage = mess;
     this.openDialog('dialogAlert');
     // this.openModalDialog('dialogAlert');
+    if (sec) { // means close after sec seconds
+      await new Promise (z => setTimeout (z, sec*1000));
+      this.closeDialog('dialogAlert');
+    }
   }
   alertRemove = () => {
     this.closeDialog('dialogAlert');
@@ -858,6 +862,7 @@ export default class CommonStorageService extends Service {
         if (this.status >= 200 && this.status < 300) {
           // userLog ("SAVE", false, 1000);
           resolve(true); // Can we forget 'resolve'?
+          that.alertMess(that.intl.t('saved'), 3);
         } else {
           // userLog("SAVE error", false, 5000);
           reject({
@@ -877,10 +882,10 @@ export default class CommonStorageService extends Service {
     for (let elem of document.querySelectorAll('div.img_mini')) {
       name.push(elem.id.slice(1));
     }
-    var save;
+    var save = '§§';
     for (let i=0;i<name.length;i++) {
       for (var item of old) {
-        if (item.startsWith(name[i])) {
+        if (item.startsWith(name[i] + ',')) {
           save = item;
           name[i] = item;
           break;

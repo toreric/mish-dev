@@ -90,25 +90,20 @@ document.addEventListener('mousedown', async (event) => {
       // console.log(event.target);
   var tgt = event.target;
   if (
-    // Will do something by themselves or not
     event.button !== 0 ||// 0=left, 1=wheel, 2=right
-    document.querySelector('#upperButtons').contains(tgt) ||
-    document.querySelector('#smallButtons').contains(tgt) ||
-    document.querySelector('.img_show').contains(tgt) ||
-    document.querySelector('.toggleNavInfo').contains(tgt) ||
-    document.querySelector('.nav_links').contains(tgt) ||
-    document.querySelector('.tmpHeader').contains(tgt) ||
-    document.querySelector('#link_texts').contains(tgt) ||
-    // tgt.tagName === 'BODY' || // outside all
-    tgt.tagName === 'DIALOG' || // outside modal dialogs
-    tgt.parentElement != null && tgt.parentElement.tagName === 'DIALOG' ||
-    tgt.parentElement != null && tgt.parentElement.parentElement != null && tgt.parentElement.parentElement.tagName === 'DIALOG' ||
-    tgt.parentElement != null && tgt.parentElement.parentElement != null && tgt.parentElement.parentElement.parentElement != null && tgt.parentElement.parentElement.parentElement.tagName === 'DIALOG'
-  ) {
-    return;
-  }
+    // NOTE: 'closest' means (like) 'is-within'
+    // Here there should be no 'mousedown' action,
+    // may have own 'click' detection:
+    tgt.closest('#upperButtons') ||
+    tgt.closest('#smallButtons') ||
+    tgt.closest('.img_show') ||
+    tgt.closest('.toggleNavInfo') ||
+    tgt.closest('.nav_links') ||
+    tgt.closest('.tmpHeader') ||
+    tgt.closest('#link_texts') ||
+    tgt.closest('dialog')
+  ) { return; }
   resetBorders();
-
   // Detect closing click outside menuMain (tricky case!)
   var tmp0 = document.getElementById('menuButton');
   var tmp1 = document.getElementById('menuMain');
@@ -119,7 +114,6 @@ document.addEventListener('mousedown', async (event) => {
     !tmp0.contains(tgt) &&
     !tmp1.contains(tgt)
   ) document.querySelector('#menuButton').click();
-
   // Close the show image view, if open
   document.querySelector('#go_back').click();
   return;
@@ -145,7 +139,7 @@ class Welcome extends Component {
 
       // Various settings
       this.z.initBrowser();         // Manipulate browser back-arrow
-      this.z.maxWarning = 20;       // Set recommended album size, about 100
+      this.z.maxWarning = 50;       // Set recommended album size, about 100
       this.z.displayNames = 'none'; // Hide image names
       await new Promise (z => setTimeout (z, 99)); // Before awakening the system
       document.querySelector('#toggleName').click(); // Initially hide (donowhy)
@@ -192,6 +186,7 @@ class Welcome extends Component {
       this.z.imdbRoots = roots.split(LF);
     }
     this.z.openMainMenu();
+    this.openLogIn();
   }
 }
 
