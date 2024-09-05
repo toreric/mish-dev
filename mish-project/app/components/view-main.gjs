@@ -241,7 +241,7 @@ class AllImages extends Component {
       {{else}}
 
         {{!-- Remind of choosing a root collection/album --}}
-        <p style="text-align:center;margin-right:4rem">{{t 'albumcollselect'}}</p>
+        <p style="text-align:center">{{t 'albumcollselect'}}</p>
 
       {{/if }}
 
@@ -287,7 +287,7 @@ class AllImages extends Component {
     </div>
 
     {{!-- The album's slideshow image comes here --}}
-    <div class="img_show" id="d{{this.z.picName}}" draggable="false" style="display:none;margin:1.5rem auto" {{on 'click' (fn this.z.showImage '')}}>
+    <div class="img_show" id="d{{this.z.picName}}" draggable="false" style="display:none;margin:2rem auto 0 auto" {{on 'click' (fn this.z.showImage '')}}>
 
         <div id="link_show" draggable="false">
           <p style="margin:0;line-height:0;font-family:sans-serif">ᵛ</p>

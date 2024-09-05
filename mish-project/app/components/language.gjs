@@ -43,6 +43,7 @@ export class Language extends Component {
   }
 
   <template>
+    <div>
     <div style="display:inline-block" title-2={{t 'select.language'}}>
       {{!-- Flags --}}
       {{#each this.selections as |tongue|}}
@@ -53,6 +54,7 @@ export class Language extends Component {
           <option {{on 'click' (fn this.changeLocale tongue)}} value={{tongue}} selected={{if (this.isActive tongue) true}}>{{(this.langText tongue)}}</option>
         {{/each}}
       </select>
+    </div>
     </div>
   </template>
 }

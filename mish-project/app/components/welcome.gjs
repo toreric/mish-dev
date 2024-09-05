@@ -226,7 +226,7 @@ export default class extends Welcome {
 
       <div class="sameBackground" style="display:flex;justify-content:space-between;margin:0 3.25rem 0 4rem">
         <Language />
-        <span>
+        <span style="line-height:3rem" info="Also spacing!">
 
           {{!-- NOTE: This extra commented-out  link is for emergency only if the
           browser's back arrow fails due to problems in the initBrowser-goBack

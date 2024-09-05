@@ -374,23 +374,51 @@ module.exports = function(app) { // Start module.exports
   })
 
   //#region sortlist
-  // ##### Get sorted file name list
-  app.get ('/sortlist', async function(req, res) {
+  // ##### Get sorted file name list (= get order)
+  app.get('/sortlist', async function(req, res) {
     var imdbtxtpath = IMDB + IMDB_DIR + '/_imdb_order.txt'
     try { // Create _imdb_order.txt if missing
-      fd = await fs.openAsync (imdbtxtpath, 'r') // check
-      await fs.closeAsync (fd)
-    } catch (err) {
-      fd = await fs.openAsync (imdbtxtpath, 'w') // create
-      await fs.closeAsync (fd)
-      execSync ('chmod 664 ' + imdbtxtpath)
+      fd = await fs.openAsync(imdbtxtpath, 'r') // check
+      await fs.closeAsync(fd)
+    } catch(err) {
+      fd = await fs.openAsync(imdbtxtpath, 'w') // create
+      await fs.closeAsync(fd)
+      execSync('chmod 664 ' + imdbtxtpath)
     }
     fs.readFileAsync (imdbtxtpath)
-    .then (names => {
+    .then(names => {
         // console.log ('/sortlist/:names' +'\n'+ names) // names <buffer> here converts to <text>
-      res.send (names) // Sent buffer arrives as text
-    }).then (console.info ('File order sent from server'))
+      res.send(names) // Sent buffer arrives as text
+    }).then(console.info('File order sent from server'))
   })
+
+  //#region saveorder
+  // ##### Save the _imdb_order.txt file
+  app.post ('/saveorder', function (req, res, next) {
+    var file = IMDB + IMDB_DIR + '/_imdb_order.txt'
+    execSync ('touch ' + file + '&&chmod 664 ' + file) // In case not yet created
+    var body = []
+    req.on ('data', (chunk) => {
+      // body will be a Buffer array: <buffer 39 35 33 2c 30 ... >, <buf... etc.
+      body.push (chunk)
+    }).on ('end', () => {
+      // Concatenate; then change the Buffer into String
+      body = Buffer.concat (body).toString ()
+      // At this point, do whatever with the request body (now a string)
+      fs.writeFileAsync (file, body).then (function () {
+        console.log ("Saved file order ")
+        //console.log ('\n'+body+'\n')
+      })
+      res.on('error', (err) => {
+        console.error(err.message)
+      })
+      setTimeout (function () {
+        // stay at the index.html file:
+        res.sendFile ('index.html', {root: WWW_ROOT + '/public/'})
+      }, 200)
+    })
+  })
+  
 
   //#region Functions
 

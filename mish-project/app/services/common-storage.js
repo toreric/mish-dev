@@ -266,12 +266,18 @@ export default class CommonStorageService extends Service {
     this.allFiles = newFiles;
 
     this.cleanMiniImgs(); // remove any old thumbnails
+    // Hide the subalbums etc.
+    document.querySelector('#upperButtons').style.display = 'none';
+    document.querySelector('.albumsHdr').style.display = 'none';
     // Populate the DOM with mini images
     // The hidden load button in component(s) ViewMain > AllImages will
     // "push the allFiles content" into the thumbnail template:
     document.getElementById('loadMiniImages').click();
     // Then hide the spinner
     document.querySelector('img.spinner').style.display = 'none';
+    // Show the subalbums etc.
+    document.querySelector('#upperButtons').style.display = '';
+    document.querySelector('.albumsHdr').style.display = '';
     // Warn for too many images, if relevant
     if (this.allFiles.length > this.maxWarning && this.allow.imgUpload) {
       this.alertMess(this.intl.t('sizewarning') + ' ' + this.maxWarning + ' ' + this.intl.t('images') + '!');
@@ -415,7 +421,7 @@ export default class CommonStorageService extends Service {
   // showImage('') will close the show image and open thumbnails
   showImage = async (name, path, e) => {
     if (e) e.stopPropagation();
-    if (name) {
+    if (name) { //open
       await new Promise (z => setTimeout (z, 19)); // Just by suspicion
           // this.loli('show name: ' + name, 'color:red');
           // this.loli('show path: ' + path, 'color:red');
@@ -436,7 +442,11 @@ export default class CommonStorageService extends Service {
       document.querySelector('.toggleNavInfo').style.opacity = '0';
       // Show the right side buttons
       document.querySelector('.nav_links').style.display = '';
-    } else {
+      // Hide the subalbums etc.
+      document.querySelector('#upperButtons').style.display = 'none';
+      document.querySelector('.albumsHdr').style.display = 'none';
+      window.scrollTo(0,0);
+    } else { //close
       this.edgeImage = '';
       // Hide the right side buttons
       document.querySelector('.nav_links').style.display = 'none';
@@ -445,6 +455,9 @@ export default class CommonStorageService extends Service {
       document.querySelector('.img_show').style.display = 'none'; //was 'table'
       // Open the thumbnail view
       document.querySelector('.miniImgs.imgs').style.display = 'flex';
+      // Show the subalbums etc.
+      document.querySelector('#upperButtons').style.display = '';
+      document.querySelector('.albumsHdr').style.display = '';
       // Outline the closed image
       this.gotoMinipic(this.picName);
     }
@@ -528,6 +541,13 @@ export default class CommonStorageService extends Service {
 
 
 
+  //#region xhrsetreqhdr
+  xhrSetRequestHeader = (xhr) => {
+    xhr.setRequestHeader('username', encodeURIComponent(this.userName));
+    xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
+    xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
+    xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
+  }
 
   //#region execute
   execute = async (command) => { // Execute on the server, return a promise
@@ -535,10 +555,11 @@ export default class CommonStorageService extends Service {
       command = command.replace (/%/g, "%25");
       var xhr = new XMLHttpRequest ();
       xhr.open ('GET', 'execute/', true, null, null);
+      this.xhrSetRequestHeader(xhr);
       xhr.setRequestHeader('command', encodeURIComponent(command));
-      xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
-      xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
-      xhr.setRequestHeader('picfound', this.picFound); // All 'widhtin 255' characters
+      // xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
+      // xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
+      // xhr.setRequestHeader('picfound', this.picFound); // All 'widhtin 255' characters
       xhr.onload = function () {
         if (this.status >= 200 && this.status < 300) {
           var data = xhr.response.trim ();
@@ -566,14 +587,14 @@ export default class CommonStorageService extends Service {
     // this.loli(this.userName);
     if (username === 'Get user name') { // Welcome, initiation
       username = this.userName; // Default log in
-      // this.imdbDir = '';  // Empty it
       this.imdbRoot = ''; // Empty it
     }
-    if (username === 'Get allowances') username = ''; // for all users
+    if (username === 'Get allowances') username = ''; // For all users
     return new Promise((resolve, reject) => {
       // ===== XMLHttpRequest returning user credentials
       var xhr = new XMLHttpRequest();
       xhr.open('GET', 'login/', true, null, null);
+      // Do not use xhrSetRequestHeader here, perhaps bad user name timing?
       xhr.setRequestHeader('username', encodeURIComponent(username));
       xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
       xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
@@ -593,16 +614,18 @@ export default class CommonStorageService extends Service {
       console.error(error.message);
     });
   }
+
   //#region rootdir
   getAlbumRoots = async () => {
     // Propose root directory (requestDirs)
     return new Promise ( (resolve, reject) => {
       var xhr = new XMLHttpRequest ();
       xhr.open ('GET', 'rootdir/', true, null, null);
-      xhr.setRequestHeader('username', encodeURIComponent(this.userName));
-      xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
-      xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
-      xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
+      this.xhrSetRequestHeader(xhr);
+      // xhr.setRequestHeader('username', encodeURIComponent(this.userName));
+      // xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
+      // xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
+      // xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
       xhr.onload = function () {
         if (this.status >= 200 && this.status < 300) {
           var dirList = xhr.response;
@@ -629,6 +652,7 @@ export default class CommonStorageService extends Service {
       }
     });
   }
+
   //#region imdbdirs
   getAlbumDirs = async (getHidden) => {
     // Get album collections or albums if thisDir is an album root
@@ -636,10 +660,11 @@ export default class CommonStorageService extends Service {
       // ===== XMLHttpRequest returning user credentials
       var xhr = new XMLHttpRequest();
       xhr.open('GET', 'imdbdirs/', true, null, null);
-      xhr.setRequestHeader('username', encodeURIComponent(this.userName));
-      xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
-      xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
-      xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
+      this.xhrSetRequestHeader(xhr);
+      // xhr.setRequestHeader('username', encodeURIComponent(this.userName));
+      // xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
+      // xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
+      // xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
       xhr.setRequestHeader('hidden', getHidden ? 'true' : 'false');
       xhr.onload = function() {
         let res = xhr.response;
@@ -656,45 +681,6 @@ export default class CommonStorageService extends Service {
       console.error(error.message);
     });
   }
-  //#region sortlist
-  requestOrder = async () => {
-    // Request the sort order list of image files
-    return new Promise ( (resolve, reject) => {
-      var that = this;
-      var xhr = new XMLHttpRequest ();
-      xhr.open ('GET', 'sortlist/', true, null, null);
-      xhr.setRequestHeader('username', encodeURIComponent(this.userName));
-      xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
-      xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
-      xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
-      xhr.onload = async function () {
-        if (this.status >= 200 && this.status < 300) {
-          var data = xhr.response.trim ();
-          if (data.slice (0, 8) === '{"error"') {
-            data = "Error!"; // This error text may also be generated elsewhere
-          }
-          resolve (data); // Return file-name text lines
-          // console.log ("ORDER received");
-        } else {
-          resolve ("Error!");
-          reject ({
-            status: this.status,
-            statusText: xhr.statusText
-          });
-        }
-      };
-      xhr.onerror = function () {
-        resolve ("Error!");
-        reject ({
-          status: this.status,
-          statusText: xhr.statusText
-        });
-      };
-      xhr.send ();
-    }).catch (error => {
-      console.error (error.message);
-    });
-  }
 
   //#region imagelist
   // WAS: requestNames = async () => { // ===== Request the file information list
@@ -709,10 +695,11 @@ export default class CommonStorageService extends Service {
     return new Promise((resolve, reject) => {
       var xhr = new XMLHttpRequest();
       xhr.open('GET', 'imagelist/', true, null, null);
-      xhr.setRequestHeader('username', encodeURIComponent(this.userName));
-      xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
-      xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
-      xhr.setRequestHeader('picfound', this.picFound); // All 'widhtin 255' characters
+      this.xhrSetRequestHeader(xhr);
+      // xhr.setRequestHeader('username', encodeURIComponent(this.userName));
+      // xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
+      // xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
+      // xhr.setRequestHeader('picfound', this.picFound); // All 'widhtin 255' characters
       xhr.onload = function() {
         var allow = that.allow;
         var allfiles = [];
@@ -811,6 +798,99 @@ export default class CommonStorageService extends Service {
       console.error ("In getImages:", error.message);
     });
   }
+
+  //#region sortlist
+  //is actually the getOrder function, cf. saveOrder below
+  requestOrder = async () => {
+    // Request the sort order list of image files
+    return new Promise ( (resolve, reject) => {
+      var that = this;
+      var xhr = new XMLHttpRequest ();
+      xhr.open ('GET', 'sortlist/', true, null, null);
+      this.xhrSetRequestHeader(xhr);
+      // xhr.setRequestHeader('username', encodeURIComponent(this.userName));
+      // xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
+      // xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
+      // xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
+      xhr.onload = async function () {
+        if (this.status >= 200 && this.status < 300) {
+          var data = xhr.response.trim ();
+          if (data.slice (0, 8) === '{"error"') {
+            data = "Error!"; // This error text may also be generated elsewhere
+          }
+          resolve (data); // Return file-name text lines
+          // console.log ("ORDER received");
+        } else {
+          resolve ("Error!");
+          reject ({
+            status: this.status,
+            statusText: xhr.statusText
+          });
+        }
+      };
+      xhr.onerror = function () {
+        resolve ("Error!");
+        reject ({
+          status: this.status,
+          statusText: xhr.statusText
+        });
+      };
+      xhr.send ();
+    }).catch (error => {
+      console.error (error.message);
+    });
+  }
+
+  //#region saveorder
+  //coincides with the saveOrder left button
+  saveOrder = async () => {
+    if (this.imdbDir === this.picFound || !this.allow.saveChanges) return;
+    // assemble the new sortOrder list
+    this.sortOrder = this.updateOrder();
+    // then replace the order file in the album
+    // document.getElementById("divDropZone").style.display = "none"; // If shown...
+    var that = this;
+    return new Promise( (resolve, reject) => {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', 'saveorder/');
+      this.xhrSetRequestHeader(xhr);
+      xhr.onload = function() {
+        if (this.status >= 200 && this.status < 300) {
+          // userLog ("SAVE", false, 1000);
+          resolve(true); // Can we forget 'resolve'?
+        } else {
+          // userLog("SAVE error", false, 5000);
+          reject({
+            status: this.status,
+            statusText: xhr.statusText
+          });
+        }
+      };
+      xhr.send(that.sortOrder);
+    }).catch(error => {
+      console.error(error.message);
+    });
+  }
+  updateOrder = () => {
+    let old = this.sortOrder.split(LF);
+    let name = [];
+    for (let elem of document.querySelectorAll('div.img_mini')) {
+      name.push(elem.id.slice(1));
+    }
+    var save;
+    for (let i=0;i<name.length;i++) {
+      for (var item of old) {
+        if (item.startsWith(name[i])) {
+          save = item;
+          name[i] = item;
+          break;
+        }
+      }
+      if (name[i] !== save) name[i] += ',0,0';
+    }
+    return name.join(LF);
+  }
+
 
   //   #region Menus
   //== Menu utilities

@@ -12,6 +12,7 @@ import { htmlSafe } from '@ember/template';
 // import sortableItem from 'ember-sortable/modifiers/sortable-item';
 
 export const dialogXperId = "dialogXper";
+const LF = '\n';
 
 
 export class DialogXper extends Component {
@@ -35,6 +36,15 @@ export class DialogXper extends Component {
     for(elem of document.querySelectorAll('.tmpHeader')) elem.style.display = disp;
   }
 
+  updateOrder = (n) => {
+    if (n === 1) {
+      this.z.loli(LF + this.z.sortOrder, 'color:pink');
+    } else if (n === 2) {
+      let tmp = this.z.updateOrder();
+      this.z.loli(LF + tmp, 'color:brown');
+    }
+  }
+
   <template>
     <dialog id="dialogXper" {{on 'keydown' this.detectEscClose}}>
       <header data-dialog-draggable>
@@ -51,7 +61,15 @@ export class DialogXper extends Component {
         <br>
         <button type="button" {{on 'click' this.toggleTmpHeader}}>
           Dölj/visa tillfälligt
-        </button><div style="display:flex;justify-content:center">
+        </button>
+        <br>
+        <button type="button" {{on 'click' (fn this.updateOrder 1)}}>
+          sortOrder
+        </button>
+        <button type="button" {{on 'click' (fn this.updateOrder 2)}}>
+          Ny sortOrder
+        </button>
+        <div style="display:flex;justify-content:center">
           <div title-2="Här visas CSS: title-2">
           <br>&nbsp; <br>
             För visning av<br>CSS: title-2
