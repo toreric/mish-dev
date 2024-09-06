@@ -440,6 +440,9 @@ export default class CommonStorageService extends Service {
       // Load the show image source path and set it's id="dname"
       let pic = document.querySelector('#link_show img');
       pic.src = 'rln' + path;
+      // Copy the check mark classfrom the thumbnail
+      let miniclass = document.querySelector('div#i' + this.picName + ' div').className;
+      document.querySelector('#markShow').className = miniclass + 'Show';
       // Open the show image view
       document.querySelector('.img_show').style.display = 'table';
       // Hide the navigation overlay information

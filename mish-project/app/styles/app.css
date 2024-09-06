@@ -1416,7 +1416,7 @@ img.mark {
   background: transparent;
   z-index: 6;
 }
-.markFalseShow {show
+.markFalseShow {
   position: absolute;
   width: 20px;
   height: 20px;
@@ -1435,7 +1435,7 @@ img.mark {
 .markTrue {
   position: absolute;
   width: 20px;
-  height: 20px;show
+  height: 20px;
   border: 0;
   top: 0px;
   right: 0px;

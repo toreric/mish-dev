@@ -61,6 +61,7 @@ document.addEventListener('keydown', (event) => {
     case 70:  // F
       break;
     case 112: // F1
+          // console.log('F1 pressed') once only?
       toggleDialog(dialogHelpId);
   }
 });
@@ -101,6 +102,7 @@ document.addEventListener('mousedown', async (event) => {
     tgt.closest('.nav_links') ||
     tgt.closest('.tmpHeader') ||
     tgt.closest('#link_texts') ||
+    tgt.closest('#do_mail') ||
     tgt.closest('dialog')
   ) { return; }
   resetBorders();

@@ -184,6 +184,7 @@ class AllImages extends Component {
     }
   }
 
+  // The image captions (from metadata)
   txt = (no, name) => {
     let i = this.items.findIndex(item => {return item.name === name;});
     let r = '';
@@ -245,6 +246,7 @@ class AllImages extends Component {
 
       {{/if }}
 
+      {{!-- =================================================================== --}}
       {{!-- The album's div with thumnail images --}}
       <div class="miniImgs imgs" style="width:;display:flex;
         flex-wrap:wrap;padding:0;align-items:baseline;
@@ -261,11 +263,16 @@ class AllImages extends Component {
               <button class="goAlbum" title-2="{{t 'gotext'}} ”{{item.albname}}”" {{on 'click' (fn this.homeAlbum item.orig item.name)}}> {{t 'goto'}} </button>
             {{/if}}
 
+            {{!-- The check mark in the thumnail's upper right corner --}}
+            <div class="markFalse" alt="MARKER" draggable="false" ondragstart="return false">
+              <img src="/images/markericon.svg" draggable="false" ondragstart="return false" class="mark" title={{t 'Mark'}}>
+            </div>
+
             {{!-- Here comes the thumbnail --}}
             <img src="{{item.mini}}" class="left-click" title="{{this.z.imdbRoot}}{{item.linkto}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage item.name item.show)}}>
 
             {{!-- This is the image name, should be unique --}}
-            <div class="img_name" style="display:{{this.z.displayNames}}">
+            <div class="img_name" style="display:{{this.z.displayNames}};background:inherit">
               {{item.name}}
             </div>
 
@@ -284,35 +291,56 @@ class AllImages extends Component {
           </div>
         {{/each}}
       </div>
+
     </div>
 
-    {{!-- The album's slideshow image comes here --}}
+    {{!-- =================================================================== --}}
+    {{!-- The album's div with the slideshow image --}}
     <div class="img_show" id="d{{this.z.picName}}" draggable="false" style="display:none;margin:2rem auto 0 auto" {{on 'click' (fn this.z.showImage '')}}>
 
-        <div id="link_show" draggable="false">
+        {{!-- An extra slideshow wrapping div --}}
+        <div id="link_show" draggable="false" ondragstart="return false">
+
+          {{!-- A midpoint mark (ᵛ) on the slideshow image border --}}
           <p style="margin:0;line-height:0;font-family:sans-serif">ᵛ</p>
+
+          {{!-- The slideshow image comes here, src loaded at runtime --}}
           <img src="" draggable="false" ondragstart="return false">
 
+          {{!-- The check mark in the slideshow image's upper right corner --}}
+          <div id="markShow" class="" alt="MARKSHOW" draggable="false" ondragstart="return false">
+            <img src="/images/markericon.svg" draggable="false" ondragstart="return false" class="mark" title={{t 'Mark'}}>
+          </div>
+
+          {{!-- The navigation information overlay of the slideshow image --}}
           <div class="toggleNavInfo" style="opacity:0">
+
+            {{!-- Outside image: return-to-thumbnails click area --}}
             <a class="navReturn" style="top:-2.5rem; left:0%; width:100%; border:0;" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage '')}}><p>{{t 'return'}} <span style="font:normal 1rem Arial!important">[Esc]</span></p></a>
 
+            {{!-- Left backwards click area --}}
             <a style="top: 0%; left: 0%; width: 49.5%; height: 99.5%;"
             draggable="false" ondragstart="return false"
             {{on 'click' (fn this.z.showNext false)}}>
               <p>{{t 'previous'}}<br><span style="font:normal 1rem Arial!important">[&lt;]</span></p><br>&nbsp;<br>&nbsp;
             </a>
 
+            {{!-- Right forwards click area --}}
             <a style="top: 0%; left: 50%; width: 50%; height: 99.5%; border-left:0;"
             draggable="false" ondragstart="return false"
             {{on 'click' (fn this.z.showNext true)}}>
               <p>{{t 'next'}}<br><span style="font:normal 1rem Arial!important">[&gt;]</span></p><br>&nbsp;<br>&nbsp;
             </a>
-          </div>
+
+           </div>
+
         </div>
 
+        {{!-- The slideshow's div with the image name and texts --}}
         <div id="link_texts" draggable="false" style="display:table-caption;
           caption-side:bottom;background:#3b3b3b;padding:0 0 0.4rem 0.3rem">
-          {{!-- This is the image name, should be unique --}}
+
+          {{!-- This is the image name, should be unique, hidden 'if displayNames' --}}
           <div class="img_name" style="display:{{this.z.displayNames}}" draggable="false" ondragstart="return false" title="" {{on 'click' this.editext}}>
             {{this.z.picName}}
           </div>
