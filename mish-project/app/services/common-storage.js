@@ -225,7 +225,7 @@ export default class CommonStorageService extends Service {
     for (let tmp of document.querySelectorAll('span.album')) {
       tmp.style.color = '';
     }
-    // Set color mark on the selected album and make it visible
+    // Set color mark on the selected album name and make it visible
     document.querySelector('span.album.a' + i).style.color = '#f46aff';
     let selected = document.querySelector('div.album.a' + i);
     selected.style.display = '';
@@ -270,8 +270,8 @@ export default class CommonStorageService extends Service {
     document.querySelector('#upperButtons').style.display = 'none';
     document.querySelector('.albumsHdr').style.display = 'none';
     // Populate the DOM with mini images
-    // The hidden load button in component(s) ViewMain > AllImages will
-    // "push the allFiles content" into the thumbnail template:
+    // Use the hidden load button in component(s) ViewMain > AllImages
+    // will "push the allFiles content" into the thumbnail template:
     document.getElementById('loadMiniImages').click();
     // Then hide the spinner
     document.querySelector('img.spinner').style.display = 'none';
@@ -441,8 +441,18 @@ export default class CommonStorageService extends Service {
       let pic = document.querySelector('#link_show img');
       pic.src = 'rln' + path;
       // Copy the check mark classfrom the thumbnail
-      let miniclass = document.querySelector('div#i' + this.picName + ' div').className;
+      let minipic = document.querySelector('#i' + this.escapeDots(this.picName));
+
+      let miniclass = minipic.querySelector('div').className;
       document.querySelector('#markShow').className = miniclass + 'Show';
+
+      // NEW checkmarking convention with class 'selected',testing
+      if (miniclass === 'markTrue') {
+        minipic.classList.add('selected');
+      } else {
+        minipic.classList.remove('selected');
+      }
+
       // Open the show image view
       document.querySelector('.img_show').style.display = 'table';
       // Hide the navigation overlay information

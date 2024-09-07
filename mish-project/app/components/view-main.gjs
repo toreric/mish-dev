@@ -204,6 +204,35 @@ class AllImages extends Component {
     // todo, catches clicks so far
   }
 
+  // The 'double classing', seemingly unnecessary and
+  // irrational, comes from historic css reasons, sorry.
+  toggleSelected = (e) => {
+    e.stopPropagation();
+    let clicked = e.target.closest('div');
+    let thisPic = e.target.closest('.img_mini');
+    if (thisPic.classList.contains('selected')) {
+      thisPic.classList.remove('selected');
+      clicked.className = 'markFalse';
+    } else {
+      thisPic.classList.add('selected');
+      clicked.className = 'markTrue';
+    }
+  }
+  toggleSelectedShow = (e) => {
+    e.stopPropagation();
+    let clicked = document.querySelector('#markShow');
+    let thisPic = document.querySelector('#i' + this.z.escapeDots(this.z.picName));
+    if (thisPic.classList.contains('selected')) {
+      thisPic.classList.remove('selected');
+      thisPic.querySelector('div').className = 'markFalse';
+      clicked.className = 'markFalseShow';
+    } else {
+      thisPic.classList.add('selected');
+      thisPic.querySelector('div').className = 'markTrue';
+      clicked.className = 'markTrueShow';
+    }
+  }
+
   // itemVisualClass = 'sortable-item--active';
 
 
@@ -264,7 +293,7 @@ class AllImages extends Component {
             {{/if}}
 
             {{!-- The check mark in the thumnail's upper right corner --}}
-            <div class="markFalse" alt="MARKER" draggable="false" ondragstart="return false">
+            <div class="markFalse" alt="MARKER" draggable="false" ondragstart="return false" {{on 'click' this.toggleSelected}}>
               <img src="/images/markericon.svg" draggable="false" ondragstart="return false" class="mark" title={{t 'Mark'}}>
             </div>
 
@@ -308,7 +337,7 @@ class AllImages extends Component {
           <img src="" draggable="false" ondragstart="return false">
 
           {{!-- The check mark in the slideshow image's upper right corner --}}
-          <div id="markShow" class="" alt="MARKSHOW" draggable="false" ondragstart="return false">
+          <div id="markShow" class="" alt="MARKSHOW" draggable="false" ondragstart="return false" {{on 'click' this.toggleSelectedShow}}>
             <img src="/images/markericon.svg" draggable="false" ondragstart="return false" class="mark" title={{t 'Mark'}}>
           </div>
 
@@ -336,11 +365,11 @@ class AllImages extends Component {
 
         </div>
 
-        {{!-- The slideshow's div with the image name and texts --}}
+        {{!-- The slideshow image's name and texts --}}
         <div id="link_texts" draggable="false" style="display:table-caption;
           caption-side:bottom;background:#3b3b3b;padding:0 0 0.4rem 0.3rem">
 
-          {{!-- This is the image name, should be unique, hidden 'if displayNames' --}}
+          {{!-- This is the image name, should be unique, hidden if 'displayNames'.. --}}
           <div class="img_name" style="display:{{this.z.displayNames}}" draggable="false" ondragstart="return false" title="" {{on 'click' this.editext}}>
             {{this.z.picName}}
           </div>

@@ -95,6 +95,7 @@ document.addEventListener('mousedown', async (event) => {
     // NOTE: 'closest' means (like) 'is-within'
     // Here there should be no 'mousedown' action,
     // may have own 'click' detection:
+    tgt.closest('#markShow') ||
     tgt.closest('#upperButtons') ||
     tgt.closest('#smallButtons') ||
     tgt.closest('.img_show') ||
