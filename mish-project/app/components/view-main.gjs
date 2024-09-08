@@ -271,7 +271,11 @@ class AllImages extends Component {
       {{else}}
 
         {{!-- Remind of choosing a root collection/album --}}
-        <p style="text-align:center">{{t 'albumcollselect'}}</p>
+        <p style="text-align:center">
+          <span style='border-radius:2.5px;outline:#87cfff double 4px'>
+            &nbsp;{{t 'albumcollselect'}}&nbsp;
+          </span>
+        </p>
 
       {{/if }}
 

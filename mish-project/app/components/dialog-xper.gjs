@@ -41,7 +41,7 @@ export class DialogXper extends Component {
       this.z.loli(LF + this.z.sortOrder, 'color:pink');
     } else if (n === 2) {
       let tmp = this.z.updateOrder();
-      this.z.loli(LF + tmp, 'color:brown');
+      this.z.loli(LF + tmp, 'color:lightcoral');
     }
   }
 
