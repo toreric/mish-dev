@@ -41,7 +41,7 @@ textEdit:     redigera/spara bildtexter, gömda album³
 all: Alla
 dark: Mörk
 for: för
-#NOTE: Choose a guest:<value> which exists in the _imdb_settings.sqlite 'user' table!
+#NOTE: Choose a 'guest: value' which exists in the _imdb_settings.sqlite 'user' table!
 #      Else use instead the standard name guest!
 guest: gäst
 has: har
@@ -51,6 +51,7 @@ intlcode: sv-se
 light: ljus
 linked: länkade
 Mark: Markera
+marked: markerade
 missing: (saknas)
 next: nästa
 no: inga

@@ -41,7 +41,7 @@ textEdit:     edit/save image texts/captions, access hidden albums³
 all: All
 dark: Dark
 for: for
-#NOTE: Choose a guest: value which exists in the _imdb_settings.sqlite 'user' table!
+#NOTE: Choose a 'guest: value' which exists in the _imdb_settings.sqlite 'user' table!
 #      Else use instead the standard name guest!
 guest: guest
 has: has
@@ -51,6 +51,7 @@ intlcode: en-us
 light: light
 linked: linked
 Mark: Mark
+marked: marked
 missing: (missing) NOTE never used
 next: next
 no: no

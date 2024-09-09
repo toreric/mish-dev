@@ -63,7 +63,7 @@ class SubAlbums extends Component {
       // Check if there are more subalbums than the primary subalbums
       let more = Number(coco.replace(re, '').replace(/\ *[(0-9+)]+\ +([0-9]+)$/, '$1')) - this.z.subaIndex.length;
 
-      if (more > 0) plus =' (+' + more + ')';
+      if (more > 0) plus ='&nbsp;(+' + more + ')';
     }
     return plus;
   }
@@ -88,10 +88,8 @@ class SubAlbums extends Component {
         {{#if this.z.imdbRoot}}
           <span title-2="{{this.z.imdbRoot}}{{this.z.imdbDir}}">
             <b>”{{{this.z.handsomize this.z.imdbDirName}}}”</b>
-            {{t 'has'}} {{this.nsub}} {{this.sual}}
-          </span>
-          <span title-2={{t 'plusExplain'}}>
-            {{this.nadd}}
+            {{t 'has'}} {{this.nsub}} {{this.sual}}</span><span title-2={{t 'plusExplain'}}>
+            {{{this.nadd}}}
           </span><span>{{#if this.z.numImages}},
               {{this.z.numOrigin}} {{t 'images'}}
             {{/if}}
@@ -227,7 +225,7 @@ class AllImages extends Component {
     let thisPic = e.target.closest('.img_mini');
 
     // this.z.hideFlag(thisPic.id.slice(1)); // EXPERIMENTAL
-    this.z.paintHideFlags(); // EXPERIMENTAL
+    // this.z.paintHideFlags(); // EXPERIMENTAL
 
     if (thisPic.classList.contains('selected')) {
       thisPic.classList.remove('selected');
@@ -236,6 +234,7 @@ class AllImages extends Component {
       thisPic.classList.add('selected');
       clicked.className = 'markTrue';
     }
+    this.z.numMarked = document.querySelectorAll('.img_mini.selected').length;
   }
   toggleSelectedShow = (e) => {
     e.stopPropagation();
@@ -272,7 +271,11 @@ class AllImages extends Component {
 
   <template>
 
-    <div style="margin:0 2rem;width:auto;height:auto" {{on 'mousedown' this.z.resetBorders}} {{on 'keydown' this.detectEsc}}>
+    {{#if this.z.imdbRoot}}
+      <p style="text-align:center"><b>”{{{this.z.handsomize this.z.imdbDirName}}}”</b> ({{this.z.numMarked}} {{t 'marked'}})</p>
+    {{/if }}
+
+    <div style="margin:0 2rem;width:auto;height:auto;text-align:center" {{on 'mousedown' this.z.resetBorders}} {{on 'keydown' this.detectEsc}}>
 
       {{#if this.z.imdbRoot}}
 
@@ -290,11 +293,9 @@ class AllImages extends Component {
       {{else}}
 
         {{!-- Remind of choosing a root collection/album --}}
-        <p style="text-align:center">
-          <span style='border-radius:2.5px;outline:#87cfff double 4px'>
+        <span style='border-radius:2.5px;outline:#87cfff double 4px'>
             &nbsp;{{t 'albumcollselect'}}&nbsp;
-          </span>
-        </p>
+        </span>
 
       {{/if }}
 

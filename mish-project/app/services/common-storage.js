@@ -81,8 +81,8 @@ export default class CommonStorageService extends Service {
   // Dynamic album information:
   @tracked  numHidden = ' 0';
   @tracked  numImages = '0';  // Total numder of images in the album
-  @tracked  numLinked = '0';  // Numder of images linked into in the album
-  @tracked  numMarked = '0';
+  @tracked  numLinked = '0';  // Numder of images linked into the album
+  @tracked  numMarked = '0';  // Number of selection marked images
   @tracked  numOrigin = '0';  // Numder of own original images in the album
   @tracked  numShown = ' 0';
         get PAINT_HIDE() {    // Background color for images marked hidden
@@ -216,6 +216,8 @@ export default class CommonStorageService extends Service {
     document.querySelector('.miniImgs.imgs').style.display = 'flex';
     // Display the spinner
     document.querySelector('img.spinner').style.display = '';
+    // Set marked zero
+    this.numMarked = 0;
 
     i = Number(i); // important!
     if (i === 0) this.albumHistory = [0]; // Recover from possible "browser disorder"
