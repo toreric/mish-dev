@@ -210,6 +210,9 @@ class AllImages extends Component {
     e.stopPropagation();
     let clicked = e.target.closest('div');
     let thisPic = e.target.closest('.img_mini');
+
+    this.z.hideFlag(thisPic.id.slice(1)); // EXPERIMENTAL
+
     if (thisPic.classList.contains('selected')) {
       thisPic.classList.remove('selected');
       clicked.className = 'markFalse';
@@ -288,6 +291,7 @@ class AllImages extends Component {
         {{!-- The thumnail images are displayed --}}
         {{#each this.items as |item|}}
           <div class="img_mini {{item.symlink}}" id="i{{item.name}}"
+            style="background:#3b3b3b"
             {{sortableItem data=item onDrop=this.move}}
             {{on 'mousedown' this.z.resetBorders}}
           >

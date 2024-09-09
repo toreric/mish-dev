@@ -1267,7 +1267,6 @@ img[alt] {
 }
 /* ##### Image size is also controlled at Imagemagick resizing in routes.js */
 .img_mini {
-  background: #3b3b3b;
   display: inline-block;
   position: relative;
   text-align: left;
@@ -1382,10 +1381,8 @@ img[alt] {
 }
 .img_show {
   position: relative;
-  justify-content: center;
   text-align: center;
   z-index: 0;
-  margin-top: 1.5rem;
 }
 .img_show img:first-of-type {
   display: block;

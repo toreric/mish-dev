@@ -395,11 +395,6 @@ export default class CommonStorageService extends Service {
     let hs = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
     // this.loli('hs=' + hs, 'color:red');
     let h2 = hs/2;
-    // this.loli('h2=' + h2, 'color:red');
-    // let id = '#i' + this.escapeDots(namepic);
-    // this.loli('id: ' + id, 'color:yellow');
-    // await new Promise (z => setTimeout (z, 66));
-    // let p = document.querySelector(id);
     // NOTE: No escapeDots for getElementById:
     let p = document.getElementById('i' + namepic);
     // this.loli('p=' + p, 'color:red');
@@ -421,8 +416,29 @@ export default class CommonStorageService extends Service {
     this.markBorders(namepic); // Mark this one
   }
 
+  hideFlag = (namepic) => {
+    let order = this.updateOrder(true); // array if true, else text
+    let ix = -1;
+    // NOTE: No escapeDots for getElementById:
+    let pic = document.getElementById('i' + namepic);
+    for (let i=0;i<order.length;i++) {
+      if (order[i].startsWith(namepic + ',')) {
+        ix = i;
+        break;
+      }
+    }
+    if (ix > -1) {
+      var p01 = order[ix].slice(namepic.length + 1); // like 0,0
+      if (p01.startsWith('1')) {
+        pic.style.background = '#003264';
+      }
+    } else {
+      this.alertMess('In ’hideFlag’:<br>This cannot happen!');
+    }
+  }
+
   // Open or close the named show image, path = its path in the current album
-  // showImage('') will close the show image and open thumbnails
+  // showImage('') will close the show image and reopen the thumbnails
   showImage = async (name, path, e) => {
     if (e) e.stopPropagation();
     if (name) { //open
@@ -440,11 +456,13 @@ export default class CommonStorageService extends Service {
       // Load the show image source path and set it's id="dname"
       let pic = document.querySelector('#link_show img');
       pic.src = 'rln' + path;
-      // Copy the check mark classfrom the thumbnail
+      // Copy the check mark class from the thumbnail
       let minipic = document.querySelector('#i' + this.escapeDots(this.picName));
-
       let miniclass = minipic.querySelector('div').className;
       document.querySelector('#markShow').className = miniclass + 'Show';
+
+      // Copy background from thumbnail = hide status indicator
+      document.getElementById('link_texts').style.background = minipic.style.background;
 
       // NEW checkmarking convention with class 'selected',testing
       if (miniclass === 'markTrue') {
@@ -873,11 +891,9 @@ export default class CommonStorageService extends Service {
       this.xhrSetRequestHeader(xhr);
       xhr.onload = function() {
         if (this.status >= 200 && this.status < 300) {
-          // userLog ("SAVE", false, 1000);
           resolve(true); // Can we forget 'resolve'?
           that.alertMess(that.intl.t('saved'), 3);
         } else {
-          // userLog("SAVE error", false, 5000);
           reject({
             status: this.status,
             statusText: xhr.statusText
@@ -889,7 +905,8 @@ export default class CommonStorageService extends Service {
       console.error(error.message);
     });
   }
-  updateOrder = () => {
+
+  updateOrder = (noJoin) => {
     let old = this.sortOrder.split(LF);
     let name = [];
     for (let elem of document.querySelectorAll('div.img_mini')) {
@@ -906,7 +923,11 @@ export default class CommonStorageService extends Service {
       }
       if (name[i] !== save) name[i] += ',0,0';
     }
-    return name.join(LF);
+    if (noJoin) {
+      return name;
+    } else {
+      return name.join(LF);
+    }
   }
 
 
