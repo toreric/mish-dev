@@ -74,17 +74,21 @@ export default class CommonStorageService extends Service {
 
   @tracked  navKeys = false; // Protects from unintended use of L/R arrows
   @tracked  allFiles = [];   // Image file information object, changes with imdbDir
+  @tracked  displayNames = 'none'; // Image name display switch
   @tracked  edgeImage = '';  // Text indicating first/last image
   // Recommended max. number of images in an album, set in Welcome (perhaps 100):
   @tracked  maxWarning = 0;
   // Dynamic album information:
   @tracked  numHidden = ' 0';
+  @tracked  numImages = '0';  // Total numder of images in the album
+  @tracked  numLinked = '0';  // Numder of images linked into in the album
   @tracked  numMarked = '0';
+  @tracked  numOrigin = '0';  // Numder of own original images in the album
   @tracked  numShown = ' 0';
-  @tracked  b = '';
-  @tracked  c = '';
-  @tracked  d = '';
-  @tracked  displayNames = 'none'; // Image name display switch
+        get PAINT_HIDE() {    // Background color for images marked hidden
+              return '#003264'; }
+        get PAINT_BACK() {    // Standard background color for images
+              return '#3b3b3b'; }
 
 
   //   #region Allowance
@@ -260,15 +264,18 @@ export default class CommonStorageService extends Service {
         allFiles[k] = '';
       }
     }
+    // The remaining (if any)
     for (let file of allFiles) {
       if (file) newFiles.push(file);
     }
+    this.numImages = newFiles.length.toString();
     this.allFiles = newFiles;
 
-    this.cleanMiniImgs(); // remove any old thumbnails
+    this.clearMiniImgs(); // remove any old thumbnails
     // Hide the subalbums etc.
     document.querySelector('#upperButtons').style.display = 'none';
     document.querySelector('.albumsHdr').style.display = 'none';
+
     // Populate the DOM with mini images
     // Use the hidden load button in component(s) ViewMain > AllImages
     // will "push the allFiles content" into the thumbnail template:
@@ -320,7 +327,7 @@ export default class CommonStorageService extends Service {
     console.log(this.userName + ': %c' + text, style);
   }
 
-  cleanMiniImgs = () => { // Clean any displayed
+  clearMiniImgs = () => { // Remove any displayed
     for (let pic of document.querySelectorAll('div.img_mini')) pic.remove();
   }
 
@@ -430,10 +437,20 @@ export default class CommonStorageService extends Service {
     if (ix > -1) {
       var p01 = order[ix].slice(namepic.length + 1); // like 0,0
       if (p01.startsWith('1')) {
-        pic.style.background = '#003264';
+        pic.style.background = this.PAINT_HIDE;
       }
     } else {
       this.alertMess('In ’hideFlag’:<br>This cannot happen!');
+    }
+  }
+
+  paintHideFlags = () => {
+    let order = this.updateOrder(true); // array if true, else text
+    for (let p of order) {
+      let i = p.indexOf(',');
+      if (p[i + 1] === '1') {
+        document.getElementById('i' + p.slice(0, i)).style.background = this.PAINT_HIDE;
+      }
     }
   }
 
@@ -478,6 +495,7 @@ export default class CommonStorageService extends Service {
       // Show the right side buttons
       document.querySelector('.nav_links').style.display = '';
       // Hide the subalbums etc.
+      document.querySelector('#smallButtons').style.display = 'none';
       document.querySelector('#upperButtons').style.display = 'none';
       document.querySelector('.albumsHdr').style.display = 'none';
       window.scrollTo(0,0);
@@ -491,6 +509,7 @@ export default class CommonStorageService extends Service {
       // Open the thumbnail view
       document.querySelector('.miniImgs.imgs').style.display = 'flex';
       // Show the subalbums etc.
+      document.querySelector('#smallButtons').style.display = '';
       document.querySelector('#upperButtons').style.display = '';
       document.querySelector('.albumsHdr').style.display = '';
       // Outline the closed image

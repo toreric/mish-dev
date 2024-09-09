@@ -63,7 +63,7 @@ class SubAlbums extends Component {
       // Check if there are more subalbums than the primary subalbums
       let more = Number(coco.replace(re, '').replace(/\ *[(0-9+)]+\ +([0-9]+)$/, '$1')) - this.z.subaIndex.length;
 
-      if (more > 0) plus =' (' + this.intl.t('plus') + ' ' + more + ')';
+      if (more > 0) plus =' (+' + more + ')';
     }
     return plus;
   }
@@ -89,7 +89,15 @@ class SubAlbums extends Component {
           <span title-2="{{this.z.imdbRoot}}{{this.z.imdbDir}}">
             <b>”{{{this.z.handsomize this.z.imdbDirName}}}”</b>
             {{t 'has'}} {{this.nsub}} {{this.sual}}
-            <span title-2={{t 'plusExplain'}}>{{this.nadd}}</span>
+          </span>
+          <span title-2={{t 'plusExplain'}}>
+            {{this.nadd}}
+          </span><span>{{#if this.z.numImages}},
+              {{this.z.numOrigin}} {{t 'images'}}
+            {{/if}}
+            {{#if this.z.numLinked}}
+              ({{t 'own'}}) + {{this.z.numLinked}} {{t 'linked'}}
+            {{/if}}
           </span>
           <br>
           {{#each this.z.subaIndex as |i|}}
@@ -175,16 +183,23 @@ class AllImages extends Component {
   // }
 
   // Copies 'allFiles' to 'items' by real-value duplication
-  allFiles = () => {
+  allFiles = async () => {
     // this.lastDragged = '';
     this.items = [];
-    let m = this.z.allFiles.length;
-    for (let i=0;i<m;i++) {
-      this.items.push(this.z.allFiles[i]);
+    // let m = this.z.allFiles.length;
+    // for (let i=0;i<m;i++) {
+    //   this.items.push(this.z.allFiles[i]);
+    // }
+    for (let file of this.z.allFiles) {
+      this.items.push(file);
     }
+    await new Promise (z => setTimeout (z, 199)); // Wait for DOM to settle
+    this.z.paintHideFlags();
+    this.z.numLinked = document.querySelectorAll('.img_mini.symlink').length;
+    this.z.numOrigin = this.z.numImages - this.z.numLinked;
   }
 
-  // The image captions (from metadata)
+  // The image caption texts (from metadata)
   txt = (no, name) => {
     let i = this.items.findIndex(item => {return item.name === name;});
     let r = '';
@@ -211,7 +226,8 @@ class AllImages extends Component {
     let clicked = e.target.closest('div');
     let thisPic = e.target.closest('.img_mini');
 
-    this.z.hideFlag(thisPic.id.slice(1)); // EXPERIMENTAL
+    // this.z.hideFlag(thisPic.id.slice(1)); // EXPERIMENTAL
+    this.z.paintHideFlags(); // EXPERIMENTAL
 
     if (thisPic.classList.contains('selected')) {
       thisPic.classList.remove('selected');
@@ -291,7 +307,7 @@ class AllImages extends Component {
         {{!-- The thumnail images are displayed --}}
         {{#each this.items as |item|}}
           <div class="img_mini {{item.symlink}}" id="i{{item.name}}"
-            style="background:#3b3b3b"
+            style="background:{{this.z.PAINT_BACK}}"
             {{sortableItem data=item onDrop=this.move}}
             {{on 'mousedown' this.z.resetBorders}}
           >
@@ -375,7 +391,8 @@ class AllImages extends Component {
 
         {{!-- The slideshow image's name and texts --}}
         <div id="link_texts" draggable="false" style="display:table-caption;
-          caption-side:bottom;background:#3b3b3b;padding:0 0 0.4rem 0.3rem">
+          caption-side:bottom;min-height:1rem;background:{{this.z.PAINT_BACK}};
+          padding:0 0 0.4rem 0.3rem">
 
           {{!-- This is the image name, should be unique, hidden if 'displayNames'.. --}}
           <div class="img_name" style="display:{{this.z.displayNames}}" draggable="false" ondragstart="return false" title="" {{on 'click' this.editext}}>

@@ -48,7 +48,7 @@ export class DialogLogin extends Component {
         this.z.loli('logged in');
         document.getElementById('rootSel').selectedIndex = -1;
         document.querySelector('div.albumTree').style.display = 'none';
-        this.z.cleanMiniImgs(); // remove from display
+        this.z.clearMiniImgs(); // remove from display
         this.z.imdbCoco = '';
         this.z.imdbDir = '';
         this.z.imdbDirIndex = 0;
