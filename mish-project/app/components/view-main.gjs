@@ -193,6 +193,7 @@ class AllImages extends Component {
     }
     await new Promise (z => setTimeout (z, 199)); // Wait for DOM to settle
     this.z.paintHideFlags();
+    this.z.numHidden = document.querySelectorAll('.img_mini.hidden').length;
     this.z.numLinked = document.querySelectorAll('.img_mini.symlink').length;
     this.z.numOrigin = this.z.numImages - this.z.numLinked;
   }
@@ -223,10 +224,6 @@ class AllImages extends Component {
     e.stopPropagation();
     let clicked = e.target.closest('div');
     let thisPic = e.target.closest('.img_mini');
-
-    // this.z.hideFlag(thisPic.id.slice(1)); // EXPERIMENTAL
-    // this.z.paintHideFlags(); // EXPERIMENTAL
-
     if (thisPic.classList.contains('selected')) {
       thisPic.classList.remove('selected');
       clicked.className = 'markFalse';
@@ -235,6 +232,8 @@ class AllImages extends Component {
       clicked.className = 'markTrue';
     }
     this.z.numMarked = document.querySelectorAll('.img_mini.selected').length;
+    this.z.numHidden = document.querySelectorAll('.img_mini.hidden').length;
+    this.z.loli(this.z.numHidden, 'color:red');
   }
   toggleSelectedShow = (e) => {
     e.stopPropagation();
@@ -268,27 +267,21 @@ class AllImages extends Component {
   }
   //=================================================================================
 
-
   <template>
-
-    {{#if this.z.imdbRoot}}
-      <p style="text-align:center"><b>”{{{this.z.handsomize this.z.imdbDirName}}}”</b> ({{this.z.numMarked}} {{t 'marked'}})</p>
-    {{/if }}
 
     <div style="margin:0 2rem;width:auto;height:auto;text-align:center" {{on 'mousedown' this.z.resetBorders}} {{on 'keydown' this.detectEsc}}>
 
       {{#if this.z.imdbRoot}}
 
+        {{!-- Here is an invisible button for album images load, used
+        programmatically by z.openAlbum, display it for manual use! --}}
         <p class="tmpHeader" style="display:none">
-
-          {{!-- Here is an invisible button for album images load, used
-          programmatically by z.openAlbum, display it for manual use! --}}
-          <span style="display:none">
             Press to (re)load images for
             <button id="loadMiniImages" type="button" {{on 'click' this.allFiles}}>{{{this.z.imdbDirName}}}</button>
-          </span>
-          {{!-- Last dragged item: {{this.lastDragged.name}} --}}
         </p>
+
+        {{!-- This is the heading of the thumbnails' presentation --}}
+        <p style="text-align:center"><b>”{{{this.z.handsomize this.z.imdbDirName}}}”</b> ({{this.z.numMarked}} {{t 'marked'}})</p>
 
       {{else}}
 

@@ -76,10 +76,10 @@ export default class CommonStorageService extends Service {
   @tracked  allFiles = [];   // Image file information object, changes with imdbDir
   @tracked  displayNames = 'none'; // Image name display switch
   @tracked  edgeImage = '';  // Text indicating first/last image
-  // Recommended max. number of images in an album, set in Welcome (perhaps 100):
-  @tracked  maxWarning = 0;
+  // 'maxWarning' is set in Welcome (about 100?), more will trigger a warning:
+  @tracked  maxWarning = 0;  // Recommended max. number of images in an album
   // Dynamic album information:
-  @tracked  numHidden = ' 0';
+  @tracked  numHidden = ' 0'; // Number of images with hide flag in 'sortOrder'
   @tracked  numImages = '0';  // Total numder of images in the album
   @tracked  numLinked = '0';  // Numder of images linked into the album
   @tracked  numMarked = '0';  // Number of selection marked images
@@ -184,7 +184,7 @@ export default class CommonStorageService extends Service {
 
   // Disable browser back button, go instead to most recent visited album
   initBrowser = async () => {
-    // Refresh the setting, it may be lost!
+    // Refresh the setting, it may have been lost!
     while (this.bkgrColor) { // Intended eternal loop
       window.history.pushState (null, "");
       window.onpopstate = () => {
@@ -440,6 +440,10 @@ export default class CommonStorageService extends Service {
       var p01 = order[ix].slice(namepic.length + 1); // like 0,0
       if (p01.startsWith('1')) {
         pic.style.background = this.PAINT_HIDE;
+        pic.classList.add('hidden');
+      } else {
+        pic.style.background = this.PAINT_BACK;
+        pic.classList.remove('hidden');
       }
     } else {
       this.alertMess('In ’hideFlag’:<br>This cannot happen!');
@@ -451,6 +455,7 @@ export default class CommonStorageService extends Service {
     for (let p of order) {
       let i = p.indexOf(',');
       if (p[i + 1] === '1') {
+        document.getElementById('i' + p.slice(0, i)).classList.add('hidden');
         document.getElementById('i' + p.slice(0, i)).style.background = this.PAINT_HIDE;
       }
     }
@@ -508,8 +513,9 @@ export default class CommonStorageService extends Service {
       if (document.querySelector('.img_show').style.display === 'none') return;
       // Close the show image view
       document.querySelector('.img_show').style.display = 'none'; //was 'table'
-      // Open the thumbnail view
+      // Open the thumbnail view and update any selection mark changes
       document.querySelector('.miniImgs.imgs').style.display = 'flex';
+      this.numMarked = document.querySelectorAll('.img_mini.selected').length;
       // Show the subalbums etc.
       document.querySelector('#smallButtons').style.display = '';
       document.querySelector('#upperButtons').style.display = '';
