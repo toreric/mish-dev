@@ -45,6 +45,7 @@ for: for
 #      Else use instead the standard name guest!
 guest: guest
 has: has
+hidden: hidden
 home: to the beginning of
 images: images
 intlcode: en-us

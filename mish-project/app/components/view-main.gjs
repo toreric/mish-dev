@@ -153,7 +153,7 @@ class AllImages extends Component {
       this.z.openAlbum(i);
       let size = this.z.albumAllImg(i);
       // Allow for the rendering of mini images and preload of view images
-      await new Promise (z => setTimeout (z, size*60 + 100));
+      await new Promise (z => setTimeout (z, size*60 + 100)); // album load
       this.z.gotoMinipic(fileName);
     }
   }
@@ -281,7 +281,9 @@ class AllImages extends Component {
         </p>
 
         {{!-- This is the heading of the thumbnails' presentation --}}
-        <p style="text-align:center"><b>”{{{this.z.handsomize this.z.imdbDirName}}}”</b> ({{this.z.numMarked}} {{t 'marked'}})</p>
+        <p style="text-align:center"><b>”{{{this.z.handsomize this.z.imdbDirName}}}”</b>
+        {{this.z.numHidden}} {{t  'hidden'}}
+        ({{this.z.numMarked}} {{t 'marked'}})</p>
 
       {{else}}
 

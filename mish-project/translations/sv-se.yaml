@@ -45,6 +45,7 @@ for: för
 #      Else use instead the standard name guest!
 guest: gäst
 has: har
+hidden: gömda
 images: bilder
 home: till början av
 intlcode: sv-se

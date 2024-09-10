@@ -1267,6 +1267,7 @@ img[alt] {
 }
 /* ##### Image size is also controlled at Imagemagick resizing in routes.js */
 .img_mini {
+  background: #3b3b3b;
   display: inline-block;
   position: relative;
   text-align: left;
@@ -1279,6 +1280,12 @@ img[alt] {
 }
 .img_mini.symlink {
   border-bottom: 1.5px solid #0b0;
+}
+.img_mini.hidden {
+  background: #003264;
+}
+.img_mini.invisible {
+  display: none;
 }
 /* Image size-limits */
 .img_mini img {

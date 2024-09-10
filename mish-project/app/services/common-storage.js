@@ -85,10 +85,10 @@ export default class CommonStorageService extends Service {
   @tracked  numMarked = '0';  // Number of selection marked images
   @tracked  numOrigin = '0';  // Numder of own original images in the album
   @tracked  numShown = ' 0';
-        get PAINT_HIDE() {    // Background color for images marked hidden
-              return '#003264'; }
-        get PAINT_BACK() {    // Standard background color for images
-              return '#3b3b3b'; }
+        // get PAINT_HIDE() {    // Background color for images marked hidden
+        //       return '#003264'; }
+        // get PAINT_BACK() {    // Standard background color for images
+        //       return '#3b3b3b'; }
 
 
   //   #region Allowance
@@ -190,7 +190,7 @@ export default class CommonStorageService extends Service {
       window.onpopstate = () => {
         this.goBack();
       }
-      await new Promise (z => setTimeout (z, 10000)); // Wait some seconds
+      await new Promise (z => setTimeout (z, 10000)); // eternal loop pause
     }
   }
 
@@ -339,7 +339,7 @@ export default class CommonStorageService extends Service {
     this.openDialog('dialogAlert');
     // this.openModalDialog('dialogAlert');
     if (sec) { // means close after sec seconds
-      await new Promise (z => setTimeout (z, sec*1000));
+      await new Promise (z => setTimeout (z, sec*1000)); // alertMess
       this.closeDialog('dialogAlert');
     }
   }
@@ -421,10 +421,11 @@ export default class CommonStorageService extends Service {
     // if (y > b - hs) y = b - hs;
     scrollTo(null, y);
     this.resetBorders(); // Reset all borders
-    await new Promise (z => setTimeout (z, 99));
+    await new Promise (z => setTimeout (z, 99)); // Border reset
     this.markBorders(namepic); // Mark this one
   }
 
+  // This is not yet used
   hideFlag = (namepic) => {
     let order = this.updateOrder(true); // array if true, else text
     let ix = -1;
@@ -437,12 +438,9 @@ export default class CommonStorageService extends Service {
       }
     }
     if (ix > -1) {
-      var p01 = order[ix].slice(namepic.length + 1); // like 0,0
-      if (p01.startsWith('1')) {
-        pic.style.background = this.PAINT_HIDE;
+      if (order[ix][namepic.length + 1] === '1') {
         pic.classList.add('hidden');
       } else {
-        pic.style.background = this.PAINT_BACK;
         pic.classList.remove('hidden');
       }
     } else {
@@ -450,13 +448,16 @@ export default class CommonStorageService extends Service {
     }
   }
 
+  // Check all thumbnails' hide flag, then reset class
   paintHideFlags = () => {
     let order = this.updateOrder(true); // array if true, else text
     for (let p of order) {
       let i = p.indexOf(',');
+      let pic = document.getElementById('i' + p.slice(0, i));
       if (p[i + 1] === '1') {
-        document.getElementById('i' + p.slice(0, i)).classList.add('hidden');
-        document.getElementById('i' + p.slice(0, i)).style.background = this.PAINT_HIDE;
+        pic.classList.add('hidden');
+      } else {
+        pic.classList.remove('hidden');
       }
     }
   }
@@ -471,11 +472,6 @@ export default class CommonStorageService extends Service {
           // this.loli('show path: ' + path, 'color:red');
       // Set the actual picName, do not forget!
       this.picName = name;
-          // // Outline the soon invisible thumbnail
-          // this.resetBorders(); // Reset all borders
-          // await new Promise (z => setTimeout (z, 99));
-          // this.markBorders(name); // Mark this one
-      // Close the thumbnail view
       document.querySelector('.miniImgs.imgs').style.display = 'none'; //was 'flex'
       // Load the show image source path and set it's id="dname"
       let pic = document.querySelector('#link_show img');
@@ -555,7 +551,7 @@ export default class CommonStorageService extends Service {
       let path = '';
       if (i > -1) {
         this.picName = nextName;
-        await new Promise (z => setTimeout (z, 2));
+            // await new Promise (z => setTimeout (z, 2));
         path = allFiles[i].show;
         this.showImage(nextName, path);
       }

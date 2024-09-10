@@ -45,6 +45,7 @@ for: für
 #      Else use instead the standard name guest!
 guest: gast
 has: hat
+hidden: versteckte
 home: zum anfang von
 images: Bilder
 intlcode: de-de
