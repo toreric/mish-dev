@@ -20,10 +20,10 @@ export default class CommonStorageService extends Service {
   @tracked  credentials = '';       //user credentials: \n-string from db
         get defaultUserName() { return `${this.intl.t('guest')}`; }
   @tracked  freeUsers = 'guest...'; //user names without passwords (set by DialogLogin)
-  @tracked  imdbCoco = '';          //content counters etc. for imdbDirs, see (*) below
+  @tracked  imdbCoco = '';          //content counters etc. for 'imdbDirs', see (*) below
   @tracked  imdbDir = '';           //actual/current (sub)album directory (IMDB_DIR)
   @tracked  imdbDirIndex = 0;       //actual/current (sub)album directory index
-        get imdbDirName() {         //the last-in-path album name of imdbRoot+imdbDir
+        get imdbDirName() {         //the last-in-path album name of 'imdbRoot+imdbDir'
               if (this.imdbRoot) {
                 return (this.imdbRoot + this.imdbDir).replace(/^(.*\/)*([^/]+)$/, '$2');
               } else {
@@ -31,12 +31,12 @@ export default class CommonStorageService extends Service {
               }
             }
   @tracked  imdbDirs = [''];        //available album directories at imdbRoot
-  @tracked  imdbLabels = [''];      //thumbnail labels for imdbDirs (paths)
+  @tracked  imdbLabels = [''];      //thumbnail labels for 'imdbDirs' (paths)
   @tracked  imdbPath = this.userDir + this.imdbRoot; //userDir+imdbRoot = absolut path to album root
   @tracked  imdbRoot = '';          //chosen album root directory (collection)
         get imdbRootsPrep() { return `${this.intl.t('reloadApp')}`; } // advice!
   @tracked  imdbRoots = [this.imdbRootsPrep]; //available album root directories
-  @tracked  imdbTree = null;                  //will have the imdbDirs object tree
+  @tracked  imdbTree = null;                  //will have the 'imdbDirs' object tree
   @tracked  infoHeader = 'Header text';       //for the alert dialog DialogAlert
   @tracked  infoMessage = 'No information';   //for the alert dialog DialogAlert
         get intlCode() { return `${this.intl.t('intlcode')}`; }
@@ -45,7 +45,7 @@ export default class CommonStorageService extends Service {
   // The found pics temporary catalog name is amended with a random 4-code:
   @tracked  picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
   @tracked  picName = '';      //actual/current image name
-  @tracked  sortOrder = '';    //file order information table of imdbDir
+  @tracked  sortOrder = '';    //file order information table of 'imdbDir'
   @tracked  subColor = '#aef'; //subalbum legends color
         get subaIndex() {      //subalbum index array for imdbLabels
               let subindex = [];
@@ -73,18 +73,19 @@ export default class CommonStorageService extends Service {
   //== Miniature and show images etc. information
 
   @tracked  navKeys = false; // Protects from unintended use of L/R arrows
-  @tracked  allFiles = [];   // Image file information object, changes with imdbDir
+  @tracked  allFiles = [];   // Image file information object, changes with 'imdbDir'
   @tracked  displayNames = 'none'; // Image name display switch
   @tracked  edgeImage = '';  // Text indicating first/last image
   // 'maxWarning' is set in Welcome (about 100?), more will trigger a warning:
+  @tracked  hasImages = false; // true if 'imdbDir' has at least one image
   @tracked  maxWarning = 0;  // Recommended max. number of images in an album
   // Dynamic album information:
-  @tracked  numHidden = ' 0'; // Number of images with hide flag in 'sortOrder'
+  @tracked  numHidden = '0';  // Number of images with hide flag in 'sortOrder'
   @tracked  numImages = '0';  // Total numder of images in the album
-  @tracked  numLinked = '0';  // Numder of images linked into the album
+  @tracked  numLinked = 0;    // Number of images linked into the album
   @tracked  numMarked = '0';  // Number of selection marked images
   @tracked  numOrigin = '0';  // Numder of own original images in the album
-  @tracked  numShown = ' 0';
+  @tracked  numShown = '0';
         // get PAINT_HIDE() {    // Background color for images marked hidden
         //       return '#003264'; }
         // get PAINT_BACK() {    // Standard background color for images
@@ -270,6 +271,7 @@ export default class CommonStorageService extends Service {
     for (let file of allFiles) {
       if (file) newFiles.push(file);
     }
+    this.hasImages = newFiles.length > 0;
     this.numImages = newFiles.length.toString();
     this.allFiles = newFiles;
 
@@ -278,15 +280,18 @@ export default class CommonStorageService extends Service {
     document.querySelector('#upperButtons').style.display = 'none';
     document.querySelector('.albumsHdr').style.display = 'none';
 
-    // Populate the DOM with mini images
-    // Use the hidden load button in component(s) ViewMain > AllImages
-    // will "push the allFiles content" into the thumbnail template:
+    // Populate the DOM with mini images by using the hidden
+    // load button in component(s) 'ViewMain > AllImages' to
+    // "push the allFiles content" into the thumbnail template:
     document.getElementById('loadMiniImages').click();
+
     // Then hide the spinner
     document.querySelector('img.spinner').style.display = 'none';
+
     // Show the subalbums etc.
     document.querySelector('#upperButtons').style.display = '';
     document.querySelector('.albumsHdr').style.display = '';
+
     // Warn for too many images, if relevant
     if (this.allFiles.length > this.maxWarning && this.allow.imgUpload) {
       this.alertMess(this.intl.t('sizewarning') + ' ' + this.maxWarning + ' ' + this.intl.t('images') + '!', 6);
@@ -299,7 +304,9 @@ export default class CommonStorageService extends Service {
       img.src = 'rln' + file.show;
       preloadShowImg.push(img);
     }
-        // console.log(preloadShowImg);
+    // Reset the show/hide button since hidden images are not shown initially
+    this.hideHidden();
+
     // Prepare for an initial arrow key hit by setting
     // 'this.picName' to the last in album
     if (this.allFiles.length > 0) {
@@ -425,6 +432,19 @@ export default class CommonStorageService extends Service {
     this.markBorders(namepic); // Mark this one
   }
 
+  showHidden = () => {
+    document.getElementById('toggleHide').style.backgroundImage = 'url(/images/eyes-white.png)';
+    for (let pic of document.querySelectorAll('.img_mini.hidden')) {
+      pic.classList.remove('invisible');
+    }
+  }
+  hideHidden = () => {
+    document.getElementById('toggleHide').style.backgroundImage = 'url(/images/eyes-blue.png)';
+    for (let pic of document.querySelectorAll('.img_mini.hidden')) {
+      pic.classList.add('invisible');
+    }
+  }
+
   // This is not yet used
   hideFlag = (namepic) => {
     let order = this.updateOrder(true); // array if true, else text
@@ -439,25 +459,25 @@ export default class CommonStorageService extends Service {
     }
     if (ix > -1) {
       if (order[ix][namepic.length + 1] === '1') {
-        pic.classList.add('hidden');
+        pic.classList.add('hidden', 'invisible');
       } else {
-        pic.classList.remove('hidden');
+        pic.classList.remove('hidden', 'invisible');
       }
     } else {
       this.alertMess('In ’hideFlag’:<br>This cannot happen!');
     }
   }
 
-  // Check all thumbnails' hide flag, then reset class
+  // Check all thumbnails' hide flag, then reset classes
   paintHideFlags = () => {
     let order = this.updateOrder(true); // array if true, else text
     for (let p of order) {
       let i = p.indexOf(',');
       let pic = document.getElementById('i' + p.slice(0, i));
       if (p[i + 1] === '1') {
-        pic.classList.add('hidden');
+        pic.classList.add('hidden', 'invisible');
       } else {
-        pic.classList.remove('hidden');
+        pic.classList.remove('hidden', 'invisible');
       }
     }
   }
@@ -477,20 +497,15 @@ export default class CommonStorageService extends Service {
       let pic = document.querySelector('#link_show img');
       pic.src = 'rln' + path;
       // Copy the check mark class from the thumbnail
-      let minipic = document.querySelector('#i' + this.escapeDots(this.picName));
+      let minipic = document.getElementById('i' + this.picName);
       let miniclass = minipic.querySelector('div').className;
-      document.querySelector('#markShow').className = miniclass + 'Show';
-
-      // Copy background from thumbnail = hide status indicator
-      document.getElementById('link_texts').style.background = minipic.style.background;
-
-      // NEW checkmarking convention with class 'selected',testing
-      if (miniclass === 'markTrue') {
-        minipic.classList.add('selected');
-      } else {
-        minipic.classList.remove('selected');
-      }
-
+      document.getElementById('markShow').className = miniclass + 'Show';
+      // NOTE: This is possible, from the CSS style sheet!
+      // Copy background from thumbnail: the hidden status indicator
+      // Copy border-bottom (more complicated): the linked status indicator
+      let caption = document.getElementById('link_texts');
+      caption.style.background = window.getComputedStyle(minipic).background;
+      caption.style.borderBottom = window.getComputedStyle(minipic).getPropertyValue('border-bottom');
       // Open the show image view
       document.querySelector('.img_show').style.display = 'table';
       // Hide the navigation overlay information
@@ -615,9 +630,6 @@ export default class CommonStorageService extends Service {
       xhr.open ('GET', 'execute/', true, null, null);
       this.xhrSetRequestHeader(xhr);
       xhr.setRequestHeader('command', encodeURIComponent(command));
-      // xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
-      // xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
-      // xhr.setRequestHeader('picfound', this.picFound); // All 'widhtin 255' characters
       xhr.onload = function () {
         if (this.status >= 200 && this.status < 300) {
           var data = xhr.response.trim ();
@@ -680,10 +692,6 @@ export default class CommonStorageService extends Service {
       var xhr = new XMLHttpRequest ();
       xhr.open ('GET', 'rootdir/', true, null, null);
       this.xhrSetRequestHeader(xhr);
-      // xhr.setRequestHeader('username', encodeURIComponent(this.userName));
-      // xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
-      // xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
-      // xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
       xhr.onload = function () {
         if (this.status >= 200 && this.status < 300) {
           var dirList = xhr.response;
@@ -719,10 +727,6 @@ export default class CommonStorageService extends Service {
       var xhr = new XMLHttpRequest();
       xhr.open('GET', 'imdbdirs/', true, null, null);
       this.xhrSetRequestHeader(xhr);
-      // xhr.setRequestHeader('username', encodeURIComponent(this.userName));
-      // xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
-      // xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
-      // xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
       xhr.setRequestHeader('hidden', getHidden ? 'true' : 'false');
       xhr.onload = function() {
         let res = xhr.response;
@@ -754,10 +758,6 @@ export default class CommonStorageService extends Service {
       var xhr = new XMLHttpRequest();
       xhr.open('GET', 'imagelist/', true, null, null);
       this.xhrSetRequestHeader(xhr);
-      // xhr.setRequestHeader('username', encodeURIComponent(this.userName));
-      // xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
-      // xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
-      // xhr.setRequestHeader('picfound', this.picFound); // All 'widhtin 255' characters
       xhr.onload = function() {
         var allow = that.allow;
         var allfiles = [];
@@ -770,11 +770,11 @@ export default class CommonStorageService extends Service {
           if (n_files < 1) { // Covers all weird outcomes
             result = [];
             n_files = 0;
-            // document.querySelectorAll('.showCount .numShown').innerHTML(' 0');
-            // document.querySelectorAll('.showCount .numHidden').innerHTML(' 0');
+            // document.querySelectorAll('.showCount .numShown').innerHTML('0');
+            // document.querySelectorAll('.showCount .numHidden').innerHTML('0');
             // document.querySelectorAll('.showCount .numMarked').innerHTML('0');
-            that.numShown = ' 0';
-            that.numHidden = ' 0';
+            that.numShown = '0';
+            that.numHidden = '0';
             that.numMarked = '0';
             // ///document.querySelectorAll("span.ifZero").style.display = 'hide';
             // document.querySelectorAll('#navKeys').text ('false');
@@ -866,10 +866,6 @@ export default class CommonStorageService extends Service {
       var xhr = new XMLHttpRequest ();
       xhr.open ('GET', 'sortlist/', true, null, null);
       this.xhrSetRequestHeader(xhr);
-      // xhr.setRequestHeader('username', encodeURIComponent(this.userName));
-      // xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
-      // xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
-      // xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
       xhr.onload = async function () {
         if (this.status >= 200 && this.status < 300) {
           var data = xhr.response.trim ();

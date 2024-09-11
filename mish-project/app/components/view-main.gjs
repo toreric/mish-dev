@@ -68,6 +68,17 @@ class SubAlbums extends Component {
     return plus;
   }
 
+  hasImages = () => {
+    let txt = '';
+    if (this.z.hasImages) {
+      txt = ', ' + this.z.numOrigin + ' ' + this.intl.t('images');
+      if (this.z.numLinked) txt += ' (' + this.intl.t('own') + ') + ' + this.z.numLinked + ' ' + this.intl.t('linked');
+    } else {
+      txt = ', ' + this.intl.t('no') + ' ' + this.intl.t('images');
+    }
+    return txt;
+  }
+
   imdbDirs = (i) => {
     return this.z.imdbDirs[i];
   }
@@ -89,14 +100,15 @@ class SubAlbums extends Component {
           <span title-2="{{this.z.imdbRoot}}{{this.z.imdbDir}}">
             <b>”{{{this.z.handsomize this.z.imdbDirName}}}”</b>
             {{t 'has'}} {{this.nsub}} {{this.sual}}</span><span title-2={{t 'plusExplain'}}>
-            {{{this.nadd}}}
-          </span><span>{{#if this.z.numImages}},
+            {{{this.nadd}}}{{this.hasImages}}
+          </span>
+          {{!-- <span>{{#if this.z.hasImages}},
               {{this.z.numOrigin}} {{t 'images'}}
             {{/if}}
             {{#if this.z.numLinked}}
               ({{t 'own'}}) + {{this.z.numLinked}} {{t 'linked'}}
             {{/if}}
-          </span>
+          </span> --}}
           <br>
           {{#each this.z.subaIndex as |i|}}
             <div class="subAlbum" title="" {{on 'click' (fn this.z.openAlbum i)}}>
@@ -182,12 +194,7 @@ class AllImages extends Component {
 
   // Copies 'allFiles' to 'items' by real-value duplication
   allFiles = async () => {
-    // this.lastDragged = '';
     this.items = [];
-    // let m = this.z.allFiles.length;
-    // for (let i=0;i<m;i++) {
-    //   this.items.push(this.z.allFiles[i]);
-    // }
     for (let file of this.z.allFiles) {
       this.items.push(file);
     }
@@ -233,7 +240,6 @@ class AllImages extends Component {
     }
     this.z.numMarked = document.querySelectorAll('.img_mini.selected').length;
     this.z.numHidden = document.querySelectorAll('.img_mini.hidden').length;
-    this.z.loli(this.z.numHidden, 'color:red');
   }
   toggleSelectedShow = (e) => {
     e.stopPropagation();
@@ -248,6 +254,13 @@ class AllImages extends Component {
       thisPic.querySelector('div').className = 'markTrue';
       clicked.className = 'markTrueShow';
     }
+  }
+
+  numShown = () => {
+    return document.querySelectorAll('.img_mini').length - document.querySelectorAll('.img_mini.invisible').length;
+  }
+  numInvisible = () => {
+    return document.querySelectorAll('.img_mini.invisible').length;
   }
 
   // itemVisualClass = 'sortable-item--active';
@@ -280,11 +293,6 @@ class AllImages extends Component {
             <button id="loadMiniImages" type="button" {{on 'click' this.allFiles}}>{{{this.z.imdbDirName}}}</button>
         </p>
 
-        {{!-- This is the heading of the thumbnails' presentation --}}
-        <p style="text-align:center"><b>”{{{this.z.handsomize this.z.imdbDirName}}}”</b>
-        {{this.z.numHidden}} {{t  'hidden'}}
-        ({{this.z.numMarked}} {{t 'marked'}})</p>
-
       {{else}}
 
         {{!-- Remind of choosing a root collection/album --}}
@@ -292,18 +300,30 @@ class AllImages extends Component {
             &nbsp;{{t 'albumcollselect'}}&nbsp;
         </span>
 
-      {{/if }}
+      {{/if}}
 
-      {{!-- =================================================================== --}}
       {{!-- The album's div with thumnail images --}}
-      <div class="miniImgs imgs" style="width:;display:flex;
-        flex-wrap:wrap;padding:0;align-items:baseline;
+      {{!-- =================================================================== --}}
+      <div class="miniImgs imgs" style="display:flex;flex-wrap:wrap">
+
+      {{!-- The heading of the thumbnails' presentation --}}
+      {{#if this.z.hasImages}}
+        <div style="width:100%">
+          <p><b>”{{{this.z.handsomize this.z.imdbDirName}}}”</b>
+          — {{this.numShown}} {{t 'shown'}},
+          {{this.numInvisible}} {{t  'hidden'}}
+          ({{this.z.numMarked}} {{t 'marked'}})</p>
+        </div>
+      {{/if}}
+
+      {{!-- The div of the thumnail images --}}
+      <div style="display:flex;flex-wrap:wrap;
+        margin:auto;padding:0;align-items:baseline;
         justify-content:center;position:relative"
       >
         {{!-- The thumnail images are displayed --}}
         {{#each this.items as |item|}}
           <div class="img_mini {{item.symlink}}" id="i{{item.name}}"
-            style="background:{{this.z.PAINT_BACK}}"
             {{sortableItem data=item onDrop=this.move}}
             {{on 'mousedown' this.z.resetBorders}}
           >
@@ -339,6 +359,7 @@ class AllImages extends Component {
 
           </div>
         {{/each}}
+      </div>
       </div>
 
     </div>
@@ -387,7 +408,7 @@ class AllImages extends Component {
 
         {{!-- The slideshow image's name and texts --}}
         <div id="link_texts" draggable="false" style="display:table-caption;
-          caption-side:bottom;min-height:1rem;background:{{this.z.PAINT_BACK}};
+          caption-side:bottom;min-height:1rem;
           padding:0 0 0.4rem 0.3rem">
 
           {{!-- This is the image name, should be unique, hidden if 'displayNames'.. --}}

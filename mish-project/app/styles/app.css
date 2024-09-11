@@ -958,12 +958,12 @@ a#do_mail,
   background-repeat: no-repeat !important;
   background-position: center !important;
 }
-a#goTop:hover,
-a#toggleHide:hover,
+#goTop:hover,
+#toggleHide:hover,
 #reLd:hover {
   background-color: #555;
 }
-a#toggleHide,
+#toggleHide,
 #toggleHide0 {
   background-color: #444;
   background-image: url(/images/eyes-blue.png);
@@ -971,7 +971,7 @@ a#toggleHide,
   background-repeat: no-repeat !important;
   background-position: center !important;
 }
-a#menuButton {
+#menuButton {
   background-color: #0085ff;
 }
 #menuButton span.menu {
