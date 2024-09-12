@@ -99,16 +99,8 @@ class SubAlbums extends Component {
         {{#if this.z.imdbRoot}}
           <span title-2="{{this.z.imdbRoot}}{{this.z.imdbDir}}">
             <b>”{{{this.z.handsomize this.z.imdbDirName}}}”</b>
-            {{t 'has'}} {{this.nsub}} {{this.sual}}</span><span title-2={{t 'plusExplain'}}>
-            {{{this.nadd}}}{{this.hasImages}}
+            {{t 'has'}} {{this.nsub}} {{this.sual}}</span><span title-2={{t 'plusExplain'}}>{{{this.nadd}}}</span><span>{{this.hasImages}}
           </span>
-          {{!-- <span>{{#if this.z.hasImages}},
-              {{this.z.numOrigin}} {{t 'images'}}
-            {{/if}}
-            {{#if this.z.numLinked}}
-              ({{t 'own'}}) + {{this.z.numLinked}} {{t 'linked'}}
-            {{/if}}
-          </span> --}}
           <br>
           {{#each this.z.subaIndex as |i|}}
             <div class="subAlbum" title="" {{on 'click' (fn this.z.openAlbum i)}}>
@@ -163,9 +155,9 @@ class AllImages extends Component {
       }
     } else {
       this.z.openAlbum(i);
-      let size = this.z.albumAllImg(i);
-      // Allow for the rendering of mini images and preload of view images
-      await new Promise (z => setTimeout (z, size*60 + 100)); // album load
+          // let size = this.z.albumAllImg(i);
+          // // Allow for the rendering of mini images and preload of view images
+          // await new Promise (z => setTimeout (z, size*60 + 100)); // album load
       this.z.gotoMinipic(fileName);
     }
   }
@@ -198,11 +190,6 @@ class AllImages extends Component {
     for (let file of this.z.allFiles) {
       this.items.push(file);
     }
-    await new Promise (z => setTimeout (z, 199)); // Wait for DOM to settle
-    this.z.paintHideFlags();
-    this.z.numHidden = document.querySelectorAll('.img_mini.hidden').length;
-    this.z.numLinked = document.querySelectorAll('.img_mini.symlink').length;
-    this.z.numOrigin = this.z.numImages - this.z.numLinked;
   }
 
   // The image caption texts (from metadata)
@@ -256,13 +243,6 @@ class AllImages extends Component {
     }
   }
 
-  numShown = () => {
-    return document.querySelectorAll('.img_mini').length - document.querySelectorAll('.img_mini.invisible').length;
-  }
-  numInvisible = () => {
-    return document.querySelectorAll('.img_mini.invisible').length;
-  }
-
   // itemVisualClass = 'sortable-item--active';
 
 
@@ -310,8 +290,8 @@ class AllImages extends Component {
       {{#if this.z.hasImages}}
         <div style="width:100%">
           <p><b>”{{{this.z.handsomize this.z.imdbDirName}}}”</b>
-          — {{this.numShown}} {{t 'shown'}},
-          {{this.numInvisible}} {{t  'hidden'}}
+          — {{this.z.numShown}} {{t 'shown'}},
+          {{this.z.numInvisible}} {{t  'hidden'}}
           ({{this.z.numMarked}} {{t 'marked'}})</p>
         </div>
       {{/if}}

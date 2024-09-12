@@ -80,12 +80,13 @@ export default class CommonStorageService extends Service {
   @tracked  hasImages = false; // true if 'imdbDir' has at least one image
   @tracked  maxWarning = 0;  // Recommended max. number of images in an album
   // Dynamic album information:
-  @tracked  numHidden = '0';  // Number of images with hide flag in 'sortOrder'
-  @tracked  numImages = '0';  // Total numder of images in the album
+  @tracked  numHidden = 0;  // Number of images with hide flag in 'sortOrder'
+  @tracked  numImages = 0;  // Total numder of images in the album
+  @tracked  numInvisible = 0; // Number of invisible images
   @tracked  numLinked = 0;    // Number of images linked into the album
-  @tracked  numMarked = '0';  // Number of selection marked images
-  @tracked  numOrigin = '0';  // Numder of own original images in the album
-  @tracked  numShown = '0';
+  @tracked  numMarked = 0;  // Number of selection marked images
+  @tracked  numOrigin = 0;  // Numder of own original images in the album
+  @tracked  numShown = 0;
         // get PAINT_HIDE() {    // Background color for images marked hidden
         //       return '#003264'; }
         // get PAINT_BACK() {    // Standard background color for images
@@ -272,7 +273,7 @@ export default class CommonStorageService extends Service {
       if (file) newFiles.push(file);
     }
     this.hasImages = newFiles.length > 0;
-    this.numImages = newFiles.length.toString();
+    this.numImages = newFiles.length;
     this.allFiles = newFiles;
 
     this.clearMiniImgs(); // remove any old thumbnails
@@ -304,6 +305,7 @@ export default class CommonStorageService extends Service {
       img.src = 'rln' + file.show;
       preloadShowImg.push(img);
     }
+
     // Reset the show/hide button since hidden images are not shown initially
     this.hideHidden();
 
@@ -312,6 +314,15 @@ export default class CommonStorageService extends Service {
     if (this.allFiles.length > 0) {
       this.picName = this.allFiles[this.allFiles.length - 1].name;
     } else this.picName = '';
+
+    // Allow for the rendering of mini images and preload of view images
+    let size = this.albumAllImg(i);
+    await new Promise (z => setTimeout (z, size*2)); // album load
+
+    // Set classes and different background on hidden images
+    this.paintHideFlags();
+    // Counting shown and invisible images
+    this.countNumbers();
   }
 
   toggleBackg = () => {
@@ -334,6 +345,34 @@ export default class CommonStorageService extends Service {
 
   loli = (text, style) => { // loli = log list with user name
     console.log(this.userName + ': %c' + text, style);
+  }
+
+  // Check all thumbnails' hide flag, then reset classes
+  paintHideFlags = async () => {
+    // await new Promise (z => setTimeout (z, 666));
+    let order = this.updateOrder(true); // array if true, else text
+    for (let p of order) {
+      let i = p.indexOf(',');
+      let pic = document.getElementById('i' + p.slice(0, i));
+      if (p[i + 1] === '1') {
+        pic.classList.add('hidden', 'invisible');
+      } else {
+        pic.classList.remove('hidden', 'invisible');
+      }
+    }
+  }
+
+  countNumbers = async () => {
+    // await new Promise (z => setTimeout (z, 666));
+    this.numHidden = document.querySelectorAll('.img_mini.hidden').length;
+    this.numInvisible = document.querySelectorAll('.img_mini.invisible').length;
+    this.numLinked = document.querySelectorAll('.img_mini.symlink').length;
+    this.numOrigin = this.numImages - this.numLinked;
+    this.numShown = document.querySelectorAll('.img_mini').length - this.numInvisible;
+    if (this.numImages !== this.numShown + this.numInvisible) {
+      this.alertMess(this.intl.t('numbererror'));
+      this.loli('shown:' + this.numShown + ' + invisible:' + this.numInvisible + ' != sum:' + this.numImages, 'color:red');
+    }
   }
 
   clearMiniImgs = () => { // Remove any displayed
@@ -365,7 +404,7 @@ export default class CommonStorageService extends Service {
     for (let i=0;i<c.length;i++) {
       n += Number(c[i].replace(/^[^(]*\(([0-9]+).*$/, '$1'));
     }
-    return n.toString();
+    return n;
   }
 
   removeUnderscore = (textString, noHTML) => {
@@ -437,12 +476,18 @@ export default class CommonStorageService extends Service {
     for (let pic of document.querySelectorAll('.img_mini.hidden')) {
       pic.classList.remove('invisible');
     }
+    this.numInvisible = 0;
+    this.numShown = this.numImages;
   }
   hideHidden = () => {
     document.getElementById('toggleHide').style.backgroundImage = 'url(/images/eyes-blue.png)';
+    let n = 0;
     for (let pic of document.querySelectorAll('.img_mini.hidden')) {
       pic.classList.add('invisible');
+      n++;
     }
+    this.numInvisible = n;
+    this.numShown = this.numImages - this.numInvisible;
   }
 
   // This is not yet used
@@ -465,20 +510,6 @@ export default class CommonStorageService extends Service {
       }
     } else {
       this.alertMess('In ’hideFlag’:<br>This cannot happen!');
-    }
-  }
-
-  // Check all thumbnails' hide flag, then reset classes
-  paintHideFlags = () => {
-    let order = this.updateOrder(true); // array if true, else text
-    for (let p of order) {
-      let i = p.indexOf(',');
-      let pic = document.getElementById('i' + p.slice(0, i));
-      if (p[i + 1] === '1') {
-        pic.classList.add('hidden', 'invisible');
-      } else {
-        pic.classList.remove('hidden', 'invisible');
-      }
     }
   }
 
@@ -566,7 +597,6 @@ export default class CommonStorageService extends Service {
       let path = '';
       if (i > -1) {
         this.picName = nextName;
-            // await new Promise (z => setTimeout (z, 2));
         path = allFiles[i].show;
         this.showImage(nextName, path);
       }
@@ -770,12 +800,10 @@ export default class CommonStorageService extends Service {
           if (n_files < 1) { // Covers all weird outcomes
             result = [];
             n_files = 0;
-            // document.querySelectorAll('.showCount .numShown').innerHTML('0');
-            // document.querySelectorAll('.showCount .numHidden').innerHTML('0');
-            // document.querySelectorAll('.showCount .numMarked').innerHTML('0');
-            that.numShown = '0';
-            that.numHidden = '0';
-            that.numMarked = '0';
+            that.numHidden = 0;
+            that.numInvisible = 0;
+            that.numMarked = 0;
+            that.numShown = 0;
             // ///document.querySelectorAll("span.ifZero").style.display = 'hide';
             // document.querySelectorAll('#navKeys').text ('false');
             that.navKeys = false; // Protects from unintended use of L/R arrows

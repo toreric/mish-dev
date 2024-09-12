@@ -45,6 +45,10 @@ export class DialogXper extends Component {
     }
   }
 
+  menuImg = () => {
+    this.z.loli('menuImg', 'color:red');
+  }
+
   <template>
     <dialog id="dialogXper" {{on 'keydown' this.detectEscClose}}>
       <header data-dialog-draggable>
@@ -57,6 +61,12 @@ export class DialogXper extends Component {
       </header>
       <main style="text-align:center" style="text-align:center;min-height:10rem;
       background-image:url(rln/home/tore/Album-1/_show_2007-05-26_004_bron_savar.png)">
+
+      <div>
+        <button class='menu_img' type="button"
+        style="position:absolute;top:2.5rem;left:0;background:transparent;
+        color:#87cefa;margin:0;padding:0;border:none;border-radius:0"
+        {{on 'click' this.menuImg}}>𝌆</button>
 
         <br>
         <br>
@@ -80,6 +90,7 @@ export class DialogXper extends Component {
         <br>
         <br>
         <br>
+      </div>
 
       </main>
       <footer data-dialog-draggable>

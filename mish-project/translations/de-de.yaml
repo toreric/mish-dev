@@ -45,8 +45,8 @@ for: für
 #      Else use instead the standard name guest!
 guest: gast
 has: hat
-hidden: versteckte
-home: zum anfang von
+hidden: verbergte
+home: zum Anfang von
 images: Bilder
 intlcode: de-de
 light: licht
@@ -56,6 +56,7 @@ marked: markierte
 missing: (fehlt)
 next: nächstes
 no: keine
+numbererror: W A R N U N G<br><br>Nicht übereinstimmende Bildanzahl!
 own: eigene
 plus: plus
 previous: vorheriges

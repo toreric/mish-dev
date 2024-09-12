@@ -212,7 +212,7 @@ export class MenuMain extends Component {
   // Count the number of images in this album
   totalImgNumber = () => {
     let a = this.z.totalOrigImg();
-    return a;
+    return a.toString();
   }
 
   <template>
