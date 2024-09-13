@@ -12,6 +12,7 @@ import { htmlSafe } from '@ember/template';
 import he from 'he';
 // USE: <div title={{he.decode 'text'}}></div> he = HTML entities
 // or  txt = he.decode('text')  or  txt = he.encode('text')
+import { MenuImage } from './menu-image'; // Needs parameter = image name!
 
 import sortableItem from 'ember-draggable-modifiers/modifiers/sortable-item';
 import { insertBefore, insertAfter, removeItem } from 'ember-draggable-modifiers/utils/array';
@@ -260,10 +261,6 @@ class AllImages extends Component {
   }
   //=================================================================================
 
-  menuImg = () => {
-    this.z.loli('menuImg', 'color:red');
-  }
-
   <template>
 
     <div style="margin:0 2rem;width:auto;height:auto;text-align:center" {{on 'mousedown' this.z.resetBorders}} {{on 'keydown' this.detectEsc}}>
@@ -322,9 +319,8 @@ class AllImages extends Component {
               <button class="goAlbum" title-2="{{t 'gotext'}} ”{{item.albname}}”" {{on 'click' (fn this.homeAlbum item.orig item.name)}}> {{t 'goto'}} </button>
             {{/if}}
 
-            <button class='menu_img' type="button"
-            {{!-- {{on 'click' this.menuImg}}>𝌆</button> --}}
-            {{on 'click' this.menuImg}}>⡇</button>
+            {{!-- The thumbnail menu --}}
+            <MenuImage />
 
             {{!-- The check mark in the thumnail's upper right corner --}}
             <div class="markFalse" alt="MARKER" draggable="false" ondragstart="return false" {{on 'click' this.toggleSelected}}>

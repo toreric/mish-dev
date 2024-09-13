@@ -300,7 +300,7 @@ class Tree extends Component {
 
   clickButton = (event) => {
     let tgt = event.target;
-    if (tgt.tagName === 'IMG') { // if A IMG and not A is clicked
+    if (tgt.tagName === 'IMG') { // if 'A IMG' is clicked, rather than 'A'
       tgt = tgt.parentElement;
     }
     // This button is unvisible:

@@ -1273,14 +1273,14 @@ img[alt] {
   background: transparent;
   margin: 0;
   padding: 4px 0 8px 0;
-  border: none;
+  border: none!important;
   border-radius: 2px;
   font-size: 140%;
   font-weight: bold;
 }
 .menu_img:hover {
-  color: white!important;
-  background: #87cefa!important;
+  color: white;
+  background: #87cefa;
   opacity: 0.7;
 }
 /* ##### Image size is also controlled at Imagemagick resizing in routes.js */

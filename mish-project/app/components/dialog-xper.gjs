@@ -7,6 +7,7 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 import { htmlSafe } from '@ember/template';
+import { MenuImage } from './menu-image';
 
 // import sortableGroup from 'ember-sortable/modifiers/sortable-group';
 // import sortableItem from 'ember-sortable/modifiers/sortable-item';
@@ -45,10 +46,6 @@ export class DialogXper extends Component {
     }
   }
 
-  menuImg = () => {
-    this.z.loli('menuImg', 'color:red');
-  }
-
   <template>
     <dialog id="dialogXper" {{on 'keydown' this.detectEscClose}}>
       <header data-dialog-draggable>
@@ -62,11 +59,8 @@ export class DialogXper extends Component {
       <main style="text-align:center" style="text-align:center;min-height:10rem;
       background-image:url(rln/home/tore/Album-1/_show_2007-05-26_004_bron_savar.png)">
 
-      <div>
-        <button class='menu_img' type="button"
-        {{!-- {{on 'click' this.menuImg}}>𝌆</button> --}}
-        {{on 'click' this.menuImg}}>⡇</button>
-
+      <div id="_this_is_no_image" style="position:relative">
+        <MenuImage />
         <br>
         <br>
         <button type="button" {{on 'click' this.toggleTmpHeader}}>
