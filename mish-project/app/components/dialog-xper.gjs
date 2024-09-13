@@ -64,9 +64,8 @@ export class DialogXper extends Component {
 
       <div>
         <button class='menu_img' type="button"
-        style="position:absolute;top:2.5rem;left:0;background:transparent;
-        color:#87cefa;margin:0;padding:0;border:none;border-radius:0"
-        {{on 'click' this.menuImg}}>𝌆</button>
+        {{!-- {{on 'click' this.menuImg}}>𝌆</button> --}}
+        {{on 'click' this.menuImg}}>⡇</button>
 
         <br>
         <br>

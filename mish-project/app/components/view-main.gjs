@@ -260,6 +260,10 @@ class AllImages extends Component {
   }
   //=================================================================================
 
+  menuImg = () => {
+    this.z.loli('menuImg', 'color:red');
+  }
+
   <template>
 
     <div style="margin:0 2rem;width:auto;height:auto;text-align:center" {{on 'mousedown' this.z.resetBorders}} {{on 'keydown' this.detectEsc}}>
@@ -290,8 +294,14 @@ class AllImages extends Component {
       {{#if this.z.hasImages}}
         <div style="width:100%">
           <p><b>”{{{this.z.handsomize this.z.imdbDirName}}}”</b>
-          — {{this.z.numShown}} {{t 'shown'}},
-          {{this.z.numInvisible}} {{t  'hidden'}}
+
+          {{#if this.z.numHidden}}
+            — {{this.z.numShown}} {{t 'shown'}},
+            {{this.z.numInvisible}} {{t  'hidden'}}
+          {{else}}
+            — {{this.z.numShown}} {{t 'shown'}}
+          {{/if}}
+
           ({{this.z.numMarked}} {{t 'marked'}})</p>
         </div>
       {{/if}}
@@ -311,6 +321,10 @@ class AllImages extends Component {
             {{#if item.symlink}}
               <button class="goAlbum" title-2="{{t 'gotext'}} ”{{item.albname}}”" {{on 'click' (fn this.homeAlbum item.orig item.name)}}> {{t 'goto'}} </button>
             {{/if}}
+
+            <button class='menu_img' type="button"
+            {{!-- {{on 'click' this.menuImg}}>𝌆</button> --}}
+            {{on 'click' this.menuImg}}>⡇</button>
 
             {{!-- The check mark in the thumnail's upper right corner --}}
             <div class="markFalse" alt="MARKER" draggable="false" ondragstart="return false" {{on 'click' this.toggleSelected}}>
