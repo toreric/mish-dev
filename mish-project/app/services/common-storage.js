@@ -574,13 +574,29 @@ export default class CommonStorageService extends Service {
     var actual = document.querySelector('#i' + this.escapeDots(this.picName));
     var allFiles = this.allFiles;
     if (forward) {
+
+      // Ensure that invisibles are skipped over
+      while (actual.nextElementSibling && actual.nextElementSibling.classList.contains('invisible')) {
+        actual = actual.nextElementSibling;
+      }
       next = actual.nextElementSibling;
+
       if (next) {
         nextName = (next.getAttribute('id')).slice(1);
       } else {
         next = actual.parentElement.firstElementChild;
+
+        // Ensure that invisibles are skipped over
+        if (next && next.classList.contains('invisible')) {
+          actual = next;
+          while (actual.nextElementSibling && actual.nextElementSibling.classList.contains('invisible')) {
+            actual = actual.nextElementSibling;
+          }
+          next = actual.nextElementSibling;
+        }
         if (next) nextName = (next.getAttribute('id')).slice(1);
       }
+
     } else { // backward
       next = actual.previousElementSibling;
       if (next) {
