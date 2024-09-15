@@ -1269,19 +1269,33 @@ img[alt] {
   position:absolute;
   top: 0;
   left: -1.5px;
-  color: #aef;
+  color: #fff;
   background: transparent;
   margin: 0;
   padding: 4px 0 8px 0;
   border: none!important;
-  border-radius: 2px;
   font-size: 140%;
   font-weight: bold;
 }
 .menu_img:hover {
-  color: white;
-  background: #87cefa;
-  opacity: 0.7;
+  color: #aef;
+}
+.menu_img_list {
+  list-style-type: none;
+  position: absolute;
+  padding: 0 0.2rem 0.2rem 0.3rem;
+  margin: 0;
+  top: 2rem;
+  left: 3px;
+  border-radius: 2px;
+  background-color: #ccc;
+  z-index: 2;
+}
+.menu_img_list a {
+  color: #000;
+  font-size: 75%;
+  font-weight: bold;
+  white-space: nowrap;
 }
 /* ##### Image size is also controlled at Imagemagick resizing in routes.js */
 .img_mini {

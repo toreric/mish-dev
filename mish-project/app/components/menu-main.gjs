@@ -41,7 +41,7 @@ export class MenuMain extends Component {
     this.z.imdbRoot = event.target.value;
     this.z.imdbDir = this.z.imdbRoot; // The root is assumed initially selected
     this.z.loli('IMDB_ROOT (imdbRoot) set to ' + this.z.imdbRoot, 'color:orange');
-    const allow = this.z.allow; // PERMISSIONS
+    const allow = this.z.allow; // permissions
 
     // Retreive the albums list of this collection (root album).
     // If the argment is false, _imdb_ignore.txt in the chosen

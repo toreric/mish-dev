@@ -617,6 +617,7 @@ export default class CommonStorageService extends Service {
         this.showImage(nextName, path);
       }
       // allFiles doesn't reflect DOM content, it may be rearranged
+      // REVISE THIS AFTER BACKWARDS
       this.edgeImage = '';
       actual = document.querySelector('#i' + this.escapeDots(this.picName));
       if (!actual.nextElementSibling) this.edgeImage = this.intl.t('imageLast');
