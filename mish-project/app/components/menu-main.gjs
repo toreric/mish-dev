@@ -241,6 +241,8 @@ export class MenuMain extends Component {
         </a>
       </p><br>
 
+      {{#if this.z.imdbRoot}}
+
       <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title-2="{{t 'albumcareinfo'}} {{t 'for'}} {{this.z.imdbRoot}}{{this.z.imdbDir}}">
         <a {{on "click" (fn this.albumEdit)}}>{{t 'albumcare'}} <span title="">”{{{fn this.z.handsomize this.z.imdbDirName}}}”</span></a>
       </p><br>
@@ -249,6 +251,7 @@ export class MenuMain extends Component {
         <a {{on "click" (fn this.toggleAlbumTree)}}><pre style="margin:0">{{t 'albumcoll'}} ”{{this.z.imdbRoot}}”     ⌵  </pre></a>
       </p>
 
+      {{/if}}
 
       <div class="albumTree" style="display:none">
         <span style="display:flex;justify-content:space-between">
