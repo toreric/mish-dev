@@ -39,25 +39,35 @@ setSetting:   ändra inställningar
 textEdit:     redigera/spara bildtexter, se dolda album³
 
 all: Alla
+checkuncheck: Markera/avmarkera alla
 dark: Mörk
+download: Ladda ned...
+editext: Redigera text...
+editimage: Redigera bild...
 for: för
 #NOTE: Choose a 'guest: value' which exists in the _imdb_settings.sqlite 'user' table!
 #      Else use instead the standard name guest!
 guest: gäst
 has: har
 hidden: dolda
-images: bilder
+hideshow: Göm eller visa
 home: till början av
+images: bilder
+information: Information
 intlcode: sv-se
+invertsel: Invertera markeringar
 light: ljus
 linked: länkade
 Mark: Markera
 marked: markerade
+markhidden: Markera bara dolda
 missing: (saknas)
 next: nästa
 no: inga
 numbererror: V A R N I N G<br><br>Bildantalet stämmer inte!
 own: egna
+placefirst: Placera först
+placelast: Placera sist
 previous: föregående
 plus: plus
 return: utanför = återgå
@@ -181,6 +191,7 @@ hello:
   world:  Goddag hela världen!
 imageFirst: första bilden
 imageLast:  sista bilden
+imageMenu: "Bild-\nmeny"
 infoHeader: Information
 loggedIn: Inloggad
 noCollSelected: Ingen albumsamling har valts

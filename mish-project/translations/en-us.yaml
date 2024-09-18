@@ -39,25 +39,35 @@ setSetting:   change settings
 textEdit:     edit/save image texts/captions, access hidden albums³
 
 all: All
+checkuncheck: Check or uncheck all
 dark: Dark
+download: Download...
+editext: Edit text...
+editimage: Edit image...
 for: for
 #NOTE: Choose a 'guest: value' which exists in the _imdb_settings.sqlite 'user' table!
 #      Else use instead the standard name guest!
 guest: guest
 has: has
 hidden: hidden
+hideshow: Hide or show
 home: to the beginning of
 images: images
+information: Information
 intlcode: en-us
+invertsel: Invert selections
 light: light
 linked: linked
 Mark: Mark
 marked: marked
+markhidden: Check hidden only
 missing: (missing) NOTE never used
 next: next
 no: no
 numbererror: W A R N I N G<br><br>Image count mismatch!
 own: own
+placefirst: Place first
+placelast: Place last
 plus: plus
 previous: previous
 return: outside = return
@@ -183,6 +193,7 @@ hello:
   world:  Hello World!
 imageFirst: first image
 imageLast:  last image
+imageMenu: "Image\nmenu"
 infoHeader: Information
 loggedIn: Logged in
 noCollSelected: No album collection selected

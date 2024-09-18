@@ -141,27 +141,27 @@ class AllImages extends Component {
     return tmp.slice(0, 23) ? tmp.slice(0, 23) : '&nbsp;';
   }
 
-  homeAlbum = async (path, fileName) => { // was parAlb
-    // Convert the relative path of the linked-file target,
-    // to conform with z.imdbDirs server list, rooted at album root
-    let dir = path.replace(/^([.]*\/)*/, '/').replace(/\/[^/]+$/, '');
-    let name = path.replace(/^([^/]*\/)*([^/]+)\/[^/]+$/, "$2")
-    // dir is the home album (with index i) for path
-    let i = this.z.imdbDirs.indexOf(dir);
-    if (i < 0) {
-      if (document.getElementById(dialogAlertId).open) {
-        this.z.alertRemove();
-      } else {
-        this.z.alertMess(this.intl.t('albumMissing') + ':<br><br><p style="width:100%;text-align:center;margin:0">”' + this.z.removeUnderscore(name) + '”</p>');
-      }
-    } else {
-      this.z.openAlbum(i);
-          // let size = this.z.albumAllImg(i);
-          // // Allow for the rendering of mini images and preload of view images
-          // await new Promise (z => setTimeout (z, size*60 + 100)); // album load
-      this.z.gotoMinipic(fileName);
-    }
-  }
+  // homeAlbum = async (path, fileName) => { // was parAlb
+  //   // Convert the relative path of the linked-file target,
+  //   // to conform with z.imdbDirs server list, rooted at album root
+  //   let dir = path.replace(/^([.]*\/)*/, '/').replace(/\/[^/]+$/, '');
+  //   let name = path.replace(/^([^/]*\/)*([^/]+)\/[^/]+$/, "$2")
+  //   // dir is the home album (with index i) for path
+  //   let i = this.z.imdbDirs.indexOf(dir);
+  //   if (i < 0) {
+  //     if (document.getElementById(dialogAlertId).open) {
+  //       this.z.alertRemove();
+  //     } else {
+  //       this.z.alertMess(this.intl.t('albumMissing') + ':<br><br><p style="width:100%;text-align:center;margin:0">”' + this.z.removeUnderscore(name) + '”</p>');
+  //     }
+  //   } else {
+  //     this.z.openAlbum(i);
+  //     let size = this.z.albumAllImg(i);
+  //     // Allow for the rendering of mini images and preload of view images
+  //     await new Promise (z => setTimeout (z, size*60 + 100)); // album load
+  //     this.z.gotoMinipic(fileName);
+  //   }
+  // }
 
   // // For ember-sortable:
 
@@ -215,37 +215,39 @@ class AllImages extends Component {
 
   // The 'double classing', seemingly unnecessary and
   // irrational, comes from historic css reasons, sorry.
-  toggleSelected = (e) => {
+  toggleSelect = (flag, e) => {
     e.stopPropagation();
-    let clicked = e.target.closest('div');
-    let thisPic = e.target.closest('.img_mini');
-    if (thisPic.classList.contains('selected')) {
-      thisPic.classList.remove('selected');
-      clicked.className = 'markFalse';
-    } else {
-      thisPic.classList.add('selected');
-      clicked.className = 'markTrue';
-    }
-    this.z.numMarked = document.querySelectorAll('.img_mini.selected').length;
-    this.z.numHidden = document.querySelectorAll('.img_mini.hidden').length;
-  }
-  toggleSelectedShow = (e) => {
-    e.stopPropagation();
-    let clicked = document.querySelector('#markShow');
-    let thisPic = document.querySelector('#i' + this.z.escapeDots(this.z.picName));
-    if (thisPic.classList.contains('selected')) {
-      thisPic.classList.remove('selected');
-      thisPic.querySelector('div').className = 'markFalse';
-      clicked.className = 'markFalseShow';
-    } else {
-      thisPic.classList.add('selected');
-      thisPic.querySelector('div').className = 'markTrue';
-      clicked.className = 'markTrueShow';
+
+    if (flag === 0) { // 0 == thumbnail image
+      let clicked = e.target.closest('div');
+      let thisPic = e.target.closest('.img_mini');
+      if (thisPic.classList.contains('selected')) {
+        thisPic.classList.remove('selected');
+        clicked.className = 'markFalse';
+      } else {
+        thisPic.classList.add('selected');
+        clicked.className = 'markTrue';
+      }
+      this.z.numMarked = document.querySelectorAll('.img_mini.selected').length;
+      this.z.numHidden = document.querySelectorAll('.img_mini.hidden').length;
+      this.z.ifToggleHide();
+
+    } else { // 1 == slideshow image
+      let clicked = document.querySelector('#markShow');
+      let thisPic = document.querySelector('#i' + this.z.escapeDots(this.z.picName));
+      if (thisPic.classList.contains('selected')) {
+        thisPic.classList.remove('selected');
+        thisPic.querySelector('div').className = 'markFalse';
+        clicked.className = 'markFalseShow';
+      } else {
+        thisPic.classList.add('selected');
+        thisPic.querySelector('div').className = 'markTrue';
+        clicked.className = 'markTrueShow';
+      }
     }
   }
 
   // itemVisualClass = 'sortable-item--active';
-
 
   //============================================================
   // Requires: ember install ember-draggable-modifiers (before: ember-sortable)
@@ -314,16 +316,11 @@ class AllImages extends Component {
             {{sortableItem data=item onDrop=this.move}}
             {{on 'mousedown' this.z.resetBorders}}
           >
-            {{!-- Arrange the go-to-origin-button for linked images --}}
-            {{#if item.symlink}}
-              <button class="goAlbum" title-2="{{t 'gotext'}} ”{{item.albname}}”" {{on 'click' (fn this.homeAlbum item.orig item.name)}}> {{t 'goto'}} </button>
-            {{/if}}
-
             {{!-- The thumbnail menu --}}
             <MenuImage />
 
             {{!-- The check mark in the thumnail's upper right corner --}}
-            <div class="markFalse" alt="MARKER" draggable="false" ondragstart="return false" {{on 'click' this.toggleSelected}}>
+            <div class="markFalse" alt="MARKER" draggable="false" ondragstart="return false" {{on 'click' (fn this.toggleSelect 0)}}>
               <img src="/images/markericon.svg" draggable="false" ondragstart="return false" class="mark" title={{t 'Mark'}}>
             </div>
 
@@ -368,7 +365,7 @@ class AllImages extends Component {
           <img src="" draggable="false" ondragstart="return false">
 
           {{!-- The check mark in the slideshow image's upper right corner --}}
-          <div id="markShow" class="" alt="MARKSHOW" draggable="false" ondragstart="return false" {{on 'click' this.toggleSelectedShow}}>
+          <div id="markShow" class="" alt="MARKSHOW" draggable="false" ondragstart="return false" {{on 'click' (fn this.toggleSelect 1)}}>
             <img src="/images/markericon.svg" draggable="false" ondragstart="return false" class="mark" title={{t 'Mark'}}>
           </div>
 

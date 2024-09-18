@@ -59,7 +59,7 @@ export class ButtonsLeft extends Component {
 
       <a id="toggleName" class="smBu" title={{t 'buttons.left.name'}} draggable="false" ondragstart="return false" style="display:" {{on 'click' (fn this.toggleNameView)}}>N</a>
 
-      <a id="toggleHide" class="smBu" title={{t 'buttons.left.hide'}} draggable="false" ondragstart="return false" style="display:" {{on 'click' (fn this.toggleHideFlagged)}}></a>
+      <a id="toggleHide" class="smBu" title={{t 'buttons.left.hide'}} draggable="false" ondragstart="return false" style="display:none" {{on 'click' (fn this.toggleHideFlagged)}}></a>
 
       <a id="saveOrder" class="smBu" title={{t 'buttons.left.save'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.z.saveOrder)}}>S</a>
 

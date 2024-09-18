@@ -210,6 +210,14 @@ export default class CommonStorageService extends Service {
     this.openAlbum(index);
   }
 
+  ifToggleHide = () => {
+    if (this.numHidden) {
+      document.getElementById('toggleHide').style.display = '';
+    } else {
+      document.getElementById('toggleHide').style.display = 'none';
+    }
+  }
+
   openAlbum = async (i) => {
     this.alertRemove(); // remove possible alert dialog
     // Close the show image view
@@ -321,7 +329,7 @@ export default class CommonStorageService extends Service {
 
     // Set classes and different background on hidden images
     this.paintHideFlags();
-    // Counting shown and invisible images
+    // Count the number of shown, invisible, linked, unlinked, etc. images
     this.countNumbers();
   }
 
@@ -347,9 +355,8 @@ export default class CommonStorageService extends Service {
     console.log(this.userName + ': %c' + text, style);
   }
 
-  // Check all thumbnails' hide flag, then reset classes
-  paintHideFlags = async () => {
-    // await new Promise (z => setTimeout (z, 666));
+  // Check each thumbnails' hide flag and reset its class
+  paintHideFlags = () => {
     let order = this.updateOrder(true); // array if true, else text
     for (let p of order) {
       let i = p.indexOf(',');
@@ -362,9 +369,9 @@ export default class CommonStorageService extends Service {
     }
   }
 
-  countNumbers = async () => {
-    // await new Promise (z => setTimeout (z, 666));
+  countNumbers = () => {
     this.numHidden = document.querySelectorAll('.img_mini.hidden').length;
+    this.ifToggleHide();
     this.numInvisible = document.querySelectorAll('.img_mini.invisible').length;
     this.numLinked = document.querySelectorAll('.img_mini.symlink').length;
     this.numOrigin = this.numImages - this.numLinked;
@@ -437,16 +444,13 @@ export default class CommonStorageService extends Service {
     }
   }
   markBorders = async (namepic) => { // Mark a mini-image border
-    this.loli('markBorders here: ', 'color:red');
-    this.loli('namepic: ' + namepic, 'color:yellow');
     await new Promise (z => setTimeout (z, 255)); // Allow the dom to settle
     document.querySelector('#i' + this.escapeDots(namepic) + ' img.left-click').classList.add('dotted');
   }
 
   // Position to a minipic and highlight its border
   gotoMinipic = async (namepic) => {
-    await new Promise (z => setTimeout (z, 1999)); // Scroll
-    this.loli('namepic: ' + namepic, 'color:yellow');
+    // await new Promise (z => setTimeout (z, 1999)); // Scroll
     let hs = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
     // this.loli('hs=' + hs, 'color:red');
     let h2 = hs/2;
@@ -466,7 +470,6 @@ export default class CommonStorageService extends Service {
     if (y < t) y = t;
     // if (y > b - hs) y = b - hs;
     scrollTo(null, y);
-    this.loli('y: ' + y, 'color:pink');
     this.resetBorders(); // Reset all borders
     this.markBorders(namepic); // Mark this one
   }
@@ -941,7 +944,7 @@ export default class CommonStorageService extends Service {
   }
 
   //#region saveorder
-  //coincides with the saveOrder left button
+  //the name coincides with the saveOrder left button
   saveOrder = async () => {
     if (this.imdbDir === this.picFound || !this.allow.saveChanges) return;
     // assemble the new sortOrder list

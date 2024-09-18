@@ -39,25 +39,35 @@ setSetting:   Einstellungen ändern
 textEdit:     Untertiteln bearbeiten/speichern, ausgeblendete Alben anzeigen³
 
 all: Alle
+checkuncheck: Alle markieren/abmarkieren
 dark: Dunkel
+download: Herunterladen...
+editext: Text bearbeiten...
+editimage: Bild bearbeiten...
 for: für
 #NOTE: Choose a 'guest: value' which exists in the _imdb_settings.sqlite 'user' table!
 #      Else use instead the standard name guest!
 guest: gast
 has: hat
 hidden: verbergte
+hideshow: Verstecken oder anzeigen
 home: zum Anfang von
 images: Bilder
+information: Information
 intlcode: de-de
+invertsel: Auswahl umkehren
 light: licht
 linked: verlinkte
 Mark: Markieren
 marked: markierte
+markhidden: Nur versteckten markieren
 missing: (fehlt)
 next: nächstes
 no: keine
 numbererror: W A R N U N G<br><br>Nicht übereinstimmende Bildanzahl!
 own: eigene
+placefirst: Zuerst platzieren
+placelast: Letzt platzieren
 plus: plus
 previous: vorheriges
 return: außerhalb = zurück
@@ -181,6 +191,7 @@ hello:
   world:  Guten Tag, Welt!
 imageFirst: erstes bild
 imageLast:  letztes bild
+imageMenu: "Bild-\nmenü"
 infoHeader: Information
 loggedIn: Angemeldet
 noCollSelected: Keine Albumsammlung ausgewählt

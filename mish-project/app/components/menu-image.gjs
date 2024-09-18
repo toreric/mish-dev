@@ -38,26 +38,32 @@ export class MenuImage extends Component {
       }
     } else {
       this.z.openAlbum(i);
-          // let size = this.z.albumAllImg(i);
-          // // Allow for the rendering of mini images and preload of view images
-          // await new Promise (z => setTimeout (z, size*60 + 100)); // album load
+      // Allow for the rendering of mini images and preload of view images
+      let size = this.z.albumAllImg(i);
+      await new Promise (z => setTimeout (z, size*60 + 100)); // album load
       this.z.gotoMinipic(fileName);
     }
   }
 
   get albname() {
-    if (this.ixAllFiles < 0) return; //important
-    let a = this.z.allFiles[this.ixAllFiles].albname; //name of home album
+    let a = '';
+    if (this.ixAllFiles < 0) return a; //important
+    let b = this.z.allFiles[this.ixAllFiles];
+    if (b) a = b.albname; //name of home album
     return a;
   }
   get orig() {
-    if (this.ixAllFiles < 0) return; //important
-    let a = this.z.allFiles[this.ixAllFiles].orig; //path to home album
+    let a = '';
+    if (this.ixAllFiles < 0) return a; //important
+    let b = this.z.allFiles[this.ixAllFiles];
+    if (b) a = b.orig; //path to home album
     return a;
   }
   get symlink() {
-    if (this.ixAllFiles < 0) return; //important
-    let a = this.z.allFiles[this.ixAllFiles].symlink; //has a home album
+    let a = '';
+    if (this.ixAllFiles < 0) return a; //important
+    let b = this.z.allFiles[this.ixAllFiles];
+    if (b) a = b.symlink; //has a home album
     return a;
   }
 
@@ -95,9 +101,9 @@ export class MenuImage extends Component {
   }
 
   <template>
-    <button class='menu_img' type="button"
-    {{!-- {{on 'click' this.menuImg}}>𝌆</button> --}}
+    <button class='menu_img' type="button" title="{{t 'imageMenu'}}"
     {{on 'click' (fn this.toggleMenuImg 1)}}>⡇</button>
+
     <ul class="menu_img_list" style="display:none">
       <li><p style="text-align:right;color:deeppink;
         font-size:120%;line-height:80%;padding-bottom:0.125rem"
@@ -108,37 +114,37 @@ export class MenuImage extends Component {
       {{!-- Go-to-origin of linked image --}}
       {{#if this.symlink}}
         <li>
-          <p class="goAlbum" style="color:#0b0" title="{{t 'gotext'}} ”{{this.albname}}”"
+          <p class="goAlbum" style="color:#0b0;font-weight:bold;font-size:85%" title="{{t 'gotext'}} ”{{this.albname}}”"
           {{on 'click' (fn this.homeAlbum this.orig this.z.picName)}}> {{t 'goto'}} </p>
         </li>
       {{/if}}
 
       <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
-        Information</p></li>
+        {{t 'information'}}</p></li>
 
       {{#if this.z.allow.textEdit}}
         <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
-          Redigera text...</p></li>
+          {{t 'editext'}}</p></li>
       {{/if}}
 
       <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
-        Redigera bild...</p></li>
+        {{t 'editimage'}}</p></li>
       <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
-        ○ Göm eller visa</p></li>
+        ○ {{t 'hideshow'}}</p></li>
       <li><hr style="margin:0.25rem 0.5rem"></li>
 
       <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
-        ○ Markera/avmarkera alla</p></li>
+        ○ {{t 'checkuncheck'}}</p></li>
       <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
-        ○ Markera bara dolda</p></li>
+        ○ {{t 'markhidden'}}</p></li>
       <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
-        ○ Invertera markeringar</p></li>
+        ○ {{t 'invertsel'}}</p></li>
       <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
-        Placera först</p></li>
+        {{t 'placefirst'}}</p></li>
       <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
-        Placera sist</p></li>
+        {{t 'placelast'}}</p></li>
       <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
-        Ladda ned...</p></li>
+        {{t 'download'}}</p></li>
       <li><hr style="margin:0.25rem 0.5rem"></li>
 
       <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
