@@ -174,8 +174,8 @@ gonext: "Nächstes\n
         Bild [>]"
 goprev: "Vorheriges\n
         Bild [<]"
-gotext: Original in
-goto: Gehe zum
+gotext: im Album
+goto: Zum Originalbild gehen
 header: Mish Bildergalerie
 hello:
   world:  Guten Tag, Welt!

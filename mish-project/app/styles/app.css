@@ -1283,7 +1283,7 @@ img[alt] {
 .menu_img_list {
   list-style-type: none;
   position: absolute;
-  padding: 0 0 0.4rem 0;
+  padding: 0.2rem 0 0.4rem 0;
   margin: 0;
   top: 2rem;
   left: 0;
@@ -1300,6 +1300,7 @@ img[alt] {
   white-space: nowrap;
 }
 .menu_img_list p:hover {
+  cursor: pointer;
   color: #000;
   background-color: #ccc;
 }

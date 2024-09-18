@@ -92,8 +92,8 @@ document.addEventListener('mousedown', async (event) => {
       // console.log('event:', event);
       // console.log(event.target);
   var tgt = event.target;
-  let allist = document.querySelectorAll('.menu_img_list');
-  for (let list of allist) list.style.display = 'none';
+  // let allist = document.querySelectorAll('.menu_img_list');
+  // for (let list of allist) list.style.display = 'none';
   if (
     event.button !== 0 ||// 0=left, 1=wheel, 2=right
     // NOTE: 'closest' means (like) 'is-within'

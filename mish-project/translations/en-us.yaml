@@ -176,8 +176,8 @@ gonext: "Next\n
         image [>]"
 goprev: "Previous\n
         image [<]"
-gotext: the original in
-goto: 𝌆
+gotext: in the album
+goto: Go to the original image
 header: Mish image gallery
 hello:
   world:  Hello World!

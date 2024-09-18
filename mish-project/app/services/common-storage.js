@@ -72,12 +72,12 @@ export default class CommonStorageService extends Service {
   //   #region View vars.
   //== Miniature and show images etc. information
 
-  @tracked  navKeys = false; // Protects from unintended use of L/R arrows
+  @tracked  navKeys = false; // Protects from unintended use of L/R arrow keys
   @tracked  allFiles = [];   // Image file information object, changes with 'imdbDir'
   @tracked  displayNames = 'none'; // Image name display switch
   @tracked  edgeImage = '';  // Text indicating first/last image
-  // 'maxWarning' is set in Welcome (about 100?), more will trigger a warning:
   @tracked  hasImages = false; // true if 'imdbDir' has at least one image
+  // 'maxWarning' is set in Welcome (about 100?), more will trigger a warning:
   @tracked  maxWarning = 0;  // Recommended max. number of images in an album
   // Dynamic album information:
   @tracked  numHidden = 0;  // Number of images with hide flag in 'sortOrder'
@@ -437,16 +437,16 @@ export default class CommonStorageService extends Service {
     }
   }
   markBorders = async (namepic) => { // Mark a mini-image border
-    // this.loli('markBorders here: ', 'color:red');
-    // this.loli('namepic: ' + namepic, 'color:red');
+    this.loli('markBorders here: ', 'color:red');
+    this.loli('namepic: ' + namepic, 'color:yellow');
     await new Promise (z => setTimeout (z, 255)); // Allow the dom to settle
     document.querySelector('#i' + this.escapeDots(namepic) + ' img.left-click').classList.add('dotted');
   }
 
   // Position to a minipic and highlight its border
   gotoMinipic = async (namepic) => {
-    // this.loli('gotoMinipic here: ', 'color:yellow');
-    // this.loli('namepic: ' + namepic, 'color:yellow');
+    await new Promise (z => setTimeout (z, 1999)); // Scroll
+    this.loli('namepic: ' + namepic, 'color:yellow');
     let hs = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
     // this.loli('hs=' + hs, 'color:red');
     let h2 = hs/2;
@@ -466,8 +466,8 @@ export default class CommonStorageService extends Service {
     if (y < t) y = t;
     // if (y > b - hs) y = b - hs;
     scrollTo(null, y);
+    this.loli('y: ' + y, 'color:pink');
     this.resetBorders(); // Reset all borders
-    await new Promise (z => setTimeout (z, 99)); // Border reset
     this.markBorders(namepic); // Mark this one
   }
 

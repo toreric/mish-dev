@@ -146,7 +146,7 @@ class AllImages extends Component {
     // to conform with z.imdbDirs server list, rooted at album root
     let dir = path.replace(/^([.]*\/)*/, '/').replace(/\/[^/]+$/, '');
     let name = path.replace(/^([^/]*\/)*([^/]+)\/[^/]+$/, "$2")
-    // dir is the home album (w index i) for path
+    // dir is the home album (with index i) for path
     let i = this.z.imdbDirs.indexOf(dir);
     if (i < 0) {
       if (document.getElementById(dialogAlertId).open) {
@@ -247,9 +247,9 @@ class AllImages extends Component {
   // itemVisualClass = 'sortable-item--active';
 
 
-  //=================================================================================
+  //============================================================
   // Requires: ember install ember-draggable-modifiers (before: ember-sortable)
-  //=================================================================================
+  //============================================================
   move = ({ source: { data: draggedItem }, target: { data: dropTarget, edge } }) => {
     this.items = removeItem(this.items, draggedItem);
 
@@ -259,7 +259,7 @@ class AllImages extends Component {
       this.items = insertAfter(this.items, dropTarget, draggedItem);
     }
   }
-  //=================================================================================
+  //============================================================
 
   <template>
 
@@ -284,7 +284,7 @@ class AllImages extends Component {
       {{/if}}
 
       {{!-- The album's div with thumnail images --}}
-      {{!-- =================================================================== --}}
+      {{!-- ================================================ --}}
       <div class="miniImgs imgs" style="display:flex;flex-wrap:wrap">
 
       {{!-- The heading of the thumbnails' presentation --}}
@@ -354,7 +354,7 @@ class AllImages extends Component {
 
     </div>
 
-    {{!-- =================================================================== --}}
+    {{!-- ================================================ --}}
     {{!-- The album's div with the slideshow image --}}
     <div class="img_show" id="d{{this.z.picName}}" draggable="false" style="display:none;margin:2rem auto 0 auto" {{on 'click' (fn this.z.showImage '')}}>
 
