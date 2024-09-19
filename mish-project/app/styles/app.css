@@ -1269,13 +1269,14 @@ img[alt] {
   position:absolute;
   top: 0;
   left: -1.5px;
-  color: #fff;
+  color: #889;
   background: transparent;
   margin: 0;
   padding: 4px 0 8px 0;
   border: none!important;
   font-size: 140%;
   font-weight: bold;
+  z-index: 2;
 }
 .menu_img:hover {
   color: #aef;
@@ -1333,8 +1334,6 @@ img[alt] {
   border: 0.25px solid #888;
   max-width: 150px;
   max-height: 150px;
-  margin: auto;
-  margin-bottom: 0px;
 }
 .img_mini .img_txt1,
 .img_mini .img_txt2,
@@ -1430,7 +1429,7 @@ img[alt] {
   text-align: center;
   z-index: 0;
 }
-.img_show img:first-of-type {
+#link_show img:first-of-type {
   display: block;
   cursor: default;
   border: 1px solid #808080;
@@ -1453,7 +1452,7 @@ img.mark {
   width: 20px;
   height: 20px;
   border-radius: 10px;
-  border: 1px solid #888;
+  border: 1px dashed #000;
   top: 0px;
   right: 0px;
   background: transparent;
@@ -1480,6 +1479,7 @@ img.mark {
   width: 20px;
   height: 20px;
   border: 0;
+  border-radius: 10px;
   top: 0px;
   right: 0px;
   background: transparent;
@@ -1490,6 +1490,7 @@ img.mark {
   width: 20px;
   height: 20px;
   border: 0;
+  border-radius: 10px;
   top: -15px;
   right: -15px;
   background: transparent;
@@ -1514,28 +1515,6 @@ img.mark {
 }
 .markTrueShow img {
   margin-bottom: 3px;
-}
-button.goAlbum {
-  display: none;
-  position: absolute;
-  left: 0.55rem;
-  top: 0.55rem;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 80%;
-  padding: 0 0.25em 0.15em 0.25em;
-  text-align: left;
-  max-width: 11.65em;
-  color: #0b0;
-  border: 0;
-  background: transparent;
-  word-wrap: break-word;
-}
-div.img_mini.symlink button.goAlbum {
-  display: block;
-}
-button.goAlbum:hover {
-  color: #fff;
-  background: #090;
 }
 .search_link {
   position: fixed;

@@ -58,10 +58,12 @@ intlcode: sv-se
 invertsel: Invertera markeringar
 light: ljus
 linked: länkade
+linkto: Länka till...
 Mark: Markera
 marked: markerade
 markhidden: Markera bara dolda
 missing: (saknas)
+moveto: Flytta till...
 next: nästa
 no: inga
 numbererror: V A R N I N G<br><br>Bildantalet stämmer inte!
@@ -70,6 +72,7 @@ placefirst: Placera först
 placelast: Placera sist
 previous: föregående
 plus: plus
+remove: RADERA...
 return: utanför = återgå
 rights: rättigheter
 saved: S P A R A T

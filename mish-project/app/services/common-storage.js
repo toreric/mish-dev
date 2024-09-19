@@ -184,7 +184,7 @@ export default class CommonStorageService extends Service {
   //   #region Utilities
   //== Other service functions
 
-  // Disable browser back button, go instead to most recent visited album
+  // Disable browser back arrow, go instead to most recent visited album
   initBrowser = async () => {
     // Refresh the setting, it may have been lost!
     while (this.bkgrColor) { // Intended eternal loop
@@ -196,6 +196,7 @@ export default class CommonStorageService extends Service {
     }
   }
 
+  // Browswer back arrow
   goBack = () => {
     if (!this.imdbRoot) return;
     this.albumHistory.pop();
@@ -575,6 +576,7 @@ export default class CommonStorageService extends Service {
     if (e) e.stopPropagation();
     var next, nextName;
     var actual = document.querySelector('#i' + this.escapeDots(this.picName));
+    var actualParent = actual.parentElement;
     var allFiles = this.allFiles;
     if (forward) {
 
@@ -585,30 +587,45 @@ export default class CommonStorageService extends Service {
       next = actual.nextElementSibling;
 
       if (next) {
-        nextName = (next.getAttribute('id')).slice(1);
-      } else {
-        next = actual.parentElement.firstElementChild;
+        nextName = (next.id).slice(1);
+      } else { // Go to the beginning
+        next = actualParent.firstElementChild;
 
-        // Ensure that invisibles are skipped over
+        // Ensure once again that invisibles are skipped over
         if (next && next.classList.contains('invisible')) {
-          actual = next;
-          while (actual.nextElementSibling && actual.nextElementSibling.classList.contains('invisible')) {
-            actual = actual.nextElementSibling;
+          while (next.nextElementSibling && next.nextElementSibling.classList.contains('invisible')) {
+            next = next.nextElementSibling;
           }
-          next = actual.nextElementSibling;
+          next = next.nextElementSibling;
         }
-        if (next) nextName = (next.getAttribute('id')).slice(1);
+        if (next) nextName = (next.id).slice(1);
       }
 
     } else { // backward
-      next = actual.previousElementSibling;
-      if (next) {
-        nextName = (next.getAttribute('id')).slice(1);
-      } else {
-        next = actual.parentElement.lastElementChild;
-        if (next) nextName = (next.getAttribute('id')).slice(1);
+
+      // Ensure that invisibles are skipped over
+      while (actual.previousElementSibling && actual.previousElementSibling.classList.contains('invisible')) {
+        actual = actual.previousElementSibling;
       }
+      next = actual.previousElementSibling;
+
+      if (next) {
+        nextName = (next.id).slice(1);
+      } else { // Go to the beginning
+        next = actualParent.lastElementChild;
+
+        // Ensure once again that invisibles are skipped over
+        if (next && next.classList.contains('invisible')) {
+          while (next.previousElementSibling && next.previousElementSibling.classList.contains('invisible')) {
+            next = next.previousElementSibling;
+          }
+          next = next.previousElementSibling;
+        }
+        if (next) nextName = (next.id).slice(1);
+      }
+
     }
+
     if (nextName) {
       // console.log(allFiles);
       let i = allFiles.findIndex(all => {return all.name === nextName;});
@@ -619,7 +636,7 @@ export default class CommonStorageService extends Service {
         path = allFiles[i].show;
         this.showImage(nextName, path);
       }
-      // allFiles doesn't reflect DOM content, it may be rearranged
+      // 'allFiles' doesn't reflect DOM content, it may be rearranged
       // REVISE THIS AFTER BACKWARDS
       this.edgeImage = '';
       actual = document.querySelector('#i' + this.escapeDots(this.picName));

@@ -58,10 +58,12 @@ intlcode: en-us
 invertsel: Invert selections
 light: light
 linked: linked
+linkto: Link to...
 Mark: Mark
 marked: marked
 markhidden: Check hidden only
 missing: (missing) NOTE never used
+moveto: Move to...
 next: next
 no: no
 numbererror: W A R N I N G<br><br>Image count mismatch!
@@ -70,6 +72,7 @@ placefirst: Place first
 placelast: Place last
 plus: plus
 previous: previous
+remove: REMOVE...
 return: outside = return
 rights: rights
 saved: S A V E D

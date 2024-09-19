@@ -58,18 +58,21 @@ intlcode: de-de
 invertsel: Auswahl umkehren
 light: licht
 linked: verlinkte
+linkto: Verlinken zu...
 Mark: Markieren
 marked: markierte
 markhidden: Nur versteckten markieren
 missing: (fehlt)
+moveto: Umzug nach...
 next: nächstes
 no: keine
 numbererror: W A R N U N G<br><br>Nicht übereinstimmende Bildanzahl!
 own: eigene
-placefirst: Zuerst platzieren
-placelast: Letzt platzieren
+placefirst: Als erstes platzieren
+placelast: Als letztes platzieren
 plus: plus
 previous: vorheriges
+remove: LÖSCHEN...
 return: außerhalb = zurück
 rights: Rechte
 saved: GESPEICHERT

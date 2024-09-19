@@ -21,6 +21,15 @@ export class MenuImage extends Component {
 
   @tracked ixAllFiles = -1;
 
+  // Detect closing Esc key
+  detectEscClose = (e) => {
+    e.stopPropagation();
+    if (e.keyCode === 27) { // Esc key
+      // Close any open image menu
+      for (let list of document.querySelectorAll('.menu_img_list')) list.style.display = 'none';
+    }
+  }
+
   homeAlbum = async (path, fileName) => { // was parAlb
     this.z.loli('path:' + path + ':');
     this.z.loli('fileName:' + fileName + ':');
@@ -102,7 +111,8 @@ export class MenuImage extends Component {
 
   <template>
     <button class='menu_img' type="button" title="{{t 'imageMenu'}}"
-    {{on 'click' (fn this.toggleMenuImg 1)}}>⡇</button>
+    {{on 'click' (fn this.toggleMenuImg 1)}}
+    {{on 'keydown' this.detectEscClose}}>⡇</button>
 
     <ul class="menu_img_list" style="display:none">
       <li><p style="text-align:right;color:deeppink;
@@ -148,11 +158,11 @@ export class MenuImage extends Component {
       <li><hr style="margin:0.25rem 0.5rem"></li>
 
       <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
-        ○ Länka till...</p></li>
+        ○ {{t 'linkto'}}</p></li>
       <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
-        ○ Flytta till...</p></li>
+        ○ {{t 'moveto'}}</p></li>
       <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
-        ○ RADERA...</p></li>
+        ○ {{t 'remove'}}</p></li>
     </ul>
 
   </template>

@@ -49,11 +49,11 @@ export class Language extends Component {
       {{#each this.selections as |tongue|}}
         <span class="langflags {{if (this.isActive tongue) 'active'}}" ondragstart="return false" {{on "click" (fn this.changeLocale tongue)}} style="padding:0;margin:0"><img src="/images/{{tongue}}.svg" alt={{tongue}}></span>
       {{/each}}
-      <select id="selectLanguage" {{on 'change' this.changeLanguage}}>
+      {{!-- <select id="selectLanguage" {{on 'change' this.changeLanguage}}>
         {{#each this.selections as |tongue|}}
           <option {{on 'click' (fn this.changeLocale tongue)}} value={{tongue}} selected={{if (this.isActive tongue) true}}>{{(this.langText tongue)}}</option>
         {{/each}}
-      </select>
+      </select> --}}
     </div>
     </div>
   </template>

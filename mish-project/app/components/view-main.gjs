@@ -127,7 +127,9 @@ class AllImages extends Component {
 
   detectEsc = (event) => {
     event.stopPropagation();
-    if (event.keyCode === 27) this.z.resetBorders(); // Esc
+    if (event.keyCode === 27) { // Esc
+      this.z.resetBorders();
+    }
   }
 
   noTags = (txt) => {
@@ -140,28 +142,6 @@ class AllImages extends Component {
     let tmp = txt.toString().replace(/<(?:.|\n)*?>/gm, ""); // Remove <tags>
     return tmp.slice(0, 23) ? tmp.slice(0, 23) : '&nbsp;';
   }
-
-  // homeAlbum = async (path, fileName) => { // was parAlb
-  //   // Convert the relative path of the linked-file target,
-  //   // to conform with z.imdbDirs server list, rooted at album root
-  //   let dir = path.replace(/^([.]*\/)*/, '/').replace(/\/[^/]+$/, '');
-  //   let name = path.replace(/^([^/]*\/)*([^/]+)\/[^/]+$/, "$2")
-  //   // dir is the home album (with index i) for path
-  //   let i = this.z.imdbDirs.indexOf(dir);
-  //   if (i < 0) {
-  //     if (document.getElementById(dialogAlertId).open) {
-  //       this.z.alertRemove();
-  //     } else {
-  //       this.z.alertMess(this.intl.t('albumMissing') + ':<br><br><p style="width:100%;text-align:center;margin:0">”' + this.z.removeUnderscore(name) + '”</p>');
-  //     }
-  //   } else {
-  //     this.z.openAlbum(i);
-  //     let size = this.z.albumAllImg(i);
-  //     // Allow for the rendering of mini images and preload of view images
-  //     await new Promise (z => setTimeout (z, size*60 + 100)); // album load
-  //     this.z.gotoMinipic(fileName);
-  //   }
-  // }
 
   // // For ember-sortable:
 
@@ -230,7 +210,7 @@ class AllImages extends Component {
       }
       this.z.numMarked = document.querySelectorAll('.img_mini.selected').length;
       this.z.numHidden = document.querySelectorAll('.img_mini.hidden').length;
-      this.z.ifToggleHide();
+      this.z.ifToggleHide(); // Show/hide the toggleHide left button
 
     } else { // 1 == slideshow image
       let clicked = document.querySelector('#markShow');
@@ -319,6 +299,8 @@ class AllImages extends Component {
             {{!-- The thumbnail menu --}}
             <MenuImage />
 
+           <div style="margin:auto auto 0 auto;position:relative;width:max-content;">
+
             {{!-- The check mark in the thumnail's upper right corner --}}
             <div class="markFalse" alt="MARKER" draggable="false" ondragstart="return false" {{on 'click' (fn this.toggleSelect 0)}}>
               <img src="/images/markericon.svg" draggable="false" ondragstart="return false" class="mark" title={{t 'Mark'}}>
@@ -326,6 +308,8 @@ class AllImages extends Component {
 
             {{!-- Here comes the thumbnail --}}
             <img src="{{item.mini}}" class="left-click" title="{{this.z.imdbRoot}}{{item.linkto}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage item.name item.show)}}>
+
+           </div>
 
             {{!-- This is the image name, should be unique --}}
             <div class="img_name" style="display:{{this.z.displayNames}};background:inherit">
@@ -356,7 +340,7 @@ class AllImages extends Component {
     <div class="img_show" id="d{{this.z.picName}}" draggable="false" style="display:none;margin:2rem auto 0 auto" {{on 'click' (fn this.z.showImage '')}}>
 
         {{!-- An extra slideshow wrapping div --}}
-        <div id="link_show" draggable="false" ondragstart="return false">
+        <div id="link_show" draggable="false" ondragstart="return false" style="position:relative">
 
           {{!-- A midpoint mark (ᵛ) on the slideshow image border --}}
           <p style="margin:0;line-height:0;font-family:sans-serif">ᵛ</p>
@@ -365,8 +349,8 @@ class AllImages extends Component {
           <img src="" draggable="false" ondragstart="return false">
 
           {{!-- The check mark in the slideshow image's upper right corner --}}
-          <div id="markShow" class="" alt="MARKSHOW" draggable="false" ondragstart="return false" {{on 'click' (fn this.toggleSelect 1)}}>
-            <img src="/images/markericon.svg" draggable="false" ondragstart="return false" class="mark" title={{t 'Mark'}}>
+          <div id="markShow" class="" alt="MARKSHOW" draggable="false" ondragstart="return false" {{on 'click' (fn this.toggleSelect 1)}}  style="background:transparent;position:absolute;top:-15px;right:-15px;width:20px;height:20px">
+            <img src="/images/markericon.svg" draggable="false" ondragstart="return false" class="mark" title="{{t 'Mark'}}" style="width:20px">
           </div>
 
           {{!-- The navigation information overlay of the slideshow image --}}
