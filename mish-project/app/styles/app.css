@@ -1449,14 +1449,15 @@ img.mark {
 .markFalse {
   position: absolute;
   display: block;
-  width: 20px;
-  height: 20px;
+  width: 14px;
+  height: 14px;
   border-radius: 10px;
-  border: 1px dashed #000;
+  border: 3px dotted #aaa;
   top: 0px;
   right: 0px;
   background: transparent;
   z-index: 6;
+  /* background-color: #e0e0ef; */
 }
 .markFalseShow {
   position: absolute;
@@ -1468,8 +1469,7 @@ img.mark {
   right: -15px;
   background: transparent;
   z-index: 6;
-  cursor: pointer;
-}
+  }
 /*div.img_mini.symlink div.markTrue, div.img_mini.symlink div.markFalse {
   border: 1.5px solid #0b0;
   border-radius: 10px;
@@ -1484,6 +1484,7 @@ img.mark {
   right: 0px;
   background: transparent;
   z-index: 12;
+  background-color: #004;
 }
 .markTrueShow {
   position: absolute;
@@ -1495,9 +1496,15 @@ img.mark {
   right: -15px;
   background: transparent;
   z-index: 12;
-  cursor: pointer;
+  background-color: #006;
 }
-.markFalse img.mark,
+.markFalse img.mark {
+  background: transparent;
+  border: 0 !important;
+  width: 20px;
+  height: 20px;
+  opacity: 0;
+}
 .markFalseShow img.mark {
   background: transparent;
   border: 0 !important;
@@ -1505,7 +1512,15 @@ img.mark {
   height: 20px;
   opacity: 0;
 }
-.markTrue img.mark,
+.markTrue img.mark {
+  background: transparent;
+  border: 0 !important;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  opacity: 1 !important;
+  background-color: #006;
+}
 .markTrueShow img.mark {
   background: transparent;
   border: 0 !important;

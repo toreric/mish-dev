@@ -199,8 +199,8 @@ class AllImages extends Component {
     e.stopPropagation();
 
     if (flag === 0) { // 0 == thumbnail image
-      let clicked = e.target.closest('div');
       let thisPic = e.target.closest('.img_mini');
+      let clicked = thisPic.querySelector('div[alt="MARKER"]');
       if (thisPic.classList.contains('selected')) {
         thisPic.classList.remove('selected');
         clicked.className = 'markFalse';
@@ -219,12 +219,12 @@ class AllImages extends Component {
     console.log('clicked', clicked)
       if (thisPic.classList.contains('selected')) {
         thisPic.classList.remove('selected');
-        thisPic.querySelector('div').className = 'markFalse';
+        thisPic.querySelector('div[alt="MARKER"]').className = 'markFalse';
         clicked.className = 'markFalseShow';
     console.log('clicked.className', clicked.className)
       } else {
         thisPic.classList.add('selected');
-        thisPic.querySelector('div').className = 'markTrue';
+        thisPic.querySelector('div[alt="MARKER"]').className = 'markTrue';
         clicked.className = 'markTrueShow';
     console.log('clicked.className', clicked.className)
       }
