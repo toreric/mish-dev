@@ -533,7 +533,7 @@ export default class CommonStorageService extends Service {
       pic.src = 'rln' + path;
       // Copy the check mark class from the thumbnail
       let minipic = document.getElementById('i' + this.picName);
-      let miniclass = minipic.querySelector('div').className;
+      let miniclass = minipic.querySelector('div[alt="MARKER"]').className;
       document.getElementById('markShow').className = miniclass + 'Show';
       // NOTE: This is possible, from the CSS style sheet!
       // Copy background from thumbnail: the hidden status indicator

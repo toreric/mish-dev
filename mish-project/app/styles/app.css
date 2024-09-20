@@ -1497,23 +1497,23 @@ img.mark {
   z-index: 12;
   cursor: pointer;
 }
-.markFalse img,
-.markFalseShow img {
+.markFalse img.mark,
+.markFalseShow img.mark {
   background: transparent;
   border: 0 !important;
   width: 20px;
   height: 20px;
   opacity: 0;
 }
-.markTrue img,
-.markTrueShow img {
+.markTrue img.mark,
+.markTrueShow img.mark {
   background: transparent;
   border: 0 !important;
   width: 20px;
   height: 20px;
   opacity: 1 !important;
 }
-.markTrueShow img {
+.markTrueShow img.mark {
   margin-bottom: 3px;
 }
 .search_link {

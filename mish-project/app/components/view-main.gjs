@@ -213,16 +213,20 @@ class AllImages extends Component {
       this.z.ifToggleHide(); // Show/hide the toggleHide left button
 
     } else { // 1 == slideshow image
-      let clicked = document.querySelector('#markShow');
       let thisPic = document.querySelector('#i' + this.z.escapeDots(this.z.picName));
+    console.log('thisPic', thisPic)
+      let clicked = document.querySelector('#markShow');
+    console.log('clicked', clicked)
       if (thisPic.classList.contains('selected')) {
         thisPic.classList.remove('selected');
         thisPic.querySelector('div').className = 'markFalse';
         clicked.className = 'markFalseShow';
+    console.log('clicked.className', clicked.className)
       } else {
         thisPic.classList.add('selected');
         thisPic.querySelector('div').className = 'markTrue';
         clicked.className = 'markTrueShow';
+    console.log('clicked.className', clicked.className)
       }
     }
   }
