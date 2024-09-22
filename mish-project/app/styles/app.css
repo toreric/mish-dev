@@ -1446,13 +1446,18 @@ img[alt] {
 img.mark {
   cursor: pointer;
 }
+.markFalse:hover {
+  /* border-color: #aef; */
+  background-color: #aef;
+  /* opacity: 1; */
+}
 .markFalse {
   position: absolute;
   display: block;
   width: 14px;
   height: 14px;
   border-radius: 10px;
-  border: 3px dotted #aaa;
+  border: 2px dotted #aaa;
   top: 0px;
   right: 0px;
   background: transparent;
@@ -1482,9 +1487,7 @@ img.mark {
   border-radius: 10px;
   top: 0px;
   right: 0px;
-  background: transparent;
   z-index: 12;
-  background-color: #004;
 }
 .markTrueShow {
   position: absolute;

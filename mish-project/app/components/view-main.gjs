@@ -210,7 +210,7 @@ class AllImages extends Component {
       }
       this.z.numMarked = document.querySelectorAll('.img_mini.selected').length;
       this.z.numHidden = document.querySelectorAll('.img_mini.hidden').length;
-      this.z.ifToggleHide(); // Show/hide the toggleHide left button
+      this.z.ifToggleHide(); // Show/hide 'toggleHide', a left button
 
     } else { // 1 == slideshow image
       let thisPic = document.querySelector('#i' + this.z.escapeDots(this.z.picName));
