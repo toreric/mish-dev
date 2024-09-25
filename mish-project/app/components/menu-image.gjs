@@ -11,6 +11,7 @@ import t from 'ember-intl/helpers/t';
 import { MenuMain } from './menu-main';
 
 import { dialogAlertId } from './dialog-alert';
+import { dialogInfoId } from './dialog-info';
 
 export const menuMainClass = 'menu_img'; // needed??
 const LF = '\n'; // LINE_FEED
@@ -52,6 +53,19 @@ export class MenuImage extends Component {
       await new Promise (z => setTimeout (z, size*60 + 100)); // album load
       this.z.gotoMinipic(fileName);
     }
+  }
+
+  // Get information about this image from the server
+  // by opening the dialogInfo dialog (with some extras)
+  infoImage = async () => {
+    let a = '';
+    if (this.ixAllFiles < 0) return a; //important
+    let b = this.z.allFiles[this.ixAllFiles];
+    // The relative path to this image in this album (maybe a symlink),
+    // no more information is needed, the server will find out
+    if (b) a = b.linkto;
+    this.z.infoMessage = await this.z.getFilestat(a);
+    this.z.openDialog(dialogInfoId);
   }
 
   get albname() {
@@ -115,6 +129,7 @@ export class MenuImage extends Component {
     {{on 'keydown' this.detectEscClose}}>⡇</button>
 
     <ul class="menu_img_list" style="display:none">
+
       <li><p style="text-align:right;color:deeppink;
         font-size:120%;line-height:80%;padding-bottom:0.125rem"
         {{on 'click' (fn this.toggleMenuImg 0)}}>
@@ -124,12 +139,12 @@ export class MenuImage extends Component {
       {{!-- Go-to-origin of linked image --}}
       {{#if this.symlink}}
         <li>
-          <p class="goAlbum" style="color:#0b0;font-weight:bold;font-size:85%" title="{{t 'gotext'}} ”{{this.albname}}”"
+          <p class="goAlbum" style="color:#0b0;font-weight:bold;font-size:90%" title="{{t 'gotext'}} ”{{this.albname}}”"
           {{on 'click' (fn this.homeAlbum this.orig this.z.picName)}}> {{t 'goto'}} </p>
         </li>
       {{/if}}
 
-      <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
+      <li><p {{on 'click' (fn this.infoImage)}}>
         {{t 'information'}}</p></li>
 
       {{#if this.z.allow.textEdit}}
@@ -140,15 +155,19 @@ export class MenuImage extends Component {
       <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
         {{t 'editimage'}}</p></li>
       <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
-        ○ {{t 'hideshow'}}</p></li>
+        <span style="font-size:130%;line-height:50%">
+          ○</span>{{t 'hideshow'}}</p></li>
       <li><hr style="margin:0.25rem 0.5rem"></li>
 
       <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
-        ○ {{t 'checkuncheck'}}</p></li>
+        <span style="font-size:130%;line-height:50%">
+          ○</span>{{t 'checkuncheck'}}</p></li>
       <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
-        ○ {{t 'markhidden'}}</p></li>
+        <span style="font-size:130%;line-height:50%">
+        ○</span>{{t 'markhidden'}}</p></li>
       <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
-        ○ {{t 'invertsel'}}</p></li>
+        <span style="font-size:130%;line-height:50%">
+        ○</span>{{t 'invertsel'}}</p></li>
       <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
         {{t 'placefirst'}}</p></li>
       <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
@@ -158,11 +177,15 @@ export class MenuImage extends Component {
       <li><hr style="margin:0.25rem 0.5rem"></li>
 
       <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
-        ○ {{t 'linkto'}}</p></li>
+        <span style="font-size:130%;line-height:50%">
+        ○</span>{{t 'linkto'}}</p></li>
       <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
-        ○ {{t 'moveto'}}</p></li>
+        <span style="font-size:130%;line-height:50%">
+        ○</span>{{t 'moveto'}}</p></li>
       <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
-        ○ {{t 'remove'}}</p></li>
+        <span style="font-size:130%;line-height:50%">
+        ○</span>{{t 'remove'}}</p></li>
+
     </ul>
 
   </template>

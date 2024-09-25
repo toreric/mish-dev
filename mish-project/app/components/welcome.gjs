@@ -14,7 +14,8 @@ import { ButtonsLeft } from './buttons-left';
 import { ButtonsRight } from './buttons-right';
 import { DialogAlert } from './dialog-alert';
 import { DialogHelp } from './dialog-help';
-import { DialogLogin } from './dialog-login'
+import { DialogInfo } from './dialog-info';
+import { DialogLogin } from './dialog-login';
 import { DialogText } from './dialog-text';
 import { DialogXper } from './dialog-xper';
 import { default as Header } from './header';
@@ -134,6 +135,10 @@ class Welcome extends Component {
   @service intl;
 
   someFunction = (param) => {this.z.loli(param, 'color:red');}
+
+  get album() {
+    return this.z.imdbRoot + this.z.imdbDir;
+  }
 
   openRights = () => {
     this.z.openModalDialog(dialogRightsId, 0);
@@ -282,8 +287,9 @@ export default class extends Welcome {
     <DialogLogin />
     <DialogText />
     <DialogHelp />
+    <DialogInfo />
     <DialogAlert />
-    <DialogXper />
+    <DialogXper @content={{this.album}} />
     <Spinner />
 
   </template>;

@@ -1447,9 +1447,7 @@ img.mark {
   cursor: pointer;
 }
 .markFalse:hover {
-  /* border-color: #aef; */
-  background-color: #aef;
-  /* opacity: 1; */
+  border: 2.6px dotted #aef;
 }
 .markFalse {
   position: absolute;
@@ -1457,7 +1455,7 @@ img.mark {
   width: 14px;
   height: 14px;
   border-radius: 10px;
-  border: 2px dotted #aaa;
+  border: 0.75px solid #aaa;
   top: 0px;
   right: 0px;
   background: transparent;
@@ -1487,7 +1485,7 @@ img.mark {
   border-radius: 10px;
   top: 0px;
   right: 0px;
-  z-index: 12;
+  z-index: 6;
 }
 .markTrueShow {
   position: absolute;

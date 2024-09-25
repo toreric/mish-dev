@@ -56,13 +56,12 @@ export class DialogXper extends Component {
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogXperId)}}>×</button>
         </div>
       </header>
-      <main style="text-align:center" style="text-align:center;min-height:10rem;
-      background-image:url(rln/home/tore/Album-1/_show_2007-05-26_004_bron_savar.png)">
+      <main style="text-align:center" style="text-align:center;min-height:10rem">
 
       <div id="_this_is_no_image" style="position:relative">
-        <MenuImage />
         <br>
-        <br>
+          {{@content}}
+        <br>  <br>
         <button type="button" {{on 'click' this.toggleTmpHeader}}>
           Dölj/visa tillfälligt
         </button>

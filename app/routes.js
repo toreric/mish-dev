@@ -106,6 +106,52 @@ module.exports = function(app) { // Start module.exports
     }
   })
 
+  //#region filestat
+  // ##### Return file information
+  app.get ('/filestat', async (req, res) => {
+    var file = decodeURIComponent(req.get('path'))
+    file = 'rln' + IMDB + file // 3 + IMDB.length
+    var LT = req.get('intlcode') // Language tag for dateTime
+    if (LT === 'en-us') LT = 'en-uk'
+    var missing = "uppgift saknas"
+    // var file = req.params.path.replace (/@/g, "/").trim ()
+    var stat = fs.statSync(file)
+    var linkto = "", linktop
+    var syml = await isSymlink(file)
+    if (syml) {
+      linkto = execSync("readlink " + file).toString().trim ()
+      if (linkto [0] !== '.') linkto = './' + linkto //if symlink in the root album
+      linktop = IMDB + linkto.replace(/^(\.\.?\/)+/, "/")
+    }
+    // Exclude IMDB from `file`, feb 2022, in order to difficultize direct
+    // access to the original pictures on the server.
+    var filex = '.' + file.slice (3 + IMDB.length) // 3 for 'rln'
+    var fileStat
+    if (linkto) {
+      var errmsg = "not available"
+      errmsg = await imgErr(linktop)
+      let lntx ="<span style='color:#0a4;font-size:80%'>VISAS HÄR SOM LÄNKAD BILD</span>:";
+      fileStat = "<i>Filnamn</i>: " + linkto + "<br><a title-2=\"" + await imgErr(linktop) + "\" style='font-family:Arial,Helvetica,sans-serif;font-size:80%'>STATUS</a><br><span style='color:#0a4'>" + lntx + "</span><br>"
+      fileStat += "<i>Länknamn</i>: <span style='color:#0a4'>" + filex + "</span><br><br>"
+    } else {
+      fileStat = "<i>Filnamn</i>: " + filex + "<br><a title-2=\"" + await imgErr(file) + "\" style='font-family:Arial,Helvetica,sans-serif;font-size:80%'>STATUS</a><br><br>"
+    }
+    fileStat += "<i>Storlek</i>: " + stat.size/1000000 + " Mb<br>"
+    var tmp = execSync("exif_dimension " + file).toString ().trim ()
+    if (tmp === "missing") {tmp = missing}
+    fileStat += "<i>Dimension</i>: " + tmp + "<br><br>"
+    tmp = (new Date (execSync("exif_dateorig " + file))).toLocaleString(LT, {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'})
+    if (tmp.indexOf ("Invalid") > -1) {tmp = missing}
+    fileStat += "<i>Fototid</i>: " + tmp + "<br>"
+    fileStat += "<i>Ändrad</i>: " + stat.mtime.toLocaleString(LT, {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}) + "<br>"
+
+    fileStat += "<br><a onclick='$.actualDups ()' title-2='Sök dubletter till den här bilden' style='font-family: Arial, Helvetica, sans-serif;font-size:80%'>SÖK DUBLETTBILDER</a> &nbsp;med likhetströskel ="
+    fileStat += '<form action="javascript:void(0)" style="display:inline-block"><input class="threshold" type="number" min="40" max="100" value="70" title="Välj tröskelvärde 40&ndash;100%"></form>%<br><br>'
+
+    res.send (fileStat)
+  })
+
+
   //#region login
   // ##### Return a user's credentials for login, or return
   //       all available user statuses and their allowances
@@ -396,7 +442,7 @@ module.exports = function(app) { // Start module.exports
   // ##### Save the _imdb_order.txt file
   app.post ('/saveorder', function (req, res, next) {
     var file = IMDB + IMDB_DIR + '/_imdb_order.txt'
-    execSync ('touch ' + file + '&&chmod 664 ' + file) // In case not yet created
+    execSync('touch ' + file + '&&chmod 664 ' + file) // In case not yet created
     var body = []
     req.on ('data', (chunk) => {
       // body will be a Buffer array: <buffer 39 35 33 2c 30 ... >, <buf... etc.
@@ -431,6 +477,36 @@ module.exports = function(app) { // Start module.exports
     }
     return IMDB_HOME
   }
+
+  // ===== Check and return image file condition, summarizing warning and error
+  // counts calling 'finderrimg', which uses 'jpeginfo' and 'tiffinfo' (so far)
+  async function imgErr (file) {
+    var extn = file.replace (/.*(\.[^. ]+)$/, "$1")
+    if ( /\.jpe?g$/i.test (extn) ) {
+      return await cmdasync("finderrimg 1 " + file)
+    } else
+    if ( /\.tiff?$/i.test (extn) ) {
+      return await cmdasync("finderrimg 2 " + file)
+    } else {
+      return "NA"
+    }
+    // NOTE: An async function returns a promise!
+  }
+
+  // ===== Check if a file is a symbolic link
+  function isSymlink(file) {
+    return new Promise(function(resolve, reject) {
+      fs.lstat (file, function(err, stats) {
+        if (err) {
+          //console.error ('filestat isSymlink', err.message)
+          resolve(false)
+        } else {
+          resolve(stats.isSymbolicLink ())
+        }
+      })
+    })
+  }
+
 
   // ===== Read the dir's content of album sub-dirs(not recursively)
   readSubdir = async(dir, files = []) => {
@@ -722,7 +798,7 @@ module.exports = function(app) { // Start module.exports
         if (err) {
           console.error ('symlinkFlag', err.message)
         } else if (stats.isSymbolicLink ()) {
-          resolve (execSync ("readlink " + file).toString ().trim ())
+          resolve (execSync("readlink " + file).toString ().trim ())
         } else {
           resolve ('&') // normal file
         }

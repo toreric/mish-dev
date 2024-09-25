@@ -33,12 +33,12 @@ export default class CommonStorageService extends Service {
   @tracked  imdbDirs = [''];        //available album directories at imdbRoot
   @tracked  imdbLabels = [''];      //thumbnail labels for 'imdbDirs' (paths)
   @tracked  imdbPath = this.userDir + this.imdbRoot; //userDir+imdbRoot = absolut path to album root
-  @tracked  imdbRoot = '';          //chosen album root directory (collection)
+  @tracked  imdbRoot = '';          //chosen album root directory (= collection)
         get imdbRootsPrep() { return `${this.intl.t('reloadApp')}`; } // advice!
   @tracked  imdbRoots = [this.imdbRootsPrep]; //available album root directories
   @tracked  imdbTree = null;                  //will have the 'imdbDirs' object tree
   @tracked  infoHeader = 'Header text';       //for the alert dialog DialogAlert
-  @tracked  infoMessage = 'No information';   //for the alert dialog DialogAlert
+  @tracked  infoMessage = 'No information';   //for dialog texts (e.g. DialogAlert)
         get intlCode() { return `${this.intl.t('intlcode')}`; }
   @tracked  intlCodeCurr = this.intlCode;     // language code
         get picFoundBaseName() { return `${this.intl.t('picfound')}`; }
@@ -700,6 +700,39 @@ export default class CommonStorageService extends Service {
       xhr.onload = function () {
         if (this.status >= 200 && this.status < 300) {
           var data = xhr.response.trim ();
+          resolve (data);
+        } else {
+          reject ({
+            status: this.status,
+            statusText: xhr.statusText
+          });
+        }
+      };
+      xhr.onerror = function () {
+        reject ({
+          status: this.status,
+          statusText: xhr.statusText
+        });
+      };
+      xhr.send ();
+    });
+  }
+
+  //#region filestat
+  // Get file information
+  getFilestat = async (filePath) => {
+
+  this.loli(filePath, 'color:pink');
+    // filePath must be the complete absolute server path
+    return new Promise (async (resolve, reject) => {
+      var xhr = new XMLHttpRequest ();
+      xhr.open ('GET', 'filestat/', true, null, null);
+      this.xhrSetRequestHeader(xhr);
+      xhr.setRequestHeader('path', encodeURIComponent(filePath));
+      xhr.setRequestHeader('intlcode', encodeURIComponent(this.intlCodeCurr));
+      xhr.onload = function() {
+        if (this.status >= 200 && this.status < 300) {
+          var data = xhr.response.trim();
           resolve (data);
         } else {
           reject ({
