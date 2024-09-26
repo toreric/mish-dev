@@ -64,6 +64,7 @@ marked: markerade
 markhidden: Markera bara dolda
 missing: (saknas)
 moveto: Flytta till...
+Name: Namn
 next: nästa
 no: inga
 numbererror: V A R N I N G<br><br>Bildantalet stämmer inte!
@@ -153,6 +154,9 @@ dialog:
     flebu: Först, knapparna till vänster
     wviva: vilka som är synliga varierar
     mmenu: "Huvudmeny: Välj album, sökning, favoriter, albumöversikt ..."
+  info:
+    filename: Filnamn
+    header: Information om originalbildfilen
   login:
     header:   Inloggning
     user:     Användare

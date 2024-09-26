@@ -7,7 +7,6 @@ import { on } from '@ember/modifier';
 import { inject as service } from '@ember/service';
 import t from 'ember-intl/helpers/t';
 
-import { Clock } from './clock';
 import { dialogTextId } from './dialog-text';
 import { Excite } from './excite';
 

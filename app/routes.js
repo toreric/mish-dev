@@ -41,7 +41,8 @@ module.exports = function(app) { // Start module.exports
   const RED  = '\x1b[31m'   // Red
   const RSET = '\x1b[0m'    // Reset
   
-  const LF = '\n' // Line Feed == New Line
+  const LF = '\n'   // Line Feed == New Line
+  const BR = '<br>' // HTML line break
   // Max lifetime(minutes) after last access of a temporary search result album:
   const toold = 60
 
@@ -116,25 +117,42 @@ module.exports = function(app) { // Start module.exports
     var missing = "uppgift saknas"
     // var file = req.params.path.replace (/@/g, "/").trim ()
     var stat = fs.statSync(file)
+    // linkto is relative path to the original file
+    // linktop is the absolute path to pe used for the imgErr check
     var linkto = "", linktop
     var syml = await isSymlink(file)
     if (syml) {
       linkto = execSync("readlink " + file).toString().trim ()
       if (linkto [0] !== '.') linkto = './' + linkto //if symlink in the root album
-      linktop = IMDB + linkto.replace(/^(\.\.?\/)+/, "/")
+    console.log('linkto', linkto)
+      linktop = IMDB + linkto.replace(/^(\.\.?\/)+/, "/") //
+    console.log('linktop', linktop)
     }
     // Exclude IMDB from `file`, feb 2022, in order to difficultize direct
     // access to the original pictures on the server.
     var filex = '.' + file.slice (3 + IMDB.length) // 3 for 'rln'
-    var fileStat
+    var fileStat = ''
     if (linkto) {
       var errmsg = "not available"
       errmsg = await imgErr(linktop)
+      fileStat += linkto + BR +  errmsg + BR + filex + BR
+      fileStat += stat.size/1000000 + BR
+      fileStat += execSync("exif_dimension " + file).toString ().trim () + BR
+
+      tmp = (new Date (execSync("exif_dateorig " + file))).toLocaleString(LT, {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'})
+      if (tmp.indexOf ("Invalid") > -1) {tmp = missing}
+      fileStat += tmp + BR
+      
+      tmp = stat.mtime.toLocaleString(LT, {year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'})
+      fileStat += tmp + BR
+
+
+
       let lntx ="<span style='color:#0a4;font-size:80%'>VISAS HÄR SOM LÄNKAD BILD</span>:";
-      fileStat = "<i>Filnamn</i>: " + linkto + "<br><a title-2=\"" + await imgErr(linktop) + "\" style='font-family:Arial,Helvetica,sans-serif;font-size:80%'>STATUS</a><br><span style='color:#0a4'>" + lntx + "</span><br>"
+      fileStat += "<i>Filnamn</i>: " + linkto + "<br><a title-2=\"" + await imgErr(linktop) + "\" style='font-family:Arial,Helvetica,sans-serif;font-size:80%'>STATUS</a><br><span style='color:#0a4'>" + lntx + "</span><br>"
       fileStat += "<i>Länknamn</i>: <span style='color:#0a4'>" + filex + "</span><br><br>"
     } else {
-      fileStat = "<i>Filnamn</i>: " + filex + "<br><a title-2=\"" + await imgErr(file) + "\" style='font-family:Arial,Helvetica,sans-serif;font-size:80%'>STATUS</a><br><br>"
+      fileStat += "<i>Filnamn</i>: " + filex + "<br><a title-2=\"" + await imgErr(file) + "\" style='font-family:Arial,Helvetica,sans-serif;font-size:80%'>STATUS</a><br><br>"
     }
     fileStat += "<i>Storlek</i>: " + stat.size/1000000 + " Mb<br>"
     var tmp = execSync("exif_dimension " + file).toString ().trim ()

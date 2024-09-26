@@ -64,6 +64,7 @@ marked: marked
 markhidden: Check hidden only
 missing: (missing) NOTE never used
 moveto: Move to...
+Name: Name
 next: next
 no: no
 numbererror: W A R N I N G<br><br>Image count mismatch!
@@ -155,6 +156,9 @@ dialog:
     flebu: First, the left hand buttons
     wviva: which ones visible varies
     mmenu: "Main menu: Choose album, search, favorites, album overview..."
+  info:
+    filename: File name
+    header: Information about the original image file
   login:
     header:   Log in
     user:     User

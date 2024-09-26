@@ -64,6 +64,7 @@ marked: markierte
 markhidden: Nur versteckten markieren
 missing: (fehlt)
 moveto: Umzug nach...
+Name: Name
 next: nächstes
 no: keine
 numbererror: W A R N U N G<br><br>Nicht übereinstimmende Bildanzahl!
@@ -153,6 +154,9 @@ dialog:
     flebu: Erstens, die linken Tasten
     wviva: welche sichtbar sind, variiert
     mmenu: "Im Hauptmenü wählen: Album, Suche, Favoriten, Albumübersicht ..."
+  info:
+    filename: Dateiname
+    header: Information zur Originalbilddatei
   login:
     header:   Anmelden
     user:     Benutzer

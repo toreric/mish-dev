@@ -721,9 +721,6 @@ export default class CommonStorageService extends Service {
   //#region filestat
   // Get file information
   getFilestat = async (filePath) => {
-
-  this.loli(filePath, 'color:pink');
-    // filePath must be the complete absolute server path
     return new Promise (async (resolve, reject) => {
       var xhr = new XMLHttpRequest ();
       xhr.open ('GET', 'filestat/', true, null, null);

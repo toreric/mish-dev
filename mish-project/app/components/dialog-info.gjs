@@ -1,4 +1,4 @@
-
+//== Mish individual file information dialog
 
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -32,15 +32,19 @@ export class DialogInfo extends Component {
     <dialog id="dialogInfo" {{on 'keydown' this.detectEscClose}}>
       <header data-dialog-draggable>
         <div style="width:99%">
-          <p>Information om originalbildfilen<span></span></p>
+          <p>{{t 'dialog.info.header'}}<span></span></p>
         </div>
         <div>
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogInfoId)}}>×</button>
         </div>
       </header>
+
       <main style="padding:1rem;text-align:center;min-height:10rem;color:blue">
+        <i>{{t 'Name'}}</i>: <span style="color:black">{{this.z.picName}}</span>
+        <br>
         {{{this.infotext}}}
       </main>
+
       <footer data-dialog-draggable>
         <button type="button" {{on 'click' (fn this.z.closeDialog dialogInfoId)}}>{{t 'button.close'}}</button>&nbsp;
       </footer>
