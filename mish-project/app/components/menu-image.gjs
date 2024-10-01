@@ -13,8 +13,8 @@ import { MenuMain } from './menu-main';
 import { dialogAlertId } from './dialog-alert';
 import { dialogInfoId } from './dialog-info';
 
-export const menuMainClass = 'menu_img'; // needed??
-const LF = '\n'; // LINE_FEED
+const LF = '\n'   // Line Feed == New Line
+const BR = '<br>' // HTML line break
 
 export class MenuImage extends Component {
   @service('common-storage') z;
@@ -55,17 +55,26 @@ export class MenuImage extends Component {
     }
   }
 
-  // Get information about this image from the server
-  // by opening the dialogInfo dialog (with some extras)
+  // Get information about this image
+  // from the server in the dialogInfo dialog
   infoImage = async () => {
-    let a = '';
-    if (this.ixAllFiles < 0) return a; //important
-    let b = this.z.allFiles[this.ixAllFiles];
-    // The relative path to this image in this album (maybe a symlink),
-    // no more information is needed, the server will find out
-    if (b) a = b.linkto;
-    this.z.infoMessage = await this.z.getFilestat(a);
-    this.z.openDialog(dialogInfoId);
+  //   let a = '';
+  //   if (this.ixAllFiles < 0) return a; //important
+  //   let b = this.z.allFiles[this.ixAllFiles];
+  // console.log('b in MenuImage', b);
+  //   // The relative path to this image in this album (maybe a symlink),
+  //   // no more information is needed, the server will find out
+  //   if (b) a = b.linkto;
+  // console.log('a in MenuImage', a);
+  //   let c = await this.z.getFilestat(a).toString();
+  // console.log('c in MenuImage', c);
+  //   this.z.infoMessage = c.split(BR);
+  // console.log('infoMessage in MenuImage', this.z.infoMessage);
+  //   await new Promise (z => setTimeout (z, 2199)); // Wait if infoMessage isn't ready
+
+  // When 'MenuImage' is open and 'Information' is chosen, the specific image can be
+  // identified in 'openDialog' since 'picName' will be set at opening of the menu
+    await this.z.openDialog(dialogInfoId);
   }
 
   get albname() {
@@ -104,8 +113,8 @@ export class MenuImage extends Component {
     const loliClose = (name) => this.z.loli('closed menu of image ' + name + ' in album ' + this.z.imdbRoot + this.z.imdbDir);
 
     if (open) { // 1 == do open
-      // If another image menu is open, close it:
       let allist = document.querySelectorAll('.menu_img_list');
+      // If another image menu is open, close it:
       for (let list of allist) {
         if (!list.style.display) {
           list.style.display = 'none';

@@ -88,6 +88,9 @@ importers:
       concurrently:
         specifier: ^8.2.2
         version: 8.2.2
+      ember-async-data:
+        specifier: ^1.0.3
+        version: 1.0.3(@babel/core@7.24.9)(ember-source@5.10.1(@glimmer/component@1.1.2(@babel/core@7.24.9))(@glint/template@1.4.0)(rsvp@4.8.5)(webpack@5.93.0))
       ember-auto-import:
         specifier: ^2.7.4
         version: 2.7.4(@glint/template@1.4.0)(webpack@5.93.0)

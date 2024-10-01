@@ -6,7 +6,8 @@ import { tracked } from '@glimmer/tracking';
 import { htmlSafe } from '@ember/template';
 import { replace } from 'tar';
 
-const LF = '\n'; // LINE_FEED
+const LF = '\n'   // Line Feed == New Line
+const BR = '<br>' // HTML line break
 
 export default class CommonStorageService extends Service {
   @service intl;
@@ -691,7 +692,7 @@ export default class CommonStorageService extends Service {
 
   //#region execute
   execute = async (command) => { // Execute on the server, return a promise
-    return new Promise ( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       command = command.replace (/%/g, "%25");
       var xhr = new XMLHttpRequest ();
       xhr.open ('GET', 'execute/', true, null, null);
@@ -700,28 +701,28 @@ export default class CommonStorageService extends Service {
       xhr.onload = function () {
         if (this.status >= 200 && this.status < 300) {
           var data = xhr.response.trim ();
-          resolve (data);
+          resolve(data);
         } else {
-          reject ({
+          reject({
             status: this.status,
             statusText: xhr.statusText
           });
         }
       };
-      xhr.onerror = function () {
+      xhr.onerror = function() {
         reject ({
           status: this.status,
           statusText: xhr.statusText
         });
       };
-      xhr.send ();
+      xhr.send();
     });
   }
 
   //#region filestat
   // Get file information
   getFilestat = async (filePath) => {
-    return new Promise (async (resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       var xhr = new XMLHttpRequest ();
       xhr.open ('GET', 'filestat/', true, null, null);
       this.xhrSetRequestHeader(xhr);
@@ -730,21 +731,21 @@ export default class CommonStorageService extends Service {
       xhr.onload = function() {
         if (this.status >= 200 && this.status < 300) {
           var data = xhr.response.trim();
-          resolve (data);
+          resolve(data);
         } else {
-          reject ({
+          reject({
             status: this.status,
             statusText: xhr.statusText
           });
         }
       };
-      xhr.onerror = function () {
+      xhr.onerror = function() {
         reject ({
           status: this.status,
           statusText: xhr.statusText
         });
       };
-      xhr.send ();
+      xhr.send();
     });
   }
 
@@ -1130,6 +1131,13 @@ export default class CommonStorageService extends Service {
     this.saveDialog(dialogId);
     this.closeDialog(dialogId);
   }
+
+  // infotext = async () => {
+  //   console.log('infoMessage in infotext called from DialogInfo', this.infoMessage);
+  //     let a = this.infoMessage.join(BR);
+  //   console.log('infoMessage in infotext called from DialogInfo', a);
+  //     return a;
+  //   }
 
 }
 //   #region End

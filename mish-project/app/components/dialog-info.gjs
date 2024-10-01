@@ -9,8 +9,12 @@ import t from 'ember-intl/helpers/t';
 import { htmlSafe } from '@ember/template';
 import { MenuImage } from './menu-image';
 
+import { cached } from '@glimmer/tracking';
+import { TrackedAsyncData } from 'ember-async-data';
+
 export const dialogInfoId = "dialogInfo";
-const LF = '\n';
+const LF = '\n'   // Line Feed == New Line
+const BR = '<br>' // HTML line break
 
 export class DialogInfo extends Component {
   @service('common-storage') z;
@@ -24,9 +28,26 @@ export class DialogInfo extends Component {
     }
   }
 
-  infotext = () => {
-    return this.z.infoMessage;
+  // Get information about this image from the server
+  actualGetStat = async () => { // ixAlFi is
+    let ixAlFi = await this.z.allFiles.findIndex(a => {return a.name === this.z.picName;});
+console.log('ixAlFi = ' + ixAlFi);
+    if (ixAlFi > -1) return await this.z.getFilestat(this.z.allFiles[ixAlFi].linkto);
   }
+  @cached
+  get getStat() {
+    let recordPromise = this.actualGetStat();
+    return new TrackedAsyncData(recordPromise);
+  }
+
+  // getStat = () => {
+  //   let ixAlFi = this.z.allFiles.findIndex(a => {return a.name === this.z.picName;});
+  //   return new Promise((resolve, reject) => {
+  //     if (ixAlFi > -1) this.z.getFilestat(this.z.allFiles[ixAlFi].linkto).then((result) => {
+  //       return String(result);
+  //     });
+  //   });
+  // }
 
   <template>
     <dialog id="dialogInfo" {{on 'keydown' this.detectEscClose}}>
@@ -40,9 +61,35 @@ export class DialogInfo extends Component {
       </header>
 
       <main style="padding:1rem;text-align:center;min-height:10rem;color:blue">
+
         <i>{{t 'Name'}}</i>: <span style="color:black">{{this.z.picName}}</span>
         <br>
-        {{{this.infotext}}}
+        {{!-- {{{this.z.infotext}}} --}}
+
+        {{#if this.getStat.isResolved}}
+          {{{this.getStat.value}}}
+        {{else if this.getStat.isPending}}
+          {{!-- Do nothing, just wait --}}
+        {{else if this.getStat.isRejected}}
+          <p>REJECTED</p>
+        {{/if}}
+
+        {{!-- {{#if this.symlink}}
+          <i>Filnamn</i>: {{this.linkto}}<br>
+          <a title-2="{{this.errimg}}"
+            style="font-family:sans-serif;font-size:80%">STATUS</a><br>
+          <span style="color:#0a4;font-size:80%">VISAS HÄR SOM LÄNKAD BILD</span><br>
+          <i>Länknamn</i>: <span style="color:#0a4">{{this.filex}}</span><br><br>
+        {{else}}
+          <i>Filnamn</i>: {{this.filex}}<br>
+          <a title-2="{{this.errimg}}"
+            style='font-family:sans-serif;font-size:80%'>STATUS</a><br><br>
+        {{/if}} --}}
+
+        <br><a onclick="" title-2="Sök dubletter till den här bilden" style="font-family:sans-serif;font-size:80%">SÖK DUBLETTBILDER</a>
+          &nbsp;med likhetströskel =
+        <form action="javascript:void(0)" style="display:inline-block"><input class="threshold" type="number" min="40" max="100" value="70" title="Välj tröskelvärde 40&ndash;100%"></form>%<br>
+
       </main>
 
       <footer data-dialog-draggable>
