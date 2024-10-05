@@ -41,9 +41,14 @@ textEdit:     Untertiteln bearbeiten/speichern, ausgeblendete Alben anzeigen³
 all: Alle
 checkuncheck: Alle markieren/abmarkieren
 dark: Dunkel
+Dimension: Dimension
 download: Herunterladen...
 editext: Text bearbeiten...
 editimage: Bild bearbeiten...
+explainLink: hier als verlinktes bild dargestellt
+Filename: Dateiname
+findDuplicates: suche nach duplikaten
+findImageDups: Mögliche Duplikate dieses Bildes finden
 for: für
 #NOTE: Choose a 'guest: value' which exists in the _imdb_settings.sqlite 'user' table!
 #      Else use instead the standard name guest!
@@ -58,17 +63,21 @@ intlcode: de-de
 invertsel: Auswahl umkehren
 light: licht
 linked: verlinkte
+Linkname: Linkname
 linkto: Verlinken zu...
 Mark: Markieren
 marked: markierte
 markhidden: Nur versteckten markieren
 missing: (fehlt)
+Moditime: Geändert
 moveto: Umzug nach...
 Name: Name
 next: nächstes
 no: keine
+notAvailable: Nicht verfügbar
 numbererror: W A R N U N G<br><br>Nicht übereinstimmende Bildanzahl!
 own: eigene
+Phototime: Fotozeit
 placefirst: Als erstes platzieren
 placelast: Als letztes platzieren
 plus: plus
@@ -78,6 +87,9 @@ return: außerhalb = zurück
 rights: Rechte
 saved: GESPEICHERT
 shown: gezeigte
+simiThres: mit Ähnlichkeitsschwelle
+Size: Größe
+status: status
 subalbum:  Unteralbum
 subalbums: Unteralben
 with: mit

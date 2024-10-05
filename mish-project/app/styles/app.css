@@ -1184,13 +1184,13 @@ img[alt] {
   text-align: left;
   border: 0.5px #888 solid;
   border-radius: 3px;
-  background-color: #beebff;
+  background-color: #bef;
   padding: 1.5px 6px 3px 5px;
   color: #000;
   font-family: Georgia, "Times New Roman", Times, serif !important;
-  font-weight: normal !important;
-  font-size: 14px !important;
-  line-height: 16.5px !important;
+  font-weight: normal;
+  font-size: 0.95rem;
+  line-height: 1rem;
   font-variant: normal;
   white-space: nowrap;
   z-index: 7;
@@ -1217,6 +1217,7 @@ img[alt] {
   font-weight: normal;
   font-size: 0.95rem;
   line-height: 1rem;
+  font-variant: normal;
   word-break: keep-all;
   white-space: normal;
   float: left;
@@ -2186,8 +2187,15 @@ a {
   border-radius: 3pt;
 }
 a:hover {
-  text-decoration: none;
   color: #aef;
+}
+a.hoverDark {
+  cursor: pointer;
+  text-decoration: underline;
+  border-radius: 3pt;
+}
+a.hoverDark:hover {
+  color: #b0f;
 }
 .dropzone .dz-preview .dz-remove {
   background-color: white;

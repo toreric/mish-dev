@@ -41,9 +41,14 @@ textEdit:     redigera/spara bildtexter, se dolda album³
 all: Alla
 checkuncheck: Markera/avmarkera alla
 dark: Mörk
+Dimension: Dimension
 download: Ladda ned...
 editext: Redigera text...
 editimage: Redigera bild...
+explainLink: visas här som länkad bild
+Filename: Filnamn
+findDuplicates: sök dublettbilder
+findImageDups: Sök tänkbara dubletter till den här bilden
 for: för
 #NOTE: Choose a 'guest: value' which exists in the _imdb_settings.sqlite 'user' table!
 #      Else use instead the standard name guest!
@@ -58,17 +63,21 @@ intlcode: sv-se
 invertsel: Invertera markeringar
 light: ljus
 linked: länkade
+Linkname: Länknamn
 linkto: Länka till...
 Mark: Markera
 marked: markerade
 markhidden: Markera bara dolda
 missing: (saknas)
+Moditime: Ändrad
 moveto: Flytta till...
 Name: Namn
 next: nästa
 no: inga
+notAvailable: Inte tillgänglig
 numbererror: V A R N I N G<br><br>Bildantalet stämmer inte!
 own: egna
+Phototime: Fototid
 placefirst: Placera först
 placelast: Placera sist
 previous: föregående
@@ -78,6 +87,9 @@ return: utanför = återgå
 rights: rättigheter
 saved: S P A R A T
 shown: visas
+simiThres: med likhetströskel
+Size: Storlek
+status: status
 subalbum:  underalbum
 subalbums: underalbum
 with: med

@@ -13,8 +13,8 @@ import { cached } from '@glimmer/tracking';
 import { TrackedAsyncData } from 'ember-async-data';
 
 export const dialogInfoId = "dialogInfo";
-const LF = '\n'   // Line Feed == New Line
-const BR = '<br>' // HTML line break
+const LF = '\n';   // Line Feed == New Line
+const BR = '<br>'; // HTML line break
 
 export class DialogInfo extends Component {
   @service('common-storage') z;
@@ -30,21 +30,64 @@ export class DialogInfo extends Component {
 
   // Get information about this image from the server
   actualGetStat = async () => { // ixAlFi is
-    let ixAlFi = await this.z.allFiles.findIndex(a => {return a.name === this.z.picName;});
-console.log('ixAlFi = ' + ixAlFi);
+    let ixAlFi = this.z.allFiles.findIndex(a => {return a.name === this.z.picName;});
+      // console.log('ixAlFi = ' + ixAlFi);
     if (ixAlFi > -1) return await this.z.getFilestat(this.z.allFiles[ixAlFi].linkto);
   }
   @cached
   get getStat() {
     let recordPromise = this.actualGetStat();
-    return new TrackedAsyncData(recordPromise);
+    let tmp = new TrackedAsyncData(recordPromise);
+    return tmp;
   }
+
+  showStat = (stat) => {
+    if (!stat) return; // Dismiss any initial reactivity
+    let arr = stat.split(BR);
+      console.log(arr)
+    let txt = BR
+
+    // Image file path
+    if (arr[4]) {
+      txt += '<i>' + this.intl.t('Filename') + '</i>: ' + arr[4] + BR;
+    } else {
+      txt += '<i>' + this.intl.t('Filename') + '</i>: ' + arr[6] + BR;
+    }
+
+    // Image status
+    arr[5] = arr[5].replace(/, /, '\n').replace(/ /g, '&nbsp;')
+    txt += '<a class="hoverDark" title-2="' + arr[5] + '" style="font-family:sans-serif;font-variant:small-caps">' + this.intl.t('status') + '</a>' + BR;
+
+    // Linked image
+    if (arr[4]) {
+      txt += '<span style="color:#0a4;font-family:sans-serif;font-variant:small-caps">' + this.intl.t('explainLink') + ':</span>' + BR;
+      txt += '<span style="color:#0a4"><i>' + this.intl.t('Linkname') + '</i>:</span> ' + arr[6] + BR;
+    }
+
+    // Image size
+    txt += '' + BR + '<i>' + this.intl.t('Size') + '</i>: ' + arr[0] + BR;
+    if (arr[1] === 'NA') arr[1] = this.intl.t('notAvailable');
+    txt += '<i>' + this.intl.t('Dimension') + '</i>: ' + arr[1] + BR + BR;
+
+    // Date-time information
+    if (arr[2] === 'NA') arr[2] = this.intl.t('notAvailable');
+    txt += '<i>' + this.intl.t('Phototime') + '</i>: ' + arr[2] + BR;
+    txt += '<i>' + this.intl.t('Moditime') + '</i>: ' + arr[3] + BR + BR;
+
+    // Find duplicates
+    txt += '<a class="hoverDark" title-1="' + this.intl.t('findImageDups') + '" style="font-family:sans-serif;font-variant:small-caps">' + this.intl.t('findDuplicates') + '</a> ' + this.intl.t('simiThres') + ' = <form style="display:inline-block"><input class="threshold" type="number" min="40" max="100" value="70" title="Välj tröskelvärde 40&ndash;100%"></form>%<br>';
+
+    return txt;
+  }
+  // showStat = (stat) => {
+  //   return this.actualShowStat(stat);
+  // }
 
   // getStat = () => {
   //   let ixAlFi = this.z.allFiles.findIndex(a => {return a.name === this.z.picName;});
   //   return new Promise((resolve, reject) => {
   //     if (ixAlFi > -1) this.z.getFilestat(this.z.allFiles[ixAlFi].linkto).then((result) => {
-  //       return String(result);
+  //       return result;
   //     });
   //   });
   // }
@@ -60,15 +103,16 @@ console.log('ixAlFi = ' + ixAlFi);
         </div>
       </header>
 
-      <main style="padding:1rem;text-align:center;min-height:10rem;color:blue">
+      <main style="padding:1rem 1rem 1.5rem 1rem;text-align:center;min-height:10rem;color:blue">
 
         <i>{{t 'Name'}}</i>: <span style="color:black">{{this.z.picName}}</span>
         <br>
         {{!-- {{{this.z.infotext}}} --}}
 
         {{#if this.getStat.isResolved}}
-          {{{this.getStat.value}}}
+          {{{this.showStat this.getStat.value}}}
         {{else if this.getStat.isPending}}
+          . . .
           {{!-- Do nothing, just wait --}}
         {{else if this.getStat.isRejected}}
           <p>REJECTED</p>
@@ -85,10 +129,6 @@ console.log('ixAlFi = ' + ixAlFi);
           <a title-2="{{this.errimg}}"
             style='font-family:sans-serif;font-size:80%'>STATUS</a><br><br>
         {{/if}} --}}
-
-        <br><a onclick="" title-2="Sök dubletter till den här bilden" style="font-family:sans-serif;font-size:80%">SÖK DUBLETTBILDER</a>
-          &nbsp;med likhetströskel =
-        <form action="javascript:void(0)" style="display:inline-block"><input class="threshold" type="number" min="40" max="100" value="70" title="Välj tröskelvärde 40&ndash;100%"></form>%<br>
 
       </main>
 
