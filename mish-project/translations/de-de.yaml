@@ -50,6 +50,7 @@ Filename: Dateiname
 findDuplicates: suche nach duplikaten
 findImageDups: Mögliche Duplikate dieses Bildes finden
 for: für
+futureFacility: Noch nicht umgesetzt
 #NOTE: Choose a 'guest: value' which exists in the _imdb_settings.sqlite 'user' table!
 #      Else use instead the standard name guest!
 guest: gast
@@ -93,6 +94,7 @@ status: status
 subalbum:  Unteralbum
 subalbums: Unteralben
 with: mit
+xplErrImg: Beurteilung der technischen Qualität des Bildes
 
 albumcollselect: Bitte eine Albumsammlung auswählen!
 albumMissing: Dieses Album kann, möglicherweise<br>

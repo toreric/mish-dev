@@ -50,6 +50,7 @@ Filename: File name
 findDuplicates: find duplicates
 findImageDups: Find possible duplicates to this image
 for: for
+futureFacility: Not yet implemented
 #NOTE: Choose a 'guest: value' which exists in the _imdb_settings.sqlite 'user' table!
 #      Else use instead the standard name guest!
 guest: guest
@@ -93,6 +94,7 @@ status: status
 subalbum:  subalbum
 subalbums: subalbums
 with: with
+xplErrImg: Assessment of the technical quality of the image
 
 albumcollselect: Please select an album collection!
 albumMissing: This album cannot be shown,<br>

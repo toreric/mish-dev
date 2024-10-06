@@ -50,6 +50,7 @@ Filename: Filnamn
 findDuplicates: sök dublettbilder
 findImageDups: Sök tänkbara dubletter till den här bilden
 for: för
+futureFacility: Ännu inte färdigt för användning
 #NOTE: Choose a 'guest: value' which exists in the _imdb_settings.sqlite 'user' table!
 #      Else use instead the standard name guest!
 guest: gäst
@@ -93,6 +94,7 @@ status: status
 subalbum:  underalbum
 subalbums: underalbum
 with: med
+xplErrImg: Uppskattning av bildens tekniska kvalitet
 
 albumcollselect: Vänligen välj en albumsamling!
 albumMissing: Det här albumet kan inte visas, kanske<br>

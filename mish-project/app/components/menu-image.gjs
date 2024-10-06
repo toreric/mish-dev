@@ -55,28 +55,6 @@ export class MenuImage extends Component {
     }
   }
 
-  // Get information about this image
-  // from the server in the dialogInfo dialog
-  infoImage = async () => {
-  //   let a = '';
-  //   if (this.ixAllFiles < 0) return a; //important
-  //   let b = this.z.allFiles[this.ixAllFiles];
-  // console.log('b in MenuImage', b);
-  //   // The relative path to this image in this album (maybe a symlink),
-  //   // no more information is needed, the server will find out
-  //   if (b) a = b.linkto;
-  // console.log('a in MenuImage', a);
-  //   let c = await this.z.getFilestat(a).toString();
-  // console.log('c in MenuImage', c);
-  //   this.z.infoMessage = c.split(BR);
-  // console.log('infoMessage in MenuImage', this.z.infoMessage);
-  //   await new Promise (z => setTimeout (z, 2199)); // Wait if infoMessage isn't ready
-
-  // When 'MenuImage' is open and 'Information' is chosen, the specific image can be
-  // identified in 'openDialog' since 'picName' will be set at opening of the menu
-    await this.z.openDialog(dialogInfoId);
-  }
-
   get albname() {
     let a = '';
     if (this.ixAllFiles < 0) return a; //important
@@ -153,7 +131,8 @@ export class MenuImage extends Component {
         </li>
       {{/if}}
 
-      <li><p {{on 'click' (fn this.infoImage)}}>
+      {{!-- Open image file information dialog --}}
+      <li><p {{on 'click' (fn this.z.openDialog dialogInfoId)}}>
         {{t 'information'}}</p></li>
 
       {{#if this.z.allow.textEdit}}
