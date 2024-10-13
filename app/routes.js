@@ -114,6 +114,16 @@ module.exports = function(app) { // Start module.exports
   app.get ('/filestat', async (req, res) => {
     var file = decodeURIComponent(req.get('path'))
     file = 'rln' + IMDB + file // 3 + IMDB.length
+
+    // This is an emergency solution, which was necessary since the 'filstat'
+    // server address seems to be excessively triggered by the reactive behaviour
+    // started by the 'DialogInfo' component. It is used by the 'MenuImage' component
+    // when the menu's 'Information' entry is clicked.
+    if (await notFile(file)) {
+      console.log(RED + 'Illegal filestat call' + RSET)
+      return
+    }
+
       console.log('fileStat',file)
     var LT = req.get('intlcode') // Language tag for dateTime
     if (LT === 'en-us') LT = 'en-uk' // European date order
@@ -475,7 +485,54 @@ module.exports = function(app) { // Start module.exports
       }, 200)
     })
   })
-  
+
+  //#region savetext
+  // ##### Save Xmp.dc.description and Xmp.dc.creator using exiv2
+  app.post ('/savetext', function (req, res, next) {
+    // The imagedir directory path is already included in the file name here @***
+    var body = []
+    req.on('data', (chunk) => {
+      body.push(chunk)
+    }).on('end', () => {
+      body = Buffer.concat(body).toString ()
+      // Here `body` has the entire request body stored in it as a string
+      var tmp = body.split('\n')
+      var fileName = tmp [0].trim() // the path is included here @***
+      var msgName = '.' + fileName.slice(IMDB.length)
+
+      let okay = fs.constants.W_OK | fs.constants.R_OK
+      fs.access (fileName, okay, async err => {
+        if (err) {
+          res.send ("Cannot write to " + msgName)
+          console.log (RED + 'NO WRITE PERMISSION to ' + msgName + RSET)
+        } else {
+          console.log ('Xmp.dc metadata will be saved into ' + msgName)
+          body = tmp [1].trim () // These trimmings are probably superfluous
+          // The set_xmp_... command strings will be single quoted, avoiding
+          // most Bash shell interpretation. Thus slice out 's within 's (cannot
+          // be escaped just simply); makes Bash happy :) ('s = single quotes)
+          body = body.replace (/'/g, "'\\''")
+          //console.log (fileName + " '" + body + "'")
+          var mtime = fs.statSync (fileName).mtime // Object
+          //console.log (typeof mtime, mtime)
+          execSync ('set_xmp_description ' + fileName + " '" + body + "'") // for txt1
+          body = tmp [2].trim () // These trimmings are probably superfluous
+          body = body.replace (/'/g, "'\\''")
+          //console.log (fileName + " '" + body + "'")
+          if (fs.open)
+          execSync ('set_xmp_creator ' + fileName + " '" + body + "'") // for txt2
+          // Reset modification time, this was metadata only:
+          execSync ('touch -d "' + mtime + '" "' + fileName + '"')
+          res.send ('')
+          await new Promise (z => setTimeout (z, 888))
+          await sqlUpdate (fileName) // with path @***
+        }
+      })
+    })
+    //res.sendFile ('index.html', {root: WWW_ROOT + '/public/'}) // stay at the index.html file
+  })
+
+
 
   //#region Functions
 
@@ -518,6 +575,11 @@ module.exports = function(app) { // Start module.exports
     })
   }
 
+  // ===== Check if a file does not exist
+  async function notFile(path) {
+    cmd = '[ -f ' + path + ' ]; echo -n $?'
+    return Number(await execP(cmd))
+  }
 
   // ===== Read the dir's content of album sub-dirs(not recursively)
   readSubdir = async(dir, files = []) => {

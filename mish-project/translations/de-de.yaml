@@ -87,6 +87,7 @@ remove: LÖSCHEN...
 return: außerhalb = zurück
 rights: Rechte
 saved: GESPEICHERT
+selectTreshold: Schwellenwert auswählen
 shown: gezeigte
 simiThres: mit Ähnlichkeitsschwelle
 Size: Größe
@@ -94,7 +95,7 @@ status: status
 subalbum:  Unteralbum
 subalbums: Unteralben
 with: mit
-xplErrImg: Beurteilung der technischen Qualität des Bildes
+xplErrImg: Beurteilung der technischen Qualität des Originalbildes
 
 albumcollselect: Bitte eine Albumsammlung auswählen!
 albumMissing: Dieses Album kann, möglicherweise<br>

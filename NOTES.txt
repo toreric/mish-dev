@@ -1,0 +1,15 @@
+
+
+ixAllFiles = the index of picName in allFiles, see menu-image.gjs
+
+ixAlFi = dito, used in dialog-info.gjs
+
+Proposal
+
+let it be picIndex instead, i.e.
+
+  this.z.picIndex = the index of this.z.picName in this.z.allFiles, getter:
+
+        get picIndex() { //the index of picName's file information object in allFiles
+              return this.allFiles.findIndex(a => {return a.name === this.picName;});
+            }

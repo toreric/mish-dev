@@ -12,6 +12,7 @@ import { MenuMain } from './menu-main';
 
 import { dialogAlertId } from './dialog-alert';
 import { dialogInfoId } from './dialog-info';
+import { dialogTextId } from './dialog-text';
 
 const LF = '\n'   // Line Feed == New Line
 const BR = '<br>' // HTML line break
@@ -20,15 +21,15 @@ export class MenuImage extends Component {
   @service('common-storage') z;
   @service intl;
 
-  @tracked ixAllFiles = -1;
-
   // Detect closing Esc key
   detectEscClose = (e) => {
     e.stopPropagation();
     if (e.keyCode === 27) { // Esc key
       // Close any open image menu
       for (let list of document.querySelectorAll('.menu_img_list')) list.style.display = 'none';
+      // Sorry, no loli message!
     }
+    document.getElementById(dialogInfoId).focus();
   }
 
   homeAlbum = async (path, fileName) => { // was parAlb
@@ -57,22 +58,25 @@ export class MenuImage extends Component {
 
   get albname() {
     let a = '';
-    if (this.ixAllFiles < 0) return a; //important
-    let b = this.z.allFiles[this.ixAllFiles];
+    let i = this.z.picIndex;
+    if (i < 0) return a; //important
+    let b = this.z.allFiles[i];
     if (b) a = b.albname; //name of home album
     return a;
   }
   get orig() {
     let a = '';
-    if (this.ixAllFiles < 0) return a; //important
-    let b = this.z.allFiles[this.ixAllFiles];
+    let i = this.z.picIndex;
+    if (i < 0) return a; //important
+    let b = this.z.allFiles[i];
     if (b) a = b.orig; //path to home album
     return a;
   }
   get symlink() {
     let a = '';
-    if (this.ixAllFiles < 0) return a; //important
-    let b = this.z.allFiles[this.ixAllFiles];
+    let i = this.z.picIndex;
+    if (i < 0) return a; //important
+    let b = this.z.allFiles[i];
     if (b) a = b.symlink; //has a home album
     return a;
   }
@@ -84,9 +88,11 @@ export class MenuImage extends Component {
     let id = tgt.id;
     let name = id.slice(1);
     this.z.picName = name;
-    this.ixAllFiles = this.z.allFiles.findIndex(a => {return a.name === name;});
+    // this.z.picIndex = this.z.allFiles.findIndex(a => {return a.name === name;});
+    this.z.loli(this.z.picName + ' txt:', 'color:red');
+    console.log(this.z.allFiles[this.z.picIndex])
     let list = tgt.querySelector('.menu_img_list');
-    if (!list.style.display) open = 0;
+    if (!list.style.display) open = 0; // If open, close
 
     const loliClose = (name) => this.z.loli('closed menu of image ' + name + ' in album ' + this.z.imdbRoot + this.z.imdbDir);
 
@@ -132,11 +138,12 @@ export class MenuImage extends Component {
       {{/if}}
 
       {{!-- Open image file information dialog --}}
-      <li><p {{on 'click' (fn this.z.openDialog dialogInfoId)}}>
+      <li><p {{on 'click' (fn this.z.toggleDialog dialogInfoId)}}>
         {{t 'information'}}</p></li>
 
+      {{!-- Open image text edit dialog --}}
       {{#if this.z.allow.textEdit}}
-        <li><p {{on 'click' (fn this.toggleMenuImg 0)}}>
+        <li><p {{on 'click' (fn this.z.toggleDialog dialogTextId)}}>
           {{t 'editext'}}</p></li>
       {{/if}}
 

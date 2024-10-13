@@ -45,7 +45,11 @@ export default class CommonStorageService extends Service {
         get picFoundBaseName() { return `${this.intl.t('picfound')}`; }
   // The found pics temporary catalog name is amended with a random 4-code:
   @tracked  picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
-  @tracked  picName = '';      //actual/current image name
+  @tracked  picName = ''; //actual/current image name
+        get picIndex() { //the index of picName's file information object in allFiles
+          let index = this.allFiles.findIndex(a => {return a.name === this.picName;});
+          return index;
+        }
   @tracked  sortOrder = '';    //file order information table of 'imdbDir'
   @tracked  subColor = '#aef'; //subalbum legends color
         get subaIndex() {      //subalbum index array for imdbLabels
@@ -74,7 +78,7 @@ export default class CommonStorageService extends Service {
   //== Miniature and show images etc. information
 
   @tracked  navKeys = false; // Protects from unintended use of L/R arrow keys
-  @tracked  allFiles = [];   // Image file information object, changes with 'imdbDir'
+  @tracked  allFiles = [];   // Image file information objects, changes with 'imdbDir'
   @tracked  displayNames = 'none'; // Image name display switch
   @tracked  edgeImage = '';  // Text indicating first/last image
   @tracked  hasImages = false; // true if 'imdbDir' has at least one image
@@ -221,6 +225,7 @@ export default class CommonStorageService extends Service {
   }
 
   openAlbum = async (i) => {
+    this.picName = '';
     this.alertRemove(); // remove possible alert dialog
     // Close the show image view
     document.querySelector('.img_show').style.display = 'none'; //was 'table'
@@ -390,7 +395,7 @@ export default class CommonStorageService extends Service {
 
   alertMess = async (mess, sec) => {
     this.infoHeader = this.intl.t('infoHeader'); // default header
-    this.infoMessage = mess;
+    this.infoMessage = mess.replace(/\n/g, '<br>');
     this.openDialog('dialogAlert');
     // this.openModalDialog('dialogAlert');
     if (sec) { // means close after sec seconds
@@ -682,6 +687,7 @@ export default class CommonStorageService extends Service {
 
 
 
+
   //#region xhrsetreqhdr
   xhrSetRequestHeader = (xhr) => {
     xhr.setRequestHeader('username', encodeURIComponent(this.userName));
@@ -689,6 +695,7 @@ export default class CommonStorageService extends Service {
     xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
     xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
   }
+
 
   //#region execute
   execute = async (command) => { // Execute on the server, return a promise
@@ -1020,7 +1027,6 @@ export default class CommonStorageService extends Service {
       console.error(error.message);
     });
   }
-
   updateOrder = (noJoin) => {
     let old = this.sortOrder.split(LF);
     let name = [];
@@ -1043,6 +1049,34 @@ export default class CommonStorageService extends Service {
     } else {
       return name.join(LF);
     }
+  }
+
+  //#region savetext
+  //saving image captions as metadata saveText(fileName +'\n'+ txt1 +'\n'+ txt2);
+  saveText = (txt) => {
+    // var IMDB_DIR =  $ ("#imdbDir").text ();
+    // if (IMDB_DIR.slice (-1) !== "/") {IMDB_DIR = IMDB_DIR + "/";} // Important! (all these OBSOLETE)
+    // IMDB_DIR = IMDB_DIR.replace (/\//g, "@"); // For sub-directories
+
+    var xhr = new XMLHttpRequest ();
+    xhr.open ('POST', 'savetext/');
+    this.xhrSetRequestHeader(xhr);
+    xhr.onload = function () {
+      if (xhr.response) {
+        // userLog ("NOT written");
+        let edpn = escapeDots(this.picName);
+        document.querySelector('#i' + edpn + ' .img_txt1').innerHTML = '';
+        document.querySelector('#i' + edpn + ' .img_txt2').innerHTML = '';
+        // $ ("#i" + edpn + " .img_txt1" ).html ("");
+        // $ ("#i" + edpn + " .img_txt2" ).html ("");
+            // infoDia (null, null,"Texten sparades inte!", '<br>Bildtexten kan inte uppdateras på grund av<br>något åtkomsthinder &ndash; är filen ändringsskyddad?<br><br>Eventuell tillfälligt förlorad text återfås med ”Ladda om albumet (återställ osparade ändringar)”', "Ok", true);
+      } else {
+        // userLog(tempStore, false, 2000);
+        // tempStore = "";
+        //console.log('Xmp.dc metadata saved in ' + fileName);
+      }
+    }
+    xhr.send(txt);
   }
 
 
@@ -1131,13 +1165,6 @@ export default class CommonStorageService extends Service {
     this.saveDialog(dialogId);
     this.closeDialog(dialogId);
   }
-
-  // infotext = async () => {
-  //   console.log('infoMessage in infotext called from DialogInfo', this.infoMessage);
-  //     let a = this.infoMessage.join(BR);
-  //   console.log('infoMessage in infotext called from DialogInfo', a);
-  //     return a;
-  //   }
 
 }
 //   #region End

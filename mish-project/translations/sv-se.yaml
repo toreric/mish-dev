@@ -87,6 +87,7 @@ remove: RADERA...
 return: utanför = återgå
 rights: rättigheter
 saved: S P A R A T
+selectTreshold: Välj tröskelvärde
 shown: visas
 simiThres: med likhetströskel
 Size: Storlek
@@ -94,7 +95,7 @@ status: status
 subalbum:  underalbum
 subalbums: underalbum
 with: med
-xplErrImg: Uppskattning av bildens tekniska kvalitet
+xplErrImg: Uppskattning av originalbildens tekniska kvalitet
 
 albumcollselect: Vänligen välj en albumsamling!
 albumMissing: Det här albumet kan inte visas, kanske<br>

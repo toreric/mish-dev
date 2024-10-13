@@ -16,24 +16,22 @@ document.addEventListener('mousedown', async (e) => {
 });
 
 //== Component DialogText with <dialog> tags
-//== Note: 'data-dialog-draggable' is triggered with makeDialogDraggable() in welcome.gjs
-
 export class DialogText extends Component {
   @service('common-storage') z;
 
-  // Child dialog open button is pressed
+  // Subdialog open button is pressed
 
   childDialog = (diaId) => {
     this.z.openModalDialog(diaId, 0);
   }
 
-  // Detect closing Esc key and handle (child) dialogs
+  // Detect closing Esc key and handle (sub)dialogs
   detectEscClose = async (e) => {
     e.stopPropagation();
     if (e.keyCode === 27) { // Esc key
       let tmp1 = document.getElementById(dialogTextNotesId);
       let tmp2 = document.getElementById(dialogTextKeywordsId);
-      // There are 2 child dialogs
+      // There are 2 subdialogs
       if (tmp1.open) {
         this.z.closeDialog(tmp1.id);
         await new Promise (z => setTimeout (z, 9)); // Soon allow next
@@ -43,6 +41,20 @@ export class DialogText extends Component {
       } else {
         this.z.closeDialog(dialogTextId);
       }
+    }
+  }
+
+  // Enter the text into the textareas
+  enterText = (which) => {
+    if (!document.getElementById('i' + this.z.picName)) return;
+
+
+
+    let id = '#i' + this.z.escapeDots(this.z.picName);
+    if (which === 1) {
+      return document.querySelector(id + ' .img_txt1').innerHTML;
+    } else {
+      return document.querySelector(id + ' .img_txt2').innerHTML;
     }
   }
 
@@ -70,8 +82,12 @@ export class DialogText extends Component {
           <div class="diaMess">
             <VirtualKeys />
           </div>
-          <textarea id="dialogTextDescription" name="description" rows="6" placeholder="{{t "write.description"}} (Xmp.dc.description)" {{on 'mouseleave' onMouseLeaveTextarea}}></textarea><br>
-          <textarea id="dialogTextCreator" name="creator" rows="2" placeholder="{{t "write.creator"}} (Xmp.dc.creator)" {{on 'mouseleave' onMouseLeaveTextarea}}></textarea>
+          <textarea id="dialogTextDescription" name="description" rows="6" placeholder="{{t "write.description"}} (Xmp.dc.description)" {{on 'mouseleave' onMouseLeaveTextarea}}>
+            {{{fn this.enterText 1}}}
+          </textarea><br>
+          <textarea id="dialogTextCreator" name="creator" rows="2" placeholder="{{t "write.creator"}} (Xmp.dc.creator)" {{on 'mouseleave' onMouseLeaveTextarea}}>
+            {{{fn this.enterText 2}}}
+          </textarea>
         </main>
         <footer data-dialog-draggable>
           <button id="dialogTextButton1" type="button" {{on 'click' (fn this.z.saveDialog dialogTextId)}}>{{t 'button.save'}}</button>&nbsp;

@@ -184,13 +184,14 @@ class AllImages extends Component {
         r = this.items[i].txt2;
       }
     }
+    // if (!r.trim()) r = '&nbsp;';
     return r;
   }
 
   // Edit the image texts using DialogText
   editext = (event) => {
     event.stopPropagation();
-    // todo, catches clicks so far
+    this.z.ediText();
   }
 
   // The 'double classing', seemingly unnecessary and
@@ -386,7 +387,7 @@ class AllImages extends Component {
           caption-side:bottom;min-height:1rem;
           padding:0 0 0.4rem 0.3rem">
 
-          {{!-- This is the image name, should be unique, hidden if 'displayNames'.. --}}
+          {{!-- The image name, should be unique, hidden if 'displayNames'.. --}}
           <div class="img_name" style="display:{{this.z.displayNames}}" draggable="false" ondragstart="return false" title="" {{on 'click' this.editext}}>
             {{this.z.picName}}
           </div>

@@ -24,7 +24,9 @@ import { MenuMain } from './menu-main';
 import { ViewMain } from './view-main';
 import { Spinner } from './spinner';
 
+import { dialogAlertId } from './dialog-alert';
 import { dialogHelpId } from './dialog-help';
+import { dialogInfoId } from './dialog-info';
 import { dialogLoginId } from './dialog-login';
 import { dialogRightsId } from './dialog-login';
 import { dialogXperId } from './dialog-xper';
@@ -33,6 +35,8 @@ const returnValue = cell(''); // Never used?
 const LF = '\n';
 const CRLF = '&#13;&#10;'; // May be used in 'title': the only mod.possible!
 
+// NOTE: Here makeDialogDraggable() declares 'data-dialog-draggable'
+// so it may be further referenced in child elements of any <dialog>
 makeDialogDraggable();
 
 // Detect various keys
@@ -42,10 +46,13 @@ document.addEventListener('keydown', (event) => {
       // console.log('Key ' + key + ' pressed');
   switch(key) {
     case 27:  // Esc
-          // console.log(event.target);
+        // console.log(event.target);
       resetBorders();
       for (let d of document.querySelectorAll('dialog')) {
-        if (d.hasAttribute("open")) break;
+        if (d.hasAttribute('open')) {
+          if (d.id === dialogInfoId) d.close();
+          return;
+        }
       }
       let allist = document.querySelectorAll('.menu_img_list');
       for (let list of allist) list.style.display = 'none';
@@ -78,7 +85,7 @@ const resetBorders = () => { //copy from z
 const toggleDialog = (dialogId, origPos) => { //copy from z
   let diaObj = document.getElementById(dialogId);
   let what = 'closed ';
-  if (diaObj.hasAttribute("open")) {
+  if (diaObj.hasAttribute('open')) {
     diaObj.close();
   } else {
     what = 'opened ';

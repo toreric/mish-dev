@@ -48,7 +48,7 @@ editimage: Edit image...
 explainLink: shown here as linked image
 Filename: File name
 findDuplicates: find duplicates
-findImageDups: Find possible duplicates to this image
+findImageDups: Find possible duplicates of this image
 for: for
 futureFacility: Not yet implemented
 #NOTE: Choose a 'guest: value' which exists in the _imdb_settings.sqlite 'user' table!
@@ -87,6 +87,7 @@ remove: REMOVE...
 return: outside = return
 rights: rights
 saved: S A V E D
+selectTreshold: Select threshold value
 shown: shown
 simiThres: with similarity threshold
 Size: Size
@@ -94,7 +95,7 @@ status: status
 subalbum:  subalbum
 subalbums: subalbums
 with: with
-xplErrImg: Assessment of the technical quality of the image
+xplErrImg: Assessment of the technical quality of the original image
 
 albumcollselect: Please select an album collection!
 albumMissing: This album cannot be shown,<br>

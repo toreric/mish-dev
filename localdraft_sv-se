@@ -1,11 +1,11 @@
 
 Bilddatabaser (IMDB) i albumsystemet Mish
 
-Kataloger med bilder (tiff, jpeg, png, gif) kan direkt inkluderas
-i albumsystemet, men de måste flyttas till ett ställe (IMDB_ROOT)
-som är "biblioteket" för albumsystemet. Det kan vara en katalog hos
-användaren eller på annat ställe i datorns filsystem där aktuell
-användare har fullständiga åtkomsträttigheter.
+Kataloger med bilder (tiff, jpeg, png, gif) kan direkt inkluderas i
+albumsystemet, men de måste flyttas till ett ställe (IMDB_ROOT) som
+är rot för en albumsamling. Det kan vara en katalog hos användaren
+eller på annat ställe (där albumsamlingar kan finnas) i datorns fil-
+system där aktuell användare har fullständiga åtkomsträttigheter.
 
 Tillverka en katalog (IMDB_ROOT) dit bildkataloger (IMDB) kan
 flyttas. Varje sådan katalog blir en bilddatabas (ett album).

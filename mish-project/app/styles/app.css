@@ -49,7 +49,7 @@ dialog footer {
   cursor: grabbing;
 }
 header p {
-  margin: 0;
+  margin: 0.25rem 0 0 0;
 }
 dialog p span {
   color: blue;
@@ -1199,6 +1199,10 @@ img[alt] {
 [title-2] {
   position: relative;
   opacity: 1;
+  display: inline-block;
+}
+.hoverDark[title-2] {
+  min-width: 6rem;
 }
 [title-2]:hover::after,
 [title-2]:active::after {
