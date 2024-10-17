@@ -61,9 +61,11 @@ document.addEventListener('keydown', (event) => {
       document.querySelector('#go_back').click(); //close view image
       break;
     case 37:  // <
+      if (document.activeElement.nodeName === 'TEXTAREA') break;
       document.querySelector('.nav_.prev').click();
       break;
     case 39:  // >
+      if (document.activeElement.nodeName === 'TEXTAREA') break;
       document.querySelector('.nav_.next').click();
       break;
     case 65:  // A

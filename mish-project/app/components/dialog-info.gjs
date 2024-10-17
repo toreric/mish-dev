@@ -20,13 +20,12 @@ const BR = '<br>'; // HTML line break
 
 // Detect closing Esc key
 const detectEscClose = (e) => {
+  if (e.keyCode !== 27) return;
   e.stopPropagation();
-  if (e.keyCode === 27) { // Esc key
-    let diaObj = document.getElementById(dialogInfoId);
-    if (diaObj.open) {
-      diaObj.close();
-      console.log('-"-: closed ' + dialogInfoId);
-    }
+  let diaObj = document.getElementById(dialogInfoId);
+  if (diaObj.open) {
+    diaObj.close();
+    console.log('-"-: closed ' + dialogInfoId);
   }
 }
 
@@ -72,7 +71,7 @@ export class DialogInfo extends Component {
       // console.log(arr);
     let txt = BR;
 
-    // Image file path
+    // Original image file path
     txt += '<i>' + this.intl.t('Filename') + '</i>: ';
     if (arr[4]) {
       txt += arr[4] + BR;

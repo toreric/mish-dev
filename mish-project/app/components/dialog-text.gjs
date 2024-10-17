@@ -5,6 +5,10 @@ import { inject as service } from '@ember/service';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
+import { TrackedAsyncData } from 'ember-async-data';
+import { cached } from '@glimmer/tracking';
+
+import RefreshThis from './refresh-this';
 
 // Note: Dialog-functions in Header needs dialogTextId:
 export const dialogTextId = 'dialogText';
@@ -13,6 +17,14 @@ const dialogTextKeywordsId = 'dialogTextKeywords';
 
 document.addEventListener('mousedown', async (e) => {
   e.stopPropagation();
+});
+
+document.addEventListener('keydown', async (e) => {
+  if (e.keyCode === 27) {
+    e.stopPropagation();
+    document.getElementById(dialogTextId).close();
+    console.log('-"-: closed ' + dialogTextId);
+  }
 });
 
 //== Component DialogText with <dialog> tags
@@ -27,35 +39,45 @@ export class DialogText extends Component {
 
   // Detect closing Esc key and handle (sub)dialogs
   detectEscClose = async (e) => {
+    if (e.keyCode !== 27) return;
     e.stopPropagation();
-    if (e.keyCode === 27) { // Esc key
-      let tmp1 = document.getElementById(dialogTextNotesId);
-      let tmp2 = document.getElementById(dialogTextKeywordsId);
-      // There are 2 subdialogs
-      if (tmp1.open) {
-        this.z.closeDialog(tmp1.id);
-        await new Promise (z => setTimeout (z, 9)); // Soon allow next
-      } else if (tmp2.open) {
-        this.z.closeDialog(tmp2.id);
-        await new Promise (z => setTimeout (z, 9)); // Soon allow next
-      } else {
-        this.z.closeDialog(dialogTextId);
-      }
+    let tmp1 = document.getElementById(dialogTextNotesId);
+    let tmp2 = document.getElementById(dialogTextKeywordsId);
+    // There are 2 subdialogs
+    if (tmp1.open) {
+      this.z.closeDialog(tmp1.id);
+      await new Promise (z => setTimeout(z, 9)); // Soon allow next
+    } else if (tmp2.open) {
+      this.z.closeDialog(tmp2.id);
+      await new Promise (z => setTimeout(z, 9)); // Soon allow next
+    } else {
+      this.z.closeDialog(dialogTextId);
     }
   }
 
-  // Enter the text into the textareas
-  enterText = (which) => {
-    if (!document.getElementById('i' + this.z.picName)) return;
+  get picName() {
+    if (!this.z.picName) return; // Dismiss initial reactivity
 
+    console.log(this.z.picIndex + ' ' + this.z.picName);
+    console.log(this.z.allFiles[this.z.picIndex].txt1.toString());
+    console.log(this.z.allFiles[this.z.picIndex].txt2.toString());
 
+      // let textarea1 = document.getElementById('dialogTextDescription');
+      // textarea1.innerHTML = this.z.allFiles[this.z.picIndex].txt1.toString();
+      // let textarea2 = document.getElementById('dialogTextCreator');
+      // textarea2.innerHTML = this.z.allFiles[this.z.picIndex].txt2.toString();
 
-    let id = '#i' + this.z.escapeDots(this.z.picName);
-    if (which === 1) {
-      return document.querySelector(id + ' .img_txt1').innerHTML;
-    } else {
-      return document.querySelector(id + ' .img_txt2').innerHTML;
-    }
+    return this.z.picName;
+  }
+
+  get txt1() {
+    if (!this.z.picName) return; // picIndex depends on picName
+    return this.z.allFiles[this.z.picIndex].txt1.toString();
+  }
+
+  get txt2() {
+    if (!this.z.picName) return; // picIndex depends on picName
+    return this.z.allFiles[this.z.picIndex].txt2.toString();
   }
 
   // Detect closing click outside a dialog-draggable modal dialog
@@ -75,19 +97,20 @@ export class DialogText extends Component {
       <dialog id='dialogText'>
         <header data-dialog-draggable >
           <p>&nbsp;</p>
-          <p>{{t 'dialog.text.header'}} <span>{{this.z.picName}}</span></p>
+          <p>{{t 'dialog.text.header'}} <span>{{this.picName}}</span></p>
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogTextId)}}>×</button>
         </header>
         <main>
           <div class="diaMess">
             <VirtualKeys />
           </div>
-          <textarea id="dialogTextDescription" name="description" rows="6" placeholder="{{t "write.description"}} (Xmp.dc.description)" {{on 'mouseleave' onMouseLeaveTextarea}}>
-            {{{fn this.enterText 1}}}
-          </textarea><br>
-          <textarea id="dialogTextCreator" name="creator" rows="2" placeholder="{{t "write.creator"}} (Xmp.dc.creator)" {{on 'mouseleave' onMouseLeaveTextarea}}>
-            {{{fn this.enterText 2}}}
-          </textarea>
+
+          <RefreshThis @for={{this.picName}}>
+            <textarea id="dialogTextDescription" name="description" rows="6" placeholder="{{t "write.description"}} (Xmp.dc.description)" {{on 'mouseleave' onMouseLeaveTextarea}}>{{this.txt1}}</textarea><br>
+
+            <textarea id="dialogTextCreator" name="creator" rows="2" placeholder="{{t "write.creator"}} (Xmp.dc.creator)" {{on 'mouseleave' onMouseLeaveTextarea}}>{{this.txt2}}</textarea>
+          </RefreshThis>
+
         </main>
         <footer data-dialog-draggable>
           <button id="dialogTextButton1" type="button" {{on 'click' (fn this.z.saveDialog dialogTextId)}}>{{t 'button.save'}}</button>&nbsp;
@@ -108,7 +131,9 @@ export class DialogText extends Component {
           <div class="diaMess">
             <VirtualKeys />
           </div>
-          <textarea id="dialogTextInfo" name="description" rows="8" placeholder="{{t 'write.notes'}} (Xmp.dc.source)" {{on 'mouseleave' onMouseLeaveTextarea}}></textarea><br>
+
+          <textarea id="dialogTextInfo" name="description" rows="8" placeholder="{{t 'write.notes'}} (Xmp.dc.source)" {{on 'mouseleave' onMouseLeaveTextarea}}> {{t 'write.notes'}} (Xmp.dc.source)&#13;&#10;&#13;&#10; {{t 'futureFacility'}}</textarea><br>
+
         </main>
         <footer data-dialog-draggable>
           <button type="button" {{on 'click' (fn this.z.saveDialog dialogTextNotesId)}}>{{t 'button.save'}}</button>&nbsp;

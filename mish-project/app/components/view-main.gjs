@@ -189,7 +189,7 @@ class AllImages extends Component {
   }
 
   // Edit the image texts using DialogText
-  editext = (event) => {
+  ediText = (event) => {
     event.stopPropagation();
     this.z.ediText();
   }
@@ -388,20 +388,20 @@ class AllImages extends Component {
           padding:0 0 0.4rem 0.3rem">
 
           {{!-- The image name, should be unique, hidden if 'displayNames'.. --}}
-          <div class="img_name" style="display:{{this.z.displayNames}}" draggable="false" ondragstart="return false" title="" {{on 'click' this.editext}}>
+          <div class="img_name" style="display:{{this.z.displayNames}}" draggable="false" ondragstart="return false" title="" {{on 'click' this.ediText}}>
             {{this.z.picName}}
           </div>
 
           {{!-- The text from Xmp.dc.description metadata --}}
           <div class="img_txt1" draggable="false" ondragstart="return false" title=""
-            {{on 'click' this.editext}}
+            {{on 'click' this.ediText}}
           >
             {{{this.txt 1 this.z.picName}}}
           </div>
 
           {{!-- The text from Xmp.dc.creator metadata --}}
           <div class="img_txt2" draggable="false" ondragstart="return false" title=""
-            {{on 'click' this.editext}}
+            {{on 'click' this.ediText}}
           >
             {{{this.txt 2 this.z.picName}}}
           </div>
