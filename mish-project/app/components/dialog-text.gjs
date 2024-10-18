@@ -57,17 +57,7 @@ export class DialogText extends Component {
 
   get picName() {
     if (!this.z.picName) return; // Dismiss initial reactivity
-
-    console.log(this.z.picIndex + ' ' + this.z.picName);
-    console.log(this.z.allFiles[this.z.picIndex].txt1.toString());
-    console.log(this.z.allFiles[this.z.picIndex].txt2.toString());
-
-      // let textarea1 = document.getElementById('dialogTextDescription');
-      // textarea1.innerHTML = this.z.allFiles[this.z.picIndex].txt1.toString();
-      // let textarea2 = document.getElementById('dialogTextCreator');
-      // textarea2.innerHTML = this.z.allFiles[this.z.picIndex].txt2.toString();
-
-    return this.z.picName;
+   return this.z.picName;
   }
 
   get txt1() {
@@ -166,16 +156,30 @@ export class DialogText extends Component {
 }
 
 //== Virtual keys for some missing characters on common keyboards
-// (Should this be i15d? Or extended to include all needs for langages offered?)
+// (some are due to the included languages)
 
 const VirtualKeys = <template>
   <div class="" style='padding:0.1em'>
-    &nbsp;<b class='insertChar' {{on 'click' insert}}>’</b>
-    &nbsp;<b class='insertChar' {{on 'click' insert}}>–</b>
-    &nbsp;<b class='insertChar' {{on 'click' insert}}>×</b>
-    &nbsp;<b class='insertChar' {{on 'click' insert}}>°</b>
-    &nbsp;<b class='insertChar' {{on 'click' insert}}>—</b>
-    &nbsp;<b class='insertChar' {{on 'click' insert}}>”</b>
+    <b class='insertChar' {{on 'click' insert}}>×</b>
+    <b class='insertChar' {{on 'click' insert}}>°</b>
+    &nbsp;
+    &nbsp;
+    <b class='insertChar' {{on 'click' insert}}>–</b>
+    <b class='insertChar' {{on 'click' insert}}>—</b>
+    &nbsp;
+    &nbsp;
+    <b class='insertChar' {{on 'click' insert}}>„</b>
+    <b class='insertChar' {{on 'click' insert}}>“</b>
+    <b class='insertChar' {{on 'click' insert}}>”</b>
+    &nbsp;
+    &nbsp;
+    <b class='insertChar' {{on 'click' insert}}>‚</b>
+    <b class='insertChar' {{on 'click' insert}}>‘</b>
+    <b class='insertChar' {{on 'click' insert}}>’</b>
+    &nbsp;
+    &nbsp;
+    <b class='insertChar' {{on 'click' insert}}>«</b>
+    <b class='insertChar' {{on 'click' insert}}>»</b>
   </div>
 </template>
 

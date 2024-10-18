@@ -21,6 +21,7 @@ import { insertBefore, insertAfter, removeItem } from 'ember-draggable-modifiers
 // import sortableItem from 'ember-sortable/modifiers/sortable-item';
 
 import { dialogAlertId } from './dialog-alert';
+import { dialogTextId } from './dialog-text';
 
 const LF = '\n'; // LINE_FEED
 const SA = '‡';  // SUBALBUM indicator, NOTE! set in server (routes.js)
@@ -191,7 +192,10 @@ class AllImages extends Component {
   // Edit the image texts using DialogText
   ediText = (event) => {
     event.stopPropagation();
-    this.z.ediText();
+    let tgt = event.target;
+    // NOTE: The picName is already set at .img_show (perhaps not at .img_mini):
+    if (tgt.closest('.img_mini')) this.z.picName = tgt.closest('.img_mini').id.slice(1);
+    this.z.openDialog(dialogTextId);
   }
 
   // The 'double classing', seemingly unnecessary and
@@ -317,17 +321,17 @@ class AllImages extends Component {
            </div>
 
             {{!-- This is the image name, should be unique --}}
-            <div class="img_name" style="display:{{this.z.displayNames}};background:inherit">
+            <div class="img_name" style="display:{{this.z.displayNames}};background:inherit" {{on 'click' this.ediText}}>
               {{item.name}}
             </div>
 
             {{!-- The text from Xmp.dc.description metadata --}}
-            <div class="img_txt1" draggable="false" ondragstart="return false" title-2={{this.noTags item.txt1}}>
+            <div class="img_txt1" draggable="false" ondragstart="return false" title-2="{{this.noTags item.txt1}}" {{on 'click' this.ediText}}>
               {{{this.noTagsShort item.txt1}}}
             </div>
 
             {{!-- The text from Xmp.dc.creator metadata --}}
-            <div class="img_txt2" draggable="false" ondragstart="return false" title-2={{this.noTags item.txt2}}>
+            <div class="img_txt2" draggable="false" ondragstart="return false" title-2="{{this.noTags item.txt2}}" {{on 'click' this.ediText}}>
               {{{this.noTagsShort item.txt2}}}
 
             </div>

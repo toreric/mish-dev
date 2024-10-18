@@ -1139,7 +1139,6 @@ export default class CommonStorageService extends Service {
 
   openModalDialog = (dialogId, origPos) => {
     let diaObj = document.getElementById(dialogId);
-
     if (!diaObj.open) {
       if (origPos) diaObj.style = '';
       diaObj.showModal();
@@ -1148,8 +1147,20 @@ export default class CommonStorageService extends Service {
   }
 
   saveDialog = (dialogId) => {
-    // save code here, to do!
     // needs alternatives for any dialogId
+    if (dialogId === 'dialogText' && this.picIndex > -1) {
+      let name = this.allFiles[this.picIndex].name;
+
+      let txt1 = document.getElementById('dialogTextDescription').value;
+      this.loli(txt1,'color:yellow');
+      document.querySelector('#d' + this.escapeDots(name) + ' .img_txt1').innerHTML = txt1;
+      this.allFiles[this.picIndex].txt1 = txt1;
+
+      let  txt2 = document.getElementById('dialogTextCreator').value;
+      this.loli(txt2,'color:yellow');
+      document.querySelector('#d' + this.escapeDots(name) + ' .img_txt2').innerHTML = txt2;
+      this.allFiles[this.picIndex].txt2 = txt2;
+    }
     this.loli('saved ' + dialogId);
   }
 
