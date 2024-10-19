@@ -4,7 +4,10 @@ import Service from '@ember/service';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { htmlSafe } from '@ember/template';
-import { replace } from 'tar';
+
+import he from 'he';
+// USE: <div title={{he.decode 'text'}}></div> he = HTML entities
+// or  txt = he.decode('text')  or  txt = he.encode('text')
 
 const LF = '\n'   // Line Feed == New Line
 const BR = '<br>' // HTML line break
@@ -63,9 +66,10 @@ export default class CommonStorageService extends Service {
               }
               return subindex;
             }
-  @tracked  textColor = '#fff';               //default text color
-  @tracked  userDir = '/path/to/albums';      //maybe your home dir., server start argument!
-  @tracked  userName = this.defaultUserName;  // May be changed in other ways (e.g. logins)
+  @tracked  textColor = '#fff';          //default text color
+  @tracked  userDir = '/path/to/albums'; //maybe your home dir., server start argument!
+  //       userName may be changed in other ways later (e.g. logins):
+  @tracked  userName = this.defaultUserName;
   @tracked  userStatus = ''; // A logged in user has a certain allowance status
 
   // (*) imdbCoco format is "(<npics>[+<nlinked>]) [<nsubdirs>] [<flag>]"
@@ -92,6 +96,9 @@ export default class CommonStorageService extends Service {
   @tracked  numMarked = 0;  // Number of selection marked images
   @tracked  numOrigin = 0;  // Numder of own original images in the album
   @tracked  numShown = 0;
+
+  @tracked  refreshTexts = 0; // Refresh trigger for RefreshThis
+
         // get PAINT_HIDE() {    // Background color for images marked hidden
         //       return '#003264'; }
         // get PAINT_BACK() {    // Standard background color for images
@@ -421,8 +428,22 @@ export default class CommonStorageService extends Service {
     return n;
   }
 
+  // Remove HTML tags from the text
+  noTags = (txt) => {
+    let tmp = txt.toString().replace(/<(?:.|\n)*?>/gm, ""); // Remove <tags>
+    tmp = he.decode(tmp); // for attributes
+    return tmp ? tmp : ' ';
+  }
+
+  // Remove HTML tags from the text and shorten to fit thumbnails
+  noTagsShort = (txt) => {
+    let tmp = txt.toString().replace(/<(?:.|\n)*?>/gm, ""); // Remove <tags>
+    return tmp.slice(0, 23) ? tmp.slice(0, 23) : '&nbsp;';
+  }
+
+  // Replace underscores with ' ' or '&nbsp;'
   removeUnderscore = (textString, noHTML) => {
-    return textString.replace (/_/g, noHTML ? " " : "&nbsp;");
+    return textString.replace (/_/g, noHTML ? ' ' : '&nbsp;');
   }
 
   escapeDots = (textString) => { // Cf. CSS.escape()
@@ -639,6 +660,7 @@ export default class CommonStorageService extends Service {
       let path = '';
       if (i > -1) {
         this.picName = nextName;
+        i = this.picIndex;
         path = allFiles[i].show;
         this.showImage(nextName, path);
       }
@@ -1150,16 +1172,22 @@ export default class CommonStorageService extends Service {
     // needs alternatives for any dialogId
     if (dialogId === 'dialogText' && this.picIndex > -1) {
       let name = this.allFiles[this.picIndex].name;
+      this.loli(name,'color:yellow');
 
       let txt1 = document.getElementById('dialogTextDescription').value;
       this.loli(txt1,'color:yellow');
-      document.querySelector('#d' + this.escapeDots(name) + ' .img_txt1').innerHTML = txt1;
+      // document.querySelector('#i' + this.escapeDots(name) + ' .img_txt1').innerHTML = this.noTagsShort(txt1);
+      // document.querySelector('#d' + this.escapeDots(name) + ' .img_txt1').innerHTML = txt1;
       this.allFiles[this.picIndex].txt1 = txt1;
 
       let  txt2 = document.getElementById('dialogTextCreator').value;
       this.loli(txt2,'color:yellow');
-      document.querySelector('#d' + this.escapeDots(name) + ' .img_txt2').innerHTML = txt2;
+      // document.querySelector('#i' + this.escapeDots(name) + ' .img_txt2').innerHTML = this.noTagsShort(txt2);
+      // document.querySelector('#d' + this.escapeDots(name) + ' .img_txt2').innerHTML = txt2;
       this.allFiles[this.picIndex].txt2 = txt2;
+      this.refreshTexts ++;
+
+      console.log(this.allFiles[this.picIndex])
     }
     this.loli('saved ' + dialogId);
   }

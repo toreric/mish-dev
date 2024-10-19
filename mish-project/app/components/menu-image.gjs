@@ -88,7 +88,6 @@ export class MenuImage extends Component {
     let id = tgt.id;
     let name = id.slice(1);
     this.z.picName = name;
-    // this.z.picIndex = this.z.allFiles.findIndex(a => {return a.name === name;});
     this.z.loli(this.z.picName + ' txt:', 'color:red');
     console.log(this.z.allFiles[this.z.picIndex])
     let list = tgt.querySelector('.menu_img_list');

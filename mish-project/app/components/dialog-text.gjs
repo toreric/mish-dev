@@ -96,9 +96,11 @@ export class DialogText extends Component {
           </div>
 
           <RefreshThis @for={{this.picName}}>
+           <form>
             <textarea id="dialogTextDescription" name="description" rows="6" placeholder="{{t "write.description"}} (Xmp.dc.description)" {{on 'mouseleave' onMouseLeaveTextarea}}>{{this.txt1}}</textarea><br>
 
             <textarea id="dialogTextCreator" name="creator" rows="2" placeholder="{{t "write.creator"}} (Xmp.dc.creator)" {{on 'mouseleave' onMouseLeaveTextarea}}>{{this.txt2}}</textarea>
+           </form>
           </RefreshThis>
 
         </main>

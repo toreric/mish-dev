@@ -12,7 +12,9 @@ import { htmlSafe } from '@ember/template';
 import he from 'he';
 // USE: <div title={{he.decode 'text'}}></div> he = HTML entities
 // or  txt = he.decode('text')  or  txt = he.encode('text')
-import { MenuImage } from './menu-image'; // Needs parameter = image name!
+import { MenuImage } from './menu-image';
+
+import RefreshThis from './refresh-this';
 
 import sortableItem from 'ember-draggable-modifiers/modifiers/sortable-item';
 import { insertBefore, insertAfter, removeItem } from 'ember-draggable-modifiers/utils/array';
@@ -133,17 +135,6 @@ class AllImages extends Component {
     }
   }
 
-  noTags = (txt) => {
-    let tmp = txt.toString().replace(/<(?:.|\n)*?>/gm, ""); // Remove <tags>
-    tmp = he.decode(tmp); // for attributes
-    return tmp ? tmp : ' ';
-  }
-
-  noTagsShort = (txt) => {
-    let tmp = txt.toString().replace(/<(?:.|\n)*?>/gm, ""); // Remove <tags>
-    return tmp.slice(0, 23) ? tmp.slice(0, 23) : '&nbsp;';
-  }
-
   // // For ember-sortable:
 
   // reorderItems = (itemModels, draggedModel) => {
@@ -219,19 +210,15 @@ class AllImages extends Component {
 
     } else { // 1 == slideshow image
       let thisPic = document.querySelector('#i' + this.z.escapeDots(this.z.picName));
-    console.log('thisPic', thisPic)
       let clicked = document.querySelector('#markShow');
-    console.log('clicked', clicked)
       if (thisPic.classList.contains('selected')) {
         thisPic.classList.remove('selected');
         thisPic.querySelector('div[alt="MARKER"]').className = 'markFalse';
         clicked.className = 'markFalseShow';
-    console.log('clicked.className', clicked.className)
       } else {
         thisPic.classList.add('selected');
         thisPic.querySelector('div[alt="MARKER"]').className = 'markTrue';
         clicked.className = 'markTrueShow';
-    console.log('clicked.className', clicked.className)
       }
     }
   }
@@ -299,6 +286,7 @@ class AllImages extends Component {
         margin:auto;padding:0;align-items:baseline;
         justify-content:center;position:relative"
       >
+        <RefreshThis @for={{this.z.refreshTexts}}>
         {{!-- The thumnail images are displayed --}}
         {{#each this.items as |item|}}
           <div class="img_mini {{item.symlink}}" id="i{{item.name}}"
@@ -326,19 +314,21 @@ class AllImages extends Component {
             </div>
 
             {{!-- The text from Xmp.dc.description metadata --}}
-            <div class="img_txt1" draggable="false" ondragstart="return false" title-2="{{this.noTags item.txt1}}" {{on 'click' this.ediText}}>
-              {{{this.noTagsShort item.txt1}}}
+            <div class="img_txt1" draggable="false" ondragstart="return false" title-2="{{this.z.noTags item.txt1}}" {{on 'click' this.ediText}}>
+              {{{this.z.noTagsShort item.txt1}}}
             </div>
 
             {{!-- The text from Xmp.dc.creator metadata --}}
-            <div class="img_txt2" draggable="false" ondragstart="return false" title-2="{{this.noTags item.txt2}}" {{on 'click' this.ediText}}>
-              {{{this.noTagsShort item.txt2}}}
+            <div class="img_txt2" draggable="false" ondragstart="return false" title-2="{{this.z.noTags item.txt2}}" {{on 'click' this.ediText}}>
+              {{{this.z.noTagsShort item.txt2}}}
 
             </div>
             {{!-- <span class='handle' {{sortableHandle}}>&varr;</span> --}}
 
           </div>
         {{/each}}
+        </RefreshThis>
+
       </div>
       </div>
 
@@ -351,7 +341,7 @@ class AllImages extends Component {
         {{!-- An extra slideshow wrapping div --}}
         <div id="link_show" draggable="false" ondragstart="return false" style="position:relative">
 
-          {{!-- A midpoint mark (ᵛ) on the slideshow image border --}}
+          {{!-- A midpoint mark (ᵛ) on the slideshow image top border --}}
           <p style="margin:0;line-height:0;font-family:sans-serif">ᵛ</p>
 
           {{!-- The slideshow image comes here, src loaded at runtime --}}
@@ -366,17 +356,17 @@ class AllImages extends Component {
           <div class="toggleNavInfo" style="opacity:0">
 
             {{!-- Outside image: return-to-thumbnails click area --}}
-            <a class="navReturn" style="top:-2.5rem; left:0%; width:100%; border:0;" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage '')}}><p>{{t 'return'}} <span style="font:normal 1rem Arial!important">[Esc]</span></p></a>
+            <a class="navReturn" style="top:-2.5rem; left:0%; width:100%; border:0" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage '')}}><p>{{t 'return'}} <span style="font:normal 1rem Arial!important">[Esc]</span></p></a>
 
             {{!-- Left backwards click area --}}
-            <a style="top: 0%; left: 0%; width: 49.5%; height: 99.5%;"
+            <a style="top: 0%; left: 0%; width: 49.5%; height: 99.5%"
             draggable="false" ondragstart="return false"
             {{on 'click' (fn this.z.showNext false)}}>
               <p>{{t 'previous'}}<br><span style="font:normal 1rem Arial!important">[&lt;]</span></p><br>&nbsp;<br>&nbsp;
             </a>
 
             {{!-- Right forwards click area --}}
-            <a style="top: 0%; left: 50%; width: 50%; height: 99.5%; border-left:0;"
+            <a style="top: 0%; left: 50%; width: 50%; height: 99.5%; border-left:0"
             draggable="false" ondragstart="return false"
             {{on 'click' (fn this.z.showNext true)}}>
               <p>{{t 'next'}}<br><span style="font:normal 1rem Arial!important">[&gt;]</span></p><br>&nbsp;<br>&nbsp;
@@ -386,12 +376,14 @@ class AllImages extends Component {
 
         </div>
 
+          <RefreshThis @for={{this.z.refreshTexts}}>
+
         {{!-- The slideshow image's name and texts --}}
         <div id="link_texts" draggable="false" style="display:table-caption;
           caption-side:bottom;min-height:1rem;
           padding:0 0 0.4rem 0.3rem">
 
-          {{!-- The image name, should be unique, hidden if 'displayNames'.. --}}
+          {{!-- 'picName' should be unique; 'displayNames' is 'none' or '' --}}
           <div class="img_name" style="display:{{this.z.displayNames}}" draggable="false" ondragstart="return false" title="" {{on 'click' this.ediText}}>
             {{this.z.picName}}
           </div>
@@ -410,6 +402,8 @@ class AllImages extends Component {
             {{{this.txt 2 this.z.picName}}}
           </div>
         </div>
+
+          </RefreshThis>
 
     </div>
 
