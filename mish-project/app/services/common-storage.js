@@ -6,6 +6,7 @@ import { tracked } from '@glimmer/tracking';
 import { htmlSafe } from '@ember/template';
 
 import he from 'he';
+import { replace } from 'tar';
 // USE: <div title={{he.decode 'text'}}></div> he = HTML entities
 // or  txt = he.decode('text')  or  txt = he.encode('text')
 
@@ -191,6 +192,52 @@ export default class CommonStorageService extends Service {
     this.allow = allow;
     this.allowance = allowance;
     this.allowvalue = allowvalue;
+  }
+
+  //   #region Textutils
+  //== Text functions
+
+  // Replace <br> with \n, used in dialog-text/DialogText
+  deNormalize = (str) =>{
+    return str.replace(/<br>/g, '\n');
+  }
+
+  // Neutralize dots for CSS, e.g. in the querySelector() argument
+  escapeDots = (textString) => { // Cf. CSS.escape()
+    // Used for file names when used in CSS, #<id> etc.
+    return textString.replace (/\./g, "\\.");
+  }
+
+  // Susbtitute underscores in an album name with spaces and remove the first
+  // character and the random end from a temporary 'found-images-album' name
+  handsomize = (name) => {
+    let tmp = name.replace(/_/g, ' ');
+    if (tmp[0] === '§') tmp = tmp.replace(/\.[^.]+$/, '').slice(1);
+    return tmp;
+  }
+
+  // Replace \n with <br> and remove excess spaces
+  // Used in saveDialog('dialogText'), cf. deNormalize
+  normalize = (str) => {
+    return str.trim().replace(/ \n/g, '\n').replace(/\n /g, '\n').replace(/\n/g, '<br>').replace(/  /g, ' ');
+  }
+
+  // Remove HTML tags from text
+  noTags = (txt) => {
+    let tmp = txt.toString().replace(/<(?:.|\n)*?>/gm, ""); // Remove <tags>
+    tmp = he.decode(tmp); // for attributes
+    return tmp ? tmp : ' ';
+  }
+
+  // Remove HTML tags from the text and shorten to fit thumbnails
+  noTagsShort = (txt) => {
+    let tmp = txt.toString().replace(/<(?:.|\n)*?>/gm, ""); // Remove <tags>
+    return tmp.slice(0, 23) ? tmp.slice(0, 23) : '&nbsp;';
+  }
+
+  // Replace underscores with ' ' or '&nbsp;'
+  removeUnderscore = (textString, noHTML) => {
+    return textString.replace (/_/g, noHTML ? ' ' : '&nbsp;');
   }
 
   //   #region Utilities
@@ -426,35 +473,6 @@ export default class CommonStorageService extends Service {
       n += Number(c[i].replace(/^[^(]*\(([0-9]+).*$/, '$1'));
     }
     return n;
-  }
-
-  // Remove HTML tags from the text
-  noTags = (txt) => {
-    let tmp = txt.toString().replace(/<(?:.|\n)*?>/gm, ""); // Remove <tags>
-    tmp = he.decode(tmp); // for attributes
-    return tmp ? tmp : ' ';
-  }
-
-  // Remove HTML tags from the text and shorten to fit thumbnails
-  noTagsShort = (txt) => {
-    let tmp = txt.toString().replace(/<(?:.|\n)*?>/gm, ""); // Remove <tags>
-    return tmp.slice(0, 23) ? tmp.slice(0, 23) : '&nbsp;';
-  }
-
-  // Replace underscores with ' ' or '&nbsp;'
-  removeUnderscore = (textString, noHTML) => {
-    return textString.replace (/_/g, noHTML ? ' ' : '&nbsp;');
-  }
-
-  escapeDots = (textString) => { // Cf. CSS.escape()
-    // Used for file names when used in CSS, #<id> etc.
-    return textString.replace (/\./g, "\\.");
-  }
-
-  handsomize = (name) => {
-    let tmp = name.replace(/_/g, ' ');
-    if (tmp[0] === '§') tmp = tmp.replace(/\.[^.]+$/, '').slice(1);
-    return tmp;
   }
 
   resetBorders = () => { // Reset all mini-image borders and SRC attributes
@@ -1175,17 +1193,16 @@ export default class CommonStorageService extends Service {
       this.loli(name,'color:yellow');
 
       let txt1 = document.getElementById('dialogTextDescription').value;
+      txt1 = this.normalize(txt1);
       this.loli(txt1,'color:yellow');
-      // document.querySelector('#i' + this.escapeDots(name) + ' .img_txt1').innerHTML = this.noTagsShort(txt1);
-      // document.querySelector('#d' + this.escapeDots(name) + ' .img_txt1').innerHTML = txt1;
       this.allFiles[this.picIndex].txt1 = txt1;
 
       let  txt2 = document.getElementById('dialogTextCreator').value;
+      txt2 = this.normalize(txt2);
       this.loli(txt2,'color:yellow');
-      // document.querySelector('#i' + this.escapeDots(name) + ' .img_txt2').innerHTML = this.noTagsShort(txt2);
-      // document.querySelector('#d' + this.escapeDots(name) + ' .img_txt2').innerHTML = txt2;
       this.allFiles[this.picIndex].txt2 = txt2;
-      this.refreshTexts ++;
+
+      this.refreshTexts ++; // Change triggers rerender by RefreshThis
 
       console.log(this.allFiles[this.picIndex])
     }

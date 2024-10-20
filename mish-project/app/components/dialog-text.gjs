@@ -62,12 +62,12 @@ export class DialogText extends Component {
 
   get txt1() {
     if (!this.z.picName) return; // picIndex depends on picName
-    return this.z.allFiles[this.z.picIndex].txt1.toString();
+    return this.z.deNormalize(this.z.allFiles[this.z.picIndex].txt1.toString());
   }
 
   get txt2() {
     if (!this.z.picName) return; // picIndex depends on picName
-    return this.z.allFiles[this.z.picIndex].txt2.toString();
+    return this.z.deNormalize(this.z.allFiles[this.z.picIndex].txt2.toString());
   }
 
   // Detect closing click outside a dialog-draggable modal dialog
@@ -96,11 +96,9 @@ export class DialogText extends Component {
           </div>
 
           <RefreshThis @for={{this.picName}}>
-           <form>
             <textarea id="dialogTextDescription" name="description" rows="6" placeholder="{{t "write.description"}} (Xmp.dc.description)" {{on 'mouseleave' onMouseLeaveTextarea}}>{{this.txt1}}</textarea><br>
 
             <textarea id="dialogTextCreator" name="creator" rows="2" placeholder="{{t "write.creator"}} (Xmp.dc.creator)" {{on 'mouseleave' onMouseLeaveTextarea}}>{{this.txt2}}</textarea>
-           </form>
           </RefreshThis>
 
         </main>
