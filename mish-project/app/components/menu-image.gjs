@@ -43,7 +43,7 @@ export class MenuImage extends Component {
     let i = this.z.imdbDirs.indexOf(dir);
     if (i < 0) {
       if (document.getElementById(dialogAlertId).open) {
-        this.z.alertRemove();
+        this.z.closeDialog(dialogAlertId);
       } else {
         this.z.alertMess(this.intl.t('albumMissing') + ':<br><br><p style="width:100%;text-align:center;margin:0">”' + this.z.removeUnderscore(name) + '”</p>');
       }

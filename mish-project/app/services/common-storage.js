@@ -19,16 +19,16 @@ export default class CommonStorageService extends Service {
   //   #region Variables
   //== Significant Mish system global variables
 
-  @tracked  aboutThis = '»Mish« ';  //info (to be changed) about Mish build version etc.
-  @tracked  albumHistory = [0];     //album index visit history
-  @tracked  bkgrColor = '#111';     //default background color
-  @tracked  credentials = '';       //user credentials: \n-string from db
+  @tracked  aboutThis = '«Mish»'; //info (to be changed) about Mish build version etc.
+  @tracked  albumHistory = [0];   //album index visit history
+  @tracked  bkgrColor = '#111';   //default background color
+  @tracked  credentials = '';     //user credentials: \n-string from db
         get defaultUserName() { return `${this.intl.t('guest')}`; }
   @tracked  freeUsers = 'guest...'; //user names without passwords (set by DialogLogin)
-  @tracked  imdbCoco = '';          //content counters etc. for 'imdbDirs', see (*) below
-  @tracked  imdbDir = '';           //actual/current (sub)album directory (IMDB_DIR)
-  @tracked  imdbDirIndex = 0;       //actual/current (sub)album directory index
-        get imdbDirName() {         //the last-in-path album name of 'imdbRoot+imdbDir'
+  @tracked  imdbCoco = '';    //content counters etc. for 'imdbDirs', see (*) below
+  @tracked  imdbDir = '';     //actual/current (sub)album directory (IMDB_DIR)
+  @tracked  imdbDirIndex = 0; //actual/current (sub)album directory index
+        get imdbDirName() {   //the last-in-path album name of 'imdbRoot+imdbDir'
               if (this.imdbRoot) {
                 return (this.imdbRoot + this.imdbDir).replace(/^(.*\/)*([^/]+)$/, '$2');
               } else {
@@ -199,7 +199,7 @@ export default class CommonStorageService extends Service {
 
   // Replace <br> with \n, used in dialog-text/DialogText
   deNormalize = (str) =>{
-    return str.replace(/<br>/g, '\n');
+    return str.replace(/<br>/g, LF);
   }
 
   // Neutralize dots for CSS, e.g. in the querySelector() argument
@@ -219,7 +219,7 @@ export default class CommonStorageService extends Service {
   // Replace \n with <br> and remove excess spaces
   // Used in saveDialog('dialogText'), cf. deNormalize
   normalize = (str) => {
-    return str.trim().replace(/ \n/g, '\n').replace(/\n /g, '\n').replace(/\n/g, '<br>').replace(/  /g, ' ');
+    return str.trim().replace(/ \n/g, LF).replace(/\n /g, LF).replace(/\n/g, '<br>').replace(/  /g, ' ');
   }
 
   // Remove HTML tags from text
@@ -280,7 +280,7 @@ export default class CommonStorageService extends Service {
 
   openAlbum = async (i) => {
     this.picName = '';
-    this.alertRemove(); // remove possible alert dialog
+    this.closeDialogs(); // close possibly open dialogs
     // Close the show image view
     document.querySelector('.img_show').style.display = 'none'; //was 'table'
     // Open the thumbnail view
@@ -457,9 +457,6 @@ export default class CommonStorageService extends Service {
       this.closeDialog('dialogAlert');
     }
   }
-  alertRemove = () => {
-    this.closeDialog('dialogAlert');
-  }
 
   albumAllImg = (i) => { // number of original + symlink images in album 'i'
     let c = this.imdbCoco[i];
@@ -482,7 +479,7 @@ export default class CommonStorageService extends Service {
     }
     // Resetting all minifile SRC attributes ascertains that any minipic is shown
     // (maybe created just now, e.g. at upload, any outside-click will show them)
-    // NOTE: Is this outdated 2024? We'll see.
+    // NOTE: Is this outdated 2024? We'll test and see, perhaps 2025.
     for (var i=0; i<minObj.length; i++) {
       var minipic = minObj[i].src;
       minObj[i].removeAttribute('src');
@@ -1092,7 +1089,7 @@ export default class CommonStorageService extends Service {
   }
 
   //#region savetext
-  //saving image captions as metadata saveText(fileName +'\n'+ txt1 +'\n'+ txt2);
+  //saving image captions as metadata: saveText(fileName +'\n'+ txt1 +'\n'+ txt2);
   saveText = (txt) => {
     // var IMDB_DIR =  $ ("#imdbDir").text ();
     // if (IMDB_DIR.slice (-1) !== "/") {IMDB_DIR = IMDB_DIR + "/";} // Important! (all these OBSOLETE)
@@ -1189,29 +1186,31 @@ export default class CommonStorageService extends Service {
   saveDialog = (dialogId) => {
     // needs alternatives for any dialogId
     if (dialogId === 'dialogText' && this.picIndex > -1) {
-      let name = this.allFiles[this.picIndex].name;
-      this.loli(name,'color:yellow');
+      let linkto = this.allFiles[this.picIndex].linkto;
+        this.loli(linkto,'color:yellow');
 
       let txt1 = document.getElementById('dialogTextDescription').value;
       txt1 = this.normalize(txt1);
-      this.loli(txt1,'color:yellow');
+        this.loli(txt1,'color:yellow');
       this.allFiles[this.picIndex].txt1 = txt1;
 
       let  txt2 = document.getElementById('dialogTextCreator').value;
       txt2 = this.normalize(txt2);
-      this.loli(txt2,'color:yellow');
+        this.loli(txt2,'color:yellow');
       this.allFiles[this.picIndex].txt2 = txt2;
 
-      this.refreshTexts ++; // Change triggers rerender by RefreshThis
+      this.refreshTexts ++; // Change trigger to rerender by RefreshThis
 
-      console.log(this.allFiles[this.picIndex])
+        // console.log(this.allFiles[this.picIndex])
+      this.loli(this.imdbRoot + linkto, 'color:red');
+      // this.saveText(this.imdbRoot + linkto + LF + txt1 + LF + txt2);
     }
     this.loli('saved ' + dialogId);
   }
 
   closeDialog = (dialogId) => {
     let diaObj = document.getElementById(dialogId);
-    if (diaObj.open) {
+    if (diaObj && diaObj.open) {
       diaObj.close();
       this.loli('closed ' + dialogId);
     }
@@ -1222,6 +1221,14 @@ export default class CommonStorageService extends Service {
     this.closeDialog(dialogId);
   }
 
+  closeDialogs  = () => { // Close ALL <dialog>s!
+    for (let diaObj of document.getElementsByTagName('dialog')) {
+      if (diaObj.open) {
+        diaObj.close();
+        this.loli('closed ' + diaObj.id);
+      }
+    }
+  }
 }
 //   #region End
 //   #endregion

@@ -165,7 +165,7 @@ export class MenuMain extends Component {
   // album root/collection (imdbRoot) is chosen (then open it)
   checkRoot = () => {
     if (document.getElementById('dialogAlert').hasAttribute('open')) {
-      this.z.alertRemove();
+      this.z.closeDialog(dialogAlertId);
       return true;
     }
     if (!this.z.imdbRoot) {
@@ -230,7 +230,7 @@ export class MenuMain extends Component {
       <p onclick="return false" draggable="false" ondragstart="return false">
         <a class="" style="color: white;cursor: default">
 
-          <select id="rootSel" title-2={{t 'albumcollinfo'}} {{on 'change' this.selectRoot}} {{on 'mousedown' (fn this.z.alertRemove)}}>
+          <select id="rootSel" title-2={{t 'albumcollinfo'}} {{on 'change' this.selectRoot}} {{on 'mousedown' (fn this.z.closeDialog this.dialogAlertId)}}>
             <option value="" selected disabled hidden>{{t 'selalbumcoll'}}</option>
             {{#each this.z.imdbRoots as |rootChoice|}}
               <option value={{rootChoice}} selected={{eq this.z.imdbRoot rootChoice}}>{{rootChoice}}</option>

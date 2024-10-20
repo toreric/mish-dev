@@ -185,7 +185,10 @@ class AllImages extends Component {
     event.stopPropagation();
     let tgt = event.target;
     // NOTE: The picName is already set at .img_show (perhaps not at .img_mini):
-    if (tgt.closest('.img_mini')) this.z.picName = tgt.closest('.img_mini').id.slice(1);
+    if (tgt.closest('.img_mini')) {
+      this.z.picName = tgt.closest('.img_mini').id.slice(1);
+      this.z.markBorders(this.z.picName);
+    }
     this.z.openDialog(dialogTextId);
   }
 
