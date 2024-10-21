@@ -184,12 +184,17 @@ class AllImages extends Component {
   ediText = (event) => {
     event.stopPropagation();
     let tgt = event.target;
+    let old = this.z.picName;
     // NOTE: The picName is already set at .img_show (perhaps not at .img_mini):
     if (tgt.closest('.img_mini')) {
       this.z.picName = tgt.closest('.img_mini').id.slice(1);
       this.z.markBorders(this.z.picName);
     }
-    this.z.openDialog(dialogTextId);
+    if (old === this.z.picName) {
+      this.z.toggleDialog (dialogTextId);
+    } else {
+      this.z.openDialog(dialogTextId);
+    }
   }
 
   // The 'double classing', seemingly unnecessary and
@@ -289,8 +294,8 @@ class AllImages extends Component {
         margin:auto;padding:0;align-items:baseline;
         justify-content:center;position:relative"
       >
-        <RefreshThis @for={{this.z.refreshTexts}}>
         {{!-- The thumnail images are displayed --}}
+        <RefreshThis @for={{this.z.refreshTexts}}>
         {{#each this.items as |item|}}
           <div class="img_mini {{item.symlink}}" id="i{{item.name}}"
             {{sortableItem data=item onDrop=this.move}}
@@ -379,9 +384,8 @@ class AllImages extends Component {
 
         </div>
 
-          <RefreshThis @for={{this.z.refreshTexts}}>
-
         {{!-- The slideshow image's name and texts --}}
+        <RefreshThis @for={{this.z.refreshTexts}}>
         <div id="link_texts" draggable="false" style="display:table-caption;
           caption-side:bottom;min-height:1rem;
           padding:0 0 0.4rem 0.3rem">
@@ -405,8 +409,7 @@ class AllImages extends Component {
             {{{this.txt 2 this.z.picName}}}
           </div>
         </div>
-
-          </RefreshThis>
+        </RefreshThis>
 
     </div>
 

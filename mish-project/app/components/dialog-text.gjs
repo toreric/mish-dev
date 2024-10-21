@@ -57,6 +57,16 @@ export class DialogText extends Component {
 
   get picName() {
     if (!this.z.picName) return; // Dismiss initial reactivity
+    let text = '';
+    if (/\.gif$/i.test(this.z.allFiles[this.z.picIndex].linkto)) {
+      // Insert after '#dialogText main .diaMess', ended wirh <br>:
+      // Gif-bilder kan bara ges tillfällig text, den kan inte sparas!
+      // intl.t name = txtGif
+      let nodeMess = document.querySelector('#dialogText main .diaMess');
+      text = 'Gif-bilder kan bara ges tillfällig text, den kan inte sparas!';
+      nodeMess.insertAdjacentText('afterbegin', text);
+    }
+
    return this.z.picName;
   }
 

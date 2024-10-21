@@ -68,7 +68,8 @@ export default class CommonStorageService extends Service {
               return subindex;
             }
   @tracked  textColor = '#fff';          //default text color
-  @tracked  userDir = '/path/to/albums'; //maybe your home dir., server start argument!
+  //       maybe your home dir., server start argument IMDB_HOME
+  @tracked  userDir = '/path/to/albums';
   //       userName may be changed in other ways later (e.g. logins):
   @tracked  userName = this.defaultUserName;
   @tracked  userStatus = ''; // A logged in user has a certain allowance status
@@ -487,7 +488,7 @@ export default class CommonStorageService extends Service {
     }
   }
   markBorders = async (namepic) => { // Mark a mini-image border
-    await new Promise (z => setTimeout (z, 255)); // Allow the dom to settle
+    await new Promise (z => setTimeout (z, 25)); // Allow the dom to settle
     document.querySelector('#i' + this.escapeDots(namepic) + ' img.left-click').classList.add('dotted');
   }
 
@@ -1101,7 +1102,7 @@ export default class CommonStorageService extends Service {
     xhr.onload = function () {
       if (xhr.response) {
         // userLog ("NOT written");
-        let edpn = escapeDots(this.picName);
+        let edpn = this.escapeDots(this.picName);
         document.querySelector('#i' + edpn + ' .img_txt1').innerHTML = '';
         document.querySelector('#i' + edpn + ' .img_txt2').innerHTML = '';
         // $ ("#i" + edpn + " .img_txt1" ).html ("");
@@ -1184,10 +1185,12 @@ export default class CommonStorageService extends Service {
   }
 
   saveDialog = (dialogId) => {
-    // needs alternatives for any dialogId
+    // should have alternatives for any dialogId
     if (dialogId === 'dialogText' && this.picIndex > -1) {
       let linkto = this.allFiles[this.picIndex].linkto;
         this.loli(linkto,'color:yellow');
+
+      let gif = /\.gif$/i.test(linkto);
 
       let txt1 = document.getElementById('dialogTextDescription').value;
       txt1 = this.normalize(txt1);
@@ -1198,12 +1201,15 @@ export default class CommonStorageService extends Service {
       txt2 = this.normalize(txt2);
         this.loli(txt2,'color:yellow');
       this.allFiles[this.picIndex].txt2 = txt2;
-
       this.refreshTexts ++; // Change trigger to rerender by RefreshThis
-
         // console.log(this.allFiles[this.picIndex])
-      this.loli(this.imdbRoot + linkto, 'color:red');
-      // this.saveText(this.imdbRoot + linkto + LF + txt1 + LF + txt2);
+      let path = this.imdbRoot + linkto;
+        this.loli(path, 'color:red');
+      if (!gif) {
+        this.saveText(path + LF + txt1 + LF + txt2);
+        this.loli('saved ' + dialogId);
+        return;
+      }
     }
     this.loli('saved ' + dialogId);
   }

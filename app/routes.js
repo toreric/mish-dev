@@ -489,43 +489,43 @@ module.exports = function(app) { // Start module.exports
   //#region savetext
   // ##### Save Xmp.dc.description and Xmp.dc.creator using exiv2
   app.post ('/savetext', function (req, res, next) {
-    // The imagedir directory path is already included in the file name here @***
     var body = []
     req.on('data', (chunk) => {
       body.push(chunk)
     }).on('end', () => {
-      body = Buffer.concat(body).toString ()
+      body = Buffer.concat(body).toString()
       // Here `body` has the entire request body stored in it as a string
       var tmp = body.split('\n')
-      var fileName = tmp [0].trim() // the path is included here @***
+      var fileName = IMDB_HOME + '/' + tmp[0].trim() // the path is included here @***
       var msgName = '.' + fileName.slice(IMDB.length)
 
       let okay = fs.constants.W_OK | fs.constants.R_OK
-      fs.access (fileName, okay, async err => {
+      fs.access(fileName, okay, async err => {
         if (err) {
-          res.send ("Cannot write to " + msgName)
-          console.log (RED + 'NO WRITE PERMISSION to ' + msgName + RSET)
+          res.send("Cannot write to " + msgName)
+          console.log(RED + 'NO WRITE PERMISSION to ' + msgName + RSET)
         } else {
-          console.log ('Xmp.dc metadata will be saved into ' + msgName)
-          body = tmp [1].trim () // These trimmings are probably superfluous
+          console.log('Xmp.dc metadata will be saved into ' + msgName)
+          body = tmp [1].trim() // These trimmings are probably superfluous
           // The set_xmp_... command strings will be single quoted, avoiding
-          // most Bash shell interpretation. Thus slice out 's within 's (cannot
-          // be escaped just simply); makes Bash happy :) ('s = single quotes)
-          body = body.replace (/'/g, "'\\''")
-          //console.log (fileName + " '" + body + "'")
-          var mtime = fs.statSync (fileName).mtime // Object
+          // most Bash shell interpretation. Thus slice out 's (single quotes)
+          // within 's (cannot be escaped just simply); makes Bash happy :)
+          body = body.replace(/'/g, "'\\''")
+          //console.log(fileName + " '" + body + "'")
+          var mtime = fs.statSync(fileName).mtime // Object
           //console.log (typeof mtime, mtime)
-          execSync ('set_xmp_description ' + fileName + " '" + body + "'") // for txt1
-          body = tmp [2].trim () // These trimmings are probably superfluous
-          body = body.replace (/'/g, "'\\''")
+          execSync('set_xmp_description ' + fileName + " '" + body + "'") // for txt1
+          body = tmp [2].trim() // These trimmings are probably superfluous
+          body = body.replace(/'/g, "'\\''")
           //console.log (fileName + " '" + body + "'")
           if (fs.open)
-          execSync ('set_xmp_creator ' + fileName + " '" + body + "'") // for txt2
+          execSync('set_xmp_creator ' + fileName + " '" + body + "'") // for txt2
           // Reset modification time, this was metadata only:
-          execSync ('touch -d "' + mtime + '" "' + fileName + '"')
-          res.send ('')
+          execSync('touch -d "' + mtime + '" "' + fileName + '"')
+          res.send('')
           await new Promise (z => setTimeout (z, 888))
-          await sqlUpdate (fileName) // with path @***
+          // await sqlUpdate (fileName) // with path @***
+          console.log('TO UPDATE: ' + fileName)
         }
       })
     })
@@ -778,7 +778,7 @@ module.exports = function(app) { // Start module.exports
     // Check if the file exists, then continue, but note (!): This openAsync will
     // fail if filepath is absolute. Needs web-rel-path to work ...
     fs.openAsync(filepath, 'r').then(async () => { // async!
-      if (Number(fs.statSync (filepath).mtime) < Number(fs.statSync(origpath).mtime)) {
+      if (Number(fs.statSync(filepath).mtime) < Number(fs.statSync(origpath).mtime)) {
         await rzFile(origpath, filepath, size) // await!
       }
     })
