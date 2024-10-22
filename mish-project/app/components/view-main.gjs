@@ -324,7 +324,7 @@ class AllImages extends Component {
             {{!-- The text from Xmp.dc.description metadata --}}
             <div class="img_txt1" draggable="false" ondragstart="return false" title-2="{{this.z.noTags item.txt1}}" {{on 'click' this.ediText}}>
               {{{this.z.noTagsShort item.txt1}}}
-            </div>
+            </div><br>
 
             {{!-- The text from Xmp.dc.creator metadata --}}
             <div class="img_txt2" draggable="false" ondragstart="return false" title-2="{{this.z.noTags item.txt2}}" {{on 'click' this.ediText}}>

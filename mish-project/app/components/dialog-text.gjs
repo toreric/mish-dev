@@ -58,13 +58,16 @@ export class DialogText extends Component {
   get picName() {
     if (!this.z.picName) return; // Dismiss initial reactivity
     let text = '';
-    if (/\.gif$/i.test(this.z.allFiles[this.z.picIndex].linkto)) {
+    let path = this.z.allFiles[this.z.picIndex].linkto;
+    let nodeMess = document.querySelector('#dialogText main .diaMess b');
+    if (/\.gif$/i.test(path)) {
       // Insert after '#dialogText main .diaMess', ended wirh <br>:
       // Gif-bilder kan bara ges tillfällig text, den kan inte sparas!
       // intl.t name = txtGif
-      let nodeMess = document.querySelector('#dialogText main .diaMess');
-      text = 'Gif-bilder kan bara ges tillfällig text, den kan inte sparas!';
-      nodeMess.insertAdjacentText('afterbegin', text);
+      text = 'Gif-bilder kan inte ges permanent text, sparas bara tillfälligt';
+      nodeMess.textContent = text;
+    } else {
+      nodeMess.textContent = '';
     }
 
    return this.z.picName;
@@ -102,6 +105,7 @@ export class DialogText extends Component {
         </header>
         <main>
           <div class="diaMess">
+            <b style="width:100%;text-align:center;color:brown"></b>
             <VirtualKeys />
           </div>
 

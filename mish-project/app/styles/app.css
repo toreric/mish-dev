@@ -189,7 +189,7 @@ i {
 }
 
 /* Correcting these tags against the introduced
-spacing when they occur in inserted picture texts! */
+spacing when they occur in inserted picture texts!
 .img_txt1 a,
 .img_txt1 b,
 .img_txt1 strong,
@@ -206,7 +206,7 @@ spacing when they occur in inserted picture texts! */
 .img_txt2 u {
   margin: 0 -0.18em !important;
 }
-
+*/
 .lastRow,
 .copyright {
   font: 0.9em monospace;
