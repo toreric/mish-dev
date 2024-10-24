@@ -1751,15 +1751,6 @@ select {
 .mainMenu select {
   outline: #87cfff double 4px
 }
-#wrap_show {
-  display: inline-table;
-  width: 20%;
-  /* regulate distance from border here, not with #wrap_pad */
-  margin: 0 5em 0 0;
-}
-#wrap_show.symlink {
-  border-bottom: 1.5px solid #0b0;
-}
 #link_show {
   position: relative;
   background: transparent;
@@ -1779,15 +1770,6 @@ select {
 }
 #link_show img {
   border: 1px solid gray;
-}
-#wrap_show .img_name,
-#wrap_show .img_txt1,
-#wrap_show .img_txt2,
-#wrap_show .img_name *,
-#wrap_show .img_txt1 *,
-#wrap_show .img_txt2 * {
-  background: transparent;
-  padding: 0 0.25em;
 }
 .modal-fog {
   background: rgba(30, 30, 30, 0.5);

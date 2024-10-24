@@ -102,7 +102,7 @@ class SubAlbums extends Component {
       <div class="miniImgs albs">
         {{#if this.z.imdbRoot}}
           <span title-2="{{this.z.imdbRoot}}{{this.z.imdbDir}}">
-            <b>”{{{this.z.handsomize this.z.imdbDirName}}}”</b>
+            <b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
             {{t 'has'}} {{this.nsub}} {{this.sual}}</span><span title-2={{t 'plusExplain'}}>{{{this.nadd}}}</span><span>{{this.hasImages}}
           </span>
           <br>
@@ -276,7 +276,7 @@ class AllImages extends Component {
       {{!-- The heading of the thumbnails' presentation --}}
       {{#if this.z.hasImages}}
         <div style="width:100%">
-          <p><b>”{{{this.z.handsomize this.z.imdbDirName}}}”</b>
+          <p><b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
 
           {{#if this.z.numHidden}}
             — {{this.z.numShown}} {{t 'shown'}},

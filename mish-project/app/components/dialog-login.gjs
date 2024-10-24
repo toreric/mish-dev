@@ -71,7 +71,7 @@ export class DialogLogin extends Component {
 
   // Clear input field: user or password
   clearInput = (inputClass) => {
-    this.z.loli('clearInput (' + inputClass + ')');
+      // this.z.loli('clearInput (' + inputClass + ')');
     document.querySelector('input.' + inputClass).value = '';
     document.querySelector('input.' + inputClass).focus({ focusVisible: true });
   }

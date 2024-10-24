@@ -211,7 +211,7 @@ export default class CommonStorageService extends Service {
 
   // Susbtitute underscores in an album name with spaces and remove the first
   // character and the random end from a temporary 'found-images-album' name
-  handsomize = (name) => {
+  handsomize2sp = (name) => {
     let tmp = name.replace(/_/g, ' ');
     if (tmp[0] === '§') tmp = tmp.replace(/\.[^.]+$/, '').slice(1);
     return tmp;
@@ -219,7 +219,7 @@ export default class CommonStorageService extends Service {
 
   // Replace \n with <br> and remove excess spaces
   // Used in saveDialog('dialogText'), cf. deNormalize
-  normalize = (str) => {
+  normalize2br = (str) => {
     return str.trim().replace(/ \n/g, LF).replace(/\n /g, LF).replace(/\n/g, '<br>').replace(/  /g, ' ');
   }
 
@@ -581,6 +581,7 @@ export default class CommonStorageService extends Service {
       // NOTE: This is possible, from the CSS style sheet!
       // Copy background from thumbnail: the hidden status indicator
       // Copy border-bottom (more complicated): the linked status indicator
+      // ****************************TO*DO*********************************
       let caption = document.getElementById('link_texts');
       caption.style.background = window.getComputedStyle(minipic).background;
       caption.style.borderBottom = window.getComputedStyle(minipic).getPropertyValue('border-bottom');
@@ -1193,14 +1194,17 @@ export default class CommonStorageService extends Service {
       let gif = /\.gif$/i.test(linkto);
 
       let txt1 = document.getElementById('dialogTextDescription').value;
-      txt1 = this.normalize(txt1);
+      txt1 = this.normalize2br(txt1);
         this.loli(txt1,'color:yellow');
       this.allFiles[this.picIndex].txt1 = txt1;
+      document.getElementById('dialogTextDescription').value = txt1.replace(/<br>/g, '\n');
 
       let  txt2 = document.getElementById('dialogTextCreator').value;
-      txt2 = this.normalize(txt2);
+      txt2 = this.normalize2br(txt2);
         this.loli(txt2,'color:yellow');
       this.allFiles[this.picIndex].txt2 = txt2;
+      document.getElementById('dialogTextCreator').value = txt2.replace(/<br>/g, '\n');
+
       this.refreshTexts ++; // Change trigger to rerender by RefreshThis
         // console.log(this.allFiles[this.picIndex])
       let path = this.imdbRoot + linkto;
@@ -1211,7 +1215,6 @@ export default class CommonStorageService extends Service {
         return;
       }
     }
-    this.loli('saved ' + dialogId);
   }
 
   closeDialog = (dialogId) => {

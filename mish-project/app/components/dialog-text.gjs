@@ -61,16 +61,21 @@ export class DialogText extends Component {
     let path = this.z.allFiles[this.z.picIndex].linkto;
     let nodeMess = document.querySelector('#dialogText main .diaMess b');
     if (/\.gif$/i.test(path)) {
-      // Insert after '#dialogText main .diaMess', ended wirh <br>:
-      // Gif-bilder kan bara ges tillfällig text, den kan inte sparas!
+      // Insert after '#dialogText main .diaMess'
+      // Gif images cannot be given permanent text, just saved temporarily
       // intl.t name = txtGif
-      text = 'Gif-bilder kan inte ges permanent text, sparas bara tillfälligt';
+      text = 'Gif-bild! Kan inte ges permanent text och den kan bara sparas tillfälligt';
+      // Disable the Notes and Keyword buttons
+      document.getElementById('dialogTextButton4').setAttribute('disabled', '');
+      document.getElementById('dialogTextButton5').setAttribute('disabled', '');
       nodeMess.textContent = text;
     } else {
+      // Enable the Notes and Keyword buttons
+      document.getElementById('dialogTextButton4').removeAttribute('disabled');
+      document.getElementById('dialogTextButton5').removeAttribute('disabled');
       nodeMess.textContent = '';
     }
-
-   return this.z.picName;
+    return this.z.picName;
   }
 
   get txt1() {
@@ -105,7 +110,7 @@ export class DialogText extends Component {
         </header>
         <main>
           <div class="diaMess">
-            <b style="width:100%;text-align:center;color:brown"></b>
+            <b style="display:table;width:100%;text-align:center;color:brown"></b>
             <VirtualKeys />
           </div>
 
@@ -192,8 +197,12 @@ const VirtualKeys = <template>
     <b class='insertChar' {{on 'click' insert}}>’</b>
     &nbsp;
     &nbsp;
-    <b class='insertChar' {{on 'click' insert}}>«</b>
     <b class='insertChar' {{on 'click' insert}}>»</b>
+    <b class='insertChar' {{on 'click' insert}}>«</b>
+    &nbsp;
+    &nbsp;
+    <b class='insertChar' {{on 'click' insert}}>›</b>
+    <b class='insertChar' {{on 'click' insert}}>‹</b>
   </div>
 </template>
 
