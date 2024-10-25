@@ -199,7 +199,7 @@ export default class CommonStorageService extends Service {
   //== Text functions
 
   // Replace <br> with \n, used in dialog-text/DialogText
-  deNormalize = (str) =>{
+  deNormalize2LF = (str) =>{
     return str.replace(/<br>/g, LF);
   }
 
@@ -218,9 +218,14 @@ export default class CommonStorageService extends Service {
   }
 
   // Replace \n with <br> and remove excess spaces
-  // Used in saveDialog('dialogText'), cf. deNormalize
-  normalize2br = (str) => {
-    return str.trim().replace(/ \n/g, LF).replace(/\n /g, LF).replace(/\n/g, '<br>').replace(/  /g, ' ');
+  // Used in saveDialog('dialogText'), cf. deNormalize2LF
+  normalize2br = (str, leaveEnd) => {
+    if (leaveEnd) {
+      str = str.trimStart();
+    } else {
+      str = str.trim();
+    }
+    return str.replace(/ \n/g, LF).replace(/\n /g, LF).replace(/\n/g, '<br>').replace(/  /g, ' ');
   }
 
   // Remove HTML tags from text
@@ -420,13 +425,22 @@ export default class CommonStorageService extends Service {
   // Check each thumbnails' hide flag and reset its class
   paintHideFlags = () => {
     let order = this.updateOrder(true); // array if true, else text
+
+    let hide = document.getElementById('toggleHide')
+      .style.backgroundImage === 'url("/images/eyes-blue.png")';
+
     for (let p of order) {
       let i = p.indexOf(',');
       let pic = document.getElementById('i' + p.slice(0, i));
       if (p[i + 1] === '1') {
-        pic.classList.add('hidden', 'invisible');
+        pic.classList.add('hidden');
       } else {
-        pic.classList.remove('hidden', 'invisible');
+        pic.classList.remove('hidden');
+      }
+      if (hide && p[i + 1] === '1') {
+        pic.classList.add('invisible');
+      } else {
+        pic.classList.remove('invisible');
       }
     }
   }
@@ -578,13 +592,18 @@ export default class CommonStorageService extends Service {
       let minipic = document.getElementById('i' + this.picName);
       let miniclass = minipic.querySelector('div[alt="MARKER"]').className;
       document.getElementById('markShow').className = miniclass + 'Show';
-      // NOTE: This is possible, from the CSS style sheet!
-      // Copy background from thumbnail: the hidden status indicator
-      // Copy border-bottom (more complicated): the linked status indicator
-      // ****************************TO*DO*********************************
-      let caption = document.getElementById('link_texts');
-      caption.style.background = window.getComputedStyle(minipic).background;
-      caption.style.borderBottom = window.getComputedStyle(minipic).getPropertyValue('border-bottom');
+      // Copy display classes from the thumbnail
+      let linkTexts = document.getElementById('link_texts');
+      if (minipic.classList.contains('symlink')) {
+        linkTexts.classList.add('symlink');
+      } else {
+        linkTexts.classList.remove('symlink');
+      }
+      if (minipic.classList.contains('hidden')) {
+        linkTexts.classList.add('hidden');
+      } else {
+        linkTexts.classList.remove('hidden');
+      }
       // Open the show image view
       document.querySelector('.img_show').style.display = 'table';
       // Hide the navigation overlay information
@@ -1185,7 +1204,7 @@ export default class CommonStorageService extends Service {
     }
   }
 
-  saveDialog = (dialogId) => {
+  saveDialog = async (dialogId) => {
     // should have alternatives for any dialogId
     if (dialogId === 'dialogText' && this.picIndex > -1) {
       let linkto = this.allFiles[this.picIndex].linkto;
@@ -1194,7 +1213,7 @@ export default class CommonStorageService extends Service {
       let gif = /\.gif$/i.test(linkto);
 
       let txt1 = document.getElementById('dialogTextDescription').value;
-      txt1 = this.normalize2br(txt1);
+      txt1 = this.normalize2br(txt1, true); // true == leave end untrimmed
         this.loli(txt1,'color:yellow');
       this.allFiles[this.picIndex].txt1 = txt1;
       document.getElementById('dialogTextDescription').value = txt1.replace(/<br>/g, '\n');
@@ -1206,6 +1225,9 @@ export default class CommonStorageService extends Service {
       document.getElementById('dialogTextCreator').value = txt2.replace(/<br>/g, '\n');
 
       this.refreshTexts ++; // Change trigger to rerender by RefreshThis
+      let size = this.albumAllImg(this.imdbDirs.indexOf(this.imdbDir));
+      await new Promise (z => setTimeout (z, size*6 + 10)); // album rerender
+      this.paintHideFlags(); // AFTER RERENDER!
         // console.log(this.allFiles[this.picIndex])
       let path = this.imdbRoot + linkto;
         this.loli(path, 'color:red');

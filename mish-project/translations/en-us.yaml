@@ -94,6 +94,7 @@ Size: Size
 status: status
 subalbum:  subalbum
 subalbums: subalbums
+txtGif: Gif image! Cannot be given permanent text and it can just be saved temporarily
 with: with
 xplErrImg: Assessment of the technical quality of the original image
 

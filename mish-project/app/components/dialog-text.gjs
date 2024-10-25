@@ -30,6 +30,7 @@ document.addEventListener('keydown', async (e) => {
 //== Component DialogText with <dialog> tags
 export class DialogText extends Component {
   @service('common-storage') z;
+  @service intl;
 
   // Subdialog open button is pressed
 
@@ -62,9 +63,8 @@ export class DialogText extends Component {
     let nodeMess = document.querySelector('#dialogText main .diaMess b');
     if (/\.gif$/i.test(path)) {
       // Insert after '#dialogText main .diaMess'
-      // Gif images cannot be given permanent text, just saved temporarily
-      // intl.t name = txtGif
-      text = 'Gif-bild! Kan inte ges permanent text och den kan bara sparas tillfälligt';
+      // Gif image! Cannot be given permanent text and it can just be saved temporarily
+      text = this.intl.t('txtGif');
       // Disable the Notes and Keyword buttons
       document.getElementById('dialogTextButton4').setAttribute('disabled', '');
       document.getElementById('dialogTextButton5').setAttribute('disabled', '');
@@ -80,12 +80,12 @@ export class DialogText extends Component {
 
   get txt1() {
     if (!this.z.picName) return; // picIndex depends on picName
-    return this.z.deNormalize(this.z.allFiles[this.z.picIndex].txt1.toString());
+    return this.z.deNormalize2LF(this.z.allFiles[this.z.picIndex].txt1.toString());
   }
 
   get txt2() {
     if (!this.z.picName) return; // picIndex depends on picName
-    return this.z.deNormalize(this.z.allFiles[this.z.picIndex].txt2.toString());
+    return this.z.deNormalize2LF(this.z.allFiles[this.z.picIndex].txt2.toString());
   }
 
   // Detect closing click outside a dialog-draggable modal dialog
@@ -110,7 +110,7 @@ export class DialogText extends Component {
         </header>
         <main>
           <div class="diaMess">
-            <b style="display:table;width:100%;text-align:center;color:brown"></b>
+            <b style="display:table;max-width:660px;text-align:center;color:brown"></b>
             <VirtualKeys />
           </div>
 

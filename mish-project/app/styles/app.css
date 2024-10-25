@@ -1310,7 +1310,19 @@ img[alt] {
   color: #000;
   background-color: #ccc;
 }
-/* ##### Image size is also controlled at Imagemagick resizing in routes.js */
+#link_texts {
+  display: table-caption;
+  caption-side: bottom;
+  min-height: 1rem;
+  padding: 0 0 0.4rem 0.3rem;
+  background-color: #3b3b3b;
+}
+#link_texts.hidden {
+  background-color: #003264;
+}
+#link_texts.symlink {
+  border-bottom: 1.5px solid #0b0;
+}
 .img_mini {
   background: #3b3b3b;
   display: inline-block;
@@ -1332,6 +1344,7 @@ img[alt] {
 .img_mini.invisible {
   display: none;
 }
+/* Image size is also controlled at Imagemagick resizing in routes.js */
 /* Image size-limits */
 .img_mini img {
   display: block;

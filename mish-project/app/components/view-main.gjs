@@ -386,9 +386,7 @@ class AllImages extends Component {
 
         {{!-- The slideshow image's name and texts --}}
         <RefreshThis @for={{this.z.refreshTexts}}>
-        <div id="link_texts" draggable="false" style="display:table-caption;
-          caption-side:bottom;min-height:1rem;
-          padding:0 0 0.4rem 0.3rem">
+        <div id="link_texts" class="" draggable="false" ondragstart="return false">
 
           {{!-- 'picName' should be unique; 'displayNames' is 'none' or '' --}}
           <div class="img_name" style="display:{{this.z.displayNames}}" draggable="false" ondragstart="return false" title="" {{on 'click' this.ediText}}>
