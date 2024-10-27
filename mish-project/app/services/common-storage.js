@@ -1118,8 +1118,6 @@ export default class CommonStorageService extends Service {
         let edpn = this.escapeDots(this.picName);
         document.querySelector('#i' + edpn + ' .img_txt1').innerHTML = '';
         document.querySelector('#i' + edpn + ' .img_txt2').innerHTML = '';
-        // $ ("#i" + edpn + " .img_txt1" ).html ("");
-        // $ ("#i" + edpn + " .img_txt2" ).html ("");
             // infoDia (null, null,"Texten sparades inte!", '<br>Bildtexten kan inte uppdateras på grund av<br>något åtkomsthinder &ndash; är filen ändringsskyddad?<br><br>Eventuell tillfälligt förlorad text återfås med ”Ladda om albumet (återställ osparade ändringar)”', "Ok", true);
       } else {
         // userLog(tempStore, false, 2000);
@@ -1128,6 +1126,29 @@ export default class CommonStorageService extends Service {
       }
     }
     xhr.send(txt);
+  }
+
+  // Update the sqlite text database (symlinked pictures auto-omitted)
+  sqlUpdate = (picPaths) => { // Must be complete server paths
+    if (!picPaths) return;
+    let data = new FormData ();
+    data.append ("filepaths", picPaths);
+    return new Promise ( (resolve, reject) => {
+      let xhr = new XMLHttpRequest ();
+      xhr.open ('POST', 'sqlupdate/')
+      this.xhrSetRequestHeader(xhr);
+      xhr.onload = function () {
+        resolve (xhr.response); // empty
+      };
+      xhr.onerror = function () {
+        resolve (xhr.statusText);
+        reject ({
+          status: this.status,
+          statusText: xhr.statusText
+        });
+      };
+      xhr.send (data);
+    });
   }
 
 

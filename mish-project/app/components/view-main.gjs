@@ -304,34 +304,36 @@ class AllImages extends Component {
             {{!-- The thumbnail menu --}}
             <MenuImage />
 
-           <div style="margin:auto auto 0 auto;position:relative;width:max-content;">
+            <div style="margin:auto auto 0 auto;position:relative;width:max-content;">
 
-            {{!-- The check mark in the thumnail's upper right corner --}}
-            <div class="markFalse" alt="MARKER" draggable="false" ondragstart="return false" {{on 'click' (fn this.toggleSelect 0)}}>
-              <img src="/images/markericon.svg" draggable="false" ondragstart="return false" class="mark" title={{t 'Mark'}}>
-            </div>
+              {{!-- The check mark in the thumnail's upper right corner --}}
+              <div class="markFalse" alt="MARKER" draggable="false" ondragstart="return false" {{on 'click' (fn this.toggleSelect 0)}}>
+                <img src="/images/markericon.svg" draggable="false" ondragstart="return false" class="mark" title={{t 'Mark'}}>
+              </div>
 
-            {{!-- Here comes the thumbnail --}}
-            <img src="{{item.mini}}" class="left-click" title="{{this.z.imdbRoot}}{{item.linkto}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage item.name item.show)}}>
-
-           </div>
-
-            {{!-- This is the image name, should be unique --}}
-            <div class="img_name" style="display:{{this.z.displayNames}};background:inherit" {{on 'click' this.ediText}}>
-              {{item.name}}
-            </div>
-
-            {{!-- The text from Xmp.dc.description metadata --}}
-            <div class="img_txt1" draggable="false" ondragstart="return false" title-2="{{this.z.noTags item.txt1}}" {{on 'click' this.ediText}}>
-              {{{this.z.noTagsShort item.txt1}}}
-            </div><br>
-
-            {{!-- The text from Xmp.dc.creator metadata --}}
-            <div class="img_txt2" draggable="false" ondragstart="return false" title-2="{{this.z.noTags item.txt2}}" {{on 'click' this.ediText}}>
-              {{{this.z.noTagsShort item.txt2}}}
+              {{!-- Here comes the thumbnail --}}
+              <img src="{{item.mini}}" class="left-click" title="{{this.z.imdbRoot}}{{item.linkto}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage item.name item.show)}}>
 
             </div>
-            {{!-- <span class='handle' {{sortableHandle}}>&varr;</span> --}}
+            <div {{on 'click' this.ediText}}>
+
+              {{!-- This is the image name, should be unique --}}
+              <div class="img_name" style="display:{{this.z.displayNames}};background:inherit">
+                {{item.name}}
+              </div>
+
+              {{!-- The text from Xmp.dc.description metadata --}}
+              <div class="img_txt1" draggable="false" ondragstart="return false" title-2="{{this.z.noTags item.txt1}}">
+                {{{this.z.noTagsShort item.txt1}}}
+              </div><br>
+
+              {{!-- The text from Xmp.dc.creator metadata --}}
+              <div class="img_txt2" draggable="false" ondragstart="return false" title-2="{{this.z.noTags item.txt2}}">
+                {{{this.z.noTagsShort item.txt2}}}
+              </div>
+              {{!-- <span class='handle' {{sortableHandle}}>&varr;</span> --}}
+
+            </div>
 
           </div>
         {{/each}}
@@ -386,24 +388,20 @@ class AllImages extends Component {
 
         {{!-- The slideshow image's name and texts --}}
         <RefreshThis @for={{this.z.refreshTexts}}>
-        <div id="link_texts" class="" draggable="false" ondragstart="return false">
+        <div id="link_texts" class="" draggable="false" ondragstart="return false" {{on 'click' this.ediText}}>
 
           {{!-- 'picName' should be unique; 'displayNames' is 'none' or '' --}}
-          <div class="img_name" style="display:{{this.z.displayNames}}" draggable="false" ondragstart="return false" title="" {{on 'click' this.ediText}}>
+          <div class="img_name" style="display:{{this.z.displayNames}}" draggable="false" ondragstart="return false" title="">
             {{this.z.picName}}
           </div>
 
           {{!-- The text from Xmp.dc.description metadata --}}
-          <div class="img_txt1" draggable="false" ondragstart="return false" title=""
-            {{on 'click' this.ediText}}
-          >
+          <div class="img_txt1" draggable="false" ondragstart="return false" title="">
             {{{this.txt 1 this.z.picName}}}
           </div>
 
           {{!-- The text from Xmp.dc.creator metadata --}}
-          <div class="img_txt2" draggable="false" ondragstart="return false" title=""
-            {{on 'click' this.ediText}}
-          >
+          <div class="img_txt2" draggable="false" ondragstart="return false" title="">
             {{{this.txt 2 this.z.picName}}}
           </div>
         </div>

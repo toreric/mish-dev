@@ -49,10 +49,10 @@ module.exports = function(app) { // Start module.exports
   const toold = 60
 
   //#region = code regions, only for the editors's minilist in the right margin!
-  //#region start route
   // ##### R O U T I N G  E N T R I E S
   // Check 'Express route tester'!
   // ##### General passing point
+  //#region START routing
   app.all('*', async function(req, res, next) {
     if (req.originalUrl !== '/upload') { // Upload with dropzone: 'req' used else!
       let tmp = req.get('imdbroot')
@@ -88,8 +88,8 @@ module.exports = function(app) { // Start module.exports
     next() // pass control to the next handler
   })
 
-  //region execute
   // ##### Execute a shell command
+  //region execute
   app.get ('/execute', async (req, res) => {
     var cmd = decodeURIComponent(req.get('command'))
     console.log(BYEL + cmd + RSET)
@@ -109,8 +109,8 @@ module.exports = function(app) { // Start module.exports
     }
   })
 
-  //#region filestat
   // ##### Return file information
+  //#region filestat
   app.get ('/filestat', async (req, res) => {
     var file = decodeURIComponent(req.get('path'))
     file = 'rln' + IMDB + file // 3 + IMDB.length
@@ -123,7 +123,6 @@ module.exports = function(app) { // Start module.exports
       console.log(RED + 'Illegal filestat call' + RSET)
       return
     }
-
       console.log('fileStat',file)
     var LT = req.get('intlcode') // Language tag for dateTime
     if (LT === 'en-us') LT = 'en-uk' // European date order
@@ -172,10 +171,9 @@ module.exports = function(app) { // Start module.exports
     res.send (fileStat)
   })
 
-
-  //#region login
   // ##### Return a user's credentials for login, or return
   //       all available user statuses and their allowances
+  //#region login
   app.get('/login', (req, res) => {
     var name = decodeURIComponent(req.get('username'))
     var password = ''
@@ -234,8 +232,8 @@ module.exports = function(app) { // Start module.exports
     }
   })
 
-  //#region rootdir
   // ##### Find subdirs which are album roots
+  //#region rootdir
   app.get('/rootdir', function(req, res) {
     readSubdir(IMDB_HOME).then(dirlist => {
       dirlist = dirlist.join(LF)
@@ -253,9 +251,9 @@ module.exports = function(app) { // Start module.exports
     })
   })
 
-  //#region imdbdirs
   // ##### Get IMDB(image data base) directories list,
   //       i.e. get all possible album directories, recursive
+  //#region imdbdirs
   app.get('/imdbdirs', async function(req, res) {
     await new Promise(z => setTimeout(z, 200))
     let allowHidden = req.get('hidden')
@@ -386,9 +384,9 @@ module.exports = function(app) { // Start module.exports
     }, 500) // Was 1000
   })
 
-  //#region imagelist
   // ##### Get all images in IMDB_DIR using 'findFiles' with readdirAsync,
   //       Bluebird support  
+  //#region imagelist
   app.get('/imagelist', function(req, res) {
     // NOTE: Reset allfiles here, since it isn't refreshed by an empty album!
     allfiles = undefined
@@ -440,8 +438,8 @@ module.exports = function(app) { // Start module.exports
     })
   })
 
-  //#region sortlist
   // ##### Get sorted file name list (= get order)
+  //#region sortlist
   app.get('/sortlist', async function(req, res) {
     var imdbtxtpath = IMDB + IMDB_DIR + '/_imdb_order.txt'
     try { // Create _imdb_order.txt if missing
@@ -459,8 +457,8 @@ module.exports = function(app) { // Start module.exports
     }).then(console.info('File order sent from server'))
   })
 
-  //#region saveorder
   // ##### Save the _imdb_order.txt file
+  //#region saveorder
   app.post ('/saveorder', function (req, res, next) {
     var file = IMDB + IMDB_DIR + '/_imdb_order.txt'
     execSync('touch ' + file + '&&chmod 664 ' + file) // In case not yet created
@@ -486,8 +484,8 @@ module.exports = function(app) { // Start module.exports
     })
   })
 
-  //#region savetext
   // ##### Save Xmp.dc.description and Xmp.dc.creator using exiv2
+  //#region savetext
   app.post ('/savetext', function (req, res, next) {
     var body = []
     req.on('data', (chunk) => {
@@ -532,12 +530,34 @@ module.exports = function(app) { // Start module.exports
     //res.sendFile ('index.html', {root: WWW_ROOT + '/public/'}) // stay at the index.html file
   })
 
+  // ##### Update one or more database entries
+  //#region sqlupdate
+  app.post ('/sqlupdate', upload.none (), async function (req, res, next) {
+    //console.log (req.body)
+    let filepaths = req.body.filepaths
+    //console.log ('SQLUPDATE', filepaths)
+    let files = filepaths.trim ().split ('\n')
+    for (let i=0; i<files.length; i++) {
+      await new Promise (z => setTimeout (z, 888))
+      await sqlUpdate (files [i]) // One at a time
+    }
+    res.location ('/')
+    res.send ('')
+    //res.end ()
+  })
 
 
-  //#region Functions
+  //#region FUNCTIONS
+
+
+
+
+
+
 
   // ===== Get the image databases' root directory
   // The server environment should have $IMDB_HOME, else use $HOME
+  //#region imdbHome
   function imdbHome() {
     var IMDB_HOME = execSync('echo $IMDB_HOME').toString().trim()
     if (!IMDB_HOME || IMDB_HOME === '') {
@@ -548,6 +568,7 @@ module.exports = function(app) { // Start module.exports
 
   // ===== Check and return image file condition, summarizing warning and error
   // counts calling 'finderrimg', which uses 'jpeginfo' and 'tiffinfo' (so far)
+  //#region imgErr
   async function imgErr (file) {
     var extn = file.replace (/.*(\.[^. ]+)$/, "$1")
     if ( /\.jpe?g$/i.test (extn) ) {
@@ -562,6 +583,7 @@ module.exports = function(app) { // Start module.exports
   }
 
   // ===== Check if a file is a symbolic link
+  //#region isSymlink
   function isSymlink(file) {
     return new Promise(function(resolve, reject) {
       fs.lstat (file, function(err, stats) {
@@ -576,12 +598,15 @@ module.exports = function(app) { // Start module.exports
   }
 
   // ===== Check if a file does not exist
+  //#region notFile
   async function notFile(path) {
     cmd = '[ -f ' + path + ' ]; echo -n $?'
     return Number(await execP(cmd))
   }
 
+
   // ===== Read the dir's content of album sub-dirs(not recursively)
+  //#region readSubdir
   readSubdir = async(dir, files = []) => {
     let items = await fs.readdirAsync('rln' + dir) // items are file || dir names
     return Promise.map(items, async(name) => { // Cannot use mapSeries here(why?)
@@ -609,6 +634,7 @@ module.exports = function(app) { // Start module.exports
   }
 
   // ===== Check if an album/directory name can be accepted
+  //#region acceptedDirName
   function acceptedDirName(name) { // Note that &ndash; is accepted:
     let acceptedName = 0 === name.replace(/[/\-–@_.a-zåäöA-ZÅÄÖ0-9]+/g, "").length
     return acceptedName && name.slice(0,1) !== "." && !name.includes('/.')
@@ -616,6 +642,7 @@ module.exports = function(app) { // Start module.exports
 
   // ===== Is this file/directory a broken link? Returns its name or false
   // NOTE: Broken links may cause severe problems if not taken care of properly!
+  //#region brokenLink
   brokenLink = item => {
     return execSync("find '" + item + "' -maxdepth 0 -xtype l 2>/dev/null").toString()
   }
@@ -625,6 +652,7 @@ module.exports = function(app) { // Start module.exports
   // Use: allDirs().then(dirlist => { ...
   // IMDB is the absolute current album root path
   // Returns directories formatted like imdbDirs,(first "", then /... etc.)
+  //region allDirs
   let allDirs = async() => {
     let dirlist = await cmdasync('find -L ' + IMDB + ' -type d|sort')
     dirlist = dirlist.toString().trim() // Formalise string
@@ -638,6 +666,7 @@ module.exports = function(app) { // Start module.exports
   // ===== Remove from a directory path array each entry not pointing
   // to an album, which contains a file named '.imdb', and return
   // the remaining album directory list. NOTE: Both returns(*) are required!
+  //#region areAlbums
   let areAlbums = async (dirlist) => {
     let fd, albums = []
     return Promise.mapSeries(dirlist, async(album) => { //(*) CAN use mapSeries here but don't understand why!?
@@ -664,6 +693,7 @@ module.exports = function(app) { // Start module.exports
   }
 
   // ===== Read a directory's file content; also remove broken links
+  //#region findFiles
   function findFiles(dirName) {
 
     // console.log('FINDFILES')
@@ -699,6 +729,7 @@ module.exports = function(app) { // Start module.exports
   }
 
   // ===== Make a package of orig, show, mini, and plain filenames, metadata, and symlink flag=origin
+  //#region pkgfilenames
   async function pkgfilenames(origlist) {
 
           // console.log('PKGFILENAMES')
@@ -774,6 +805,7 @@ module.exports = function(app) { // Start module.exports
 
   // ===== Create minifile or showfile (note: size!), if non-existing
   // origpath = the file to be resized, filepath = the resized file
+  //#region resizefileAsync
   async function resizefileAsync(origpath, filepath, size) {
     // Check if the file exists, then continue, but note (!): This openAsync will
     // fail if filepath is absolute. Needs web-rel-path to work ...
@@ -799,6 +831,7 @@ module.exports = function(app) { // Start module.exports
   // 'fake typed' PNG (resize into PNG is too difficult with ImageMagick).
   // GIFs are resized into GIFs to preserve their special properties.
   // The formal file extension PNG will still be kept for all resized files.
+  //#region rzFile
   async function rzFile(origpath, filepath, size) {
     var filepath1 = filepath // Set 'png' as in filepath
     if (origpath.search(/gif$/i) > 0) {
@@ -828,6 +861,7 @@ module.exports = function(app) { // Start module.exports
 
   // ===== Check if an image/file name can be accepted
   // Also, cf. 'acceptedFiles' in menu-buttons.hbs (for DropZone/drop-zone)
+  //#region acceptedFileName
   function acceptedFileName(name) {
     // This function must equal the acceptedFileName function in drop-zone.js
     var acceptedName = 0 === name.replace(/[-_.a-zA-Z0-9]+/g, "").length
@@ -840,6 +874,7 @@ module.exports = function(app) { // Start module.exports
 
   // ===== Remove the files of a picture, filename with full web path
   //      (or deletes at least the primarily named file)
+  //#region rmPic
   function rmPic(fileName) {
     let picfile = path.parse(fileName).base
     let pngname = path.parse(fileName).name + '.png'
@@ -865,6 +900,7 @@ module.exports = function(app) { // Start module.exports
   }
 
   // ===== Return a symlink flag value, value = & or source file
+  //#region symlinkFlag
   function symlinkFlag (file) {
     return new Promise (function (resolve, reject) {
       fs.lstat (file, function (err, stats) {
@@ -879,16 +915,127 @@ module.exports = function(app) { // Start module.exports
     })
   }
 
+  // ===== Check and add|remove|update an image file record in the database
+  // Se vidare filestat -- get file information  etc.
+  // och search -- search text  etc.
+  // Funkar ej om 'filepaths' är mer än en fil ... (async hell)
+  // NOTE: filepaths.length MUST be 1 only, caused by sync/async problem!
+  //#region sqlUpdate
+  function sqlUpdate (filepaths) { // Album server paths, complete Absolute
+    return new Promise (async function (resolve, reject) {
+      let pathlist = filepaths.trim ().split ("\n")
+      for (let i=0; i<pathlist.length; i++) { // forLoop
+        let filePath = '.' + pathlist [i].slice (IMDB.length) // Album relative path
+        // No files in the #picFound album (may be occasionally uploaded,
+        // temporary non-symlinks) and no symlinks should be processed:
+        if (filePath.indexOf (picFound) > 0 || await isSymlink (pathlist [i])) continue;
+        // Classify the file as existing or not
+        let pathArr = filePath.split ("/")
+        let xmpParams = [], dbValues = {}
+        let fileExists = false
+        try {
+          let fd = fs.openSync (pathlist [i], 'r+') // Complete server path
+          if (fd) {
+            fileExists = true
+            fs.closeSync (fd)
+          }
+        } catch (err) {
+          fileExists = false
+        }
+        const db = new SQLite (IMDB + "/_imdb_images.sqlite")
+        db.pragma ("journal_mode = WAL") // Turn on write-ahead logging
+        let sqlGetId = "SELECT id FROM imginfo WHERE filepath='" + filePath + "'"
+        row = db.prepare (sqlGetId).get ()
+        //row = await db.get (sqlGetId)
+        let recId = -1
+        if (row) {recId = row ['id']}
+  
+        // Get metadata from the picture, 'lowercased':
+        function getSqlParams () {
+          let xmpkey = ['description', 'creator', 'source']
+          for (let j=0; j<xmpkey.length; j++) {
+            // Important NOTE: this loop must correspond in both routes.js and ld_imdb.js
+            let cmd = 'xmpget ' + xmpkey [j] + ' ' + pathlist [i]
+            // The removeDiacritics funtion may bypass some characters (e.g. Sw. åäöÅÄÖ)
+            // Remove diacritics and make lowercase. Remove tags and double spaces.
+            xmpParams [j] = removeDiacritics (execSync (cmd).toString ()).toLowerCase ()
+            xmpParams [j] = xmpParams [j].replace(/<[^>]+>/g, " ").replace (/  */g, " ")
+          }
+          dbValues =   /// Removed the $ prefix for better-sqlite3
+          { filepath: filePath,
+            name:     pathArr [pathArr.length - 1].replace (/\.[^.]+$/, ""), // Remove extension
+            album:    removeDiacritics (filePath.replace (/^[^/]*(\/(.*\/)*)[^/]+$/, "$1")).toLowerCase (),
+            description: xmpParams [0],
+            creator:  xmpParams [1],
+            source:   xmpParams [2],
+            subject:  '',
+            tcreated: '',
+            tchanged: ''
+          }
+        }
+        //console.log (" fileExists", fileExists, "recId", recId, i);
+
+        if (recId > -1) { // in db table
+          // RECORD 1 means that the database HAS a record
+          // EXISTS 0 means that the image file does NOT exist
+          // and the other way round ...
+
+          if (fileExists) {
+            /* RECORD 1  EXISTS 1
+            ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤ */
+            //console.log (' sql UPDATE', recId, filePath)
+            // update the table row where id = recId
+            getSqlParams ()
+            // For better-sqlite3
+            db.prepare ("UPDATE imginfo SET (filepath,name,album,description,creator,source,subject,tcreated,tchanged) = ($filepath,$name,$album,$description,$creator,$source,$subject,$tcreated,$tchanged) WHERE id=" + recId).run (dbValues)
+            //await db.run ('UPDATE imginfo SET (filepath,name,album,description,creator,source,subject,tcreated,tchanged) = ($filepath,$name,$album,$description,$creator,$source,$subject,$tcreated,$tchanged) WHERE id=' + recId, values = dbValues)
+
+          } else {
+            /* RECORD 1  EXISTS 0
+            ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤ */
+            //console.log (' sql DELETE', recId, filePath)
+            db.prepare ("DELETE FROM imginfo WHERE id=" + recId).run ()
+            //let sqlDelete = "DELETE FROM imginfo WHERE id=" + recId
+            //await db.run (sqlDelete)
+          }
+
+        } else { // not in db table
+
+          if (fileExists) {
+            /* RECORD 0  EXISTS 1
+            ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤ */
+            //console.log (' sql INSERT', filePath)
+            // insert a table row with filepath = filePath
+            getSqlParams ()
+            db.prepare ("INSERT INTO imginfo (filepath,name,album,description,creator,source,subject,tcreated,tchanged) VALUES ($filepath,$name,$album,$description,$creator,$source,$subject,$tcreated,$tchanged)").run (dbValues)
+            //await db.run ('INSERT INTO imginfo (filepath,name,album,description,creator,source,subject,tcreated,tchanged) VALUES ($filepath,$name,$album,$description,$creator,$source,$subject,$tcreated,$tchanged)', values = dbValues)
+
+          } else {
+            /* RECORD 0  EXISTS 0
+            ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤ */
+            //console.log (' sql NOOP', filePath)
+            // do nothing
+          } //--if else
+        } //--if else
+        await new Promise (z => setTimeout (z, 222))
+        db.close ()
+        //await db.close ()
+      } //--for loop
+      resolve (true)
+    }) //--Promise
+  }
+
   // THIS FUNCTION IS NEVER USED
   /** Function that counts occurrences of a substring in a string;
    * @param {String} string               The string
    * @param {String} subString            The substring to search for
    * @param {Boolean} [allowOverlapping]  Optional.(Default:false)
-   *
-   * @author Vitim.us https://gist.github.com/victornpb/7736865
-   * @see Unit Test https://jsfiddle.net/Victornpb/5axuh96u/
-   * @see http://stackoverflow.com/questions/4009756/how-to-count-string-occurrence-in-string/7924240#7924240
-   */
+  *
+  * @author Vitim.us https://gist.github.com/victornpb/7736865
+  * @see Unit Test https://jsfiddle.net/Victornpb/5axuh96u/
+  * @see http://stackoverflow.com/questions/4009756/how-to-count-string-occurrence-in-string/7924240#7924240
+  */
+  //#region NOT USED
   function occurrences(string, subString, allowOverlapping) {
     string += "";
     subString += "";
