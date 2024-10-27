@@ -110,7 +110,7 @@ export class DialogText extends Component {
         </header>
         <main>
           <div class="diaMess">
-            <b style="display:table;max-width:660px;text-align:center;color:brown"></b>
+            <b style="display:block;max-width:660px;text-align:center;color:brown"></b>
             <VirtualKeys />
           </div>
 

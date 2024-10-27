@@ -225,7 +225,7 @@ export default class CommonStorageService extends Service {
     } else {
       str = str.trim();
     }
-    return str.replace(/ \n/g, LF).replace(/\n /g, LF).replace(/\n/g, '<br>').replace(/  /g, ' ');
+    return str.replace(/\n +/g, LF).replace(/\n/g, '<br>').replace(/ +/g, ' ');
   }
 
   // Remove HTML tags from text
@@ -422,7 +422,7 @@ export default class CommonStorageService extends Service {
     console.log(this.userName + ': %c' + text, style);
   }
 
-  // Check each thumbnails' hide flag and reset its class
+  // Check each thumbnails' hide status and set classes
   paintHideFlags = () => {
     let order = this.updateOrder(true); // array if true, else text
 
@@ -431,17 +431,33 @@ export default class CommonStorageService extends Service {
 
     for (let p of order) {
       let i = p.indexOf(',');
-      let pic = document.getElementById('i' + p.slice(0, i));
+      let mini = document.getElementById('i' + p.slice(0, i));
       if (p[i + 1] === '1') {
-        pic.classList.add('hidden');
+        mini.classList.add('hidden');
       } else {
-        pic.classList.remove('hidden');
+        mini.classList.remove('hidden');
       }
       if (hide && p[i + 1] === '1') {
-        pic.classList.add('invisible');
+        mini.classList.add('invisible');
       } else {
-        pic.classList.remove('invisible');
+        mini.classList.remove('invisible');
       }
+    }
+  }
+
+  // Check the slide-view's symlink/hide status and set classes
+  paintViewImg = () => {
+    let mini = document.getElementById('i' + this.picName);
+    let show = document.getElementById('link_texts');
+    if (mini.classList.contains('symlink')) {
+      show.classList.add('symlink');
+    } else {
+      show.classList.remove('symlink');
+    }
+    if (mini.classList.contains('hidden')) {
+      show.classList.add('hidden');
+    } else {
+      show.classList.remove('hidden');
     }
   }
 
@@ -549,29 +565,6 @@ export default class CommonStorageService extends Service {
     }
     this.numInvisible = n;
     this.numShown = this.numImages - this.numInvisible;
-  }
-
-  // This is not yet used
-  hideFlag = (namepic) => {
-    let order = this.updateOrder(true); // array if true, else text
-    let ix = -1;
-    // NOTE: No escapeDots for getElementById:
-    let pic = document.getElementById('i' + namepic);
-    for (let i=0;i<order.length;i++) {
-      if (order[i].startsWith(namepic + ',')) {
-        ix = i;
-        break;
-      }
-    }
-    if (ix > -1) {
-      if (order[ix][namepic.length + 1] === '1') {
-        pic.classList.add('hidden', 'invisible');
-      } else {
-        pic.classList.remove('hidden', 'invisible');
-      }
-    } else {
-      this.alertMess('In ’hideFlag’:<br>This cannot happen!');
-    }
   }
 
   // Open or close the named show image, path = its path in the current album
@@ -1208,29 +1201,39 @@ export default class CommonStorageService extends Service {
     // should have alternatives for any dialogId
     if (dialogId === 'dialogText' && this.picIndex > -1) {
       let linkto = this.allFiles[this.picIndex].linkto;
-        this.loli(linkto,'color:yellow');
+        // this.loli(linkto,'color:yellow');
 
       let gif = /\.gif$/i.test(linkto);
 
       let txt1 = document.getElementById('dialogTextDescription').value;
       txt1 = this.normalize2br(txt1, true); // true == leave end untrimmed
-        this.loli(txt1,'color:yellow');
+        // this.loli(txt1,'color:yellow');
       this.allFiles[this.picIndex].txt1 = txt1;
       document.getElementById('dialogTextDescription').value = txt1.replace(/<br>/g, '\n');
 
       let  txt2 = document.getElementById('dialogTextCreator').value;
       txt2 = this.normalize2br(txt2);
-        this.loli(txt2,'color:yellow');
+        // this.loli(txt2,'color:yellow');
       this.allFiles[this.picIndex].txt2 = txt2;
       document.getElementById('dialogTextCreator').value = txt2.replace(/<br>/g, '\n');
 
+      // When the img_mini pictures are visible,
+      if (document.querySelector('.miniImgs.imgs').style.display !== 'none') {
+        // let size = this.albumAllImg(this.imdbDirs.indexOf(this.imdbDir));
+        // await new Promise (z => setTimeout (z, size*6 + 10)); // album rerender
+      } else { // else the img_show picture is visible
+        document.querySelector('#link_texts .img_txt1').innerHTML = txt1;
+        document.querySelector('#link_texts .img_txt2').innerHTML = txt2;
+      }
+      // console.log(this.allFiles[this.picIndex])
       this.refreshTexts ++; // Change trigger to rerender by RefreshThis
       let size = this.albumAllImg(this.imdbDirs.indexOf(this.imdbDir));
       await new Promise (z => setTimeout (z, size*6 + 10)); // album rerender
       this.paintHideFlags(); // AFTER RERENDER!
-        // console.log(this.allFiles[this.picIndex])
+      this.paintViewImg();   // AFTER RERENDER!
+      this.markBorders(this.picName);
       let path = this.imdbRoot + linkto;
-        this.loli(path, 'color:red');
+        // this.loli(path, 'color:red');
       if (!gif) {
         this.saveText(path + LF + txt1 + LF + txt2);
         this.loli('saved ' + dialogId);

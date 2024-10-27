@@ -95,7 +95,7 @@ status: status
 subalbum:  underalbum
 subalbums: underalbum
 with: med
-txtGif: Gif-bild! Kan inte ges permanent text och den kan bara sparas tillfälligt
+txtGif: Gif-bild! Kan bara ges tillfällig text som inte bevaras permanent
 xplErrImg: Uppskattning av originalbildens tekniska kvalitet
 
 albumcollselect: Vänligen välj en albumsamling!
