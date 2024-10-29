@@ -5,9 +5,9 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { htmlSafe } from '@ember/template';
 
-import he from 'he';
 import { replace } from 'tar';
-// USE: <div title={{he.decode 'text'}}></div> he = HTML entities
+import he from 'he';
+// USE: <div title={{he.decode 'text'}}></div> ['he' = HTML entities]
 // or  txt = he.decode('text')  or  txt = he.encode('text')
 
 const LF = '\n'   // Line Feed == New Line
@@ -16,7 +16,7 @@ const BR = '<br>' // HTML line break
 export default class CommonStorageService extends Service {
   @service intl;
 
-  //   #region Variables
+  //   #region VARIABLES
   //== Significant Mish system global variables
 
   @tracked  aboutThis = '«Mish»'; //info (to be changed) about Mish build version etc.
@@ -80,7 +80,7 @@ export default class CommonStorageService extends Service {
   // which needs permission for access
 
 
-  //   #region View vars.
+  //   #region VIEW VARS
   //== Miniature and show images etc. information
 
   @tracked  navKeys = false; // Protects from unintended use of L/R arrow keys
@@ -101,13 +101,7 @@ export default class CommonStorageService extends Service {
 
   @tracked  refreshTexts = 0; // Refresh trigger for RefreshThis
 
-        // get PAINT_HIDE() {    // Background color for images marked hidden
-        //       return '#003264'; }
-        // get PAINT_BACK() {    // Standard background color for images
-        //       return '#3b3b3b'; }
-
-
-  //   #region Allowance
+  //   #region ALOWANCE
   //== Allowances variables/properties/methods
 
   @tracked allow = {}; // The allow object is defined by allowFunc()
@@ -195,7 +189,7 @@ export default class CommonStorageService extends Service {
     this.allowvalue = allowvalue;
   }
 
-  //   #region Textutils
+  //   #region TEXT UTILS
   //== Text functions
 
   // Replace <br> with \n, used in dialog-text/DialogText
@@ -246,10 +240,17 @@ export default class CommonStorageService extends Service {
     return textString.replace (/_/g, noHTML ? ' ' : '&nbsp;');
   }
 
-  //   #region Utilities
+
+  //   #region UTILITIES
   //== Other service functions
 
+
+
+
+
+
   // Disable browser back arrow, go instead to most recent visited album
+  //#region initBrowser
   initBrowser = async () => {
     // Refresh the setting, it may have been lost!
     while (this.bkgrColor) { // Intended eternal loop
@@ -262,6 +263,7 @@ export default class CommonStorageService extends Service {
   }
 
   // Browswer back arrow
+  //#region goBack
   goBack = () => {
     if (!this.imdbRoot) return;
     this.albumHistory.pop();
@@ -276,6 +278,7 @@ export default class CommonStorageService extends Service {
     this.openAlbum(index);
   }
 
+  //#region ifToggleHide
   ifToggleHide = () => {
     if (this.numHidden) {
       document.getElementById('toggleHide').style.display = '';
@@ -284,6 +287,7 @@ export default class CommonStorageService extends Service {
     }
   }
 
+  //#region openAlbum
   openAlbum = async (i) => {
     this.picName = '';
     this.closeDialogs(); // close possibly open dialogs
@@ -400,6 +404,7 @@ export default class CommonStorageService extends Service {
     this.countNumbers();
   }
 
+  //#region toggleBackg
   toggleBackg = () => {
     if (this.bkgrColor === '#cbcbcb') {
       this.bkgrColor = '#111';
@@ -418,11 +423,16 @@ export default class CommonStorageService extends Service {
     document.querySelector('body').style.color = this.textColor;
   }
 
+  //#region loli
   loli = (text, style) => { // loli = log list with user name
     console.log(this.userName + ': %c' + text, style);
   }
 
+
+
+
   // Check each thumbnails' hide status and set classes
+  //#region paintHideFlags
   paintHideFlags = () => {
     let order = this.updateOrder(true); // array if true, else text
 
@@ -446,6 +456,7 @@ export default class CommonStorageService extends Service {
   }
 
   // Check the slide-view's symlink/hide status and set classes
+  //#region paintViewImg
   paintViewImg = () => {
     let mini = document.getElementById('i' + this.picName);
     let show = document.getElementById('link_texts');
@@ -461,6 +472,7 @@ export default class CommonStorageService extends Service {
     }
   }
 
+  //#region countNumbers
   countNumbers = () => {
     this.numHidden = document.querySelectorAll('.img_mini.hidden').length;
     this.ifToggleHide();
@@ -474,10 +486,16 @@ export default class CommonStorageService extends Service {
     }
   }
 
+  //#region clearMiniImgs
   clearMiniImgs = () => { // Remove any displayed
     for (let pic of document.querySelectorAll('div.img_mini')) pic.remove();
   }
 
+
+
+
+
+  //#region alertMess
   alertMess = async (mess, sec) => {
     this.infoHeader = this.intl.t('infoHeader'); // default header
     this.infoMessage = mess.replace(/\n/g, '<br>');
@@ -489,11 +507,20 @@ export default class CommonStorageService extends Service {
     }
   }
 
+
+
+
+  //#region albumAllImg
   albumAllImg = (i) => { // number of original + symlink images in album 'i'
     let c = this.imdbCoco[i];
     return eval(c.replace(/^.*(\(.+\)).*$/, '$1'));
   }
 
+
+
+
+
+  //#region totalOrigImg
   totalOrigImg = () => { // number of original images in total
     let n = 0;
     let c = this.imdbCoco;
@@ -503,6 +530,7 @@ export default class CommonStorageService extends Service {
     return n;
   }
 
+  //#region resetBorders
   resetBorders = () => { // Reset all mini-image borders and SRC attributes
     var minObj = document.querySelectorAll('.img_mini img.left-click');
     for (let min of minObj) {
@@ -517,12 +545,14 @@ export default class CommonStorageService extends Service {
       minObj[i].setAttribute('src', minipic);
     }
   }
+  //#region markBorders
   markBorders = async (namepic) => { // Mark a mini-image border
     await new Promise (z => setTimeout (z, 25)); // Allow the dom to settle
     document.querySelector('#i' + this.escapeDots(namepic) + ' img.left-click').classList.add('dotted');
   }
 
   // Position to a minipic and highlight its border
+  //#region gotoMinipic
   gotoMinipic = async (namepic) => {
     // await new Promise (z => setTimeout (z, 1999)); // Scroll
     let hs = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
@@ -548,6 +578,7 @@ export default class CommonStorageService extends Service {
     this.markBorders(namepic); // Mark this one
   }
 
+  //#region showHidden
   showHidden = () => {
     document.getElementById('toggleHide').style.backgroundImage = 'url(/images/eyes-white.png)';
     for (let pic of document.querySelectorAll('.img_mini.hidden')) {
@@ -556,6 +587,7 @@ export default class CommonStorageService extends Service {
     this.numInvisible = 0;
     this.numShown = this.numImages;
   }
+  //#region hideHidden
   hideHidden = () => {
     document.getElementById('toggleHide').style.backgroundImage = 'url(/images/eyes-blue.png)';
     let n = 0;
@@ -569,6 +601,7 @@ export default class CommonStorageService extends Service {
 
   // Open or close the named show image, path = its path in the current album
   // showImage('') will close the show image and reopen the thumbnails
+  //#region showImage
   showImage = async (name, path, e) => {
     if (e) e.stopPropagation();
     if (name) { //open
@@ -628,6 +661,7 @@ export default class CommonStorageService extends Service {
   }
 
   // Show the next or previous slideshow image
+  //#region showNext
   showNext = async (forward, e) => {
     if (e) e.stopPropagation();
     var next, nextName;
@@ -702,7 +736,7 @@ export default class CommonStorageService extends Service {
     }
   }
 
-  //#region cookies
+  //#region COCKIES
   // Cookie names are mish_lang, mish_bkgr, ...
   setCookie = (cname, cvalue, exminutes) => {
     if (exminutes) {
@@ -730,7 +764,7 @@ export default class CommonStorageService extends Service {
     return "";
   }
 
-  //   #region Server
+  //   #region SERVER
   //== Server tasks
 
 
@@ -1016,7 +1050,6 @@ export default class CommonStorageService extends Service {
   requestOrder = async () => {
     // Request the sort order list of image files
     return new Promise ( (resolve, reject) => {
-      var that = this;
       var xhr = new XMLHttpRequest ();
       xhr.open ('GET', 'sortlist/', true, null, null);
       this.xhrSetRequestHeader(xhr);
@@ -1103,31 +1136,37 @@ export default class CommonStorageService extends Service {
   }
 
   //#region savetext
-  //saving image captions as metadata: saveText(fileName +'\n'+ txt1 +'\n'+ txt2);
+  //saving image captions as metadata: saveText(filePath +'\n'+ txt1 +'\n'+ txt2);
   saveText = (txt) => {
-    // var IMDB_DIR =  $ ("#imdbDir").text ();
-    // if (IMDB_DIR.slice (-1) !== "/") {IMDB_DIR = IMDB_DIR + "/";} // Important! (all these OBSOLETE)
-    // IMDB_DIR = IMDB_DIR.replace (/\//g, "@"); // For sub-directories
-
+    var that = this;
     var xhr = new XMLHttpRequest ();
     xhr.open ('POST', 'savetext/');
     this.xhrSetRequestHeader(xhr);
     xhr.onload = function () {
       if (xhr.response) {
-        // userLog ("NOT written");
-        let edpn = this.escapeDots(this.picName);
+        that.loli('Xmp.dc metadata not saved for ' + that.picName, 'color:red');
+        let edpn = that.escapeDots(that.picName);
         document.querySelector('#i' + edpn + ' .img_txt1').innerHTML = '';
         document.querySelector('#i' + edpn + ' .img_txt2').innerHTML = '';
-            // infoDia (null, null,"Texten sparades inte!", '<br>Bildtexten kan inte uppdateras på grund av<br>något åtkomsthinder &ndash; är filen ändringsskyddad?<br><br>Eventuell tillfälligt förlorad text återfås med ”Ladda om albumet (återställ osparade ändringar)”', "Ok", true);
+        // let mess = that.intl.t('errTxtNotSaved');
+        // mess += that.intl.t('errTxtCannotSave');
+        // mess += that.intl.t('errTxtRecoverText');
+
+        let mess = 'Texten sparades inte!<br><br>';
+        mess += 'Bildtexten kan inte uppdateras på grund av något åtkomsthinder &ndash är filen ändringsskyddad?<br><br>';
+        mess += 'Eventuell tillfälligt förlorad text återfås med att ladda om albumet (återställ osparade ändringar)';
+
+        that.alertMess(mess);
       } else {
-        // userLog(tempStore, false, 2000);
-        // tempStore = "";
-        //console.log('Xmp.dc metadata saved in ' + fileName);
+        that.loli('Xmp.dc metadata saved for ' + that.picName);
+        // Not used since server savetxt/ calls ITS sqlUpdate
+        // that.sqlUpdate(txt.split(LF)[0]);
       }
     }
     xhr.send(txt);
   }
 
+  //#region sqlupdate
   // Update the sqlite text database (symlinked pictures auto-omitted)
   sqlUpdate = (picPaths) => { // Must be complete server paths
     if (!picPaths) return;
@@ -1152,7 +1191,7 @@ export default class CommonStorageService extends Service {
   }
 
 
-  //   #region Menus
+  //   #region MENUS
   //== Menu utilities
 
   openMainMenu = async (e) => {
@@ -1178,7 +1217,7 @@ export default class CommonStorageService extends Service {
     return '';
   }
 
-  //   #region Dialogs
+  //   #region DIALOGS
   //== Dialog utilities for open/close/modal ...
 
   // Functions openDialog(id, op), toggleDialog(id, op), openModalDialog(id, op),
@@ -1221,10 +1260,16 @@ export default class CommonStorageService extends Service {
   saveDialog = async (dialogId) => {
     // should have alternatives for any dialogId
     if (dialogId === 'dialogText' && this.picIndex > -1) {
-      let linkto = this.allFiles[this.picIndex].linkto;
-        // this.loli(linkto,'color:yellow');
+      let f = this.allFiles[this.picIndex]
+      let path = '';
+      if (f.symlink) {
+        path = f.orig; //** see below
+      } else {
+        path = f.linkto;
+      }
+        // this.loli(path,'color:yellow');
 
-      let gif = /\.gif$/i.test(linkto);
+      let gif = /\.gif$/i.test(path);
 
       let txt1 = document.getElementById('dialogTextDescription').value;
       txt1 = this.normalize2br(txt1, true); // true == leave end untrimmed
@@ -1253,11 +1298,12 @@ export default class CommonStorageService extends Service {
       this.paintHideFlags(); // AFTER RERENDER!
       this.paintViewImg();   // AFTER RERENDER!
       this.markBorders(this.picName);
-      let path = this.imdbRoot + linkto;
+      // Remove the initial '../..etc.' if 'path' is from 'f.orig' //**
+      path = this.imdbRoot + path.replace(/^\.*(\/\.+)*/, '');
         // this.loli(path, 'color:red');
       if (!gif) {
         this.saveText(path + LF + txt1 + LF + txt2);
-        this.loli('saved ' + dialogId);
+        // this.loli('saved ' + dialogId); // is confirmed by 'saveText'
         return;
       }
     }
@@ -1285,5 +1331,5 @@ export default class CommonStorageService extends Service {
     }
   }
 }
-//   #region End
+//   #region END
 //   #endregion
