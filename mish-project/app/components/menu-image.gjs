@@ -33,8 +33,8 @@ export class MenuImage extends Component {
   }
 
   homeAlbum = async (path, fileName) => { // was parAlb
-    this.z.loli('path:' + path + ':');
-    this.z.loli('fileName:' + fileName + ':');
+      // this.z.loli('path:' + path + ':');
+      // this.z.loli('fileName:' + fileName + ':');
     // Convert the relative path of the linked-file target,
     // to conform with z.imdbDirs server list, rooted at album root
     let dir = path.replace(/^([.]*\/)*/, '/').replace(/\/[^/]+$/, '');
@@ -45,7 +45,7 @@ export class MenuImage extends Component {
       if (document.getElementById(dialogAlertId).open) {
         this.z.closeDialog(dialogAlertId);
       } else {
-        this.z.alertMess(this.intl.t('albumMissing') + ':<br><br><p style="width:100%;text-align:center;margin:0">”' + this.z.removeUnderscore(name) + '”</p>');
+        this.z.alertMess(this.intl.t('albumMissing') + ':<br><br><p style="width:100%;text-align:center;margin:0">”' + this.z.removeUnderscore(name) + '”</p>', 0);
       }
     } else {
       this.z.openAlbum(i);
@@ -88,8 +88,8 @@ export class MenuImage extends Component {
     let id = tgt.id;
     let name = id.slice(1);
     this.z.picName = name;
-    this.z.loli(this.z.picName + ' txt:', 'color:red');
-    console.log(this.z.allFiles[this.z.picIndex])
+      // this.z.loli(this.z.picName + ':', 'color:red');
+      // console.log(this.z.allFiles[this.z.picIndex])
     let list = tgt.querySelector('.menu_img_list');
     if (!list.style.display) open = 0; // If open, close
 

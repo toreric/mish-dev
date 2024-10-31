@@ -133,9 +133,9 @@ document.addEventListener('mousedown', async (event) => {
     tgt !== tmp1 &&
     !tmp0.contains(tgt) &&
     !tmp1.contains(tgt)
-  ) document.querySelector('#menuButton').click();
+  ) tmp0.click();
   // Close the show image view, if open
-  document.querySelector('#go_back').click();
+  document.getElementById('go_back').click();
   return;
 });
 

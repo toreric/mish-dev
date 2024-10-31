@@ -52,7 +52,7 @@ module.exports = function(app) { // Start module.exports
   // ##### R O U T I N G  E N T R I E S
   // Check 'Express route tester'!
   // ##### General passing point
-  //#region START routing
+  //#region ROUTING
   app.all('*', async function(req, res, next) {
     if (req.originalUrl !== '/upload') { // Upload with dropzone: 'req' used else!
       let tmp = req.get('imdbroot')
@@ -494,13 +494,14 @@ module.exports = function(app) { // Start module.exports
       body = Buffer.concat(body).toString()
       // Here `body` has the entire request body stored in it as a string
       var tmp = body.split('\n')
-      var fileName = IMDB_HOME + '/' + tmp[0].trim() // the path is included here @***
-      var msgName = '.' + fileName.slice(IMDB.length)
+      var fileName = IMDB_HOME + '/' + tmp[0].trim() // All path included here @***
+      var msgName = '.' + fileName.slice(IMDB_HOME.length)
 
       let okay = fs.constants.W_OK | fs.constants.R_OK
       fs.access(fileName, okay, async err => {
         if (err) {
           res.send("Cannot write to " + msgName)
+          console.log(err, 'ERROR', err.length)
           console.log(RED + 'NO WRITE PERMISSION to ' + msgName + RSET)
         } else {
           console.log('Xmp.dc metadata will be saved into ' + msgName)
@@ -958,10 +959,10 @@ module.exports = function(app) { // Start module.exports
           for (let j=0; j<xmpkey.length; j++) {
             // Important NOTE: this loop must correspond in both routes.js and ld_imdb.js
             let cmd = 'xmpget ' + xmpkey[j] + ' ' + pathlist[i]
-            // The removeDiacritics funtion may bypass some characters (e.g. Sw. åäöÅÄÖ)
+            // The removeDiacritics function does bypass some characters: Swedish åäöÅÄÖ and German äöüÄÖÜ (not customized to each individual language)
             // Remove diacritics and make lowercase. Remove tags and double spaces.
             xmpParams[j] = removeDiacritics (execSync(cmd).toString()).toLowerCase()
-            xmpParams[j] = xmpParams[j].replace(/<[^>]+>/g, " ").replace(/  */g, " ")
+            xmpParams[j] = xmpParams[j].replace(/<[^>]+>/gm, "").replace(/  */gm, " ")
           }
           dbValues =   // Removed the $ prefix to fit better-sqlite3
           { filepath: filePath,

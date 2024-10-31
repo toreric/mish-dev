@@ -39,6 +39,8 @@ setSetting:   change settings
 textEdit:     edit/save image texts/captions, access hidden albums³
 
 all: All
+captionFor: Image caption for
+captionSaved: saved
 checkuncheck: Check or uncheck all
 dark: Dark
 Dimension: Dimension

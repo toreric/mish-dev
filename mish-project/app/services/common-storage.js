@@ -219,14 +219,15 @@ export default class CommonStorageService extends Service {
     } else {
       str = str.trim();
     }
-    return str.replace(/\n +/g, LF).replace(/\n/g, '<br>').replace(/ +/g, ' ');
+    return str.replace(/\n +/g, LF).replace(/\n/g, ' <br>').replace(/ +/g, ' ');
   }
 
   // Remove HTML tags from text
   noTags = (txt) => {
     let tmp = txt.toString().replace(/<(?:.|\n)*?>/gm, ""); // Remove <tags>
     tmp = he.decode(tmp); // for attributes
-    return tmp ? tmp : ' ';
+    tmp = tmp ? tmp : ' ';
+    return tmp;
   }
 
   // Remove HTML tags from the text and shorten to fit thumbnails
@@ -481,7 +482,7 @@ export default class CommonStorageService extends Service {
     this.numOrigin = this.numImages - this.numLinked;
     this.numShown = document.querySelectorAll('.img_mini').length - this.numInvisible;
     if (this.numImages !== this.numShown + this.numInvisible) {
-      this.alertMess(this.intl.t('numbererror'));
+      this.alertMess(this.intl.t('numbererror'), 0);
       this.loli('shown:' + this.numShown + ' + invisible:' + this.numInvisible + ' != sum:' + this.numImages, 'color:red');
     }
   }
@@ -495,8 +496,10 @@ export default class CommonStorageService extends Service {
 
 
 
+  // Setting sec to 0 doesn't avoid inherited close!
   //#region alertMess
   alertMess = async (mess, sec) => {
+    this.closeDialog('dialogAlert');
     this.infoHeader = this.intl.t('infoHeader'); // default header
     this.infoMessage = mess.replace(/\n/g, '<br>');
     this.openDialog('dialogAlert');
@@ -506,9 +509,6 @@ export default class CommonStorageService extends Service {
       this.closeDialog('dialogAlert');
     }
   }
-
-
-
 
   //#region albumAllImg
   albumAllImg = (i) => { // number of original + symlink images in album 'i'
@@ -991,7 +991,8 @@ export default class CommonStorageService extends Service {
               f.symlink = '';
             } else {
               let tmp = f.symlink;
-              f.orig = tmp; // The actual path in this context
+              // HOW this missing slash?
+              f.orig = '/' + tmp; // The actual path in this context
               f.symlink = 'symlink';
               tmp = tmp.replace(/^([.]*\/)+/, that.imdbRoot + "/").replace(/^([^/]*\/)*([^/]+)\/[^/]+$/, "$2");
               f.albname = that.removeUnderscore(tmp, true);
@@ -1144,6 +1145,9 @@ export default class CommonStorageService extends Service {
     this.xhrSetRequestHeader(xhr);
     xhr.onload = function () {
       if (xhr.response) {
+
+          console.log(xhr.response);
+
         that.loli('Xmp.dc metadata not saved for ' + that.picName, 'color:red');
         let edpn = that.escapeDots(that.picName);
         document.querySelector('#i' + edpn + ' .img_txt1').innerHTML = '';
@@ -1153,14 +1157,16 @@ export default class CommonStorageService extends Service {
         // mess += that.intl.t('errTxtRecoverText');
 
         let mess = 'Texten sparades inte!<br><br>';
-        mess += 'Bildtexten kan inte uppdateras på grund av något åtkomsthinder &ndash är filen ändringsskyddad?<br><br>';
+        mess += 'Bildtexten kan inte uppdateras på grund av något åtkomsthinder, är filen ändringsskyddad?<br><br>';
         mess += 'Eventuell tillfälligt förlorad text återfås med att ladda om albumet (återställ osparade ändringar)';
 
-        that.alertMess(mess);
+        that.alertMess(mess, 0);
       } else {
         that.loli('Xmp.dc metadata saved for ' + that.picName);
-        // Not used since server savetxt/ calls ITS sqlUpdate
-        // that.sqlUpdate(txt.split(LF)[0]);
+        let mess = that.intl.t('captionFor') + ' <b style="color:black">' + that.picName + '</b> ' + that.intl.t('captionSaved');
+        that.alertMess(mess, 10);
+        // Not used since 'server savetxt/', that is, tne SERVER will do sqlUpdate:
+        // that.sqlUpdate(txt.split(LF)[0]); WHEN used?
       }
     }
     xhr.send(txt);
@@ -1260,25 +1266,26 @@ export default class CommonStorageService extends Service {
   saveDialog = async (dialogId) => {
     // should have alternatives for any dialogId
     if (dialogId === 'dialogText' && this.picIndex > -1) {
-      let f = this.allFiles[this.picIndex]
+      // Close any previous alert:
+      this.closeDialog('dialogAlert');
+      let f = this.allFiles[this.picIndex];
       let path = '';
       if (f.symlink) {
         path = f.orig; //** see below
+          // this.loli(path, 'color:red');
       } else {
         path = f.linkto;
+          // this.loli(path,'color:yellow');
       }
-        // this.loli(path,'color:yellow');
-
       let gif = /\.gif$/i.test(path);
-
       let txt1 = document.getElementById('dialogTextDescription').value;
-      txt1 = this.normalize2br(txt1, true); // true == leave end untrimmed
+      txt1 = this.normalize2br(txt1, true); // true: leave end untrimmed
         // this.loli(txt1,'color:yellow');
       this.allFiles[this.picIndex].txt1 = txt1;
       document.getElementById('dialogTextDescription').value = txt1.replace(/<br>/g, '\n');
 
       let  txt2 = document.getElementById('dialogTextCreator').value;
-      txt2 = this.normalize2br(txt2);
+      txt2 = this.normalize2br(txt2); // also trim end
         // this.loli(txt2,'color:yellow');
       this.allFiles[this.picIndex].txt2 = txt2;
       document.getElementById('dialogTextCreator').value = txt2.replace(/<br>/g, '\n');

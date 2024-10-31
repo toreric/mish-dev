@@ -170,7 +170,7 @@ export class MenuMain extends Component {
     }
     if (!this.z.imdbRoot) {
       // alertMess opens the alert dialog
-      this.z.alertMess(this.intl.t('needaroot'));
+      this.z.alertMess(this.intl.t('needaroot'), 0);
       document.querySelector('.mainMenu select').focus();
       return true;
     }

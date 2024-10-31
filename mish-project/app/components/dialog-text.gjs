@@ -24,8 +24,14 @@ document.addEventListener('keydown', async (e) => {
     e.stopPropagation();
     document.getElementById(dialogTextId).close();
     console.log('-"-: closed ' + dialogTextId);
-  }
-});
+  } else if (e.ctrlKey && e.key === 's') {
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.target.closest('#dialogText')) {
+        document.getElementById('dialogTextButton1').click();
+      }
+    }
+  });
 
 //== Component DialogText with <dialog> tags
 export class DialogText extends Component {
@@ -33,7 +39,6 @@ export class DialogText extends Component {
   @service intl;
 
   // Subdialog open button is pressed
-
   childDialog = (diaId) => {
     this.z.openModalDialog(diaId, 0);
   }

@@ -39,6 +39,8 @@ setSetting:   ändra inställningar
 textEdit:     redigera/spara bildtexter, se dolda album³
 
 all: Alla
+captionFor: Bildtext för
+captionSaved: sparad
 checkuncheck: Markera/avmarkera alla
 dark: Mörk
 Dimension: Dimension
