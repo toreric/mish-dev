@@ -47,6 +47,9 @@ Dimension: Dimension
 download: Herunterladen...
 editext: Text bearbeiten...
 editimage: Bild bearbeiten...
+errTxtNotSaved: Der Text wurde nicht gespeichert!
+errTxtCannotSave: Die Beschriftung kann nicht aktualisiert werden. Ist die Datei geschützt?
+errTxtRecover: Verlorener Text wird zurückgegeben durch Neuladen des Albums (ungespeicherte Änderungen zurücksetzen)
 explainLink: hier als verlinktes bild dargestellt
 Filename: Dateiname
 findDuplicates: suche nach duplikaten

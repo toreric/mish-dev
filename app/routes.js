@@ -113,7 +113,8 @@ module.exports = function(app) { // Start module.exports
   //#region filestat
   app.get ('/filestat', async (req, res) => {
     var file = decodeURIComponent(req.get('path'))
-    file = 'rln' + IMDB + file // 3 + IMDB.length
+    // file = 'rln' + IMDB + file // 3 + IMDB.length
+    file = IMDB + file
 
     // This is an emergency solution, which was necessary since the 'filstat'
     // server address seems to be excessively triggered by the reactive behaviour
@@ -143,7 +144,8 @@ module.exports = function(app) { // Start module.exports
     // Exclude IMDB from `file`, feb 2022, in order to difficultize
     // direct access to the original pictures on the server.
     var errimg = "not available"
-    var filex = '.' + file.slice (3 + IMDB.length) // 3 for 'rln'
+    // var filex = '.' + file.slice (3 + IMDB.length) // 3 for 'rln'
+    var filex = '.' + file.slice (IMDB.length)
     var fileStat = ''
 
     fileStat += stat.size/1000000 + ' Mb' + BR
@@ -608,15 +610,18 @@ module.exports = function(app) { // Start module.exports
   // ===== Read the dir's content of album sub-dirs(not recursively)
   //#region readSubdir
   readSubdir = async(dir, files = []) => {
-    let items = await fs.readdirAsync('rln' + dir) // items are file || dir names
+    // let items = await fs.readdirAsync('rln' + dir) // items are file || dir names
+    let items = await fs.readdirAsync(dir) // items are file || dir names
     return Promise.map(items, async(name) => { // Cannot use mapSeries here(why?)
       //let apitem = path.resolve(dir, name) // Absolute path
       let item = path.join(dir, name) // Relative path
       if (acceptedDirName(name) && !brokenLink(item)) {
-        let stat = await fs.statAsync('rln' + item)
+        // let stat = await fs.statAsync('rln' + item)
+        let stat = await fs.statAsync(item)
         if (stat.isDirectory()) {
           let flagFile = path.join(item, '.imdb')
-          let fd = await fs.openAsync('rln' + flagFile, 'r')
+          // let fd = await fs.openAsync('rln' + flagFile, 'r')
+          let fd = await fs.openAsync(flagFile, 'r')
           if (fd > -1) {
             await fs.closeAsync(fd)
             files.push(name)
@@ -671,7 +676,8 @@ module.exports = function(app) { // Start module.exports
     let fd, albums = []
     return Promise.mapSeries(dirlist, async(album) => { //(*) CAN use mapSeries here but don't understand why!?
       try {
-        fd = await fs.openAsync('rln' + IMDB + album + '/.imdb', 'r')
+        // fd = await fs.openAsync('rln' + IMDB + album + '/.imdb', 'r')
+        fd = await fs.openAsync(IMDB + album + '/.imdb', 'r')
         await fs.closeAsync(fd)
         // Exclude dotted, and not actual picFound files
         if (album.includes('/.') || album.includes('§') && album.indexOf(picFound) === -1) {
@@ -697,10 +703,11 @@ module.exports = function(app) { // Start module.exports
   function findFiles(dirName) {
 
     // console.log('FINDFILES')
-    // console.log('rln' + IMDB + dirName)
+    // console.log(IMDB + dirName)
 
-    return fs.readdirAsync('rln' + IMDB + dirName).map(function(fileName) { // Cannot use mapSeries here(why?)
-      var filepath = path.join(IMDB + dirName, fileName)
+    // return fs.readdirAsync('rln' + IMDB + dirName).map(function(fileName) { // Cannot use mapSeries here(why?)
+    return fs.readdirAsync(IMDB + dirName).map(function(fileName) { // Cannot use mapSeries here(why?)
+        var filepath = path.join(IMDB + dirName, fileName)
 
       // console.log('filepath:', filepath)
 
@@ -709,7 +716,8 @@ module.exports = function(app) { // Start module.exports
         rmPic(filepath) // may hopefully also work for removing any single file ...
         return path.join(path.dirname(filepath), '.ignore') // fake dotted file
       }
-      return fs.statAsync('rln' + filepath).then(function(stat) {
+      // return fs.statAsync('rln' + filepath).then(function(stat) {
+      return fs.statAsync(filepath).then(function(stat) {
         if (stat.mode & 0o100000) {
           // See 'man 2 stat': S_IFREG bitmask for 'Regular file', and google more!
           return filepath
@@ -1032,8 +1040,8 @@ module.exports = function(app) { // Start module.exports
 
 //GLOBALS Globals globals
 //#region DIACRITICS
-// Data for the removeDiacritics function (see below)
-// modified to not affect 'removed' characters:
+// Data for the removeDiacritics function (see below), modified to not affect
+// 'removed' characters (from the script ld_imdb.js, must be identical):
 const defaultDiacriticsRemovalMap = [
   {'base':'A', 'letters':'\u0041\u24B6\uFF21\u00C0\u00C1\u00C2\u1EA6\u1EA4\u1EAA\u1EA8\u00C3\u0100\u0102\u1EB0\u1EAE\u1EB4\u1EB2\u0226\u01E0\u01DE\u1EA2\u01FA\u01CD\u0200\u0202\u1EA0\u1EAC\u1EB6\u1E00\u0104\u023A\u2C6F'}, // removed Ä \u00C4, Å \u00C5
   {'base':'AA','letters':'\uA732'},
@@ -1123,10 +1131,10 @@ const defaultDiacriticsRemovalMap = [
   {'base':'z','letters':'\u007A\u24E9\uFF5A\u017A\u1E91\u017C\u017E\u1E93\u1E95\u01B6\u0225\u0240\u2C6C\uA763'}
 ];
 let diacriticsMap = {};
-for (let i=0; i < defaultDiacriticsRemovalMap .length; i++){
-  let letters = defaultDiacriticsRemovalMap [i].letters;
+for (let i=0; i < defaultDiacriticsRemovalMap.length; i++){
+  let letters = defaultDiacriticsRemovalMap[i].letters;
   for (let j=0; j < letters.length ; j++){
-    diacriticsMap[letters[j]] = defaultDiacriticsRemovalMap [i].base;
+    diacriticsMap[letters[j]] = defaultDiacriticsRemovalMap[i].base;
   }
 }
 function removeDiacritics (str) {

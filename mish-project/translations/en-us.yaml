@@ -47,6 +47,9 @@ Dimension: Dimension
 download: Download...
 editext: Edit text...
 editimage: Edit image...
+errTxtNotSaved: The text was not saved!
+errTxtCannotSave: The caption cannot be updated, is the file protected?
+errTxtRecover: Recover lost text by reloading the album (restore unsaved changes)
 explainLink: shown here as linked image
 Filename: File name
 findDuplicates: find duplicates

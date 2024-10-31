@@ -73,7 +73,6 @@ document.addEventListener('keydown', (event) => {
     case 70:  // F
       break;
     case 112: // F1
-          // console.log('F1 pressed') once only?
       toggleDialog(dialogHelpId);
   }
 });

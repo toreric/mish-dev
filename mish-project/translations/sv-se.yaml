@@ -47,6 +47,9 @@ Dimension: Dimension
 download: Ladda ned...
 editext: Redigera text...
 editimage: Redigera bild...
+errTxtNotSaved: Texten sparades inte!
+errTxtCannotSave: Bildtexten kan inte uppdateras, är filen ändringsskyddad?
+errTxtRecover: Försvunnen text återfås med att ladda om albumet (återställ osparade ändringar)
 explainLink: visas här som länkad bild
 Filename: Filnamn
 findDuplicates: sök dublettbilder

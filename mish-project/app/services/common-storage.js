@@ -1145,21 +1145,14 @@ export default class CommonStorageService extends Service {
     this.xhrSetRequestHeader(xhr);
     xhr.onload = function () {
       if (xhr.response) {
-
           console.log(xhr.response);
-
         that.loli('Xmp.dc metadata not saved for ' + that.picName, 'color:red');
         let edpn = that.escapeDots(that.picName);
         document.querySelector('#i' + edpn + ' .img_txt1').innerHTML = '';
         document.querySelector('#i' + edpn + ' .img_txt2').innerHTML = '';
-        // let mess = that.intl.t('errTxtNotSaved');
-        // mess += that.intl.t('errTxtCannotSave');
-        // mess += that.intl.t('errTxtRecoverText');
-
-        let mess = 'Texten sparades inte!<br><br>';
-        mess += 'Bildtexten kan inte uppdateras på grund av något åtkomsthinder, är filen ändringsskyddad?<br><br>';
-        mess += 'Eventuell tillfälligt förlorad text återfås med att ladda om albumet (återställ osparade ändringar)';
-
+        let mess = that.intl.t('errTxtNotSaved') + '<br><br>';
+        mess += that.intl.t('errTxtCannotSave') + '<br><br>';
+        mess += that.intl.t('errTxtRecover');
         that.alertMess(mess, 0);
       } else {
         that.loli('Xmp.dc metadata saved for ' + that.picName);
