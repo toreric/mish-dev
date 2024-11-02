@@ -64,6 +64,8 @@ hidden: verbergte
 hideshow: Verstecken oder anzeigen
 home: zum Anfang von
 images: Bilder
+imageFind: Bilder finden
+imageSearch: In Bildunterschriften suchen
 information: Information
 intlcode: de-de
 invertsel: Auswahl umkehren
@@ -119,6 +121,7 @@ albumSelectInfo: "Eine Albumsammlung hier auswählen,
 button:
   backgtitle: Hintergrund ändern
   close:     Schließen
+  findIn:    Suche in
   keywords:  Stichwörter
   login:     Anmelden
   notes:     Anmerkungen
@@ -158,6 +161,9 @@ buttons:
           – einfach hier klicken!"
 
 dialog:
+  find:
+    header: Bilder finden
+    nolinks: (nicht verlinkte)
   help:
     header: Benutzeranweisung
     header1: (vor allem für Computers mit Tastatur oder Touchpad)

@@ -22,8 +22,10 @@ document.addEventListener('mousedown', async (e) => {
 document.addEventListener('keydown', async (e) => {
   if (e.keyCode === 27) {
     e.stopPropagation();
-    document.getElementById(dialogTextId).close();
-    console.log('-"-: closed ' + dialogTextId);
+    if (document.getElementById(dialogTextId).open) {
+      document.getElementById(dialogTextId).close();
+      console.log('-"-: closed ' + dialogTextId);
+    }
   } else if (e.ctrlKey && e.key === 's') {
       e.preventDefault();
       e.stopPropagation();
@@ -110,7 +112,7 @@ export class DialogText extends Component {
       <dialog id='dialogText'>
         <header data-dialog-draggable >
           <p>&nbsp;</p>
-          <p>{{t 'dialog.text.header'}} <span>{{this.picName}}</span></p>
+          <p><b>{{t 'dialog.text.header'}} <span>{{this.picName}}</span></b></p>
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogTextId)}}>×</button>
         </header>
         <main>
@@ -127,7 +129,7 @@ export class DialogText extends Component {
 
         </main>
         <footer data-dialog-draggable>
-          <button id="dialogTextButton1" type="button" {{on 'click' (fn this.z.saveDialog dialogTextId)}}>{{t 'button.save'}}</button>&nbsp;
+          <button id="dialogTextButton1" title="Ctrl+s" type="button" {{on 'click' (fn this.z.saveDialog dialogTextId)}}>{{t 'button.save'}}</button>&nbsp;
           <button id="dialogTextButton2" type="button" {{on 'click' (fn this.z.saveCloseDialog dialogTextId)}}>{{t 'button.saveclose'}}</button>&nbsp;
           <button id="dialogTextButton3" type="button" {{on 'click' (fn this.z.closeDialog dialogTextId)}}>{{t 'button.close'}}</button>&nbsp;
           <button id="dialogTextButton4" type="button" {{on 'click' (fn this.childDialog 'dialogTextNotes')}}>{{t 'button.notes'}}</button>&nbsp;
@@ -138,7 +140,7 @@ export class DialogText extends Component {
       <dialog id='dialogTextNotes'>
         <header data-dialog-draggable>
           <p>&nbsp;</p>
-          <p>{{t 'dialog.text.notes'}} <span>{{this.z.picName}}</span></p>
+          <p><b>{{t 'dialog.text.notes'}} <span>{{this.z.picName}}</span></b></p>
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogTextNotes')}}>×</button>
         </header>
         <main>
@@ -160,7 +162,7 @@ export class DialogText extends Component {
       <dialog id="dialogTextKeywords" style="width:max(20%, 20rem)">
         <header data-dialog-draggable>
           <p>&nbsp;</p>
-          <p>{{t 'dialog.text.keywords'}} <span>{{this.z.picName}}</span></p>
+          <p><b>{{t 'dialog.text.keywords'}} <span>{{this.z.picName}}</span></b></p>
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogTextKeywordsId)}}>×</button>
         </header>
         <!-- Temporary special styling 2 in this dialog stub -->

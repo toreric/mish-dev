@@ -183,6 +183,7 @@ class AllImages extends Component {
   // Edit the image texts using DialogText
   ediText = (event) => {
     event.stopPropagation();
+    if (!this.z.allow.textEdit) return;
     let tgt = event.target;
     let old = this.z.picName;
     // NOTE: The picName is already set at .img_show (perhaps not at .img_mini):
@@ -301,9 +302,9 @@ class AllImages extends Component {
             {{sortableItem data=item onDrop=this.move}}
             {{on 'mousedown' this.z.resetBorders}}
           >
+
             {{!-- The thumbnail menu --}}
             <MenuImage />
-
             <div style="margin:auto auto 0 auto;position:relative;width:max-content;">
 
               {{!-- The check mark in the thumnail's upper right corner --}}

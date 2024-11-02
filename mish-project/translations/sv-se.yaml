@@ -64,6 +64,8 @@ hidden: dolda
 hideshow: Göm eller visa
 home: till början av
 images: bilder
+imageFind: Finn bilder
+imageSearch: Sök i bildtexter
 information: Information
 intlcode: sv-se
 invertsel: Invertera markeringar
@@ -120,6 +122,7 @@ albumSelectInfo: "Välj här en album-
 button:
   backgtitle: Byt bakgrund
   close:     Stäng
+  findIn:    Sök i
   keywords:  Nyckelord
   login:     Logga in
   notes:     Anteckningar
@@ -158,6 +161,9 @@ buttons:
           bara klickar här!"
 
 dialog:
+  find:
+    header: Finn bilder
+    nolinks: (ej länkade)
   help:
     header: Användarhandledning
     header1: (främst för dator med tangentbord eller pekplatta)

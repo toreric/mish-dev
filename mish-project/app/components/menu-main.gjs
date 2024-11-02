@@ -10,6 +10,7 @@ import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
 import { dialogAlertId } from './dialog-alert';
+import { dialogFindId } from './dialog-find';
 
 export const menuMainId = 'menuMain';
 const LF = '\n'; // LINE_FEED
@@ -128,8 +129,8 @@ export class MenuMain extends Component {
   // Search album texts to find images
   findText = () => {
     if (this.checkRoot()) return;
-    this.z.loli('findText', 'color:red');
-    // ...todo
+    this.z.openDialog(dialogFindId);
+    this.z.closeMainMenu('after opening find dialog'); // Close the main menu
   }
 
   // Manage favorite image lists
@@ -174,6 +175,7 @@ export class MenuMain extends Component {
       document.querySelector('.mainMenu select').focus();
       return true;
     }
+    return false;
   }
 
   // Open enough nodes to make the selected album visible
@@ -219,8 +221,8 @@ export class MenuMain extends Component {
 
     <div id="menuMain" class="mainMenu" onclick="return false" draggable="false" ondragstart="return false" style="display:none">
 
-      <p onclick="return false" draggable="false" ondragstart="return false" title-2="Sökning">
-        <a class="search" {{on "click" (fn this.findText)}}>Finn bilder <span style="font:normal 1em monospace!important">[F]</span></a>
+      <p onclick="return false" draggable="false" ondragstart="return false" title-2="{{t 'imageSearch'}}">
+        <a id="searchText" {{on "click" (fn this.findText)}}>{{t 'imageFind'}}<span style="font:normal 1em monospace!important">[F]</span></a>
       </p><br>
 
       <p onclick="return false" draggable="false" ondragstart="return false" title-2="Favoritskötsel">

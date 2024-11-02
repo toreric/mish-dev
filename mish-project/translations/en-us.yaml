@@ -64,6 +64,8 @@ hidden: hidden
 hideshow: Hide or show
 home: to the beginning of
 images: images
+imageFind: Find images
+imageSearch: Search in captions
 information: Information
 intlcode: en-us
 invertsel: Invert selections
@@ -120,6 +122,7 @@ albumSelectInfo: "Select here an album
 button:
   backgtitle: Change background
   close:     Close
+  findIn:    Search in
   keywords:  Keywords
   login:     Log in
   notes:     Notes
@@ -160,6 +163,9 @@ buttons:
           – you just click here!"
 
 dialog:
+  find:
+    header: Find images
+    nolinks: (not linked)
   help:
     header: User guide
     header1: (mainly for computers with keyboard or touchpad)

@@ -13,6 +13,7 @@ import { Clock } from './clock';
 import { ButtonsLeft } from './buttons-left';
 import { ButtonsRight } from './buttons-right';
 import { DialogAlert } from './dialog-alert';
+import { DialogFind } from './dialog-find';
 import { DialogHelp } from './dialog-help';
 import { DialogInfo } from './dialog-info';
 import { DialogLogin } from './dialog-login';
@@ -25,6 +26,7 @@ import { ViewMain } from './view-main';
 import { Spinner } from './spinner';
 
 import { dialogAlertId } from './dialog-alert';
+import { dialogFindId } from './dialog-find';
 import { dialogHelpId } from './dialog-help';
 import { dialogInfoId } from './dialog-info';
 import { dialogLoginId } from './dialog-login';
@@ -71,6 +73,10 @@ document.addEventListener('keydown', (event) => {
     case 65:  // A
       break;
     case 70:  // F
+      if (!event.ctrlKey && document.activeElement.nodeName !== 'TEXTAREA') {
+        event.preventDefault();
+        document.getElementById('searchText').click();
+      }
       break;
     case 112: // F1
       toggleDialog(dialogHelpId);
@@ -294,6 +300,7 @@ export default class extends Welcome {
 
     <DialogLogin />
     <DialogText />
+    <DialogFind />
     <DialogHelp />
     <DialogInfo />
     <DialogAlert />

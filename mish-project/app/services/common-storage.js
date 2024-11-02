@@ -1138,6 +1138,11 @@ export default class CommonStorageService extends Service {
 
   //#region savetext
   //saving image captions as metadata: saveText(filePath +'\n'+ txt1 +'\n'+ txt2);
+  placeMess = () => {
+    let textel = document.getElementById('dialogText');
+    let messel = document.getElementById('dialogAlert');
+    messel.style.transform = textel.style.transform;
+  }
   saveText = (txt) => {
     var that = this;
     var xhr = new XMLHttpRequest ();
@@ -1154,10 +1159,12 @@ export default class CommonStorageService extends Service {
         mess += that.intl.t('errTxtCannotSave') + '<br><br>';
         mess += that.intl.t('errTxtRecover');
         that.alertMess(mess, 0);
+        that.placeMess();
       } else {
         that.loli('Xmp.dc metadata saved for ' + that.picName);
         let mess = that.intl.t('captionFor') + ' <b style="color:black">' + that.picName + '</b> ' + that.intl.t('captionSaved');
         that.alertMess(mess, 10);
+        that.placeMess();
         // Not used since 'server savetxt/', that is, tne SERVER will do sqlUpdate:
         // that.sqlUpdate(txt.split(LF)[0]); WHEN used?
       }
@@ -1207,6 +1214,7 @@ export default class CommonStorageService extends Service {
 
   closeMainMenu = async (msg) => {
     var menuMain = document.getElementById('menuMain');
+    if (menuMain.style.display === 'none') return '';
     var menuButton = document.getElementById('menuButton');
     menuMain.style.display = 'none';
     await new Promise (z => setTimeout (z, 9)); // slow response
