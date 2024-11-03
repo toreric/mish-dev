@@ -127,7 +127,7 @@ export class DialogInfo extends Component {
 
         {{#if this.getStat.isResolved}}
           {{{this.showStat0 this.getStat.value}}}
-          <a class="hoverDark" style="font-family:sans-serif;font-variant:small-caps" title-2="{{{this.imQual}}}" {{on 'click' (fn this.inform 'qual')}}>{{t 'status'}}</a>
+          <a class="hoverDark" style="font-family:sans-serif;font-variant:all-small-caps" title-2="{{{this.imQual}}}" {{on 'click' (fn this.inform 'qual')}}>{{t 'status'}}</a>
 
           {{{this.showStat this.getStat.value}}}
 

@@ -94,11 +94,12 @@ remove: REMOVE...
 return: outside = return
 rights: rights
 saved: S A V E D
+searchHelp: Search help
 selectTreshold: Select threshold value
 shown: shown
 simiThres: with similarity threshold
 Size: Size
-status: status
+status: Status
 subalbum:  subalbum
 subalbums: subalbums
 txtGif: Gif image! May only be given temporary text that cannot be kept permanently
@@ -244,7 +245,7 @@ time:
   buildstamp: Ember development server
 totalImgNumber: Total number of images in the collection
 write:
-  creator: 'From, how: Photo Origin Source'
+  creator: 'Origin: Photographer Source'
   description: 'Caption: When Where What Who'
   keywords: "Information about planned future addition:
              Keywords being stored as metadata for search key use"

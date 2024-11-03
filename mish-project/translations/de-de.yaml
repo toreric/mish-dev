@@ -94,11 +94,12 @@ remove: LÖSCHEN...
 return: außerhalb = zurück
 rights: Rechte
 saved: GESPEICHERT
+searchHelp: Suchhilfe
 selectTreshold: Schwellenwert auswählen
 shown: gezeigte
 simiThres: mit Ähnlichkeitsschwelle
 Size: Größe
-status: status
+status: Status
 subalbum:  Unteralbum
 subalbums: Unteralben
 txtGif: Gif-Bild! Kann nur temporären Text zugewiesen der nicht dauerhaft gesichert werden kann
