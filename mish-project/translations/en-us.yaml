@@ -247,6 +247,7 @@ totalImgNumber: Total number of images in the collection
 write:
   creator: 'Origin: Photographer Source'
   description: 'Caption: When Where What Who'
+  findHelpHeader: How to find images
   keywords: "Information about planned future addition:
              Keywords being stored as metadata for search key use"
   notes: Notes not shown with the image

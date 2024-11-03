@@ -53,7 +53,7 @@ export class DialogFind extends Component {
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogFindId)}}>×</button>
         </header>
         <main>
-          <textarea name="searchtext" placeholder="Skriv här sökbegrepp, åtskilda av blanktecken, små/stora bokstäver oviktigt (välj nedan texter du vill söka i)" rows="4" style="min-width:700px;width: 635px;"></textarea>
+          <textarea name="searchtext" placeholder="Skriv här sökbegrepp, åtskilda av blanktecken, små/stora bokstäver oviktigt (välj nedan vilka texter du vill söka i)" rows="4" style="width: min(calc(100vw - 1rem),700px)"></textarea>
 
           <div class="diaMess">
             <div class="edWarn" style="font-weight:normal;text-align:right"></div>
@@ -80,7 +80,6 @@ export class DialogFind extends Component {
               </span>
             </div>
             <div class="orAnd">Om blank ska sökas: skriv % (åtskiljer ej) &nbsp; &nbsp;
-                {{!-- <a class="hoverDark" href="findhelp.html" target="find_help" style="font-family:sans-serif;font-variant:all-small-caps" tabindex="-1">{{t 'searchHelp'}}</a> --}}
                 <a class="hoverDark" style="font-family:sans-serif;font-variant:all-small-caps" tabindex="-1" {{on 'click' (fn this.z.toggleDialog 'dialogFindHelp')}}>{{t 'searchHelp'}}</a>
               <br>Välj regel för åtskilda ord/textbitar/sökbegrepp:<br>
               <span class="glue">
@@ -103,37 +102,31 @@ export class DialogFind extends Component {
       <dialog id='dialogFindHelp'>
         <header data-dialog-draggable >
           <p>&nbsp;</p>
-          <p><b>{{t 'write.findHelpHeader'}}</b> <span></span></p>
+          <p>{{t 'write.findHelpHeader'}} <span></span></p>
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogFindHelp')}}>×</button>
         </header>
-        <main>
-          <h1 style="padding-top:0.3em"><strong>Sök i bildtexter &ndash; så här fungerar det</strong> <br> </h1>
+        <main style="padding:0 0.5rem 0 1rem;width: min(calc(100vw - 2rem),450px)">
+          <p style="padding-top:0.3em"><strong>Sök i bildtexter &ndash; så här fungerar det</strong> <br> </p>
           <p>
-            <b>Sök i</b>-raden används för att markera vilka textfält som tillsammans ska ingå i sökningen. Tips: Ta reda på hur många bilder det finns i en albumsamling genom att söka efter ett ’/’!
+            <span>Sök i</span>-raden används för att markera vilka textfält som tillsammans ska ingå i sökningen. Tips: Ta reda på hur många bilder det finns i en albumsamling genom att söka efter ett ’/’!
           </p>
           <p>
-            Nedanför kan du bara välja ett av två alternativ:
+            <span>I nedersta raden</span> kan du bara välja ett av två alternativ:
           </p>
           <p>
-            <b>1</b>. Du markerar att <b>alla ska hittas...</b>, exempel:
+            <span>1</span>. Du markerar att <span>alla ska hittas...</span> och skriver sedan i textrutan ovanför till exempel (blåmarkerat):
+            <br>
+            <span>nils jacobss</span> (två sökbegrepp) som hittar alla bilder med text ’Nils Jacobsson’ men även andra bilder med både ’Nils’ och ’Jacobss’ i texten, till exempel ’Nils Jonasson och Bertil Jacobsson’<br>
+            <span>nils%jacobs</span> (ett sökbegrepp) som hittar bilder med till exempel ’Nils Jacobsson’ eller ’Nils Jacobsen’
           </p>
           <p>
-            <b>nils jacobss</b> (två sökbegrepp) hittar alla bilder med text ’Nils Jacobsson’ men även andra bilder med både ’Nils’ och ’Jacobss’ i texten, till exempel ’Nils Jonasson och Bertil Jacobsson’<br>
+            <span>2</span>. Du markerar att <span>minst ett av dem ska hittas...</span> och skriver till exempel:
+            <br>
+            <span>nils jacobss</span> (två sökbegrepp) hittar alla bilder med text ’Nils Jacobsson’ och även alla bilder med någon av ’Nils’ och ’Jacobss’ i texten, till exempel ’Fredrik Nilson’ och/eller ’Filip Jacobsson’ (men inte ’Nisse Jacobson’)<br>
+            <span>nils%jacobs</span> (ett sökbegrepp) hittar bilder med till exempel ’Nils Jacobsson’ eller ’Nils Jacobsen’ i texten (på samma sätt som i <span>1</span>.)
           </p>
           <p>
-            <b>nils%jacobss</b> (ett sökbegrepp) hittar bara bilder med till exempel ’Nils Jacobsson’ eller ’Nils Jacobssa’ i texten
-          </p>
-          <p>
-            <b>2</b>. Du markerar att <b>minst ett av dem ska hittas...</b>, exempel:
-          </p>
-          <p>
-            <b>nils jacobss</b> (två sökbegrepp) hittar alla bilder med text ’Nils Jacobsson’ och även alla bilder med någon av ’Nils’ och ’Jacobss’ i texten, till exempel ’Fredrik Nilson’ <i>och/eller</i> ’Filip Jacobsson’ (men inte ’Nisse Jacobson’)<br>
-          </p>
-          <p>
-            <b>nils%jacobss</b> (ett sökbegrepp) hittar bilder med till exempel ’Nils Jacobsson’ eller ’Nils Jacobssen’ i texten (på samma sätt som under <b>1</b>.)
-          </p>
-          <p>
-            <b>Skriv sedan det du söker</b> i skrivrutan ovanför och starta sökningen. Resultatet presenteras i ett album för tillfälligt bruk som heter <b>Funna bilder</b> med länkar till bilder i andra album. Länkar markeras av en extra grön kant under bildtexten.
+            Skriv det du vill söka i rutan överst och starta sökningen. Resultatet presenteras i ett album för tillfälligt bruk som heter <b>Funna bilder</b> med länk till originalet i varje bilds meny. <span style="color:#0b0;text-decoration:underline">Grön kant under bildtexten</span> betyder länkad bild.
           </p>
         </main>
         <footer data-dialog-draggable>

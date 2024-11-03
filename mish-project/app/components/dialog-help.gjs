@@ -27,7 +27,7 @@ export class DialogHelp extends Component {
 <dialog id="dialogHelp" {{on 'keydown' this.detectEscClose}}>
   <header data-dialog-draggable>
     <div style="width:99%">
-      <p>{{t 'dialog.help.header'}}<br>{{t 'dialog.help.header1'}}<span></span></p>
+      <p><b>{{t 'dialog.help.header'}}</b><br>{{t 'dialog.help.header1'}}<span></span></p>
     </div><div>
       <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogHelpId)}}>×</button>
     </div>

@@ -297,9 +297,7 @@ div#textareas textarea {
   padding: 4.5px;
   background: #eee;
   color: #000;
-  font:
-    normal 1.05em/1.2em Georgia,
-    serif;
+  font: normal 1.05em/1.2em Georgia, serif;
 }
 div#searcharea textarea {
   background: #eee;
@@ -313,6 +311,7 @@ span.pink {
 div.diaMess {
   text-align: center;
   color: blue;
+  font: normal 1.05em/1.2em Georgia, serif;
 }
 div.diaMess .edWarn,
 div.diaMess .edWarn span {

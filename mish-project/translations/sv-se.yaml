@@ -245,6 +245,7 @@ totalImgNumber: Totalt antal bilder i samlingen
 write:
   creator: "Ursprung: Foto upphov källa"
   description: "Beskrivning: När var vad vilka"
+  findHelpHeader: Hur man hittar bilder
   keywords: "Information om planerat framtida tillägg: Ord lagrade som metadata
              för användning som särskilda sökbegrepp"
   notes: Anteckningar som ej visas med bilden

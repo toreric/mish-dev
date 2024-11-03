@@ -245,6 +245,7 @@ totalImgNumber: Gesamtzahl der Bilder in der Sammlung
 write:
   creator: "Herkunft: Foto Ursprung Quelle"
   description: "Beschreibung: Wann wo was welche"
+  findHelpHeader: Wie Bilder gefunden werden
   keywords: "Information von geplante zukünftige Ergänzung: Wörter
             als Metadaten gespeichert zur Verwendung als Suchbegriffe"
   notes: Anmerkungen die nicht mit dem Bild erscheinen
