@@ -245,7 +245,31 @@ totalImgNumber: Totalt antal bilder i samlingen
 write:
   creator: "Ursprung: Foto upphov källa"
   description: "Beskrivning: När var vad vilka"
+  find0: "Sök i:"
+  find1: bildtext (övre texten)
+  find2: ursprung (nedre texten)
+  find3: anteckningar
+  find4: albumnamn
+  find5: bildnamn
+  find6: "Om blank ska sökas: skriv % (åtskiljer ej)"
+  find7: "Välj regel för åtskilda ord/textbitar/sökbegrepp:"
+  find8: "&nbsp;alla&nbsp;ska&nbsp;hittas&nbsp;i&nbsp;en&nbsp;bild"
+  find9: "&nbsp;minst&nbsp;ett&nbsp;av&nbsp;dem&nbsp;ska&nbsp;hittas&nbsp;i&nbsp;en&nbsp;bild"
   findHelpHeader: Hur man hittar bilder
+  findHelp0: Sök i bildtexter
+  findHelp1: <span>Sök i:</span>-raden används för att markera vilka textfält som tillsammans ska ingå i sökningen (röd = markerad).
+  findHelp2: "<span>I nedersta</span> raden kan du välja ett av två alternativ:"
+  findHelp3: "<span>1</span>. Du markerar att <span>alla ska hittas...</span> och skriver sedan i textrutan ovanför till exempel (blåmarkerat):
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp; <span>nils jacobss</span> (två sökbegrepp) som hittar alla bilder med text ’Nils Jacobsson’ men även andra bilder med både ’Nils’ och ’Jacobss’ i texten, till exempel ’Nils Jonasson och Bertil Jacobsson’.<br>
+            &nbsp;&nbsp;&nbsp;&nbsp; <span>nils%jacobs</span> (ett sökbegrepp) som hittar bilder med till exempel ’Nils Jacobsson’ eller ’Nils Jacobsen’."
+  findHelp4: "<span>2</span>. Du markerar att <span>minst ett av dem ska hittas...</span> och skriver till exempel:
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp; <span>nils jacobss</span> (två sökbegrepp) hittar alla bilder med text ’Nils Jacobsson’ och även alla bilder med någon av ’Nils’ och ’Jacobss’ i texten, till exempel ’Fredrik Nilson’ och/eller ’Filip Jacobsson’ (men inte ’Nisse Jacobson’).<br>
+            &nbsp;&nbsp;&nbsp;&nbsp; <span>nils%jacobs</span> (ett sökbegrepp) hittar bilder med till exempel ’Nils Jacobsson’ eller ’Nils Jacobsen’ i texten (som i <span>1</span>, eftersom bara ett sökbegrepp)."
+  findHelp5: Skriv det du vill söka i rutan överst och starta sökningen. Resultatet presenteras i ett album för tillfälligt bruk som heter <b>Funna bilder</b> med länk till originalet i varje miniatyrbilds meny. <span style="color:#0b0;text-decoration:underline">Grön kant under bildtexten</span> betyder länkad bild.
+  findHelp6: "Tips: Ta reda på hur många bilder det finns i albumsamlingen genom att söka efter ett ’/’ (i albumnamn)!"
   keywords: "Information om planerat framtida tillägg: Ord lagrade som metadata
              för användning som särskilda sökbegrepp"
   notes: Anteckningar som ej visas med bilden
+  searchTerms: Skriv sökbegrepp åtskilda av blanktecken, små/stora bokstäver är oviktigt (välj nedan vilka texter du vill söka i)

@@ -247,7 +247,31 @@ totalImgNumber: Total number of images in the collection
 write:
   creator: 'Origin: Photographer Source'
   description: 'Caption: When Where What Who'
+  find0: "Search in:"
+  find1: captions (upper texts)
+  find2: origins (bottom texts)
+  find3: notes
+  find4: album names
+  find5: image names
+  find6: "If blank/space is to be searched: write % (does not separate)"
+  find7: "Select rule for separate words/pieces of text/search terms:"
+  find8: "&nbsp;all&nbsp;to&nbsp;be&nbsp;found&nbsp;in&nbsp;one&nbsp;image"
+  find9: "&nbsp;at&nbsp;least&nbsp;one&nbsp;of&nbsp;them&nbsp;must&nbsp;be&nbsp;found&nbsp;in&nbsp;an&nbsp;image"
   findHelpHeader: How to find images
+  findHelp0: Search in captions etc.
+  findHelp1: Mark in the <span>Search in:</span> line, which text fields should be included in the search (red = marked).
+  findHelp2: "<span>In the bottom</span> line, you can choose one of two options:"
+  findHelp3: "<span>1</span>. Do mark that <span>all to be found...</span> and then write in the text box above, for example (blue marked):
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp; <span>nils jacobss</span> (two search terms) finds all images with the text ’Nils Jacobsson’ but also other images with both ’Nils’ and ’Jacobss’ in the text, for example ’Nils Jonasson and Bertil Jacobsson’.<br>
+            &nbsp;&nbsp;&nbsp;&nbsp; <span>nils%jacobs</span> (one search term) finds images with, for example ’Nils Jacobsson’ or ’Nils Jacobsen’."
+  findHelp4: "<span>2</span>. Do mark that <span>at least one of them must be found...</span> and write, for example:
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp; <span>nils jacobss</span> (two search terms) finds all images with the text ’Nils Jacobsson’ and also all images with any of ’Nils’ or ’Jacobss’ in the text, for example ’Fredrik Nilson’ and/or ’Filip Jacobsson’ (but not ’Nisse Jacobson’).<br>
+            &nbsp;&nbsp;&nbsp;&nbsp; <span>nils%jacobs</span> (one search term) finds images with, for example ’Nils Jacobsson’ or ’Nils Jacobsen’ (same as <span>1</span>, since only one search term)."
+  findHelp5: Write what you want to search for in the box at the top and start the search. The result is presented in an album for temporary use called <b>Found images</b> with a link to the original in each thumbnail's menu. <span style="color:#0b0;text-decoration:underline">Green border below the caption</span> means linked image.
+  findHelp6: "Tip: Find out how many photos are in the album collection by searching for a ’/’ (in album names)!"
   keywords: "Information about planned future addition:
              Keywords being stored as metadata for search key use"
   notes: Notes not shown with the image
+  searchTerms: Enter search terms separated by spaces, lower/uppercase does not matter (choose below which texts to search in)
