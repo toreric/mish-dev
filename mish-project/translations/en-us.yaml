@@ -203,7 +203,7 @@ dialog:
     text2: Nor may you use them for any commercial or profit-making purpose.
     text3: You undertake to respect applicable copyright legislation and not to transfer images to third parties.
     text4: Please handle all questions about permission for possible distribution or transfer by contacting Sävar Hembygdsförening.
-    footnote1: "¹ Rights in parentheses: Not yet implemented"
+    footnote1: "¹ In parentheses: Not yet implemented"
     footnote2: "² Restriction for some images due to incomplete Copyright"
     footnote3: "³ Without this permission, there is no way to know if hidden albums exist"
   text:
@@ -271,7 +271,7 @@ write:
             &nbsp;&nbsp;&nbsp;&nbsp; <span>nils%jacobs</span> (one search term) finds images with, for example ’Nils Jacobsson’ or ’Nils Jacobsen’ (same as <span>1</span>, since only one search term)."
   findHelp5: Write what you want to search for in the box at the top and start the search. The result is presented in an album for temporary use called <b>Found images</b> with a link to the original in each thumbnail's menu. <span style="color:#0b0;text-decoration:underline">Green border below the caption</span> means linked image.
   findHelp6: "Tip: Find out how many photos are in the album collection by searching for a ’/’ (in album names)!"
-  keywords: "Information about planned future addition:
+  keywords: "<b>Information about planned future addition:</b>
              Keywords being stored as metadata for search key use"
   notes: Notes not shown with the image
   searchTerms: Enter search terms separated by spaces, lower/uppercase does not matter (choose below which texts to search in)

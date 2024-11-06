@@ -69,10 +69,10 @@ dialog main {
   width: auto;
   height: auto;
   overflow-y: auto;
-  background: #ddd;
+  background: #ccc;
 }
 dialog textarea {
-  width:99%;
+  width:calc(100% - 8px);
   border-radius: 4px;
   font:
     normal 1.05rem/1.2rem Georgia,
@@ -89,7 +89,7 @@ dialog button {
 dialog button:hover {
   background-color: #b0c4deaa;
 }
-#dialogHelp {
+/* #dialogHelp {
   top: 0;
   width: 80%;
   min-width: 300px;
@@ -97,8 +97,7 @@ dialog button:hover {
 }
 #dialogHelp main {
   height: 25.7rem;
-  /* matches #dialogHelp height:500px  */
-}
+} */
 #dialogXper {
   position: fixed;
   top: 3rem;
@@ -1514,7 +1513,6 @@ input[type="radio"]:checked + label::before {
   background-color: #df1837;
 }
 input[type="radio"] + label {
-  background-color: #ddd;
   cursor: pointer;
 }
 div.settings {

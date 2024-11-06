@@ -496,7 +496,7 @@ export default class CommonStorageService extends Service {
 
 
 
-  // Setting sec to 0 doesn't avoid inherited close!
+  // Setting sec to 0 doesn't avoid `inherited Timeout` close!
   //#region alertMess
   alertMess = async (mess, sec) => {
     this.closeDialog('dialogAlert');

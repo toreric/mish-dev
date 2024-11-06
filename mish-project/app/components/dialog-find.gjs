@@ -46,6 +46,10 @@ export class DialogFind extends Component {
     }
   }
 
+  get searchNotes() {
+    return this.z.allow.notesView ? '' : 'none';
+  }
+
   findit = () => {
     this.z.loli('findit', 'color:red');
   }
@@ -53,7 +57,7 @@ export class DialogFind extends Component {
 
     <div style="display:flex" {{on 'keydown' this.detectEscClose}}>
 
-      <dialog id='dialogFind' style="width: min(calc(100vw - 1rem),700px)">
+      <dialog id='dialogFind' style="width:min(calc(100vw - 1rem),650px)">
         <header data-dialog-draggable >
           <p>&nbsp;</p>
           <p><b>{{t 'dialog.find.header'}}</b> <span></span></p>
@@ -61,7 +65,7 @@ export class DialogFind extends Component {
         </header>
         <main>
 
-          <textarea name="searchtext" placeholder="{{t 'write.searchTerms'}}" style="width:calc(100% - 8px)" rows="4"></textarea>
+          <textarea name="searchtext" placeholder="{{t 'write.searchTerms'}}" autofocus="true" style="width:calc(100% - 8px)" rows="4"></textarea>
 
           <div class="diaMess">
             <div class="edWarn" style="font-weight:normal;text-align:right"></div>
@@ -74,7 +78,7 @@ export class DialogFind extends Component {
                 <input id="t2" name="search2" value="creator" checked="" type="checkbox">
                 <label for="t2">&nbsp;{{t 'write.find2'}}</label>&nbsp;
               </span>
-              <span class="glue" style="display: none;">
+              <span class="glue" style="display:{{this.searchNotes}}">
                 <input id="t3" name="search3" value="source" type="checkbox">
                 <label for="t3">&nbsp;{{t 'write.find3'}}</label>&nbsp;
               </span>

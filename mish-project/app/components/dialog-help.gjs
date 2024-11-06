@@ -24,7 +24,7 @@ export class DialogHelp extends Component {
 
 <template>
 
-<dialog id="dialogHelp" {{on 'keydown' this.detectEscClose}}>
+<dialog id="dialogHelp" style="width:min(calc(100vw - 1rem),600px)" {{on 'keydown' this.detectEscClose}}>
   <header data-dialog-draggable>
     <div style="width:99%">
       <p><b>{{t 'dialog.help.header'}}</b><br>{{t 'dialog.help.header1'}}<span></span></p>
@@ -32,7 +32,7 @@ export class DialogHelp extends Component {
       <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogHelpId)}}>×</button>
     </div>
   </header>
-  <main>
+  <main style="height:30rem">
       <p style="text-align:left;margin:-0.9rem 0 0 1.5rem;line-height:1.7em" draggable="false" ondragstart="return false"><br>
 
         <span style="font-size:0.95em"><b>{{t 'dialog.help.ihrcm0'}}</b> {{t 'dialog.help.ihrcm1'}}<b>{{t 'dialog.help.ctrlclick'}}</b> {{t 'dialog.help.ihrcm2'}}<br>

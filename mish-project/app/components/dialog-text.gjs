@@ -109,7 +109,7 @@ export class DialogText extends Component {
   <template>
     <div style="display:flex" {{on 'keydown' this.detectEscClose}} {{on 'click' this.detectClickOutside}}>
 
-      <dialog id='dialogText'>
+      <dialog id="dialogText" style="width:min(calc(100vw - 1rem),700px)">
         <header data-dialog-draggable >
           <p>&nbsp;</p>
           <p><b>{{t 'dialog.text.header'}} <span>{{this.picName}}</span></b></p>
@@ -122,7 +122,7 @@ export class DialogText extends Component {
           </div>
 
           <RefreshThis @for={{this.picName}}>
-            <textarea id="dialogTextDescription" name="description" rows="6" placeholder="{{t "write.description"}} (Xmp.dc.description)" {{on 'mouseleave' onMouseLeaveTextarea}}>{{this.txt1}}</textarea><br>
+            <textarea id="dialogTextDescription" autofocus="true" name="description" rows="6" placeholder="{{t "write.description"}} (Xmp.dc.description)" {{on 'mouseleave' onMouseLeaveTextarea}}>{{this.txt1}}</textarea><br>
 
             <textarea id="dialogTextCreator" name="creator" rows="2" placeholder="{{t "write.creator"}} (Xmp.dc.creator)" {{on 'mouseleave' onMouseLeaveTextarea}}>{{this.txt2}}</textarea>
           </RefreshThis>
@@ -141,7 +141,7 @@ export class DialogText extends Component {
         <header data-dialog-draggable>
           <p>&nbsp;</p>
           <p><b>{{t 'dialog.text.notes'}} <span>{{this.z.picName}}</span></b></p>
-          <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogTextNotes')}}>×</button>
+          <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogTextNotesId)}}>×</button>
         </header>
         <main>
           <div class="diaMess">
@@ -168,7 +168,7 @@ export class DialogText extends Component {
         <!-- Temporary special styling 2 in this dialog stub -->
         <main style="padding:0.5rem;text-align:center">
           <div class="diaMess">
-            {{t 'write.keywords'}}
+            {{{t 'write.keywords'}}}
           </div>
         </main>
         <footer data-dialog-draggable>
@@ -185,7 +185,7 @@ export class DialogText extends Component {
 // (some are due to the included languages)
 
 const VirtualKeys = <template>
-  <div class="" style='padding:0.1em'>
+  <div class="" style="text-align:left;padding:0.1em">
     <b class='insertChar' {{on 'click' insert}}>×</b>
     <b class='insertChar' {{on 'click' insert}}>°</b>
     &nbsp;

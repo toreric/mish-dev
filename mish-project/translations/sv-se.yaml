@@ -201,7 +201,7 @@ dialog:
     text2: Du får inte heller använda dem för något kommersiellt eller vinstdrivande syfte.
     text3: Du åtar dig att respektera tillämplig upphovsrättslagstiftning och att inte överlåta bilder till tredje part.
     text4: Vänligen hantera alla frågor om tillstånd för distribution eller överlåtelse genom att kontakta Sävar Hembygdsförening.
-    footnote1: "¹ Rättigheter inom parentes: Ännu ej implementerade"
+    footnote1: "¹ Inom parentes: Ännu ej implementerat"
     footnote2: "² Begränsning för vissa bilder på grund av ofullständig upphovsrätt"
     footnote3: "³ Utan denna rättighet går det inte att veta om det finns gömda album"
   text:
@@ -269,7 +269,7 @@ write:
             &nbsp;&nbsp;&nbsp;&nbsp; <span>nils%jacobs</span> (ett sökbegrepp) hittar bilder med till exempel ’Nils Jacobsson’ eller ’Nils Jacobsen’ i texten (som i <span>1</span>, eftersom bara ett sökbegrepp)."
   findHelp5: Skriv det du vill söka i rutan överst och starta sökningen. Resultatet presenteras i ett album för tillfälligt bruk som heter <b>Funna bilder</b> med länk till originalet i varje miniatyrbilds meny. <span style="color:#0b0;text-decoration:underline">Grön kant under bildtexten</span> betyder länkad bild.
   findHelp6: "Tips: Ta reda på hur många bilder det finns i albumsamlingen genom att söka efter ett ’/’ (i albumnamn)!"
-  keywords: "Information om planerat framtida tillägg: Ord lagrade som metadata
-             för användning som särskilda sökbegrepp"
+  keywords: "<b>Information om planerat framtida tillägg:</b>
+            Ord lagrade som metadata för användning som särskilda sökbegrepp"
   notes: Anteckningar som ej visas med bilden
   searchTerms: Skriv sökbegrepp åtskilda av blanktecken, små/stora bokstäver är oviktigt (välj nedan vilka texter du vill söka i)
