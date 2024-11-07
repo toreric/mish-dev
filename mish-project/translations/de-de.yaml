@@ -168,20 +168,38 @@ dialog:
   help:
     header: Benutzeranweisung
     header1: (vor allem für Computers mit Tastatur oder Touchpad)
-    ihrcm0: Jedes Bild hat ein Rechtsklick-Menü
-    ihrcm1: mit Befehlen/Funktionen (
-    ctrlclick: Ctrl + klicken
-    ihrcm2: kann rechtsklicken ersetzen)
-    shift0: Shift + klicken auf einem Vorschaubild
-    shift1: macht markieren/ausmarkieren
     login0: Wer als Gast-Benutzer⋅in (gast) angemeldet ist
     login1: hat nur beschränkte Rechte (Vorschaubilder verstecken, markieren und mit drag & drop bewegen; zum Originalbild gehen). Nach persönlichem Login (Anmeldung) erfolgen weitere Rechte (z.B. Bildunterschriften ändern und speichern)
+    ihrcm0: Jedes Vorschaubild hat ein Menü
+    ihrcm1: ( <b>⡇</b>) mit Befehlen/Funktionen (
+    ctrlclick: Ctrl + klicken
+    ihrcm2: öffnet es auch)
+    shift0: Shift + klicken auf einem Bild
+    shift1: macht markieren/ausmarkieren
     green0: Ein Bild mit einem grünen unteren Rand
-    green1: ist aus einem anderen Album verlinkt – zum Originalbild gehen mit dem grünen Link
-    green2: ""
-    flebu: Erstens, die linken Tasten
+    green1: ist aus einem anderen Album verlinkt – das Miniaturbildmenü enthält einen Link zum Originalbild
+    flebu: Die linken Tasten
     wviva: welche sichtbar sind, variiert
     mmenu: "Im Hauptmenü wählen: Album, Suche, Favoriten, Albumübersicht ..."
+    qmark: Benutzeranweisung ein-/ausblenden
+    rload: Das Album neuladen, alle nicht gespeicherten Änderungen wiederherstellen („reset-Taste“, jedoch nicht für Textänderungen)¹ ²
+    names: Bildnamen ein-/ausblenden (Dateiname ohne .file-Typ)
+    hide:  „Versteckte Bilder“ ein-/ausblenden (im Bildmenü ausgeblendet)
+    save:  Bildänderungen¹ speichern, die ansonsten temporär sind und wiederhergestellt werden können²
+    uptop: Zum Seitenanfang
+    note1: "¹ Änderungen sind: Verschieben von Miniaturbilder per Drag-and-Drop, Ausblenden oder Anzeigen mit Miniaturansichtsmenü"
+    note2: ² Durch die Wiederherstellung kann manchmal auch unvollständige Bildanzeige verbessert werden
+    advice: "<b>Andere Schaltflächen</b>: Auf eigene Faust entdecken! Und  die <b>Esc-Taste</b> verwenden (siehe unten)!"
+    keyb: Tangentbordet
+    F1:   visar den här användarhandledningen &ndash; Esc-tangenten stänger den
+    hilo: ökar respektive minskar bildskalningen och
+    zero: (noll) återställer
+    F11:  används för att börja eller avbryta helskärmsvisning
+    right: <b>Högerpil</b>- eller <b>vänsterpiltangenten</b> växlar bild framåt eller bakåt
+    A:    <b>A</b>-tangenten startar automatisk bildväxling &ndash; Esc-tangenten avbryter
+    F:    <b>F</b>-tangenten öppnar ’Finn bilder’ (sökfönstret) &ndash; Esc-tangenten stänger det
+    Esc:  <b>Esc</b> är avslutnings- och avbrottstangent för bildväxling, fönsterstängning m.m.
+    F5:   <b>F5</b> eller <b>Ctrl</b>+<b>R</b> används för att börja om från början, till exempel om bildväxlingen kommit i oordning
   info:
     filename: Dateiname
     header: Information zur Originalbilddatei

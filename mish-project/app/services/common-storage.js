@@ -1242,13 +1242,15 @@ export default class CommonStorageService extends Service {
     }
   }
 
-  toggleDialog = (dialogId, origPos) => {
+  toggleDialog = async (dialogId, origPos) => {
     let diaObj = document.getElementById(dialogId);
     let what = 'closed ';
+    await new Promise (z => setTimeout (z, 20)); // toggleDialog
     if (diaObj.hasAttribute("open")) {
       diaObj.close();
     } else {
       what = 'opened ';
+      await new Promise (z => setTimeout (z, 20)); // toggleDialog
       if (origPos) diaObj.style.display = '';
       diaObj.show();
     }

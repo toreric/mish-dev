@@ -168,20 +168,38 @@ dialog:
   help:
     header: Användarhandledning
     header1: (främst för dator med tangentbord eller pekplatta)
-    ihrcm0: Varje bild har en högerklick-meny
-    ihrcm1: med kommandon/funktioner (
-    ctrlclick: Ctrl + klick
-    ihrcm2: kan användas i stället för högerklick)
-    shift0: Skifttangent + klick på en miniatyrbild
-    shift1: markerar/avmarkerar den
     login0: Inloggad som gäst
     login1: har du bara vissa rättigheter (gömma, markera och flytta miniatyrer med dra + släpp; gå till originalbild). Med personlig inloggning kan du få fler rättigheter (till exempel göra bildtextändringar och och spara dem)
+    ihrcm0: Varje miniatyrbild har en meny
+    ihrcm1: ( <b>⡇</b>) med kommandon/funktioner (
+    ctrlclick: Ctrl + klick
+    ihrcm2: kan också användas)
+    shift0: Skifttangent + klick på en bild
+    shift1: markerar/avmarkerar den
     green0: En bild med grön underkant är länkad
-    green1: från annat album – gå till originalbilden med klick på den gröna
-    green2: -länken
-    flebu: Först, knapparna till vänster
+    green1: från annat album – miniatyrbildmenyn har en länk till originalbilden
+    flebu: Knapparna till vänster
     wviva: vilka som är synliga varierar
     mmenu: "Huvudmeny: Välj album, sökning, favoriter, albumöversikt ..."
+    qmark: Visa/dölj den här användarhandledningen
+    rload: Ladda om albumet, återställ eventuella osparade ändringar (’ångerknapp’ men avser ej textändringar)¹ ²
+    names: Visa/dölj namn på bilden (filnamn utan .filtyp)
+    hide:  Visa/dölj ’gömda bilder’ (gömda med bildmenyn)
+    save:  Spara bildändringar¹ som annars är tillfälliga och kan återställas²
+    uptop: Gå upp till överst på sidan
+    note1: "¹ Ändringar är: Dra-och-släpp-flyttning av miniatyrbilder, göm eller visa med miniatyrbildmenyn"
+    note2: ² Återställning kan också ibland förbättra ofullständig bildvisning
+    advice: "<b>Övriga knappar</b>: Utforska på egen hand! Och använd <b>Esc-tangenten</b> (se nedan)!"
+    keyb: Tangentbordet
+    F1:   visar den här användarhandledningen &ndash; Esc-tangenten stänger den
+    hilo: ökar respektive minskar bildskalningen och
+    zero: (noll) återställer
+    F11:  används för att börja eller avbryta helskärmsvisning
+    right: <b>Högerpil</b>- eller <b>vänsterpiltangenten</b> växlar bild framåt eller bakåt
+    A:    <b>A</b>-tangenten startar automatisk bildväxling &ndash; Esc-tangenten avbryter
+    F:    <b>F</b>-tangenten öppnar ’Finn bilder’ (sökfönstret) &ndash; Esc-tangenten stänger det
+    Esc:  <b>Esc</b> är avslutnings- och avbrottstangent för bildväxling, fönsterstängning m.m.
+    F5:   <b>F5</b> eller <b>Ctrl</b>+<b>R</b> används för att börja om från början, till exempel om bildväxlingen kommit i oordning
   info:
     filename: Filnamn
     header: Information om originalbildfilen
