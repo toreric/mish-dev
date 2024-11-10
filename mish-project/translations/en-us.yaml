@@ -39,6 +39,7 @@ setSetting:   change settings
 textEdit:     edit/save image texts/captions, access hidden albums³
 
 all: All
+and: and
 captionFor: Image caption for
 captionSaved: saved
 checkuncheck: Check or uncheck all
@@ -173,7 +174,7 @@ dialog:
     login0: When logged in as guest
     login1: you will have limited rights (hide, select, and move thumbnails by drag'n-drop; go to original image). You can get more rights with a personal login (for example, make and save caption changes)
     ihrcm0: Each thumbnail has a menu
-    ihrcm1: ( <b>⡇</b>) with commands/functions (
+    ihrcm1: ( <b style="color:black">⡇</b>) with commands/functions (
     ctrlclick: Ctrl + click
     ihrcm2: may also be used)
     shift0: Shift + click an image
@@ -183,25 +184,25 @@ dialog:
     flebu: The left hand buttons
     wviva: which ones visible varies
     mmenu: "Main menu: Choose album, search, favorites, album overview..."
-    qmark: Visa/dölj den här användarhandledningen
-    rload: Ladda om albumet, återställ eventuella osparade ändringar (’ångerknapp’ men avser ej textändringar)¹ ²
-    names: Visa/dölj namn på bilden (filnamn utan .filtyp)
-    hide:  Visa/dölj ’gömda bilder’ (gömda med bildmenyn)
-    save:  Spara bildändringar¹ som annars är tillfälliga och kan återställas²
-    uptop: Gå upp till överst på sidan
-    note1: "¹ Ändringar är: Dra-och-släpp-flyttning av miniatyrbilder, göm eller visa med miniatyrbildmenyn"
-    note2: ² Återställning kan också ibland förbättra ofullständig bildvisning
-    advice: "<b>Övriga knappar</b>: Utforska på egen hand! Och använd <b>Esc-tangenten</b> (se nedan)!"
-    keyb: Tangentbordet
-    F1:   visar den här användarhandledningen &ndash; Esc-tangenten stänger den
-    hilo: ökar respektive minskar bildskalningen och
-    zero: (noll) återställer
-    F11:  används för att börja eller avbryta helskärmsvisning
-    right: <b>Högerpil</b>- eller <b>vänsterpiltangenten</b> växlar bild framåt eller bakåt
-    A:    <b>A</b>-tangenten startar automatisk bildväxling &ndash; Esc-tangenten avbryter
-    F:    <b>F</b>-tangenten öppnar ’Finn bilder’ (sökfönstret) &ndash; Esc-tangenten stänger det
-    Esc:  <b>Esc</b> är avslutnings- och avbrottstangent för bildväxling, fönsterstängning m.m.
-    F5:   <b>F5</b> eller <b>Ctrl</b>+<b>R</b> används för att börja om från början, till exempel om bildväxlingen kommit i oordning
+    qmark: Show/hide this user guide
+    rload: Reload the album, restore any unsaved changes (’undo button’, but doesn't refer to text changes)¹ ²
+    names: Show/hide image name (file name without .type)
+    hide:  Show/hide ’hidden images’ (hidden with the thumbnail menu)
+    save:  Save image changes¹ that are otherwise temporary and can be restored²
+    uptop: To the top of the page
+    note1: "¹ Changes are: Drag-and-drop moving of thumbnails, hide or show with thumbnail menu"
+    note2: ² Restoring can also sometimes improve incomplete image display
+    advice: "<b>Other buttons</b>: Explore on your own! And use the <b>Esc key</b> (see below)!"
+    keyb: Keyboard
+    F1:   shows this user guide &ndash; the Esc key closes it
+    hilo: increases and decreases the image scaling
+    zero: (zero) resets
+    F11:  starts or ends full screen display
+    right: <b>Right arrow</b> or <b>Left arrow key</b> switches image forwards or backwards
+    A:    The <b>A</b> key starts automatic image switching &ndash; the Esc key cancels
+    F:    The <b>F</b> key opens 'Find Images' (the search window) &ndash; the Esc key closes it
+    Esc:  <b>Esc</b> is the end and break key for switching images, closing windows, etc.
+    F5:   <b>F5</b> or <b>Ctrl</b>+<b>R</b> is used to start over from the beginning, for example if the image transition got out of order
   info:
     filename: File name
     header: Information about the original image file

@@ -33,57 +33,56 @@ export class DialogHelp extends Component {
     </div>
   </header>
   <main style="height:30rem">
-      <p style="text-align:left;margin:-0.9rem 0 0 1.5rem;line-height:1.7rem" draggable="false" ondragstart="return false"><br>
+      <p style="text-align:left;margin:0.5rem 0.3rem 0 1.5rem;line-height:1.4rem" draggable="false" ondragstart="return false">
+        <p><b>{{t 'dialog.help.login0'}}</b> {{t 'dialog.help.login1'}}</p>
 
-        <span style="font-size:0.95em"><b>{{t 'dialog.help.login0'}}</b> {{t 'dialog.help.login1'}}<br>
+        <p><b>{{t 'dialog.help.ihrcm0'}}</b> {{{t 'dialog.help.ihrcm1'}}}<b>{{t 'dialog.help.ctrlclick'}}</b> {{t 'dialog.help.ihrcm2'}}</p>
 
-        <b>{{t 'dialog.help.ihrcm0'}}</b> {{{t 'dialog.help.ihrcm1'}}}<b>{{t 'dialog.help.ctrlclick'}}</b> {{t 'dialog.help.ihrcm2'}}<br>
+        <p><b>{{t 'dialog.help.shift0'}}</b> {{t 'dialog.help.shift1'}}</p>
 
-        <b>{{t 'dialog.help.shift0'}}</b> {{t 'dialog.help.shift1'}}<br>
-
-        <b style="color:#0b0">{{t 'dialog.help.green0'}}</b> {{t 'dialog.help.green1'}}
-        </span>
+        <p><b style="color:#0b0;text-decoration:underline">{{t 'dialog.help.green0'}}</b> {{t 'dialog.help.green1'}}</p>
       </p>
-      <p style="text-align:left;margin-left:1.5rem;line-height:1.7rem" draggable="false" ondragstart="return false">
+      <p style="text-align:left;margin:0.5rem 0.3rem 0 1.5rem;line-height:1.7rem" draggable="false" ondragstart="return false">
         <b>{{t 'dialog.help.flebu'}}</b> ({{t 'dialog.help.wviva'}}):<br>
 
-        <a id="albSel" class="helpIcon">𝌆</a> {{t 'dialog.help.mmenu'}}<br>
+        <a id="albSel" class="helpIcon">𝌆</a>&nbsp; {{t 'dialog.help.mmenu'}}<br>
 
-        <a id="questionMark0" class="helpIcon">?</a> {{t 'dialog.help.qmark'}}<br>
+        <a id="questionMark0" class="helpIcon">?</a>&nbsp; {{t 'dialog.help.qmark'}}<br>
 
-        <a id="reFr0" class="helpIcon"><img draggable="false" ondragstart="return false" src="/images/reload.png"></a> {{t 'dialog.help.rload'}}<br>
+        <a id="reFr0" class="helpIcon"><img draggable="false" ondragstart="return false" src="/images/reload.png"></a>&nbsp; {{t 'dialog.help.rload'}}<br>
 
-        <a id="toggleName0" class="helpIcon">N</a> {{t 'dialog.help.names'}}<br>
+        <a id="toggleName0" class="helpIcon">N</a>&nbsp; {{t 'dialog.help.names'}}<br>
 
-        <a id="toggleHide0" class="helpIcon"></a> {{t 'dialog.help.hide'}}<br>
+        <a id="toggleHide0" class="helpIcon"></a>&nbsp; {{t 'dialog.help.hide'}}<br>
 
-        <a id="saveOrder0" class="helpIcon">S</a> {{t 'dialog.help.save'}}<br>
+        <a id="saveOrder0" class="helpIcon">S</a>&nbsp; {{t 'dialog.help.save'}}<br>
 
-        <a class="helpIcon">↑</a>  {{t 'dialog.help.uptop'}}
+        <a class="helpIcon">↑</a>&nbsp; {{t 'dialog.help.uptop'}}
       </p>
-      <p style="text-align:left;margin:-0.4rem 0 0 3rem;line-height:1.5rem" draggable="false" ondragstart="return false"> {{t 'dialog.help.note1'}}
+      <p style="text-align:left;margin:0.3rem 0.3rem 0 1.5rem;line-height:1.4rem" draggable="false" ondragstart="return false"> {{t 'dialog.help.note1'}}
         <br> {{t 'dialog.help.note2'}}
       </p>
-      <p style="text-align:left;margin-left:1.5rem;line-height:1.5rem" draggable="false" ondragstart="return false"> {{{t 'dialog.help.advice'}}}
+      <p style="text-align:left;margin:0.7rem 0.3rem 0 1.5rem;line-height:1.4rem" draggable="false" ondragstart="return false"> {{{t 'dialog.help.advice'}}}
       </p>
-      <p style="text-align:left;margin-left:1.5em;line-height:1.5em" draggable="false" ondragstart="return false">
-        <b>{{t 'dialog.help.keyb'}}</b>:<br>
+      <p style="text-align:left;margin:0.7rem 0.3rem 0 1.5rem;line-height:1.4rem" draggable="false" ondragstart="return false">
+        <p style="margin:0.7rem 0 0 0"><b>{{t 'dialog.help.keyb'}}</b>:</p>
 
-        <b>F1</b> {{t 'dialog.help.F1'}}  <br>
+        <p style="margin:0.25rem 0.3rem 0 0"><b>F1</b> {{{t 'dialog.help.F1'}}}  </p>
 
-        <b>Ctrl</b>+<b class="large">+</b> {{t 'and'}}och <b>Ctrl</b>+<b class="large">&minus;</b> {{t 'dialog.help.hilo'}} <b>Ctrl</b>+<b class="large">0</b> {{t 'dialog.help.zero'}}<br>
+        <p style="margin:0.25rem 0.3rem 0 0"><b>Ctrl</b>+<b class="large">+</b> {{t 'and'}} <b>Ctrl</b>+<b class="large">&minus;</b> {{t 'dialog.help.hilo'}} &ndash; <b>Ctrl</b>+<b class="large">0</b> {{t 'dialog.help.zero'}}</p>
 
-        <b>F11</b> {{{t 'dialog.help.F11'}}}<br>
+        <p style="margin:0.5rem 0.3rem 0 0"><b>F11</b> {{{t 'dialog.help.F11'}}}</p>
 
-        {{{t 'dialog.help.right'}}}<br>
+        <p style="margin:0.5rem 0.3rem 0 0">{{{t 'dialog.help.right'}}}</p>
 
-        {{{t 'dialog.help.A'}}}<br>
+        <p style="margin:0.5rem 0.3rem 0 0">{{{t 'dialog.help.A'}}}</p>
 
-        {{{t 'dialog.help.F'}}}<br>
+        <p style="margin:0.5rem 0.3rem 0 0">{{{t 'dialog.help.F'}}}</p>
 
-        {{{t 'dialog.help.Esc'}}}<br>
+        <p style="margin:0.5rem 0.3rem 0 0">{{{t 'dialog.help.Esc'}}}</p>
 
-        {{{t 'dialog.help.F5'}}}</p>
+        <p style="margin:0.5rem 0.3rem 1rem 0">{{{t 'dialog.help.F5'}}}</p>
+      </p>
   </main>
   <footer data-dialog-draggable>
     <button type="button" {{on 'click' (fn this.z.closeDialog dialogHelpId)}}>{{t 'button.close'}}</button>&nbsp;

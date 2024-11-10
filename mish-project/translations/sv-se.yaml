@@ -39,6 +39,7 @@ setSetting:   ändra inställningar
 textEdit:     redigera/spara bildtexter, se dolda album³
 
 all: Alla
+and: och
 captionFor: Bildtext för
 captionSaved: sparad
 checkuncheck: Markera/avmarkera alla
@@ -171,7 +172,7 @@ dialog:
     login0: Inloggad som gäst
     login1: har du bara vissa rättigheter (gömma, markera och flytta miniatyrer med dra + släpp; gå till originalbild). Med personlig inloggning kan du få fler rättigheter (till exempel göra bildtextändringar och och spara dem)
     ihrcm0: Varje miniatyrbild har en meny
-    ihrcm1: ( <b>⡇</b>) med kommandon/funktioner (
+    ihrcm1: ( <b style="color:black">⡇</b>) med kommandon/funktioner (
     ctrlclick: Ctrl + klick
     ihrcm2: kan också användas)
     shift0: Skifttangent + klick på en bild
@@ -192,9 +193,9 @@ dialog:
     advice: "<b>Övriga knappar</b>: Utforska på egen hand! Och använd <b>Esc-tangenten</b> (se nedan)!"
     keyb: Tangentbordet
     F1:   visar den här användarhandledningen &ndash; Esc-tangenten stänger den
-    hilo: ökar respektive minskar bildskalningen och
+    hilo: ökar respektive minskar bildskalningen
     zero: (noll) återställer
-    F11:  används för att börja eller avbryta helskärmsvisning
+    F11:  används för att börja eller avsluta helskärmsvisning
     right: <b>Högerpil</b>- eller <b>vänsterpiltangenten</b> växlar bild framåt eller bakåt
     A:    <b>A</b>-tangenten startar automatisk bildväxling &ndash; Esc-tangenten avbryter
     F:    <b>F</b>-tangenten öppnar ’Finn bilder’ (sökfönstret) &ndash; Esc-tangenten stänger det
