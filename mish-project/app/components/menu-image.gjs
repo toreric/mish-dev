@@ -82,8 +82,11 @@ export class MenuImage extends Component {
   }
 
   toggleMenuImg = (open, e) => {
-    if (e) e.stopPropagation();
-    let tgt = e.target.closest('.img_mini');
+    if (e) {
+      // e.preventDefault();
+      e.stopPropagation();
+      var tgt = e.target.closest('.img_mini');
+    }
     if (!tgt) return;
     let id = tgt.id;
     let name = id.slice(1);
@@ -120,7 +123,7 @@ export class MenuImage extends Component {
     {{on 'click' (fn this.toggleMenuImg 1)}}
     {{on 'keydown' this.detectEscClose}}>⡇</button>
 
-    <ul class="menu_img_list" style="display:none">
+    <ul class="menu_img_list" style="text-align:left;display:none">
 
       <li><p style="text-align:right;color:deeppink;
         font-size:120%;line-height:80%;padding-bottom:0.125rem"

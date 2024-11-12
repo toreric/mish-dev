@@ -291,6 +291,6 @@ write:
   findHelp5: Write what you want to search for in the box at the top and start the search. The result is presented in an album for temporary use called <b>Found images</b> with a link to the original in each thumbnail's menu. <span style="color:#0b0;text-decoration:underline">Green border below the caption</span> means linked image.
   findHelp6: "Tip: Find out how many photos are in the album collection by searching for a ’/’ (in album names)!"
   keywords: "<b>Information about planned future addition:</b>
-             Keywords being stored as metadata for search key use"
+             Keywords to be stored as metadata for search key use"
   notes: Notes not shown with the image
   searchTerms: Enter search terms separated by spaces, lower/uppercase does not matter (choose below which texts to search in)

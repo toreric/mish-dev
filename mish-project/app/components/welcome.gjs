@@ -104,12 +104,12 @@ const toggleDialog = (dialogId, origPos) => { //copy from z
 
 // ALL bubbling mousedowns are caught, even programmatical clicks!
 document.addEventListener('mousedown', async (event) => {
+  // event.preventDefault(); // Kills everything
       // console.log('event:', event);
       // console.log(event.target);
   var tgt = event.target;
   if (
     event.button !== 0 ||// 0=left, 1=wheel, 2=right
-    // NOTE: 'closest' means (like) 'is-within'
     // Within these there should be no extra 'mousedown' action,
     // since there is rather another 'click' detection:
     tgt.closest('.menu_img_list') ||
@@ -126,9 +126,11 @@ document.addEventListener('mousedown', async (event) => {
     tgt.closest('dialog')
   ) { return; }
   resetBorders();
+
   // Close any open image menu
   let allist = document.querySelectorAll('.menu_img_list');
   for (let list of allist) list.style.display = 'none';
+
   // Detect closing click outside menuMain (tricky case!)
   var tmp0 = document.getElementById('menuButton');
   var tmp1 = document.getElementById('menuMain');

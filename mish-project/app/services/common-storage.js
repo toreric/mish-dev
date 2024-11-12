@@ -603,7 +603,28 @@ export default class CommonStorageService extends Service {
   // showImage('') will close the show image and reopen the thumbnails
   //#region showImage
   showImage = async (name, path, e) => {
-    if (e) e.stopPropagation();
+    // Here the thumbnail is clicked: is it with Ctrl or Shift?
+    // If so, other than the 'show image' is demanded:
+    if (e) {
+      e.stopPropagation();
+      let tgt = e.target;
+      if (tgt.closest('.img_mini')) {
+        // WHEN DOES THIS HAPPEN? **************
+        this.picName = tgt.closest('.img_mini').id.slice(1);
+      }
+      if (e.button === 0) {
+        let pic = document.getElementById('i' + this.picName);
+        if (e.ctrlKey) {
+          pic.querySelector('.menu_img').click();
+          // this.refreshTexts ++;
+          return;
+        }
+        if (e.shiftKey) {
+          pic.querySelector('div[alt="MARKER"]').click();
+          return;
+        }
+      }
+    }
     if (name) { //open
       await new Promise (z => setTimeout (z, 19)); // Just by suspicion
           // this.loli('show name: ' + name, 'color:red');
@@ -634,6 +655,17 @@ export default class CommonStorageService extends Service {
       document.querySelector('.img_show').style.display = 'table';
       // Hide the navigation overlay information
       document.querySelector('.toggleNavInfo').style.opacity = '0';
+
+      // Copy the thumbnail menu
+      let picture = document.getElementById('i' + this.picName);
+      let menu = picture.querySelector('.menu_img_list');
+      let element = document.getElementById('link_show');
+      if (element.querySelector('.menu_img_list')) {
+        element.querySelector('.menu_img_list').remove();
+      }
+      element.appendChild(menu.cloneNode(true));
+      element.querySelector('.menu_img_list').style.display = '';
+
       // Show the right side buttons
       document.querySelector('.nav_links').style.display = '';
       // Hide the subalbums etc.
@@ -663,9 +695,28 @@ export default class CommonStorageService extends Service {
   // Show the next or previous slideshow image
   //#region showNext
   showNext = async (forward, e) => {
-    if (e) e.stopPropagation();
+    // Here the image's invisible overlay is clicked: with Ctrl or Shift?
+    // If so, other than next or previous image is demanded:
+    if (e) {
+      e.stopPropagation();
+      if (e.button === 0) {
+        if (e.ctrlKey) {
+          let uli = document.querySelector('#link_show ul');
+          if (uli.style.display === '') {
+            uli.style.display = 'none';
+          } else {
+            uli.style.display = '';
+          }
+          return;
+        }
+        if (e.shiftKey) {
+          document.getElementById('markShow').click();
+          return;
+        }
+      }
+    }
     var next, nextName;
-    var actual = document.querySelector('#i' + this.escapeDots(this.picName));
+    var actual = document.getElementById('i' + this.picName);
     var actualParent = actual.parentElement;
     var allFiles = this.allFiles;
     if (forward) {
@@ -727,8 +778,7 @@ export default class CommonStorageService extends Service {
         path = allFiles[i].show;
         this.showImage(nextName, path);
       }
-      // 'allFiles' doesn't reflect DOM content, it may be rearranged
-      // REVISE THIS AFTER BACKWARDS
+      // The order of 'allFiles' may not reflect DOM content which may be rearranged
       this.edgeImage = '';
       actual = document.querySelector('#i' + this.escapeDots(this.picName));
       if (!actual.nextElementSibling) this.edgeImage = this.intl.t('imageLast');
@@ -1163,10 +1213,10 @@ export default class CommonStorageService extends Service {
       } else {
         that.loli('Xmp.dc metadata saved for ' + that.picName);
         let mess = that.intl.t('captionFor') + ' <b style="color:black">' + that.picName + '</b> ' + that.intl.t('captionSaved');
-        that.alertMess(mess, 10);
+        that.alertMess(mess, 1.5);
         that.placeMess();
         // Not used since 'server savetxt/', that is, tne SERVER will do sqlUpdate:
-        // that.sqlUpdate(txt.split(LF)[0]); WHEN used?
+        // that.sqlUpdate(txt.split(LF)[0]); ***CHECK, WHEN used?
       }
     }
     xhr.send(txt);
@@ -1174,6 +1224,7 @@ export default class CommonStorageService extends Service {
 
   //#region sqlupdate
   // Update the sqlite text database (symlinked pictures auto-omitted)
+  // ***CHECK if it ever will be used
   sqlUpdate = (picPaths) => { // Must be complete server paths
     if (!picPaths) return;
     let data = new FormData ();
