@@ -36,7 +36,7 @@ export class DialogHelp extends Component {
       <p style="text-align:left;margin:0.5rem 0.3rem 0 1.5rem;line-height:1.4rem" draggable="false" ondragstart="return false">
         <p><b>{{t 'dialog.help.login0'}}</b> {{t 'dialog.help.login1'}}</p>
 
-        <p><b>{{t 'dialog.help.ihrcm0'}}</b> {{{t 'dialog.help.ihrcm1'}}}<b>{{t 'dialog.help.ctrlclick'}}</b> {{t 'dialog.help.ihrcm2'}}</p>
+        <p><b>{{t 'dialog.help.ihrcm0'}}</b> {{{t 'dialog.help.ihrcm1'}}}<br><b>{{t 'dialog.help.ctrlclick'}}</b> {{t 'dialog.help.ihrcm2'}}</p>
 
         <p><b>{{t 'dialog.help.shift0'}}</b> {{t 'dialog.help.shift1'}}</p>
 

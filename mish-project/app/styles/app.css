@@ -1230,12 +1230,6 @@ img[alt] {
   max-width: 640px;
   max-height: 640px;
   margin: auto;
-  /* Prevent highlighting: */
-  -khtml-user-select: none;
-  -o-user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
 }
 img.mark {
   cursor: pointer;

@@ -170,11 +170,11 @@ dialog:
     header: Användarhandledning
     header1: (främst för dator med tangentbord eller pekplatta)
     login0: Inloggad som gäst
-    login1: har du bara vissa rättigheter (gömma, markera och flytta miniatyrer med dra + släpp; gå till originalbild). Med personlig inloggning kan du få fler rättigheter (till exempel göra bildtextändringar och och spara dem)
+    login1: har du bara vissa rättigheter (gömma, markera och flytta miniatyrer med dra + släpp; gå till originalbild). Med personlig inloggning kan du få fler rättigheter (till exempel göra bildtextändringar och och spara dem). Personlig inloggning kan bara fås från en systemadministratör
     ihrcm0: Varje miniatyrbild har en meny
-    ihrcm1: ( <b style="color:black">⡇</b>) med kommandon/funktioner (
-    ctrlclick: Ctrl + klick
-    ihrcm2: kan också användas)
+    ihrcm1: ( <b>⡇</b>) med kommandon/funktioner
+    ctrlclick: Ctrl + klick / ⌘ + klick
+    ihrcm2: visar också menyn (⌘ med Mac-tangentbord)
     shift0: Skifttangent + klick på en bild
     shift1: markerar/avmarkerar den
     green0: En bild med grön underkant är länkad
@@ -194,7 +194,7 @@ dialog:
     keyb: Tangentbordet
     F1:   visar den här användarhandledningen &ndash; Esc-tangenten stänger den
     hilo: ökar respektive minskar bildskalningen
-    zero: (noll) återställer
+    zero: (noll) återställer (⌘ med Mac-tangentbord)
     F11:  används för att börja eller avsluta helskärmsvisning
     right: <b>Högerpil</b>- eller <b>vänsterpiltangenten</b> växlar bild framåt eller bakåt
     A:    <b>A</b>-tangenten startar automatisk bildväxling &ndash; Esc-tangenten avbryter

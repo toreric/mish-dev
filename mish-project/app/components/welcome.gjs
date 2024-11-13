@@ -114,6 +114,7 @@ document.addEventListener('mousedown', async (event) => {
     // since there is rather another 'click' detection:
     tgt.closest('.menu_img_list') ||
     tgt.closest('.toggleNavInfo') ||
+    tgt.closest('#link_show ul') ||
     tgt.closest('#smallButtons') ||
     tgt.closest('#upperButtons') ||
     tgt.closest('#link_texts') ||

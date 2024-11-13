@@ -101,10 +101,17 @@ class SubAlbums extends Component {
     <p class='albumsHdr' draggable="false" ondragstart="return false">
       <div class="miniImgs albs">
         {{#if this.z.imdbRoot}}
-          <span title-2="{{this.z.imdbRoot}}{{this.z.imdbDir}}">
-            <b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
-            {{t 'has'}} {{this.nsub}} {{this.sual}}</span><span title-2={{t 'plusExplain'}}>{{{this.nadd}}}</span><span>{{this.hasImages}}
-          </span>
+          {{#if this.z.imdbDir}}
+            <span title-2="{{this.z.imdbRoot}}{{this.z.imdbDir}}">
+              <b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
+              {{t 'has'}} {{this.nsub}} {{this.sual}}<span title-2={{t 'plusExplain'}}>{{{this.nadd}}}</span><span>{{this.hasImages}}</span>
+            </span>
+          {{else}}
+            <span>
+              <b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
+              {{t 'has'}} {{this.nsub}} {{this.sual}}<span title-2={{t 'plusExplain'}}>{{{this.nadd}}}</span><span>{{this.hasImages}}</span>
+            </span>
+          {{/if}}
           <br>
           {{#each this.z.subaIndex as |i|}}
             <div class="subAlbum" title="" {{on 'click' (fn this.z.openAlbum i)}}>
@@ -120,6 +127,16 @@ class SubAlbums extends Component {
   </template>
 
 }
+
+document.addEventListener('click', async (event) => {
+  var tgt = event.target;
+  console.log(tgt.closest('ul'));
+  if (tgt.closest('ul')) {
+    // ############################# hur stoppar man!!
+    event.preventDefault();
+    event.stopPropagation();
+  }
+});
 
 class AllImages extends Component {
   @service('common-storage') z;
@@ -277,16 +294,29 @@ class AllImages extends Component {
       {{!-- The heading of the thumbnails' presentation --}}
       {{#if this.z.hasImages}}
         <div style="width:100%">
-          <p><b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
+          {{#if this.z.imdbDir}}
+            <p><span title-2="{{this.z.imdbRoot}}{{this.z.imdbDir}}"><b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
 
-          {{#if this.z.numHidden}}
-            — {{this.z.numShown}} {{t 'shown'}},
-            {{this.z.numInvisible}} {{t  'hidden'}}
+            {{#if this.z.numHidden}}
+              — {{this.z.numShown}} {{t 'shown'}},
+              {{this.z.numInvisible}} {{t  'hidden'}}
+            {{else}}
+              — {{this.z.numShown}} {{t 'shown'}}
+            {{/if}}
+
+            ({{this.z.numMarked}} {{t 'marked'}})</span></p>
           {{else}}
-            — {{this.z.numShown}} {{t 'shown'}}
-          {{/if}}
+            <p><span><b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
 
-          ({{this.z.numMarked}} {{t 'marked'}})</p>
+            {{#if this.z.numHidden}}
+              — {{this.z.numShown}} {{t 'shown'}},
+              {{this.z.numInvisible}} {{t  'hidden'}}
+            {{else}}
+              — {{this.z.numShown}} {{t 'shown'}}
+            {{/if}}
+
+            ({{this.z.numMarked}} {{t 'marked'}})</span></p>
+          {{/if}}
         </div>
       {{/if}}
 
@@ -350,13 +380,13 @@ class AllImages extends Component {
     <div class="img_show" id="d{{this.z.picName}}" draggable="false" style="display:none;margin:2rem auto 0 auto" {{on 'click' (fn this.z.showImage '')}}>
 
         {{!-- An extra slideshow wrapping div --}}
-        <div id="link_show" draggable="false" ondragstart="return false" style="position:relative">
+        <div id="link_show" draggable="false" ondragstart="return false" style="position:relative;user-select:none">
 
           {{!-- A midpoint mark (ᵛ) on the slideshow image top border --}}
-          <p style="margin:0;line-height:0;font-family:sans-serif">ᵛ</p>
+          <p style="margin:0;line-height:0;font-family:sans-serif;user-select:none">ᵛ</p>
 
           {{!-- The slideshow image comes here, src loaded at runtime --}}
-          <img src="" draggable="false" ondragstart="return false">
+          <img src="" draggable="false" ondragstart="return false" style="user-select:none">
 
           {{!-- The check mark in the slideshow image's upper right corner --}}
           <div id="markShow" class="" alt="MARKSHOW" draggable="false" ondragstart="return false" {{on 'click' (fn this.toggleSelect 1)}}  style="background:transparent;position:absolute;top:-15px;right:-15px;width:20px;height:20px">

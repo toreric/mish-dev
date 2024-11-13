@@ -279,6 +279,30 @@ export default class CommonStorageService extends Service {
     this.openAlbum(index);
   }
 
+  homeAlbum = async (path, fileName) => { // was parAlb
+    // this.loli('path:' + path + ':');
+    // this.loli('fileName:' + fileName + ':');
+  // Convert the relative path of the linked-file target,
+  // to conform with z.imdbDirs server list, rooted at album root
+  let dir = path.replace(/^([.]*\/)*/, '/').replace(/\/[^/]+$/, '');
+  let name = path.replace(/^([^/]*\/)*([^/]+)\/[^/]+$/, "$2")
+  // dir is the home album (with index i) for path
+  let i = this.imdbDirs.indexOf(dir);
+  if (i < 0) {
+    if (document.getElementById('dialogAlert').open) {
+      this.closeDialog('dialogAlert');
+    } else {
+      this.alertMess(this.intl.t('albumMissing') + ':<br><br><p style="width:100%;text-align:center;margin:0">”' + this.removeUnderscore(name) + '”</p>', 0);
+    }
+  } else {
+    this.openAlbum(i);
+    // Allow for the rendering of mini images and preload of view images
+    let size = this.albumAllImg(i);
+    await new Promise (z => setTimeout (z, size*60 + 100)); // album load
+    this.gotoMinipic(fileName);
+  }
+}
+
   //#region ifToggleHide
   ifToggleHide = () => {
     if (this.numHidden) {
@@ -403,6 +427,45 @@ export default class CommonStorageService extends Service {
     this.paintHideFlags();
     // Count the number of shown, invisible, linked, unlinked, etc. images
     this.countNumbers();
+  }
+
+  //#region toggleMenuImg
+  toggleMenuImg = (open, e) => {
+    if (e) {
+      // e.preventDefault();
+      e.stopPropagation();
+      var tgt = e.target.closest('.img_show');
+      if (!tgt) tgt = e.target.closest('.img_mini');
+    }
+    if (!tgt) return;
+    let id = tgt.id;
+    let name = id.slice(1);
+    this.picName = name;
+      // this.loli(this.picName + ':', 'color:red');
+      // console.log(this.allFiles[this.picIndex])
+    let list = tgt.querySelector('.menu_img_list');
+    if (!list.style.display) open = 0; // If open, close
+
+    const loliClose = (name) => this.loli('closed menu of image ' + name + ' in album ' + this.imdbRoot + this.imdbDir);
+
+    if (open) { // 1 == do open
+      let allist = document.querySelectorAll('.menu_img_list');
+      // If another image menu is open, close it:
+      for (let list of allist) {
+        if (!list.style.display) {
+          list.style.display = 'none';
+          let name = list.closest('.img_mini').id.slice(1);
+          loliClose(name);
+          break;
+        }
+      }
+      list.style.display = '';
+      this.loli('opened menu of image ' + name + ' in album ' + this.imdbRoot + this.imdbDir);
+
+    } else { // 0 == do close
+      list.style.display = 'none';
+      loliClose(name);
+    }
   }
 
   //#region toggleBackg
@@ -612,11 +675,10 @@ export default class CommonStorageService extends Service {
         // WHEN DOES THIS HAPPEN? **************
         this.picName = tgt.closest('.img_mini').id.slice(1);
       }
-      if (e.button === 0) {
+      if (e.button === 0) { // mouse button
         let pic = document.getElementById('i' + this.picName);
         if (e.ctrlKey) {
           pic.querySelector('.menu_img').click();
-          // this.refreshTexts ++;
           return;
         }
         if (e.shiftKey) {
@@ -664,7 +726,7 @@ export default class CommonStorageService extends Service {
         element.querySelector('.menu_img_list').remove();
       }
       element.appendChild(menu.cloneNode(true));
-      element.querySelector('.menu_img_list').style.display = '';
+      // element.querySelector('.menu_img_list').style.display = '';
 
       // Show the right side buttons
       document.querySelector('.nav_links').style.display = '';
@@ -701,6 +763,9 @@ export default class CommonStorageService extends Service {
       e.stopPropagation();
       if (e.button === 0) {
         if (e.ctrlKey) {
+          // Here, to avoid Ctrl+A-marking, some elements
+          // must have CSS with 'user-select: none;'
+          e.target.parentElement.style.userSelect = 'none';
           let uli = document.querySelector('#link_show ul');
           if (uli.style.display === '') {
             uli.style.display = 'none';

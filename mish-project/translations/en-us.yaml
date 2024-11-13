@@ -172,11 +172,11 @@ dialog:
     header: User guide
     header1: (mainly for computers with keyboard or touchpad)
     login0: When logged in as guest
-    login1: you will have limited rights (hide, select, and move thumbnails by drag'n-drop; go to original image). You can get more rights with a personal login (for example, make and save caption changes)
+    login1: you will have limited rights (hide, select, and move thumbnails by drag'n-drop; go to original image). You can get more rights with a personal login (for example, make and save caption changes). A personal login can only be obtained from a system administrator
     ihrcm0: Each thumbnail has a menu
-    ihrcm1: ( <b style="color:black">⡇</b>) with commands/functions (
-    ctrlclick: Ctrl + click
-    ihrcm2: may also be used)
+    ihrcm1: ( <b>⡇</b>) with commands/functions
+    ctrlclick:  Ctrl + click / ⌘ + click
+    ihrcm2: also shows the menu (⌘ with Mac keyboard)
     shift0: Shift + click an image
     shift1: selects/deselects it
     green0: An image with a green bottom border
@@ -196,7 +196,7 @@ dialog:
     keyb: Keyboard
     F1:   shows this user guide &ndash; the Esc key closes it
     hilo: increases and decreases the image scaling
-    zero: (zero) resets
+    zero: (zero) resets (⌘ with Mac keyboard)
     F11:  starts or ends full screen display
     right: <b>Right arrow</b> or <b>Left arrow key</b> switches image forwards or backwards
     A:    The <b>A</b> key starts automatic image switching &ndash; the Esc key cancels
