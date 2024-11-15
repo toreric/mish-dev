@@ -672,7 +672,7 @@ export default class CommonStorageService extends Service {
       e.stopPropagation();
       let tgt = e.target;
       if (tgt.closest('.img_mini')) {
-        // WHEN DOES THIS HAPPEN? **************
+        // Does this ever happen?
         this.picName = tgt.closest('.img_mini').id.slice(1);
       }
       if (e.button === 0) { // mouse button
@@ -715,18 +715,10 @@ export default class CommonStorageService extends Service {
       }
       // Open the show image view
       document.querySelector('.img_show').style.display = 'table';
+      // Hide the image menu button (here Ctrl+Click is used to open it)
+      document.querySelector('.img_show button.menu_img').style.display = 'none';
       // Hide the navigation overlay information
       document.querySelector('.toggleNavInfo').style.opacity = '0';
-
-      // Copy the thumbnail menu
-      let picture = document.getElementById('i' + this.picName);
-      let menu = picture.querySelector('.menu_img_list');
-      let element = document.getElementById('link_show');
-      if (element.querySelector('.menu_img_list')) {
-        element.querySelector('.menu_img_list').remove();
-      }
-      element.appendChild(menu.cloneNode(true));
-      // element.querySelector('.menu_img_list').style.display = '';
 
       // Show the right side buttons
       document.querySelector('.nav_links').style.display = '';

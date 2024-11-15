@@ -128,16 +128,6 @@ class SubAlbums extends Component {
 
 }
 
-document.addEventListener('click', async (event) => {
-  var tgt = event.target;
-  console.log(tgt.closest('ul'));
-  if (tgt.closest('ul')) {
-    // ############################# hur stoppar man!!
-    event.preventDefault();
-    event.stopPropagation();
-  }
-});
-
 class AllImages extends Component {
   @service('common-storage') z;
   @service intl;
@@ -272,7 +262,7 @@ class AllImages extends Component {
       {{#if this.z.imdbRoot}}
 
         {{!-- Here is an invisible button for album images load, used
-        programmatically by z.openAlbum, display it for manual use! --}}
+        programmatically by z.openAlbum, display it for manual test/use! --}}
         <p class="tmpHeader" style="display:none">
             Press to (re)load images for
             <button id="loadMiniImages" type="button" {{on 'click' this.allFiles}}>{{{this.z.imdbDirName}}}</button>
@@ -377,7 +367,7 @@ class AllImages extends Component {
 
     {{!-- ================================================ --}}
     {{!-- The album's div with the slideshow image --}}
-    <div class="img_show" id="d{{this.z.picName}}" draggable="false" style="display:none;margin:2rem auto 0 auto" {{on 'click' (fn this.z.showImage '')}}>
+    <div class="img_show" id="d{{this.z.picName}}" draggable="false" style="display:none;margin:2rem auto 0 auto">
 
         {{!-- An extra slideshow wrapping div --}}
         <div id="link_show" draggable="false" ondragstart="return false" style="position:relative;user-select:none">
@@ -413,7 +403,8 @@ class AllImages extends Component {
               <p>{{t 'next'}}<br><span style="font:normal 1rem Arial!important">[&gt;]</span></p><br>&nbsp;<br>&nbsp;
             </a>
 
-           </div>
+          </div>
+          <MenuImage />
 
         </div>
 

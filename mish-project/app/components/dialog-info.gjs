@@ -47,7 +47,10 @@ export class DialogInfo extends Component {
     }
   }
 
+  // =======================================
   // Get information about this image from the server
+  // This promise has to be run indirectly with TrackedAsyncData
+  // See the actual getStat use, further down in the template!
   actualGetStat = async () => {
     let i = this.z.picIndex;
     if (i > -1) return await this.z.getFilestat(this.z.allFiles[i].linkto);
@@ -57,6 +60,7 @@ export class DialogInfo extends Component {
     let tmp = new TrackedAsyncData(recordPromise);
     return tmp;
   }
+  // =======================================
 
   showStat0 = (stat) => {
     if (!stat) return; // Dismiss any initial reactivity
@@ -123,7 +127,6 @@ export class DialogInfo extends Component {
 
         <i>{{t 'Name'}}</i>: <span style="color:black">{{this.z.picName}}</span>
         <br>
-        {{!-- {{{this.z.infotext}}} --}}
 
         {{#if this.getStat.isResolved}}
           {{{this.showStat0 this.getStat.value}}}
