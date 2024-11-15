@@ -53,7 +53,7 @@ errTxtCannotSave: Die Beschriftung kann nicht aktualisiert werden. Ist die Datei
 errTxtRecover: Verlorener Text wird zurückgegeben durch Neuladen des Albums (ungespeicherte Änderungen zurücksetzen)
 explainLink: hier als verlinktes bild dargestellt
 Filename: Dateiname
-findDuplicates: suche nach duplikaten
+findDuplicates: nach duplikaten suchen
 findImageDups: Mögliche Duplikate dieses Bildes finden
 for: für
 futureFacility: Noch nicht umgesetzt
@@ -170,8 +170,8 @@ dialog:
     header: Benutzeranweisung
     header1: (vor allem für Computers mit Tastatur oder Touchpad)
     login0: Wer als Gast-Benutzer⋅in (gast) angemeldet ist
-    login1: hat nur beschränkte Rechte (Vorschaubilder verstecken, markieren und mit drag & drop bewegen; zum Originalbild gehen). Nach persönlichem Login (Anmeldung) erfolgen weitere Rechte (z.B. Bildunterschriften ändern und speichern). Ein persönliches Login kann nur von einem Systemadministrator erhalten werden
-    ihrcm0: Jedes Vorschaubild hat ein Menü
+    login1: hat nur beschränkte Rechte (Vorschaubilder verstecken, markieren und mit drag & drop bewegen; zum Originalbild gehen). Nach persönlichem Login (Anmeldung) erfolgen weitere Rechte (z.B. Bildunterschriften ändern und speichern). Nur Systemadministrierende können ein persönliches Login bereitstellen
+    ihrcm0: Jedes Bild hat ein Menü
     ihrcm1: ( <b>⡇</b>) mit Befehlen/Funktionen
     ctrlclick: Ctrl + klicken / ⌘ + klicken
     ihrcm2: öffnet es auch (⌘ mit Mac-Tastatur)
