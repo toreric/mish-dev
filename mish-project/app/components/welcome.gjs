@@ -263,7 +263,7 @@ export default class extends Welcome {
           {{#if this.z.imdbRoot}}
             {{#if this.z.imdbDir}}
               <a class="" {{on 'click' (fn this.z.openAlbum 0)}}>
-                <span style="font:small-caps 0.9rem sans-serif">⌂&nbsp;{{t 'home'}}&nbsp;</span>
+                <span style="font:small-caps 0.9rem sans-serif;text-decoration:underline">⌂&nbsp;{{t 'home'}}</span>&nbsp;
               </a>
             {{/if}}
             <b>”{{this.z.imdbRoot}}”</b>
