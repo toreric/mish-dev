@@ -104,6 +104,7 @@ status: Status
 subalbum:  subalbum
 subalbums: subalbums
 txtGif: Gif image! May only be given temporary text that cannot be kept permanently
+wait: wait
 with: with
 xplErrImg: Assessment of the technical quality of the original image
 

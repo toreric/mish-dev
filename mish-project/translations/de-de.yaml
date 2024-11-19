@@ -104,6 +104,7 @@ status: Status
 subalbum:  Unteralbum
 subalbums: Unteralben
 txtGif: Gif-Bild! Kann nur temporären Text zugewiesen der nicht dauerhaft gesichert werden kann
+wait: warten
 with: mit
 xplErrImg: Beurteilung der technischen Qualität des Originalbildes
 
@@ -205,7 +206,7 @@ dialog:
     filename: Dateiname
     header: Information zur Originalbilddatei
   login:
-    header:   Anmelden
+    header:   Anmelden/Login
     user:     Benutzer
     name:     Name
     password: Passwort

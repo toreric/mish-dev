@@ -41,7 +41,7 @@ export class DialogInfo extends Component {
       case 'dups':
         if (obj.hasAttribute('open')) {obj.close(); break;}
         this.z.alertMess('<div style="text-align:center;font-weight:normal;color:#000">' + this.intl.t('findImageDups') + '</div>' + BR + this.intl.t('futureFacility'), 15); break;
-      case 'qual':
+      case 'qual': // don't know how to use this
         if (obj.hasAttribute('open')) {obj.close(); break;}
         this.z.alertMess(this.intl.t('xplErrImg') + BR + BR + '<div style="text-align:center;font-weight:normal;color:#000">' + this.imQual + '</div>', 15); break;
     }
@@ -57,23 +57,24 @@ export class DialogInfo extends Component {
   }
   get getStat() {
     let recordPromise = this.actualGetStat();
+    if (!recordPromise) return;
+    console.log(document.getElementById(dialogInfoId));
     let tmp = new TrackedAsyncData(recordPromise);
     return tmp;
   }
   // =======================================
 
-  showStat0 = (stat) => {
+  showStat = (stat) => {
     if (!stat) return; // Dismiss any initial reactivity
     let arr = stat.split(BR);
+    let txt = BR;
+
     // Image quality status
     if (arr[5] === 'NA') {
       this.imQual = this.intl.t('notAvailable');
     } else {
       this.imQual = arr[5].replace(/, /, '\n');//.replace(/ /g, '&nbsp;');
     }
-      // this.z.loli('DialogInfo triggered for ' + arr[6] + ':', 'color:#ff7de9');
-      // console.log(arr);
-    let txt = BR;
 
     // Original image file path
     txt += '<i>' + this.intl.t('Filename') + '</i>: ';
@@ -83,13 +84,10 @@ export class DialogInfo extends Component {
       txt += arr[6] + BR;
     }
 
-    return txt;
-  }
-
-  showStat = (stat) => {
-    if (!stat) return; // Dismiss any initial reactivity
-    let arr = stat.split(BR);
-    let txt = BR;
+    // File status
+    txt += '<a class="hoverDark status" ' ;
+    txt += 'style="font-family:sans-serif;font-variant:all-small-caps" '
+    txt += 'title-2="' + this.imQual + '" >' + this.intl.t('status') + '</a><br>';
 
     // Linked image
     if (arr[4]) {
@@ -125,20 +123,19 @@ export class DialogInfo extends Component {
 
       <main style="padding:1rem 1rem 1.5rem 1rem;text-align:center;min-height:10rem;color:blue">
 
-        <i>{{t 'Name'}}</i>: <span style="color:black">{{this.z.picName}}</span>
-        <br>
-
         {{#if this.getStat.isResolved}}
-          {{{this.showStat0 this.getStat.value}}}
-          <a class="hoverDark" style="font-family:sans-serif;font-variant:all-small-caps" title-2="{{{this.imQual}}}" {{on 'click' (fn this.inform 'qual')}}>{{t 'status'}}</a>
 
+          {{!-- File name --}}
+          <i>{{t 'Name'}}</i>: <span style="color:black">{{this.z.picName}}</span>
+
+          {{!-- File statistics: --}}
           {{{this.showStat this.getStat.value}}}
 
           {{!-- Find duplicates --}}
           <a class="hoverDark" title-1="{{t 'findImageDups'}}" style="font-family:sans-serif;font-variant:small-caps" {{on 'click' (fn this.inform 'dups')}}>{{t 'findDuplicates'}}</a> {{t 'simiThres'}} = <form style="display:inline-block"><input class="threshold" type="number" min="40" max="100" value="70" title="{{t 'selectTreshold'}} 40&ndash;100%"></form>%
           <br>
         {{else if this.getStat.isPending}}
-          . . .
+          . . . {{t 'wait'}} . . .
           {{!-- Do nothing, just wait --}}
         {{else if this.getStat.isRejected}}
           <p>REJECTED</p>
