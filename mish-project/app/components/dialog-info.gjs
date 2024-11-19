@@ -29,6 +29,12 @@ const detectEscClose = (e) => {
   }
 }
 
+const informQual = () => { // Replaces inform('qual')
+  let obj = document.getElementById(dialogAlertId);
+  if (obj.hasAttribute('open')) {obj.close();}
+    this.z.alertMess(this.intl.t('xplErrImg'), 15);
+}
+
 export class DialogInfo extends Component {
   @service('common-storage') z;
   @service intl;
@@ -47,11 +53,14 @@ export class DialogInfo extends Component {
     }
   }
 
+  get that() {return this;}
+
   // =======================================
   // Get information about this image from the server
   // This promise has to be run indirectly with TrackedAsyncData
   // See the actual getStat use, further down in the template!
   actualGetStat = async () => {
+
     let i = this.z.picIndex;
     if (i > -1) return await this.z.getFilestat(this.z.allFiles[i].linkto);
   }
@@ -67,7 +76,10 @@ export class DialogInfo extends Component {
   showStat = (stat) => {
     if (!stat) return; // Dismiss any initial reactivity
     let arr = stat.split(BR);
-    let txt = BR;
+
+    // Image name
+    let txt = '<i>' + this.intl.t('Name') + '</i>: ';
+    txt += '<span style="color:black">' + this.z.picName + '</span>' + BR;
 
     // Image quality status
     if (arr[5] === 'NA') {
@@ -85,8 +97,8 @@ export class DialogInfo extends Component {
     }
 
     // File status
-    txt += '<a class="hoverDark status" ' ;
-    txt += 'style="font-family:sans-serif;font-variant:all-small-caps" '
+    txt += '<a class="hoverDark status" ';
+    txt += 'style="font-family:sans-serif;font-variant:all-small-caps" ';
     txt += 'title-2="' + this.imQual + '" >' + this.intl.t('status') + '</a><br>';
 
     // Linked image
@@ -124,9 +136,6 @@ export class DialogInfo extends Component {
       <main style="padding:1rem 1rem 1.5rem 1rem;text-align:center;min-height:10rem;color:blue">
 
         {{#if this.getStat.isResolved}}
-
-          {{!-- File name --}}
-          <i>{{t 'Name'}}</i>: <span style="color:black">{{this.z.picName}}</span>
 
           {{!-- File statistics: --}}
           {{{this.showStat this.getStat.value}}}

@@ -106,7 +106,7 @@ subalbums: Unteralben
 txtGif: Gif-Bild! Kann nur temporären Text zugewiesen der nicht dauerhaft gesichert werden kann
 wait: warten
 with: mit
-xplErrImg: Beurteilung der technischen Qualität des Originalbildes
+xplErrImg: Beurteilung der technischen \nQualität des Originalbildes
 
 albumcollselect: Bitte eine Albumsammlung auswählen!
 albumMissing: Dieses Album kann, möglicherweise<br>

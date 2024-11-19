@@ -106,7 +106,7 @@ subalbums: underalbum
 wait: vänta
 with: med
 txtGif: Gif-bild! Kan bara ges tillfällig text som inte bevaras permanent
-xplErrImg: Uppskattning av originalbildens tekniska kvalitet
+xplErrImg: Uppskattning av original-\nbildens tekniska kvalitet
 
 albumcollselect: Vänligen välj en albumsamling!
 albumMissing: Det här albumet kan inte visas, kanske<br>
