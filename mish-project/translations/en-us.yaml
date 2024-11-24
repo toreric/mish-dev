@@ -206,7 +206,7 @@ dialog:
     F5:   <b>F5</b> or <b>Ctrl</b>+<b>R</b> is used to start over from the beginning, for example if the image transition got out of order
   info:
     filename: File name
-    header: Information about the original image file
+    header: Information about the original image
   login:
     header:   Log in
     user:     User

@@ -889,7 +889,7 @@ export default class CommonStorageService extends Service {
   }
 
 
-  //#region execute
+  //#region execute/
   execute = async (command) => { // Execute on the server, return a promise
     return new Promise((resolve, reject) => {
       command = command.replace (/%/g, "%25");
@@ -918,7 +918,7 @@ export default class CommonStorageService extends Service {
     });
   }
 
-  //#region filestat
+  //#region filestat/
   // Get file information
   getFilestat = async (filePath) => {
     return new Promise(async (resolve, reject) => {
@@ -948,7 +948,7 @@ export default class CommonStorageService extends Service {
     });
   }
 
-  //#region login
+  //#region login/
   getCredentials = async (username) => {
     username = username.trim();
     // this.loli(this.userName);
@@ -982,7 +982,7 @@ export default class CommonStorageService extends Service {
     });
   }
 
-  //#region rootdir
+  //#region rootdir/
   getAlbumRoots = async () => {
     // Propose root directory (requestDirs)
     return new Promise ( (resolve, reject) => {
@@ -1016,7 +1016,7 @@ export default class CommonStorageService extends Service {
     });
   }
 
-  //#region imdbdirs
+  //#region imdbdirs/
   getAlbumDirs = async (getHidden) => {
     // Get album collections or albums if thisDir is an album root
     return new Promise((resolve, reject) => {
@@ -1041,7 +1041,7 @@ export default class CommonStorageService extends Service {
     });
   }
 
-  //#region imagelist
+  //#region imagelist/
   // WAS: requestNames = async () => { // ===== Request the file information list
   getImages = async () => { // ===== Get the image files information list
     // NEPF = number of entries (lines) per file in the plain text-line-result list
@@ -1153,8 +1153,9 @@ export default class CommonStorageService extends Service {
     });
   }
 
-  //#region sortlist
-  //is actually the getOrder function, cf. saveOrder below
+  //#region sortlist/
+  // Is actually a getOrder function, corresponding to saveOrder below
+  // The namings 'sortlist' and 'requestOrder' are from historical reasons
   requestOrder = async () => {
     // Request the sort order list of image files
     return new Promise ( (resolve, reject) => {
@@ -1190,7 +1191,7 @@ export default class CommonStorageService extends Service {
     });
   }
 
-  //#region saveorder
+  //#region saveorder/
   //the name coincides with the saveOrder left button
   saveOrder = async () => {
     if (this.imdbDir === this.picFound || !this.allow.saveChanges) return;
@@ -1243,7 +1244,7 @@ export default class CommonStorageService extends Service {
     }
   }
 
-  //#region savetext
+  //#region savetext/
   //saving image captions as metadata: saveText(filePath +'\n'+ txt1 +'\n'+ txt2);
   placeMess = () => {
     let textel = document.getElementById('dialogText');
@@ -1279,7 +1280,7 @@ export default class CommonStorageService extends Service {
     xhr.send(txt);
   }
 
-  //#region sqlupdate
+  //#region sqlupdate/
   // Update the sqlite text database (symlinked pictures auto-omitted)
   // ***CHECK if it ever will be used
   sqlUpdate = (picPaths) => { // Must be complete server paths

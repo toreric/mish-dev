@@ -47,7 +47,7 @@ export class DialogInfo extends Component {
       case 'dups':
         if (obj.hasAttribute('open')) {obj.close(); break;}
         this.z.alertMess('<div style="text-align:center;font-weight:normal;color:#000">' + this.intl.t('findImageDups') + '</div>' + BR + this.intl.t('futureFacility'), 15); break;
-      case 'qual': // don't know how to use this
+      case 'qual': // don't know how to use this: an alert from the STATUS link
         if (obj.hasAttribute('open')) {obj.close(); break;}
         this.z.alertMess(this.intl.t('xplErrImg') + BR + BR + '<div style="text-align:center;font-weight:normal;color:#000">' + this.imQual + '</div>', 15); break;
     }
@@ -60,14 +60,12 @@ export class DialogInfo extends Component {
   // This promise has to be run indirectly with TrackedAsyncData
   // See the actual getStat use, further down in the template!
   actualGetStat = async () => {
-
     let i = this.z.picIndex;
     if (i > -1) return await this.z.getFilestat(this.z.allFiles[i].linkto);
   }
   get getStat() {
     let recordPromise = this.actualGetStat();
     if (!recordPromise) return;
-    console.log(document.getElementById(dialogInfoId));
     let tmp = new TrackedAsyncData(recordPromise);
     return tmp;
   }

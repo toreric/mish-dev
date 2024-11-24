@@ -204,7 +204,7 @@ dialog:
     F5:   <b>F5</b> oder <b>Ctrl</b>+<b>R</b> wird verwendet, um von vorne zu beginnen, beispielsweise wenn die Bildübergänge nicht in Ordnung sind
   info:
     filename: Dateiname
-    header: Information zur Originalbilddatei
+    header: Information zum Originalbild
   login:
     header:   Anmelden/Login
     user:     Benutzer

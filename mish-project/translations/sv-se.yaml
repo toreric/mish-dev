@@ -204,7 +204,7 @@ dialog:
     F5:   <b>F5</b> eller <b>Ctrl</b>+<b>R</b> används för att börja om från början, till exempel om bildväxlingen kommit i oordning
   info:
     filename: Filnamn
-    header: Information om originalbildfilen
+    header: Information om originalbilden
   login:
     header:   Inloggning
     user:     Användare
