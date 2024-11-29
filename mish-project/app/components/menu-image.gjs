@@ -29,7 +29,7 @@ export class MenuImage extends Component {
       for (let list of document.querySelectorAll('.menu_img_list')) list.style.display = 'none';
       // Sorry, no loli message!
     }
-    document.getElementById(dialogInfoId).focus();
+    document.querySelector('body').focus();
   }
 
   get albname() {
@@ -57,6 +57,27 @@ export class MenuImage extends Component {
     return a;
   }
 
+  toggleDialog = (id) => {
+    this.z.markBorders(this.z.picName);
+    this.z.toggleDialog(id);
+  }
+
+  notYet = (cmd) => {
+    this.z.markBorders(this.z.picName);
+    let alrt = document.getElementById(dialogAlertId);
+    if (alrt.open) {
+      alrt.close();
+    } else {
+      this.z.alertMess('<div style="text-align:center">' + this.intl.t(cmd) + ' :' + BR + BR + this.intl.t('futureFacility') + '</div>');
+    }
+  }
+
+  closeMenuImg = (e) => {
+    let tgt = e.target;
+    tgt.closest('ul').style.display = 'none';
+    this.z.loli('closed menu of image ' + this.z.picName + ' in album ' + this.z.imdbRoot + this.z.imdbDir);
+  }
+
   <template>
     <button class='menu_img' type="button" title="{{t 'imageMenu'}}"
     {{on 'click' (fn this.z.toggleMenuImg 1)}}
@@ -66,7 +87,7 @@ export class MenuImage extends Component {
 
       <li><p style="text-align:right;color:deeppink;
         font-size:120%;line-height:80%;padding-bottom:0.125rem"
-        {{on 'click' (fn this.z.toggleMenuImg 0)}}>
+        {{on 'click' this.closeMenuImg}}>
         × </p>
       </li>
 
@@ -79,47 +100,76 @@ export class MenuImage extends Component {
       {{/if}}
 
       {{!-- Open image file information dialog --}}
-      <li><p {{on 'click' (fn this.z.toggleDialog dialogInfoId)}}>
+      <li><p {{on 'click' (fn this.toggleDialog dialogInfoId)}}>
         {{t 'information'}}</p></li>
 
       {{!-- Open image text edit dialog --}}
       {{#if this.z.allow.textEdit}}
-        <li><p {{on 'click' (fn this.z.toggleDialog dialogTextId)}}>
+        <li><p {{on 'click' (fn this.toggleDialog dialogTextId)}}>
           {{t 'editext'}}</p></li>
       {{/if}}
 
-      <li><p {{on 'click' (fn this.z.toggleMenuImg 0)}}>
-        {{t 'editimage'}}</p></li>
-      <li><p {{on 'click' (fn this.z.toggleMenuImg 0)}}>
-        <span style="font-size:130%;line-height:50%">
-          ○</span>{{t 'hideshow'}}</p></li>
+      {{!-- Edit this image --}}
+      {{#if this.z.allow.imgEdit}}
+        <li><p {{on 'click' (fn this.notYet 'editimage')}}>
+          {{t 'editimage'}}</p></li>
+      {{/if}}
+
+      {{!-- Hide or show image(s) --}}
+      {{#if this.z.allow.imgHidden}}
+        <li><p {{on 'click' (fn this.notYet 'hideshow')}}>
+          <span style="font-size:124%;line-height:50%">
+            ○</span>{{t 'hideshow'}}</p></li>
+      {{/if}}
       <li><hr style="margin:0.25rem 0.5rem"></li>
 
-      <li><p {{on 'click' (fn this.z.toggleMenuImg 0)}}>
-        <span style="font-size:130%;line-height:50%">
+      {{!-- Check or uncheck all images --}}
+      <li><p {{on 'click' (fn this.notYet 'checkuncheck')}}>
+        <span style="font-size:124%;line-height:50%">
           ○</span>{{t 'checkuncheck'}}</p></li>
-      <li><p {{on 'click' (fn this.z.toggleMenuImg 0)}}>
-        <span style="font-size:130%;line-height:50%">
-        ○</span>{{t 'markhidden'}}</p></li>
-      <li><p {{on 'click' (fn this.z.toggleMenuImg 0)}}>
-        <span style="font-size:130%;line-height:50%">
-        ○</span>{{t 'invertsel'}}</p></li>
-      <li><p {{on 'click' (fn this.z.toggleMenuImg 0)}}>
-        {{t 'placefirst'}}</p></li>
-      <li><p {{on 'click' (fn this.z.toggleMenuImg 0)}}>
-        {{t 'placelast'}}</p></li>
-      <li><p {{on 'click' (fn this.z.toggleMenuImg 0)}}>
-        {{t 'download'}}</p></li>
+
+      {{!-- Mark (check) only hidden images --}}
+      <li><p {{on 'click' (fn this.notYet 'markhidden')}}>
+        <span style="font-size:124%;line-height:50%">
+          ○</span>{{t 'markhidden'}}</p></li>
+
+      {{!-- Invert selection (marked/checked) --}}
+      <li><p {{on 'click' (fn this.notYet 'invertsel')}}>
+        <span style="font-size:124%;line-height:50%">
+          ○</span>{{t 'invertsel'}}</p></li>
+
+      {{#if this.z.allow.imgReorder}}
+        {{!-- Place image(s) first --}}
+        <li><p {{on 'click' (fn this.notYet 'placefirst')}}>
+          <span style="font-size:124%;line-height:50%">
+            ○</span>{{t 'placefirst'}}</p></li>
+
+        {{!-- Placeimages(s) a the end --}}
+        <li><p {{on 'click' (fn this.notYet 'placelast')}}>
+          <span style="font-size:124%;line-height:50%">
+            ○</span>{{t 'placelast'}}</p></li>
+      {{/if}}
+
+      {{!-- Download images to this album --}}
+      {{#if this.z.allow.imgUpload}}
+        <li><p {{on 'click' (fn this.notYet 'download')}}>
+          {{t 'download'}}</p></li>
+      {{/if}}
       <li><hr style="margin:0.25rem 0.5rem"></li>
 
-      <li><p {{on 'click' (fn this.z.toggleMenuImg 0)}}>
-        <span style="font-size:130%;line-height:50%">
+      {{!-- Link image(s) to another album --}}
+      <li><p {{on 'click' (fn this.notYet 'linkto')}}>
+        <span style="font-size:124%;line-height:50%">
         ○</span>{{t 'linkto'}}</p></li>
-      <li><p {{on 'click' (fn this.z.toggleMenuImg 0)}}>
-        <span style="font-size:130%;line-height:50%">
+
+      {{!-- Move image(s) to another album --}}
+      <li><p {{on 'click' (fn this.notYet 'moveto')}}>
+        <span style="font-size:124%;line-height:50%">
         ○</span>{{t 'moveto'}}</p></li>
-      <li><p {{on 'click' (fn this.z.toggleMenuImg 0)}}>
-        <span style="font-size:130%;line-height:50%">
+
+      {{!-- Erase image(s)  --}}
+      <li><p {{on 'click' (fn this.notYet 'remove')}}>
+        <span style="font-size:124%;line-height:50%">
         ○</span>{{t 'remove'}}</p></li>
 
     </ul>

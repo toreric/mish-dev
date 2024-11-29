@@ -434,21 +434,23 @@ export default class CommonStorageService extends Service {
     if (e) {
       // e.preventDefault();
       e.stopPropagation();
-      var tgt = e.target.closest('.img_show');
-      if (!tgt) tgt = e.target.closest('.img_mini');
+      var tgt = e.target.closest('.img_mini');
     }
-    if (!tgt) return;
-    let id = tgt.id;
-    let name = id.slice(1);
-    this.picName = name;
+    if (tgt) {
+      let id = tgt.id;
+      let name = id.slice(1);
+      this.picName = name;
+    }
+    let name = this.picName;
       // this.loli(this.picName + ':', 'color:red');
       // console.log(this.allFiles[this.picIndex])
-    let list = tgt.querySelector('.menu_img_list');
-    if (!list.style.display) open = 0; // If open, close
 
     const loliClose = (name) => this.loli('closed menu of image ' + name + ' in album ' + this.imdbRoot + this.imdbDir);
 
+    let list = document.querySelector('#i' + this.escapeDots(name) + ' .menu_img_list');
+    // if (!list) list = document.querySelector('#d' + this.escapeDots(name) + ' .menu_img_list');
     if (open) { // 1 == do open
+      this.markBorders(name);
       let allist = document.querySelectorAll('.menu_img_list');
       // If another image menu is open, close it:
       for (let list of allist) {
@@ -463,6 +465,7 @@ export default class CommonStorageService extends Service {
       this.loli('opened menu of image ' + name + ' in album ' + this.imdbRoot + this.imdbDir);
 
     } else { // 0 == do close
+      this.markBorders(name); // Since this was the most recent image menu
       list.style.display = 'none';
       loliClose(name);
     }
@@ -679,6 +682,7 @@ export default class CommonStorageService extends Service {
         let pic = document.getElementById('i' + this.picName);
         if (e.ctrlKey) {
           pic.querySelector('.menu_img').click();
+          this.loli('opened menu of image ' + this.picName + ' in album ' + this.imdbRoot + this.imdbDir);
           return;
         }
         if (e.shiftKey) {
@@ -761,8 +765,10 @@ export default class CommonStorageService extends Service {
           let uli = document.querySelector('#link_show ul');
           if (uli.style.display === '') {
             uli.style.display = 'none';
+            this.loli('closed menu of image ' + this.picName + ' in album ' + this.imdbRoot + this.imdbDir);
           } else {
             uli.style.display = '';
+            this.loli('opened menu of image ' + this.picName + ' in album ' + this.imdbRoot + this.imdbDir);
           }
           return;
         }

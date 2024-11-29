@@ -55,7 +55,7 @@ export class DialogInfo extends Component {
 
   get that() {return this;}
 
-  // =======================================
+  // ================================================
   // Get information about this image from the server
   // This promise has to be run indirectly with TrackedAsyncData
   // See the actual getStat use, further down in the template!
@@ -69,7 +69,7 @@ export class DialogInfo extends Component {
     let tmp = new TrackedAsyncData(recordPromise);
     return tmp;
   }
-  // =======================================
+  // ================================================
 
   showStat = (stat) => {
     if (!stat) return; // Dismiss any initial reactivity
