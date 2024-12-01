@@ -1350,8 +1350,6 @@ export default class CommonStorageService extends Service {
 
   openDialog = async (dialogId, origPos) => {
     let diaObj = document.getElementById(dialogId);
-      this.loli(dialogId);
-      this.loli(diaObj);
     await new Promise (z => setTimeout (z, 20)); // openDialog
     if (!diaObj.open) {
       diaObj.show();

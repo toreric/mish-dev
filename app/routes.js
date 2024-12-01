@@ -16,6 +16,9 @@ module.exports = function(app) { // Start module.exports
   app.use(bodyParser.urlencoded( {extended: false} ))
 
   const SQLite = require('better-sqlite3')
+
+  // This row should be moved to the 'login' and also followed at end by 'setdb.close'
+  // in order to free it for construction of an admin gui for settings management:
   const setdb = new SQLite('_imdb_settings.sqlite')
 
   let n_upl = 0 // Upload counter
@@ -30,7 +33,7 @@ module.exports = function(app) { // Start module.exports
   let allfiles = [] // For /imagelist use
 
   // ===== Make a synchronous shell command formally 'asynchronous'(cf. asynchronous execP)
-  let cmdasync = async(cmd) => {return execSync(cmd)}
+  let cmdasync = async (cmd) => {return execSync(cmd)}
   // ===== ABOUT COMMAND EXECUTION
   // ===== `execP` provides a non-blocking, promise-based approach to executing commands, which is generally preferred in Node.js applications for better performance and easier asynchronous handling.
   // ===== `cmdasync`, using `execSync`, offers a synchronous alternative that blocks the event loop, which might be useful in specific scenarios but is generally not recommended for most use cases due to its blocking nature. `a = await cmdasync(cmd)` and `a = execSync(cmd)` achieve the same end result of executing a command synchronously. The usage differs based on the context (asynchronous with `await` for `cmdasync` versus direct synchronous call for `execSync`). The choice between them depends on whether you're working within an asynchronous function and your preference for error handling and code style.
@@ -534,7 +537,7 @@ module.exports = function(app) { // Start module.exports
 
   // ##### Update one or more database entries
   //#region sqlupdate
-  app.post('/sqlupdate', upload.none (), async function (req, res, next) {
+  app.post('/sqlupdate', upload.none(), async function(req, res, next) {
     //console.log (req.body)
     let filepaths = req.body.filepaths
     //console.log ('SQLUPDATE', filepaths)
@@ -546,6 +549,53 @@ module.exports = function(app) { // Start module.exports
     res.location('/')
     res.send('')
     //res.end()
+  })
+
+  // ##### Search text, case insensitively, in _imdb_images.sqlite
+  //#region search
+  app.post ('/search', upload.none(), function(req, res, next) {
+    // Convert everything to lower case
+    // The removeDiacritics funtion bypasses some characters (åäöüÅÄÖÜ)
+    let like = removeDiacritics (req.body.like)
+    if (req.body.info != "exact") like = like.toLowerCase() // if not e.g. file name compare
+      // console.log("like",like);
+    let cols = eval ("[" + req.body.cols + "]")
+    let taco = ["description", "creator", "source", "album", "name"]
+    let columns = ""
+    for (let i=0; i<cols.length; i++) {
+      if (cols[i]) {columns += "||" + taco[i]}
+    }
+    columns = columns.slice (2)
+
+    try { // Start try ----------
+      if (like === '') {
+        res.send ('')
+        console.log('Found: 0')
+      } else {
+        // better-sqlite3:
+        const db = new SQLite(IMDB + "/_imdb_images.sqlite")
+        db.pragma("journal_mode = WAL") // Turn on write-ahead logging
+        const rows = db.prepare('SELECT id, filepath, ' + columns + ' AS txtstr FROM imginfo WHERE ' + like).all()
+        setTimeout(() => {
+          var foundpaths = "", n = 0
+          rows.forEach((row) => {
+              // console.log("row.filepath",row.filepath.trim());
+            // In certain situations, dotted directories may
+            // appear here and urgently need to be left out!
+            if (!row.filepath.includes ('/.')) {
+              foundpaths += row.filepath.trim() + "\n"
+              n++
+            }
+          })
+          console.log('Found: ' + n)
+          res.send(foundpaths.trim())
+        }, 1000)
+        db.close()
+      }
+    } catch (err) {
+      console.error("€RR", err.message)
+    } // End try ----------
+
   })
 
 
@@ -609,10 +659,10 @@ module.exports = function(app) { // Start module.exports
 
   // ===== Read the dir's content of album sub-dirs(not recursively)
   //#region readSubdir
-  readSubdir = async(dir, files = []) => {
+  readSubdir = async (dir, files = []) => {
     // let items = await fs.readdirAsync('rln' + dir) // items are file || dir names
     let items = await fs.readdirAsync(dir) // items are file || dir names
-    return Promise.map(items, async(name) => { // Cannot use mapSeries here(why?)
+    return Promise.map(items, async (name) => { // Cannot use mapSeries here(why?)
       //let apitem = path.resolve(dir, name) // Absolute path
       let item = path.join(dir, name) // Relative path
       if (acceptedDirName(name) && !brokenLink(item)) {
@@ -658,7 +708,7 @@ module.exports = function(app) { // Start module.exports
   // IMDB is the absolute current album root path
   // Returns directories formatted like imdbDirs,(first "", then /... etc.)
   //region allDirs
-  let allDirs = async() => {
+  let allDirs = async () => {
     let dirlist = await cmdasync('find -L ' + IMDB + ' -type d|sort')
     dirlist = dirlist.toString().trim() // Formalise string
     dirlist = dirlist.split(LF)
@@ -788,15 +838,15 @@ module.exports = function(app) { // Start module.exports
     let cmd = []
     let tmp = '--' // Should never show up
     // Extract Xmp data with exiv2 scripts to \n-separated lines
-    cmd [0] = 'xmp_description ' + origfile // for txt1
-    cmd [1] = 'xmp_creator ' + origfile     // for txt2
+    cmd[0] = 'xmp_description ' + origfile // for txt1
+    cmd[1] = 'xmp_creator ' + origfile     // for txt2
     // START HERE if you want to add, for example, xmp.dc.source = "notes text", and so on.
     // BUT REMEMBER, if so, to extend for this everywhere, after "res.send *" in "get * imagelist"
     let txt12 = ''
     for (let _i = 0; _i< cmd.length; _i++) {
       tmp = "?" // Should never show up
-      //tmp = execSync(cmd [_i])
-      tmp = await cmdasync(cmd [_i])
+      //tmp = execSync(cmd[_i])
+      tmp = await cmdasync(cmd[_i])
       tmp = tmp.toString().trim() // Formalise string
       if (tmp.length === 0) tmp = "-" // Insert fill character
       tmp = tmp.replace(/\n/g," ").trim() // Remove embedded \n(s)
@@ -932,23 +982,23 @@ module.exports = function(app) { // Start module.exports
   // (designed for many but never fulfilled successfully with more than one)
   //#region sqlUpdate
   function sqlUpdate(filepaths) { // Album server paths, complete Absolute
-    return new Promise (async function(resolve, reject) {
-      let pathlist = filepaths.trim ().split (LF)
+    return new Promise(async function(resolve, reject) {
+      let pathlist = filepaths.trim().split(LF)
       for (let i=0; i<pathlist.length; i++) { // forLoop
         let filePath = '.' + pathlist[i].slice(IMDB.length) // Album relative path
           // console.log(RED + filePath + RSET)
         // No files in the picFound album (may be occasionally uploaded,
         // temporary non-symlinks) and no symlinks should be processed:
-        if (filePath.indexOf(picFound) > 0 || await isSymlink (pathlist [i])) continue;
+        if (filePath.indexOf(picFound) > 0 || await isSymlink(pathlist[i])) continue;
         // Classify the file as existing or not
-        let pathArr = filePath.split ("/")
+        let pathArr = filePath.split("/")
         let xmpParams = [], dbValues = {}
         let fileExists = false
         try {
-          let fd = fs.openSync(pathlist [i], 'r+') // Complete server path
+          let fd = fs.openSync(pathlist[i], 'r+') // Complete server path
           if (fd) {
             fileExists = true
-            fs.closeSync (fd)
+            fs.closeSync(fd)
           }
         } catch (err) {
           fileExists = false
@@ -956,10 +1006,10 @@ module.exports = function(app) { // Start module.exports
         const db = new SQLite(IMDB + "/_imdb_images.sqlite")
         db.pragma("journal_mode = WAL") // Turn on write-ahead logging
         let sqlGetId = "SELECT id FROM imginfo WHERE filepath='" + filePath + "'"
-        row = db.prepare(sqlGetId).get ()
-        //row = await db.get (sqlGetId)
+        row = db.prepare(sqlGetId).get()
+        //row = await db.get(sqlGetId)
         let recId = -1
-        if (row) {recId = row ['id']}
+        if (row) {recId = row['id']}
   
         // Get metadata from the picture, 'lowercased':
         function getSqlParams() {
@@ -969,13 +1019,13 @@ module.exports = function(app) { // Start module.exports
             let cmd = 'xmpget ' + xmpkey[j] + ' ' + pathlist[i]
             // The removeDiacritics function does bypass some characters: Swedish åäöÅÄÖ and German äöüÄÖÜ (not customized to each individual language)
             // Remove diacritics and make lowercase. Remove tags and double spaces.
-            xmpParams[j] = removeDiacritics (execSync(cmd).toString()).toLowerCase()
+            xmpParams[j] = removeDiacritics(execSync(cmd).toString()).toLowerCase()
             xmpParams[j] = xmpParams[j].replace(/<[^>]+>/gm, "").replace(/  */gm, " ")
           }
           dbValues =   // Removed the $ prefix to fit better-sqlite3
           { filepath: filePath,
-            name:     pathArr[pathArr.length - 1].replace (/\.[^.]+$/, ""), // Remove extension
-            album:    removeDiacritics(filePath.replace (/^[^/]*(\/(.*\/)*)[^/]+$/, "$1")).toLowerCase(),
+            name:     pathArr[pathArr.length - 1].replace(/\.[^.]+$/, ""), // Remove extension
+            album:    removeDiacritics(filePath.replace(/^[^/]*(\/(.*\/)*)[^/]+$/, "$1")).toLowerCase(),
             description: xmpParams[0].trim(),
             creator:  xmpParams[1].trim(),
             source:   xmpParams[2].trim(),
@@ -984,7 +1034,7 @@ module.exports = function(app) { // Start module.exports
             tchanged: ''
           }
         }
-        //console.log (" fileExists", fileExists, "recId", recId, i);
+        //console.log(" fileExists", fileExists, "recId", recId, i);
 
         if (recId > -1) { // in db table
           // RECORD 1 means that the database HAS a record
@@ -994,7 +1044,7 @@ module.exports = function(app) { // Start module.exports
           if (fileExists) {
             /* RECORD 1  EXISTS 1
             ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤ */
-            //console.log (' sql UPDATE', recId, filePath)
+            //console.log(' sql UPDATE', recId, filePath)
             // update the table row where id = recId
             getSqlParams()
             // For better-sqlite3
@@ -1004,10 +1054,10 @@ module.exports = function(app) { // Start module.exports
           } else {
             /* RECORD 1  EXISTS 0
             ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤ */
-            //console.log (' sql DELETE', recId, filePath)
+            //console.log(' sql DELETE', recId, filePath)
             db.prepare("DELETE FROM imginfo WHERE id=" + recId).run()
             //let sqlDelete = "DELETE FROM imginfo WHERE id=" + recId
-            //await db.run (sqlDelete)
+            //await db.run(sqlDelete)
           }
 
         } else { // not in db table
@@ -1015,7 +1065,7 @@ module.exports = function(app) { // Start module.exports
           if (fileExists) {
             /* RECORD 0  EXISTS 1
             ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤ */
-            //console.log (' sql INSERT', filePath)
+            //console.log(' sql INSERT', filePath)
             // insert a table row with filepath = filePath
             getSqlParams()
             db.prepare("INSERT INTO imginfo (filepath,name,album,description,creator,source,subject,tcreated,tchanged) VALUES ($filepath,$name,$album,$description,$creator,$source,$subject,$tcreated,$tchanged)").run(dbValues)
@@ -1024,13 +1074,12 @@ module.exports = function(app) { // Start module.exports
           } else {
             /* RECORD 0  EXISTS 0
             ¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤ */
-            //console.log (' sql NOOP', filePath)
+            //console.log(' sql NOOP', filePath)
             // do nothing
           } //--if else
         } //--if else
-        await new Promise(z => setTimeout (z, 222))
+        await new Promise(z => setTimeout(z, 222))
         db.close()
-        //await db.close ()
       } //--for loop
       resolve(true)
     }) //--Promise
@@ -1137,7 +1186,7 @@ for (let i=0; i < defaultDiacriticsRemovalMap.length; i++){
     diacriticsMap[letters[j]] = defaultDiacriticsRemovalMap[i].base;
   }
 }
-function removeDiacritics (str) {
+function removeDiacritics(str) {
   return str.replace(/[^\u0000-\u007E]/g, function(a) {
     return diacriticsMap[a] || a;
   });
@@ -1158,7 +1207,7 @@ function removeDiacritics (str) {
 function occurrences(string, subString, allowOverlapping) {
   string += "";
   subString += "";
-  if (subString.length <= 0) return (string.length + 1);
+  if (subString.length <= 0) return(string.length + 1);
 
   var n = 0,
     pos = 0,

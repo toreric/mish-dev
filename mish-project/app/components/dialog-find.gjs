@@ -11,11 +11,11 @@ import RefreshThis from './refresh-this';
 // Note: Dialog-functions in Header needs dialogFindId:
 export const dialogFindId = 'dialogFind';
 
-document.addEventListener('mousedown', async (e) => {
+document.addEventListener('mousedown', (e) => {
   e.stopPropagation();
 });
 
-document.addEventListener('keydown', async (e) => {
+document.addEventListener('keydown', (e) => {
   if (e.keyCode === 27) {
     e.stopPropagation();
     if (document.getElementById('dialogFindHelp').open) {
@@ -66,38 +66,50 @@ export class DialogFind extends Component {
    * Example: Find pictures by exact matching of image names (file basenames), e.g.
    *   doFindText ("img_0012 img_0123", false, [false, false, false, false, true], -1)
    */
-  doFindText = () => {
-    let sTxt = document.querySelector('textarea[name="searchtext"]').value;
+  doFindText = async () => {
+    let sTxt = document.querySelector('textarea[name="searchtext"]').value + '\n';
     let and = document.querySelectorAll('.orAnd input[type="radio"]')[0].checked;
-    let sWhr = [];
-    for (let val of document.querySelectorAll('.srchIn input[type="checkbox"]')) {
-      sWhr.push(val);
+    let sWhr = [], n = 0;
+    for (let srch of document.querySelectorAll('.srchIn input[type="checkbox"]')) {
+      sWhr.push(srch.checked);
+      if (srch.checked) ++n;
     }
-    this.searchText(sTxt, and, sWhr, 0);
+    // Do not 'search nowhere', choose at least the image caption!
+    if (n === 0)  {
+      document.querySelectorAll('.srchIn input[type="checkbox"]')[0].checked = true;
+      sWhr[0] = true;
+    }
+    let data = await this.searchText(sTxt, and, sWhr, 0);
+    this.z.loli('returned:\n' + data, 'color:pink');
   }
 
-  /** Search the image texts in the current imdbRoot (cf. prepSearchDialog)
-   * @param {string}  sTxt space separated search items
-   * @param {boolean} and true=>AND | false=>OR
-   * @param {boolean} searchWhere array, checkboxes for selected texts
-   * @param {integer} exact <>0 removes SQL ´%´s  (>0 means origin notesDia, <0 searchDia)
-   * @returns {string} \n-separated file paths
-   */
+  /**
+  searchText: contains the sever search/ call
+
+  Search the image texts in the current imdbRoot (cf. prepSearchDialog)
+  @param {string}  sTxt space separated search items
+  @param {boolean} and true=>AND | false=>OR
+  @param {boolean} searchWhere array, checkboxes for selected texts
+  @param {integer} exact <>0 removes SQL ´%´s  (>0 means origin notesDia, <0 searchDia)
+  @returns {string} \n-separated file paths
+  NOTE: Non-zero ´exact´ also means "Only search for image names (file 'basenames')!"
+  NOTE: Negative ´exact´, -1 = called from the find dialog, -2 = do nothing,
+        else (non-negative) = called from and return to the favorites dialog
+  */
   searchText = (sTxt, and, searchWhere, exact) => {
     document.getElementById('go_back').click(); // close show, perhaps unneccessary
     // close all dialogs? perhaps unneccessary
     let AO, andor = '';
     if (and) {AO = ' AND '} else {AO = ' OR '};
-    let txt = sTxt.trim();
-    if (txt === "") {txt = undefined;}
+    if (sTxt === "") {sTxt = undefined;}
     let cmt = '';
     // The first line may be a comment, to ignore:
-    if (txt.slice (0, 1) === '#') {
-      let l = txt.indexOf('\n');
-      cmt = txt.slice(1, l);
-      txt = txt.slice(l + 1);
+    if (sTxt.slice (0, 1) === '#') {
+      let l = sTxt.indexOf('\n');
+      cmt = sTxt.slice(1, l);
+      sTxt = sTxt.slice(l + 1);
     }
-
+    let txt = sTxt.trim();
     let str = '';
     let arr = [];
     if (txt) {
@@ -114,21 +126,78 @@ export class DialogFind extends Component {
         arr[i] = arr[i].replace (/_/g, '\\_');
         // First replace % (NBSP):
         arr[i] = arr[i].replace (/%/g, ' '); // % in Mish means 'sticking space'
-        // Then use % the SQL way if applicable and add `ESCAPE '\'` to each:
-        if (exact !== 0) { // Exact match for file (base) names, e.g. favorites search
-          arr[i] = "'" + arr[i] + "' ESCAPE '\\'";
+        // Then use % the SQL way if applicable and add `ESCAPE '\'` for '_':
+        let esc = arr[i].indexOf('_') < 0 ? "'" : "' ESCAPE '\\'";
+        // Exact match for file (base) names, e.g. favorites search
+        if (exact !== 0) {
+          arr[i] = "'" + arr[i] + esc;
         } else {
-          arr[i] = "'%" + arr[i] + "%' ESCAPE '\\'";
+          arr[i] = "'%" + arr[i] + '%' + esc;
         }
         if (i > 0) {andor = AO}
         str += andor + "txtstr LIKE " + arr[i].trim ();
       }
-      // We need a double printout to see the %-substitution in console.log!
-      this.z.loli(str, 'color:orange  ')
-      this.z.loli(str.replace(/%/g, '*'), 'color:yellow')
+        // // A double printout overrides %-autosubstitution of console.log
+        // this.z.loli(str, 'color:orange  ');
+        // this.z.loli(str.replace(/%/g, '*'), 'color:yellow');
+        // console.log(searchWhere);
+      let srchData = new FormData ();
+      srchData.append ("like", str);
+      srchData.append ("cols", searchWhere);
+      if (exact !== 0) srchData.append ("info", "exact");
+      else srchData.append ("info", "");
+        console.log(srchData);
+      return new Promise((resolve, reject) => {
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', 'search/');
+        this.z.xhrSetRequestHeader(xhr);
+        xhr.onload = function () {
+          if (this.status >= 200 && this.status < 300) {
+            var data = xhr.response.trim ();
+            if (exact !== 0) { // reorder like searchString
+              var datArr = data.split("\n");
+                console.log("searchText datArr.length",datArr.length);
+              var namArr = [];
+              var seaArr = [];
+              var tmpArr = [];
+              var albArr = [];
+              for (let i=0; i<datArr.length; i++) {
+                namArr [i] = datArr [i].replace(/^(.*\/)*(.*)(\.[^.]*)$/,"$2");
+                tmpArr [i] = namArr [i]; // Just in case
+                albArr [i] = datArr [i].replace (/^(.*\/)*(.*)(\.[^.]*)$/,"$1").slice (1, -1);
+              }
+              searchString = searchString.replace (/ +/g, " ");
+              if (arr) seaArr = searchString.split (" ");
+              // The 'reordering template' (seaArr) depends on this special switch set in altFind:
+              if (seaArr [0] === "dupName/") seaArr = tmpArr.sort ();
+              else if (seaArr [0] === "dupImage/") seaArr.splice (0, 1);
+              else if (seaArr [0] === "actualDups/") seaArr.splice (0, 1);
+              else if (seaArr [0] === "subAlbDups/") seaArr.splice (0, 1);
+
+              data = [];
+              for (let i=0; i<seaArr.length; i++) {
+                for (let j=0; j<namArr.length; j++) {
+                  if (seaArr [i] === namArr [j]) {
+                    data [i] = datArr [j];
+                    namArr [j] = "###";
+                    break;
+                  }
+                }
+              }
+              data = data.join ("\n");
+            }
+            resolve (data);
+          } else {
+            reject ({
+              status: this.status,
+              statusText: xhr.statusText
+            });
+          }
+        };
+        xhr.send (srchData);
+      });
     }
   }
-
 
   <template>
 
