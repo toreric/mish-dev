@@ -25,13 +25,15 @@ export class ButtonsRight extends Component {
     {{!-- RIGHT BUTTONS without href attribute --}}
     <div class="nav_links" draggable="false"
       ondragstart="return false" style="display:none">
+
       {{!-- NEXT-ARROW-BUTTONS --}}
       <a class="nav_ next" draggable="false" ondragstart="return false" {{on 'click' (fn this.this.z.showNext true)}} title="{{t 'gonext'}}">&gt;</a> &nbsp;<br>
       <a class="nav_ prev" draggable="false" ondragstart="return false" {{on 'click' (fn this.this.z.showNext false)}} title="{{t 'goprev'}}">&lt;</a> &nbsp;<br>
-      {{!-- CLOSE AND GO BACK TO MINIPICS --}}
-      {{!-- this.z.showImage '' closes the show image --}}
+
+      {{!-- CLOSE AND GO BACK TO MINIPICS:  this.z.showImage '' closes! --}}
       <a class="nav_" id="go_back" title="{{t 'gomini'}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage '')}} src="/images/grid.svg"> </a> &nbsp;<br>
-      <!-- HELP -->
+
+      {{!-- HELP question mark --}}
       <a class="nav_ qnav_" draggable="false" {{on 'click' (fn this.toggleNavInfo)}}>?</a> &nbsp;<br>
 
       {{!-- AUTO-SLIDE-SHOW SELECT

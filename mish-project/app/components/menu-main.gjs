@@ -18,18 +18,6 @@ const OP = '⊕'; // OPENS
 const CL = '⊖'; // CLOSES
 const SA = '‡';  // SUBALBUM indicator, NOTE! set in server (routes.js)
 
-// Close the main menu
-const closeMainMenu = () => {
-  var tmp0 = document.getElementById('menuButton');
-  var tmp1 = document.getElementById('menuMain');
-  if (tmp1.style.display !== 'none') {
-    tmp1.style.display = 'none';
-    tmp0.innerHTML = '<span class="menu">☰</span>';
-    console.log('-"-: closed main menu');
-  }
-}
-
-
 export class MenuMain extends Component {
   @service('common-storage') z;
   @service intl;

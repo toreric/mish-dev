@@ -71,12 +71,12 @@ document.addEventListener('keydown', (event) => {
       document.querySelector('.nav_.next').click();
       break;
     case 65:  // A
+      if (document.activeElement.nodeName === 'TEXTAREA') break;
       break;
     case 70:  // F
-      if (!event.ctrlKey && document.activeElement.nodeName !== 'TEXTAREA') {
-        event.preventDefault();
-        document.getElementById('searchText').click();
-      }
+      if (document.activeElement.nodeName === 'TEXTAREA') break;
+      event.preventDefault();
+      document.getElementById('searchText').click();
       break;
     case 112: // F1
       toggleDialog(dialogHelpId);

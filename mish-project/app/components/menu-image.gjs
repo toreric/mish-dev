@@ -62,13 +62,13 @@ export class MenuImage extends Component {
     this.z.toggleDialog(id);
   }
 
-  notYet = (cmd) => {
+  futureNotYet = (cmd) => {
     this.z.markBorders(this.z.picName);
     let alrt = document.getElementById(dialogAlertId);
     if (alrt.open) {
       alrt.close();
     } else {
-      this.z.alertMess('<div style="text-align:center">' + this.intl.t(cmd) + ' :' + BR + BR + this.intl.t('futureFacility') + '</div>');
+      this.z.alertMess('<div style="text-align:center">' + this.intl.t(cmd) + ':' + BR + BR + this.intl.t('futureFacility') + '</div>');
     }
   }
 
@@ -111,64 +111,64 @@ export class MenuImage extends Component {
 
       {{!-- Edit this image --}}
       {{#if this.z.allow.imgEdit}}
-        <li><p {{on 'click' (fn this.notYet 'editimage')}}>
+        <li><p {{on 'click' (fn this.futureNotYet 'editimage')}}>
           {{t 'editimage'}}</p></li>
       {{/if}}
 
       {{!-- Hide or show image(s) --}}
       {{#if this.z.allow.imgHidden}}
-        <li><p {{on 'click' (fn this.notYet 'hideshow')}}>
+        <li><p {{on 'click' (fn this.futureNotYet 'hideshow')}}>
           <span style="font-size:124%;line-height:50%">
             ○</span>{{t 'hideshow'}}</p></li>
       {{/if}}
       <li><hr style="margin:0.25rem 0.5rem"></li>
 
       {{!-- Check or uncheck all images --}}
-      <li><p {{on 'click' (fn this.notYet 'checkuncheck')}}>
+      <li><p {{on 'click' (fn this.futureNotYet 'checkuncheck')}}>
         <span style="font-size:124%;line-height:50%">
           ○</span>{{t 'checkuncheck'}}</p></li>
 
       {{!-- Mark (check) only hidden images --}}
-      <li><p {{on 'click' (fn this.notYet 'markhidden')}}>
+      <li><p {{on 'click' (fn this.futureNotYet 'markhidden')}}>
         <span style="font-size:124%;line-height:50%">
           ○</span>{{t 'markhidden'}}</p></li>
 
       {{!-- Invert selection (marked/checked) --}}
-      <li><p {{on 'click' (fn this.notYet 'invertsel')}}>
+      <li><p {{on 'click' (fn this.futureNotYet 'invertsel')}}>
         <span style="font-size:124%;line-height:50%">
           ○</span>{{t 'invertsel'}}</p></li>
 
       {{#if this.z.allow.imgReorder}}
         {{!-- Place image(s) first --}}
-        <li><p {{on 'click' (fn this.notYet 'placefirst')}}>
+        <li><p {{on 'click' (fn this.futureNotYet 'placefirst')}}>
           <span style="font-size:124%;line-height:50%">
             ○</span>{{t 'placefirst'}}</p></li>
 
         {{!-- Placeimages(s) a the end --}}
-        <li><p {{on 'click' (fn this.notYet 'placelast')}}>
+        <li><p {{on 'click' (fn this.futureNotYet 'placelast')}}>
           <span style="font-size:124%;line-height:50%">
             ○</span>{{t 'placelast'}}</p></li>
       {{/if}}
 
       {{!-- Download images to this album --}}
       {{#if this.z.allow.imgUpload}}
-        <li><p {{on 'click' (fn this.notYet 'download')}}>
+        <li><p {{on 'click' (fn this.futureNotYet 'download')}}>
           {{t 'download'}}</p></li>
       {{/if}}
       <li><hr style="margin:0.25rem 0.5rem"></li>
 
       {{!-- Link image(s) to another album --}}
-      <li><p {{on 'click' (fn this.notYet 'linkto')}}>
+      <li><p {{on 'click' (fn this.futureNotYet 'linkto')}}>
         <span style="font-size:124%;line-height:50%">
         ○</span>{{t 'linkto'}}</p></li>
 
       {{!-- Move image(s) to another album --}}
-      <li><p {{on 'click' (fn this.notYet 'moveto')}}>
+      <li><p {{on 'click' (fn this.futureNotYet 'moveto')}}>
         <span style="font-size:124%;line-height:50%">
         ○</span>{{t 'moveto'}}</p></li>
 
       {{!-- Erase image(s)  --}}
-      <li><p {{on 'click' (fn this.notYet 'remove')}}>
+      <li><p {{on 'click' (fn this.futureNotYet 'remove')}}>
         <span style="font-size:124%;line-height:50%">
         ○</span>{{t 'remove'}}</p></li>
 

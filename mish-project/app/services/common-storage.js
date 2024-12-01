@@ -1320,9 +1320,9 @@ export default class CommonStorageService extends Service {
     var menuMain = document.getElementById('menuMain');
     var menuButton = document.getElementById('menuButton');
     menuMain.style.display = '';
-    await new Promise (z => setTimeout (z, 9)); // slow response
+    await new Promise (z => setTimeout (z, 9)); // openMainMenu
     menuButton.innerHTML = '<span class="menu">×</span>';
-    await new Promise (z => setTimeout (z, 9)); // slow response
+    await new Promise (z => setTimeout (z, 9)); // openMainMenu
     this.loli('opened main menu');
     return '';
   }
@@ -1332,9 +1332,9 @@ export default class CommonStorageService extends Service {
     if (menuMain.style.display === 'none') return '';
     var menuButton = document.getElementById('menuButton');
     menuMain.style.display = 'none';
-    await new Promise (z => setTimeout (z, 9)); // slow response
+    await new Promise (z => setTimeout (z, 9)); // closeMainMenu
     menuButton.innerHTML = '<span class="menu">𝌆</span>';
-    await new Promise (z => setTimeout (z, 9)); // slow response
+    await new Promise (z => setTimeout (z, 9)); // closeMainMenu
     this.loli('closed main menu ' + msg);
     return '';
   }
@@ -1348,8 +1348,11 @@ export default class CommonStorageService extends Service {
   // is opened in the original position -- else opened where it was left at last close.
   // The close function may be modified to return to original position before closing.
 
-  openDialog = (dialogId, origPos) => {
+  openDialog = async (dialogId, origPos) => {
     let diaObj = document.getElementById(dialogId);
+      this.loli(dialogId);
+      this.loli(diaObj);
+    await new Promise (z => setTimeout (z, 20)); // openDialog
     if (!diaObj.open) {
       diaObj.show();
       if (origPos) diaObj.style = '';
@@ -1382,7 +1385,7 @@ export default class CommonStorageService extends Service {
   }
 
   saveDialog = async (dialogId) => {
-    // should have alternatives for any dialogId
+    // should have alternatives for any dialogId occurring
     if (dialogId === 'dialogText' && this.picIndex > -1) {
       // Close any previous alert:
       this.closeDialog('dialogAlert');

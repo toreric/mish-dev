@@ -188,7 +188,7 @@ class AllImages extends Component {
   }
 
   // Edit the image texts using DialogText
-  ediText = (event) => {
+  ediText = async (event) => {
     event.stopPropagation();
     if (!this.z.allow.textEdit) return;
     let tgt = event.target;
@@ -203,6 +203,8 @@ class AllImages extends Component {
     } else {
       this.z.openDialog(dialogTextId);
     }
+    await new Promise (z => setTimeout (z, 9)); // ediText
+    document.querySelector('textarea[name="description"]').focus();
   }
 
   // The 'double classing', seemingly unnecessary and

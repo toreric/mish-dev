@@ -5,7 +5,6 @@ import { inject as service } from '@ember/service';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
-import { TrackedAsyncData } from 'ember-async-data';
 import { cached } from '@glimmer/tracking';
 
 import RefreshThis from './refresh-this';
@@ -15,11 +14,11 @@ export const dialogTextId = 'dialogText';
 const dialogTextNotesId = 'dialogTextNotes';
 const dialogTextKeywordsId = 'dialogTextKeywords';
 
-document.addEventListener('mousedown', async (e) => {
+document.addEventListener('mousedown', (e) => {
   e.stopPropagation();
 });
 
-document.addEventListener('keydown', async (e) => {
+document.addEventListener('keydown', (e) => {
   if (e.keyCode === 27) {
     e.stopPropagation();
     if (document.getElementById(dialogTextId).open) {
@@ -27,13 +26,13 @@ document.addEventListener('keydown', async (e) => {
       console.log('-"-: closed ' + dialogTextId);
     }
   } else if (e.ctrlKey && e.key === 's') {
-      e.preventDefault();
-      e.stopPropagation();
-      if (e.target.closest('#dialogText')) {
-        document.getElementById('dialogTextButton1').click();
-      }
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.target.closest('#dialogText')) {
+      document.getElementById('dialogTextButton1').click();
     }
-  });
+  }
+});
 
 //== Component DialogText with <dialog> tags
 export class DialogText extends Component {
@@ -54,10 +53,10 @@ export class DialogText extends Component {
     // There are 2 subdialogs
     if (tmp1.open) {
       this.z.closeDialog(tmp1.id);
-      await new Promise (z => setTimeout(z, 9)); // Soon allow next
+      await new Promise (z => setTimeout(z, 9)); // detectEscClose
     } else if (tmp2.open) {
       this.z.closeDialog(tmp2.id);
-      await new Promise (z => setTimeout(z, 9)); // Soon allow next
+      await new Promise (z => setTimeout(z, 9)); // detectEscClose
     } else {
       this.z.closeDialog(dialogTextId);
     }

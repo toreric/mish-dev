@@ -5,7 +5,6 @@ import { inject as service } from '@ember/service';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
-import { TrackedAsyncData } from 'ember-async-data';
 
 import RefreshThis from './refresh-this';
 
@@ -52,7 +51,85 @@ export class DialogFind extends Component {
 
   findit = () => {
     this.z.loli('findit', 'color:red');
+    document.getElementById('go_back').click(); // close slide, perhaps unneccessary
   }
+
+  /** Find texts in the database (file _imdb_images.sqlite) and populate
+   * the #picFound album with the corresponding images (cf. prepSearchDialog)
+   * @param {string}  sTxt whitespace separated search text words/items
+   * @param {boolean} and  true=>AND (find all) | false=>OR (find any)
+   * @param {boolean} sWhr (searchWhere) array = checkboxes for selected texts
+   * @param {integer} exact when <>0, the LIKE searched items will NOT be '%' surrounded
+   * NOTE: Non-zero ´exact´ also means "Only search for image names (file basenames)!"
+   * NOTE: Negative ´exact´, -1 = called from the find dialog, -2 = do nothing,
+   *       else (non-negative) = called from and return to the favorites dialog
+   * Example: Find pictures by exact matching of image names (file basenames), e.g.
+   *   doFindText ("img_0012 img_0123", false, [false, false, false, false, true], -1)
+   */
+  doFindText = () => {
+    let sTxt = document.querySelector('textarea[name="searchtext"]').value;
+    let and = document.querySelectorAll('.orAnd input[type="radio"]')[0].checked;
+    let sWhr = [];
+    for (let val of document.querySelectorAll('.srchIn input[type="checkbox"]')) {
+      sWhr.push(val);
+    }
+    this.searchText(sTxt, and, sWhr, 0);
+  }
+
+  /** Search the image texts in the current imdbRoot (cf. prepSearchDialog)
+   * @param {string}  sTxt space separated search items
+   * @param {boolean} and true=>AND | false=>OR
+   * @param {boolean} searchWhere array, checkboxes for selected texts
+   * @param {integer} exact <>0 removes SQL ´%´s  (>0 means origin notesDia, <0 searchDia)
+   * @returns {string} \n-separated file paths
+   */
+  searchText = (sTxt, and, searchWhere, exact) => {
+    document.getElementById('go_back').click(); // close show, perhaps unneccessary
+    // close all dialogs? perhaps unneccessary
+    let AO, andor = '';
+    if (and) {AO = ' AND '} else {AO = ' OR '};
+    let txt = sTxt.trim();
+    if (txt === "") {txt = undefined;}
+    let cmt = '';
+    // The first line may be a comment, to ignore:
+    if (txt.slice (0, 1) === '#') {
+      let l = txt.indexOf('\n');
+      cmt = txt.slice(1, l);
+      txt = txt.slice(l + 1);
+    }
+
+    let str = '';
+    let arr = [];
+    if (txt) {
+      txt = txt.replace(/\s+/g, ' ').trim();
+
+      this.z.loli(cmt, 'color:yellow');
+      this.z.loli(txt, 'color:red');
+
+      arr = txt.split (' ');
+      for (let i = 0; i<arr.length; i++) {
+        // Replace any `'` with `''`: will be enclosed within `'`s in SQL
+        arr[i] = arr[i].replace (/'/g, "''");
+        // Replace underscore to be taken literally, needs `ESCAPE '\'`
+        arr[i] = arr[i].replace (/_/g, '\\_');
+        // First replace % (NBSP):
+        arr[i] = arr[i].replace (/%/g, ' '); // % in Mish means 'sticking space'
+        // Then use % the SQL way if applicable and add `ESCAPE '\'` to each:
+        if (exact !== 0) { // Exact match for file (base) names, e.g. favorites search
+          arr[i] = "'" + arr[i] + "' ESCAPE '\\'";
+        } else {
+          arr[i] = "'%" + arr[i] + "%' ESCAPE '\\'";
+        }
+        if (i > 0) {andor = AO}
+        str += andor + "txtstr LIKE " + arr[i].trim ();
+      }
+      // We need a double printout to see the %-substitution in console.log!
+      this.z.loli(str, 'color:orange  ')
+      this.z.loli(str.replace(/%/g, '*'), 'color:yellow')
+    }
+  }
+
+
   <template>
 
     <div style="display:flex" {{on 'keydown' this.detectEscClose}}>
@@ -107,7 +184,7 @@ export class DialogFind extends Component {
 
         </main>
         <footer data-dialog-draggable>
-          <button type="button" {{on 'click' (fn this.findit)}}>{{t 'button.findIn'}} <b>{{this.z.imdbRoot}}</b></button>&nbsp;
+          <button type="button" {{on 'click' (fn this.doFindText)}}>{{t 'button.findIn'}} <b>{{this.z.imdbRoot}}</b></button>&nbsp;
           <button type="button" {{on 'click' (fn this.z.closeDialog dialogFindId)}}>{{t 'button.close'}}</button>&nbsp;
         </footer>
       </dialog>
