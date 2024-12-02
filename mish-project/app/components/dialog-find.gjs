@@ -28,6 +28,16 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+function acceptedFileName (name) {
+  // This function must equal the acceptedFileName function in routes.js
+  var acceptedName = 0 === name.replace (/[-_.a-zA-Z0-9]+/g, "").length
+  // Allowed file types are also set at drop-zone in the template menu-buttons.hbs
+  var ftype = name.match (/\.(jpe?g|tif{1,2}|png|gif)$/i)
+  var imtype = name.slice (0, 6) // System file prefix
+  // Here more files may be filtered out depending on o/s needs etc.:
+  return acceptedName && ftype && imtype !== '_mini_' && imtype !== '_show_' && imtype !== '_imdb_' && name.slice (0,1) !== "."
+}
+
 //== Component DialogFind with <dialog> tags
 export class DialogFind extends Component {
   @service('common-storage') z;
@@ -54,17 +64,19 @@ export class DialogFind extends Component {
     document.getElementById('go_back').click(); // close slide, perhaps unneccessary
   }
 
-  /** Find texts in the database (file _imdb_images.sqlite) and populate
-   * the #picFound album with the corresponding images (cf. prepSearchDialog)
-   * @param {string}  sTxt whitespace separated search text words/items
-   * @param {boolean} and  true=>AND (find all) | false=>OR (find any)
-   * @param {boolean} sWhr (searchWhere) array = checkboxes for selected texts
-   * @param {integer} exact when <>0, the LIKE searched items will NOT be '%' surrounded
-   * NOTE: Non-zero ´exact´ also means "Only search for image names (file basenames)!"
-   * NOTE: Negative ´exact´, -1 = called from the find dialog, -2 = do nothing,
-   *       else (non-negative) = called from and return to the favorites dialog
-   * Example: Find pictures by exact matching of image names (file basenames), e.g.
-   *   doFindText ("img_0012 img_0123", false, [false, false, false, false, true], -1)
+  /**
+  doFindText: Finds texts in the database (file _imdb_images.sqlite)
+  and populates the 'picFound' album with the corresponding images
+
+  @param {string}  sTxt whitespace separated search text words/items
+  @param {boolean} and  true=>AND (find all) | false=>OR (find any)
+  @param {boolean} sWhr (searchWhere) array = checkboxes for selected texts
+  @param {integer} exact when <>0, the LIKE searched items will NOT be '%' surrounded
+  NOTE: Non-zero ´exact´ also means "Only search for image names (file basenames)!"
+  NOTE: Negative ´exact´, -1 = called from the find dialog, -2 = do nothing,
+        else (non-negative) = called from and return to the favorites dialog
+  Example: Find pictures by exact matching of image names (file basenames), e.g.
+    doFindText ("img_0012 img_0123", false, [false, false, false, false, true], -1)
    */
   doFindText = async () => {
     let sTxt = document.querySelector('textarea[name="searchtext"]').value + '\n';
@@ -79,18 +91,96 @@ export class DialogFind extends Component {
       document.querySelectorAll('.srchIn input[type="checkbox"]')[0].checked = true;
       sWhr[0] = true;
     }
+    let nameOrder = [];
+
+    // Do find images with 'searchText':
     let data = await this.searchText(sTxt, and, sWhr, 0);
-    this.z.loli('returned:\n' + data, 'color:pink');
+    let cmd = []
+    // Insert links of found pictures into the #picFound album:
+    n = 0
+    let paths = [], albs = [], lpath = 'dummy';
+    // Maximum number of pictures from the search results to show:
+    let nLimit = 100;
+    let filesFound = 0;
+    let countAlbs = [];
+    if (data) {
+      // Don't sort, order may be important if this is a search for duplicates. Then
+      // this is the final re-search by image names in sequence. The result is presented
+      // in the same given order where similar images are grouped together.
+      let paths = data.trim ().split ("\n");//.sort ();
+      // Remove possibly empty values:
+      paths = paths.filter (a => {if (a.trim ()) return true; else return false});
+      // NOTE: Eventually, 'paths' is the basis of the innerHTML content in <result>
+        this.z.loli('paths:\n' + paths.join('\n'), 'color:pink');
+        // console.log(paths);
+      // Prepare to display the result in the album 'Found_images...' etc. (picFound)
+      let chalbs = this.z.imdbDirs;
+      // -- Prepare counters and imgnames for all albums
+      let counts = "0".repeat(chalbs.length).split("").map(Number);
+      let inames = " ".repeat(chalbs.length).split("");
+      let n = paths.length;
+
+      for (let i=0; i<n; i++) {
+        let chalb = paths[i].replace(/^[^/]+(.*)\/[^/]+$/, "$1"); // in imdbDirs format
+        // -- Allow only files/pictures in the albums of #imdbDirs (chalbs):
+        let okay0 = false;
+        let idx = chalbs.indexOf(chalb);
+        if (idx > -1) {okay0 = true;} else {
+          idx = chalbs.length + 1;
+        }
+        counts[idx]++; // -- A hit in this album
+        let fname = paths[i].replace(/^.*\/([^/]+$)/, "$1");
+        inames[idx] = (inames[idx] + " " + fname.replace(/\.[^./].*$/, "")).trim();
+        let linkfrom = paths[i];
+        linkfrom = "../" + linkfrom.replace(/^[^/]*\//, "");
+        let okay1 = acceptedFileName(fname);
+
+        // n0=dirpath, n1=picname, n2=extension from 'paths'
+        // -- 'paths' may accidentally contain illegal image file names, normally
+        // silently ignored. If so, such names will be noticed by red #d00 color
+        // (just an extra service). They may have been collected into the database
+        // at regeneration and may occationally appear in this list.
+        let n0 = paths[i].replace(/^(.*\/)[^/]+$/, "$1");
+        if (!okay0) n0 = "<span style='color:#d00'>" + n0 + "</span>";
+        let n1 = fname.replace (/\.[^./]*$/, "");
+        if (!okay1) n1 = "<span style='color:#d00'>" + n1 + "</span>";
+        let n2 = fname.replace(/(.+)(\.[^.]*$)/, "$2");
+        if (okay0 && okay1) { // ▻🢒
+          paths [i] = "🢒&nbsp;" + n0 + n1 + n2; // 🢒 Long broken entries will be easier to read
+        } else {
+            // console.log("i paths[i]",i,paths[i],okay0,okay1);
+          paths[i] = "<span style='color:#d00'>🢒&nbsp;</span>" + n0 + n1 + n2;
+        }
+
+        // -- In order to make possible show duplicates: Make the link names unique
+        // by adding four random characters (r4) to the picname (n1)
+        let r4 = Math.random().toString(36).substr(2,4);
+        fname = n1 + "." + r4 + n2;
+        if (filesFound < nLimit) {
+          if (okay0 && okay1) { // Only approved files are counted as 'filesFound'
+            filesFound++;
+            nameOrder.push (n1 + "." + r4 + ",0,0");
+            let linkto = lpath + "/" + fname;
+            // Arrange the links to found pictures for
+            cmd.push ("ln -sf " + linkfrom + " " + linkto);
+          } else if (n1.length > 0) {
+            paths [i] += "<span style='color:#000'> —&nbsp;visningsrättighet&nbsp;saknas</span>"
+          }
+          albs.push (paths [i]); // ..while all are shown
+        } else filesFound++;
+      }
+      console.log(albs);
+    }
   }
 
   /**
-  searchText: contains the sever search/ call
+  searchText: contains the server search/ call
 
   Search the image texts in the current imdbRoot (cf. prepSearchDialog)
   @param {string}  sTxt space separated search items
   @param {boolean} and true=>AND | false=>OR
   @param {boolean} searchWhere array, checkboxes for selected texts
-  @param {integer} exact <>0 removes SQL ´%´s  (>0 means origin notesDia, <0 searchDia)
+  @param {integer} exact <>0 removes SQL ´%´s (>0 means origin dialogTextNotes, <0 dialogFind)
   @returns {string} \n-separated file paths
   NOTE: Non-zero ´exact´ also means "Only search for image names (file 'basenames')!"
   NOTE: Negative ´exact´, -1 = called from the find dialog, -2 = do nothing,
@@ -108,6 +198,9 @@ export class DialogFind extends Component {
       let l = sTxt.indexOf('\n');
       cmt = sTxt.slice(1, l);
       sTxt = sTxt.slice(l + 1);
+
+      this.z.loli(cmt, 'color:yellow');
+
     }
     let txt = sTxt.trim();
     let str = '';
@@ -115,7 +208,6 @@ export class DialogFind extends Component {
     if (txt) {
       txt = txt.replace(/\s+/g, ' ').trim();
 
-      this.z.loli(cmt, 'color:yellow');
       this.z.loli(txt, 'color:red');
 
       arr = txt.split (' ');
@@ -137,7 +229,7 @@ export class DialogFind extends Component {
         if (i > 0) {andor = AO}
         str += andor + "txtstr LIKE " + arr[i].trim ();
       }
-        // // A double printout overrides %-autosubstitution of console.log
+        // // A double printout clarifies the %-autosubstitution of console.log
         // this.z.loli(str, 'color:orange  ');
         // this.z.loli(str.replace(/%/g, '*'), 'color:yellow');
         // console.log(searchWhere);
