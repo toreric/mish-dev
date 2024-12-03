@@ -81,7 +81,8 @@ export class DialogFind extends Component {
   doFindText = async () => {
     let sTxt = document.querySelector('textarea[name="searchtext"]').value + '\n';
     let and = document.querySelectorAll('.orAnd input[type="radio"]')[0].checked;
-    let sWhr = [], n = 0;
+    let sWhr = [];
+    let n = 0;
     for (let srch of document.querySelectorAll('.srchIn input[type="checkbox"]')) {
       sWhr.push(srch.checked);
       if (srch.checked) ++n;
@@ -93,12 +94,13 @@ export class DialogFind extends Component {
     }
     let nameOrder = [];
 
-    // Do find images with 'searchText':
+    // Do find images using 'searchText':
     let data = await this.searchText(sTxt, and, sWhr, 0);
-    let cmd = []
-    // Insert links of found pictures into the #picFound album:
-    n = 0
-    let paths = [], albs = [], lpath = 'dummy';
+
+    let cmd = [];
+    let paths = []; // The found paths
+    let albs = [];  // The list of found albums
+    let lpath = 'dummy'; // The path to picFound
     // Maximum number of pictures from the search results to show:
     let nLimit = 100;
     let filesFound = 0;
@@ -107,7 +109,7 @@ export class DialogFind extends Component {
       // Don't sort, order may be important if this is a search for duplicates. Then
       // this is the final re-search by image names in sequence. The result is presented
       // in the same given order where similar images are grouped together.
-      let paths = data.trim ().split ("\n");//.sort ();
+      let paths = data.trim ().split ('\n');//.sort ();
       // Remove possibly empty values:
       paths = paths.filter (a => {if (a.trim ()) return true; else return false});
       // NOTE: Eventually, 'paths' is the basis of the innerHTML content in <result>
@@ -116,12 +118,11 @@ export class DialogFind extends Component {
       // Prepare to display the result in the album 'Found_images...' etc. (picFound)
       let chalbs = this.z.imdbDirs;
       // -- Prepare counters and imgnames for all albums
-      let counts = "0".repeat(chalbs.length).split("").map(Number);
-      let inames = " ".repeat(chalbs.length).split("");
-      let n = paths.length;
+      let counts = '0'.repeat(chalbs.length).split('').map(Number);
+      let inames = ' '.repeat(chalbs.length).split('');
 
-      for (let i=0; i<n; i++) {
-        let chalb = paths[i].replace(/^[^/]+(.*)\/[^/]+$/, "$1"); // in imdbDirs format
+      for (let i=0; i<paths.length; i++) {
+        let chalb = paths[i].replace(/^[^/]+(.*)\/[^/]+$/, '$1'); // in imdbDirs format
         // -- Allow only files/pictures in the albums of #imdbDirs (chalbs):
         let okay0 = false;
         let idx = chalbs.indexOf(chalb);
@@ -129,10 +130,10 @@ export class DialogFind extends Component {
           idx = chalbs.length + 1;
         }
         counts[idx]++; // -- A hit in this album
-        let fname = paths[i].replace(/^.*\/([^/]+$)/, "$1");
-        inames[idx] = (inames[idx] + " " + fname.replace(/\.[^./].*$/, "")).trim();
+        let fname = paths[i].replace(/^.*\/([^/]+$)/, '$1');
+        inames[idx] = (inames[idx] + ' ' + fname.replace(/\.[^./].*$/, '')).trim();
         let linkfrom = paths[i];
-        linkfrom = "../" + linkfrom.replace(/^[^/]*\//, "");
+        linkfrom = '../' + linkfrom.replace(/^[^/]*\//, '');
         let okay1 = acceptedFileName(fname);
 
         // n0=dirpath, n1=picname, n2=extension from 'paths'
@@ -140,36 +141,41 @@ export class DialogFind extends Component {
         // silently ignored. If so, such names will be noticed by red #d00 color
         // (just an extra service). They may have been collected into the database
         // at regeneration and may occationally appear in this list.
-        let n0 = paths[i].replace(/^(.*\/)[^/]+$/, "$1");
-        if (!okay0) n0 = "<span style='color:#d00'>" + n0 + "</span>";
-        let n1 = fname.replace (/\.[^./]*$/, "");
-        if (!okay1) n1 = "<span style='color:#d00'>" + n1 + "</span>";
-        let n2 = fname.replace(/(.+)(\.[^.]*$)/, "$2");
+        let n0 = paths[i].replace(/^(.*\/)[^/]+$/, '$1');
+        if (!okay0) n0 = '<span style="color:#d00">' + n0 + '</span>';
+        let n1 = fname.replace (/\.[^./]*$/, '');
+        if (!okay1) n1 = '<span style="color:#d00">' + n1 + '</span>';
+        let n2 = fname.replace(/(.+)(\.[^.]*$)/, '$2');
         if (okay0 && okay1) { // ▻🢒
-          paths [i] = "🢒&nbsp;" + n0 + n1 + n2; // 🢒 Long broken entries will be easier to read
+            console.log('i paths[i]',i,paths[i],okay0,okay1);
+          paths [i] = '🢒&nbsp;' + n0 + n1 + n2; // 🢒 Long broken entries will be easier to read
         } else {
-            // console.log("i paths[i]",i,paths[i],okay0,okay1);
-          paths[i] = "<span style='color:#d00'>🢒&nbsp;</span>" + n0 + n1 + n2;
+            console.log('i paths[i]',i,paths[i],okay0,okay1);
+          paths[i] = '<span style="color:#d00">🢒&nbsp;</span>' + n0 + n1 + n2;
         }
 
         // -- In order to make possible show duplicates: Make the link names unique
         // by adding four random characters (r4) to the picname (n1)
         let r4 = Math.random().toString(36).substr(2,4);
-        fname = n1 + "." + r4 + n2;
+        fname = n1 + '.' + r4 + n2;
         if (filesFound < nLimit) {
           if (okay0 && okay1) { // Only approved files are counted as 'filesFound'
             filesFound++;
-            nameOrder.push (n1 + "." + r4 + ",0,0");
-            let linkto = lpath + "/" + fname;
-            // Arrange the links to found pictures for
-            cmd.push ("ln -sf " + linkfrom + " " + linkto);
+            nameOrder.push(n1 + '.' + r4 + ',0,0');
+            let linkto = lpath + '/' + fname;
+            // Arrange links of found pictures into the picFound album:
+            cmd.push ('ln -sf ' + linkfrom + ' ' + linkto);
           } else if (n1.length > 0) {
-            paths [i] += "<span style='color:#000'> —&nbsp;visningsrättighet&nbsp;saknas</span>"
+            paths [i] += '<span style="color:#000"> —&nbsp;visningsrättighet&nbsp;saknas</span>';
           }
           albs.push (paths [i]); // ..while all are shown
         } else filesFound++;
       }
-      console.log(albs);
+        console.log('cmd', cmd);
+        console.log('albs', albs);
+      // 'nameOrder' will be the 'sortOrder' for 'picFound':
+      nameOrder = nameOrder.join('\n').trim ();
+        this.z.loli('nameOrder:\n' + nameOrder, 'color:red');
     }
   }
 
@@ -276,7 +282,7 @@ export class DialogFind extends Component {
                   }
                 }
               }
-              data = data.join ("\n");
+              data = data.join("\n");
             }
             resolve (data);
           } else {
