@@ -100,7 +100,7 @@ export class DialogFind extends Component {
     let cmd = [];
     let paths = []; // The found paths
     let albs = [];  // The list of found albums
-    let lpath = 'dummy'; // The path to picFound
+    let lpath = this.z.imdbPath + '/' + this.z.picFound; // The path to picFound
     // Maximum number of pictures from the search results to show:
     let nLimit = 100;
     let filesFound = 0;
@@ -118,16 +118,17 @@ export class DialogFind extends Component {
       // Prepare to display the result in the album 'Found_images...' etc. (picFound)
       let chalbs = this.z.imdbDirs;
       // -- Prepare counters and imgnames for all albums
-      let counts = '0'.repeat(chalbs.length).split('').map(Number);
+      let counts = '0'.repeat(chalbs.length + 1).split('').map(Number); // +1 for skipped
       let inames = ' '.repeat(chalbs.length).split('');
 
       for (let i=0; i<paths.length; i++) {
         let chalb = paths[i].replace(/^[^/]+(.*)\/[^/]+$/, '$1'); // in imdbDirs format
         // -- Allow only files/pictures in the albums of #imdbDirs (chalbs):
-        let okay0 = false;
+        let okay0 = true;
         let idx = chalbs.indexOf(chalb);
         if (idx > -1) {okay0 = true;} else {
-          idx = chalbs.length + 1;
+          okay0 = false;
+          idx = chalbs.length; // Counts the dismissed/skipped
         }
         counts[idx]++; // -- A hit in this album
         let fname = paths[i].replace(/^.*\/([^/]+$)/, '$1');
@@ -147,10 +148,11 @@ export class DialogFind extends Component {
         if (!okay1) n1 = '<span style="color:#d00">' + n1 + '</span>';
         let n2 = fname.replace(/(.+)(\.[^.]*$)/, '$2');
         if (okay0 && okay1) { // ▻🢒
-            console.log('i paths[i]',i,paths[i],okay0,okay1);
-          paths [i] = '🢒&nbsp;' + n0 + n1 + n2; // 🢒 Long broken entries will be easier to read
+            // console.log('i paths[i]',i,paths[i],okay0,okay1);
+          //The 🢒 construct makes long broken entries easier to read:
+          paths [i] = '🢒&nbsp;' + n0 + n1 + n2;
         } else {
-            console.log('i paths[i]',i,paths[i],okay0,okay1);
+            // console.log('i paths[i]',i,paths[i],okay0,okay1);
           paths[i] = '<span style="color:#d00">🢒&nbsp;</span>' + n0 + n1 + n2;
         }
 
@@ -171,11 +173,12 @@ export class DialogFind extends Component {
           albs.push (paths [i]); // ..while all are shown
         } else filesFound++;
       }
-        console.log('cmd', cmd);
-        console.log('albs', albs);
       // 'nameOrder' will be the 'sortOrder' for 'picFound':
       nameOrder = nameOrder.join('\n').trim ();
-        this.z.loli('nameOrder:\n' + nameOrder, 'color:red');
+        this.z.loli('nameOrder:\n' + nameOrder, 'color:pink');
+        this.z.loli('cmd:\n' + cmd.join('\n'), 'color:pink');
+        this.z.loli('albs:\n' + albs.join('\n'), 'color:pink');
+        console.log('counts:', counts);
     }
   }
 

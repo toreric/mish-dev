@@ -37,7 +37,9 @@ export default class CommonStorageService extends Service {
             }
   @tracked  imdbDirs = [''];        //all available album paths at imdbRoot
   @tracked  imdbLabels = [''];      //thumbnail labels for 'imdbDirs' (paths to)
-  @tracked  imdbPath = this.userDir + this.imdbRoot; //userDir+imdbRoot = absolut path to album root
+        get imdPath() { //userDir+imdbRoot = absolut path to album root
+              return this.userDir + this.imdbRoot;
+            }
   @tracked  imdbRoot = '';          //chosen album root directory (= collection)
         get imdbRootsPrep() { return `${this.intl.t('reloadApp')}`; } // advice!
   @tracked  imdbRoots = [this.imdbRootsPrep]; //available album root directories
@@ -51,9 +53,9 @@ export default class CommonStorageService extends Service {
   @tracked  picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
   @tracked  picName = ''; //actual/current image name
         get picIndex() { //the index of picName's file information object in allFiles
-          let index = this.allFiles.findIndex(a => {return a.name === this.picName;});
-          return index;
-        }
+              let index = this.allFiles.findIndex(a => {return a.name === this.picName;});
+              return index;
+            }
   @tracked  sortOrder = '';    //file order information table of 'imdbDir'
   @tracked  subColor = '#aef'; //subalbum legends color
         get subaIndex() {      //subalbum index array for imdbLabels
@@ -1374,6 +1376,7 @@ export default class CommonStorageService extends Service {
   }
 
   openModalDialog = (dialogId, origPos) => {
+    if (dialogId === 'dialogLogin') this.closeDialogs();
     let diaObj = document.getElementById(dialogId);
     if (!diaObj.open) {
       if (origPos) diaObj.style = '';
