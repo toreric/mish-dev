@@ -2,6 +2,7 @@
 
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
@@ -43,7 +44,25 @@ export class DialogFind extends Component {
   @service('common-storage') z;
   @service intl;
 
-  // Detect closing Esc key
+  @tracked countAlbs = [];
+
+  @tracked nchk = 0; // tot n found
+  @tracked seast = ''; // search str
+  @tracked keepIndex = [];
+  @tracked inames = [];
+  @tracked counts = [];
+
+  iname = (i) => {
+    return this.inames[i];
+  }
+  count = (i) => {
+    return ("     " + this.counts[i]).slice(-5).replace(/ /g, '&nbsp');
+  }
+  album = (i) => {
+    return this.z.imdbDirs[i];
+  }
+
+   // Detect closing Esc key
   detectEscClose = (e) => {
     e.stopPropagation();
     if (e.keyCode === 27) { // Esc key
@@ -59,11 +78,6 @@ export class DialogFind extends Component {
     return this.z.allow.notesView ? '' : 'none';
   }
 
-  findit = () => {
-    this.z.loli('findit', 'color:red');
-    document.getElementById('go_back').click(); // close slide, perhaps unneccessary
-  }
-
   /**
   doFindText: Finds texts in the database (file _imdb_images.sqlite)
   and populates the 'picFound' album with the corresponding images
@@ -73,8 +87,8 @@ export class DialogFind extends Component {
   @param {boolean} sWhr (searchWhere) array = checkboxes for selected texts
   @param {integer} exact when <>0, the LIKE searched items will NOT be '%' surrounded
   NOTE: Non-zero ´exact´ also means "Only search for image names (file basenames)!"
-  NOTE: Negative ´exact´, -1 = called from the find dialog, -2 = do nothing,
-        else (non-negative) = called from and return to the favorites dialog
+  NOTE: Negative ´exact´, -1 = called from the find? dialog, -2 = do nothing,
+        else (non-negative) = called from and return to the favorites? dialog
   Example: Find pictures by exact matching of image names (file basenames), e.g.
     doFindText ("img_0012 img_0123", false, [false, false, false, false, true], -1)
    */
@@ -85,7 +99,7 @@ export class DialogFind extends Component {
     let n = 0;
     for (let srch of document.querySelectorAll('.srchIn input[type="checkbox"]')) {
       sWhr.push(srch.checked);
-      if (srch.checked) ++n;
+      if (srch.checked) n++;
     }
     // Do not 'search nowhere', choose at least the image caption!
     if (n === 0)  {
@@ -104,7 +118,6 @@ export class DialogFind extends Component {
     // Maximum number of pictures from the search results to show:
     let nLimit = 100;
     let filesFound = 0;
-    let countAlbs = [];
     if (data) {
       // Don't sort, order may be important if this is a search for duplicates. Then
       // this is the final re-search by image names in sequence. The result is presented
@@ -113,13 +126,13 @@ export class DialogFind extends Component {
       // Remove possibly empty values:
       paths = paths.filter (a => {if (a.trim ()) return true; else return false});
       // NOTE: Eventually, 'paths' is the basis of the innerHTML content in <result>
-        this.z.loli('paths:\n' + paths.join('\n'), 'color:pink');
+        // this.z.loli('paths:\n' + paths.join('\n'), 'color:pink');
         // console.log(paths);
       // Prepare to display the result in the album 'Found_images...' etc. (picFound)
       let chalbs = this.z.imdbDirs;
-      // -- Prepare counters and imgnames for all albums
-      let counts = '0'.repeat(chalbs.length + 1).split('').map(Number); // +1 for skipped
-      let inames = ' '.repeat(chalbs.length).split('');
+      // -- Prepare counters and imgnames (inames) for all albums
+      this.counts = '0'.repeat(chalbs.length + 1).split('').map(Number); // +1 for skipped
+      this.inames = ' '.repeat(chalbs.length).split('');
 
       for (let i=0; i<paths.length; i++) {
         let chalb = paths[i].replace(/^[^/]+(.*)\/[^/]+$/, '$1'); // in imdbDirs format
@@ -128,11 +141,13 @@ export class DialogFind extends Component {
         let idx = chalbs.indexOf(chalb);
         if (idx > -1) {okay0 = true;} else {
           okay0 = false;
-          idx = chalbs.length; // Counts the dismissed/skipped
+          idx = chalbs.length; // Count the dismissed/skipped
         }
-        counts[idx]++; // -- A hit in this album
+        this.counts[idx]++; // -- A hit in this album
         let fname = paths[i].replace(/^.*\/([^/]+$)/, '$1');
-        inames[idx] = (inames[idx] + ' ' + fname.replace(/\.[^./].*$/, '')).trim();
+        if (idx < chalbs.length) {
+          this.inames[idx] = (this.inames[idx] + ' ' + fname.replace(/\.[^./].*$/, '')).trim();
+        }
         let linkfrom = paths[i];
         linkfrom = '../' + linkfrom.replace(/^[^/]*\//, '');
         let okay1 = acceptedFileName(fname);
@@ -175,11 +190,43 @@ export class DialogFind extends Component {
       }
       // 'nameOrder' will be the 'sortOrder' for 'picFound':
       nameOrder = nameOrder.join('\n').trim ();
-        this.z.loli('nameOrder:\n' + nameOrder, 'color:pink');
-        this.z.loli('cmd:\n' + cmd.join('\n'), 'color:pink');
-        this.z.loli('albs:\n' + albs.join('\n'), 'color:pink');
-        console.log('counts:', counts);
+        // this.z.loli('nameOrder:\n' + nameOrder, 'color:pink');
+        // this.z.loli('cmd:\n' + cmd.join('\n'), 'color:pink');
+        // this.z.loli('albs:\n' + albs.join('\n'), 'color:pink');
+        // console.log('counts:\n', this.counts);
+        // console.log('inames:\n', this.inames);
+
+      // Prepare the alternative album list 'countAlbs' for the 'filesFound > nLimit' case:
+      this.countAlbs = [];
+      let keepOld = false;
+
+      this.nchk = 0;
+      this.keepIndex = [];
+      for (let i=0; i<chalbs.length-1; i++) {
+        if (this.counts [i]) {
+          this.nchk += this.counts[i];
+          this.keepIndex.push(i);
+
+          if(keepOld) {
+            let tmp = "<a class=\"hoverDark\" onclick=\"console.log('" + inames[i] + "',false,[false,false,false,false,true], 1);return false\" style=\"text-decoration:none\">" + (("     " + counts[i]).slice(-6) + "  " + this.intl.t('in') + "  ").replace (/ /g, "&nbsp;");
+            console.log("EXACT?",exact);
+            if (exact === 0 || exact === 1) { // text search result (-1 from elsewhere)
+              // NOTE. 'exact' IS '1' since here we always search for exact image name match:
+              tmp += this.z.imdbRoot + chalbs[i] + "</a>";
+              tmp += " &nbsp;&nbsp;&nbsp;&nbsp;<a class=\"hoverDark\" onclick='parent.selectJstreeNode(" + i + ");return false' style='font-family:Arial,Helvetica,sans-serif;font-size:70%;font-variant:small-caps;text-decoration:none'>" + this.intl.t('allInAlbum') + "</a>";
+            } else { // find duplicates result
+              tmp += this.z.imdbRoot + chalbs [i] + "</a>";
+            }
+            this.countAlbs.push (tmp);
+          }
+        }
+      }
+        // this.z.loli(this.keepIndex, 'color:red');
+        // this.z.loli(this.counts, 'color:red');
+        // this.z.loli(this.inames, 'color:red');
+      if(keepOld) {this.countAlbs = this.countAlbs.join('<br>');}
     }
+    this.z.openDialog('dialogFindResult');
   }
 
   /**
@@ -192,10 +239,11 @@ export class DialogFind extends Component {
   @param {integer} exact <>0 removes SQL ´%´s (>0 means origin dialogTextNotes, <0 dialogFind)
   @returns {string} \n-separated file paths
   NOTE: Non-zero ´exact´ also means "Only search for image names (file 'basenames')!"
-  NOTE: Negative ´exact´, -1 = called from the find dialog, -2 = do nothing,
-        else (non-negative) = called from and return to the favorites dialog
+  NOTE: Negative ´exact´, -1 = called from the find? dialog, -2 = do nothing,
+        else (non-negative) = called from and return to the favorites? dialog
   */
   searchText = (sTxt, and, searchWhere, exact) => {
+    this.seast = '';
     document.getElementById('go_back').click(); // close show, perhaps unneccessary
     // close all dialogs? perhaps unneccessary
     let AO, andor = '';
@@ -208,7 +256,7 @@ export class DialogFind extends Component {
       cmt = sTxt.slice(1, l);
       sTxt = sTxt.slice(l + 1);
 
-      this.z.loli(cmt, 'color:yellow');
+        // this.z.loli(cmt, 'color:yellow');
 
     }
     let txt = sTxt.trim();
@@ -216,8 +264,9 @@ export class DialogFind extends Component {
     let arr = [];
     if (txt) {
       txt = txt.replace(/\s+/g, ' ').trim();
+      this.seast = txt;
 
-      this.z.loli(txt, 'color:red');
+        // this.z.loli(txt, 'color:red');
 
       arr = txt.split (' ');
       for (let i = 0; i<arr.length; i++) {
@@ -345,7 +394,7 @@ export class DialogFind extends Component {
                 <input id="r1" name="searchmode" value="AND" checked="" type="radio">
                 <label for="r1">{{{t 'write.find8'}}}</label>
               </span>&nbsp;
-              <span class="glue">
+              <span class="glue" style="padding-bottom:0.5rem">
                 <input id="r2" name="searchmode" value="OR" type="radio">
                 <label for="r2">{{{t 'write.find9'}}}</label>
               </span>
@@ -390,6 +439,37 @@ export class DialogFind extends Component {
         </main>
         <footer data-dialog-draggable>
           <button type="button" {{on 'click' (fn this.z.closeDialog 'dialogFindHelp')}}>{{t 'button.close'}}</button>&nbsp;
+        </footer>
+      </dialog>
+
+      <dialog id='dialogFindResult' style="max-width:calc(100vw - 2rem);z-index:16">
+        <header data-dialog-draggable>
+          <p>&nbsp;</p>
+          <p>{{{t 'write.findResultHeader' n=this.nchk c=this.z.imdbRoot}}}<br><span style="text-overflow:ellipsis">{{t 'searchedFor'}}: {{this.seast}}</span></p>
+          <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogFindResult')}}>×</button>
+        </header>
+        <main style="padding:0 0.5rem 0 1rem;height:auto;line-height:150%;overflow:auto" width="99%">
+
+          <br>{{t 'found'}},  {{t 'chooseShow'}}:<br>
+
+          {{#each this.keepIndex as |i|}}
+
+            <a class="hoverDark" onclick="console.log({{i}},false,[false,false,false,false,true], 1);return false" style="text-decoration:none">
+              {{{this.count i}}} &nbsp;&nbsp;{{t 'in'}}&nbsp;&nbsp; {{this.z.imdbRoot}}{{this.album i}}
+            </a> &nbsp;&nbsp;&nbsp;&nbsp;
+
+            <a class="hoverDark" style="font-family:Arial,Helvetica,sans-serif;font-size:70%;font-variant:small-caps;text-decoration:none"
+             {{on 'click' (fn this.z.openAlbum i)}}>
+              {{t 'allInAlbum'}}
+            </a><br>
+
+          {{/each}}
+          {{!-- <br>{{{this.countAlbs}}}<br><br> --}}
+          <br>
+
+        </main>
+        <footer data-dialog-draggable>
+          <button type="button" {{on 'click' (fn this.z.closeDialog 'dialogFindResult')}}>{{t 'button.close'}}</button>&nbsp;
         </footer>
       </dialog>
 

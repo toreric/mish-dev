@@ -1,4 +1,5 @@
 //== Mish temporary Header component
+//   Referenced in 'welcome.gjs'
 //   NOTE: this is a testing component to be eventually removed!
 
 import Component from '@glimmer/component';

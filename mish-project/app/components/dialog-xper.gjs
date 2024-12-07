@@ -1,4 +1,5 @@
 //== Mish experimental dialog
+//   Referenced in 'welcome.gjs'
 
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';

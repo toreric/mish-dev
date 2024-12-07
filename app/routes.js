@@ -314,6 +314,14 @@ module.exports = function(app) { // Start module.exports
             let nlinks =(await execP(cmd))/1 // Get no of linked images
             cmd = "echo -n `ls " + IMDB + dirlist[i] + "/_mini_* 2>/dev/null`"
             let pics = await execP(cmd) // Get all images
+
+            // *********************************************************************
+            // TODO: Check this list against _mini_file 'mothers' in order to
+            // eliminate the count of orphan _mini_-files: may appear by accident!
+            // AND: Perhaps 'getAlbumDirs' in 'z' should be moved to 'menu-main.gjs'
+            // in order to balance code lines more reasonably between source files?
+            // *********************************************************************
+
             pics = pics.toString().trim().split(" ")
             if (!pics[0]) {pics = []} // Remove a "" element
             let npics = pics.length // No of images in the album

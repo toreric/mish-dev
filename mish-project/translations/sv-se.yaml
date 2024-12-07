@@ -39,10 +39,12 @@ setSetting:   ändra inställningar
 textEdit:     redigera/spara bildtexter, se dolda album³
 
 all: Alla
+allInAlbum: (hela albumet)
 and: och
 captionFor: Bildtext för
 captionSaved: sparad
 checkuncheck: Markera/avmarkera alla
+chooseShow: välj att visa
 dark: Mörk
 Dimension: Dimension
 download: Ladda ned...
@@ -56,6 +58,7 @@ Filename: Filnamn
 findDuplicates: sök dublettbilder
 findImageDups: Sök tänkbara dubletter till den här bilden
 for: för
+found: Funna
 futureFacility: Ännu inte färdigt för användning
 #NOTE: Choose a 'guest: value' which exists in the _imdb_settings.sqlite 'user' table!
 #      Else use instead the standard name guest!
@@ -67,6 +70,7 @@ home: till början av
 images: bilder
 imageFind: Finn bilder
 imageSearch: Sök i bildtexter
+in: i
 information: Information
 intlcode: sv-se
 invertsel: Invertera markeringar
@@ -95,6 +99,7 @@ remove: RADERA...
 return: utanför = återgå
 rights: rättigheter
 saved: S P A R A T
+searchedFor: Sökte efter
 searchHelp: Sökhjälp
 selectTreshold: Välj tröskelvärde
 shown: visas
@@ -276,6 +281,7 @@ write:
   find8: "&nbsp;alla&nbsp;ska&nbsp;hittas&nbsp;i&nbsp;en&nbsp;bild"
   find9: "&nbsp;minst&nbsp;ett&nbsp;av&nbsp;dem&nbsp;ska&nbsp;hittas&nbsp;i&nbsp;en&nbsp;bild"
   findHelpHeader: Hur man hittar bilder
+  findResultHeader: Sammanfattning av {n} bilder, funna i <b>{c}</b>
   findHelp0: Sök i bildtexter
   findHelp1: <span>Sök i:</span>-raden används för att markera vilka textfält som tillsammans ska ingå i sökningen (röd = markerad).
   findHelp2: "<span>I nedersta</span> raden kan du välja ett av två alternativ:"

@@ -39,10 +39,12 @@ setSetting:   Einstellungen ändern
 textEdit:     Untertiteln bearbeiten/speichern, ausgeblendete Alben anzeigen³
 
 all: Alle
+allInAlbum: (ganze album)
 and: und
 captionFor: Bildunterschrift für
 captionSaved: gespeichert
 checkuncheck: Alle markieren/abmarkieren
+chooseShow: zum Anzeigen auswählen
 dark: Dunkel
 Dimension: Dimension
 download: Herunterladen...
@@ -56,6 +58,7 @@ Filename: Dateiname
 findDuplicates: nach duplikaten suchen
 findImageDups: Mögliche Duplikate dieses Bildes finden
 for: für
+found: Gefundene
 futureFacility: Noch nicht umgesetzt
 #NOTE: Choose a 'guest: value' which exists in the _imdb_settings.sqlite 'user' table!
 #      Else use instead the standard name guest!
@@ -67,6 +70,7 @@ home: zum anfang von
 images: Bilder
 imageFind: Bilder finden
 imageSearch: In Bildunterschriften suchen
+in: in
 information: Information
 intlcode: de-de
 invertsel: Auswahl umkehren
@@ -95,6 +99,7 @@ remove: LÖSCHEN...
 return: außerhalb = zurück
 rights: Rechte
 saved: GESPEICHERT
+searchedFor: Gesucht
 searchHelp: Suchhilfe
 selectTreshold: Schwellenwert auswählen
 shown: gezeigte
@@ -276,6 +281,7 @@ write:
   find8: "&nbsp;alle&nbsp;davon&nbsp;mussen&nbsp;im&nbsp;selben&nbsp;Bild&nbsp;zu&nbsp;finden&nbsp;sein"
   find9: "&nbsp;mindestens&nbsp;einer&nbsp;davon&nbsp;muss&nbsp;in&nbsp;einem&nbsp;Bild&nbsp;zu&nbsp;finden&nbsp;sein"
   findHelpHeader: Wie Bilder gefunden werden
+  findResultHeader: Zusammenfassung von {n} Bilder, in <b>{c}</b> gefunden
   findHelp0: Suchen in Bildunterschriften usw.
   findHelp1: In der <span>Suchen in:</span>-Zeile wird markiert, welche Textfelder gemeinsam in die Suche einbezogen werden sollen (rot = markiert).
   findHelp2: "<span>In den unteren Zeilen</span> kann eine von zwei Optionen ausgewählt werden:"

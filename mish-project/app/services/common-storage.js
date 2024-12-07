@@ -70,14 +70,14 @@ export default class CommonStorageService extends Service {
               return subindex;
             }
   @tracked  textColor = '#fff';          //default text color
-  //       maybe your home dir., server start argument IMDB_HOME
+  //        Maybe your home dir., server start argument IMDB_HOME:
   @tracked  userDir = '/path/to/albums';
-  //       userName may be changed in other ways later (e.g. logins):
+  //        userName may be changed in other ways later (e.g. logins):
   @tracked  userName = this.defaultUserName;
   @tracked  userStatus = ''; // A logged in user has a certain allowance status
 
   // (*) imdbCoco format is "(<npics>[+<nlinked>]) [<nsubdirs>] [<flag>]"
-  // where <npics> = images, <nlinks> = linked images, <nsubdirs> = subalums,
+  // where <npics> = images, <nlinks> = linked images, <nsubdirs> = subalbums,
   // and <flag> is empty or "*". The <flag> indicates a hidden album,
   // which needs permission for access
 
@@ -99,7 +99,7 @@ export default class CommonStorageService extends Service {
   @tracked  numLinked = 0;    // Number of images linked into the album
   @tracked  numMarked = 0;  // Number of selection marked images
   @tracked  numOrigin = 0;  // Numder of own original images in the album
-  @tracked  numShown = 0;
+  @tracked  numShown = 0;   // Not further explained
 
   @tracked  refreshTexts = 0; // Refresh trigger for RefreshThis
 
@@ -317,7 +317,7 @@ export default class CommonStorageService extends Service {
   //#region openAlbum
   openAlbum = async (i) => {
     this.picName = '';
-    this.closeDialogs(); // close possibly open dialogs
+    // this.closeDialogs(); // close possibly open dialogs
     // Close the show image view
     document.querySelector('.img_show').style.display = 'none'; //was 'table'
     // Open the thumbnail view
@@ -896,6 +896,13 @@ export default class CommonStorageService extends Service {
     xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
   }
 
+  // #region search/
+  // containing a server
+  // call in 'searchText'
+  // is coded in
+  // 'dialog-find.gjs'
+
+
 
   //#region execute/
   execute = async (command) => { // Execute on the server, return a promise
@@ -1312,7 +1319,6 @@ export default class CommonStorageService extends Service {
       xhr.send (data);
     });
   }
-
 
   //   #region MENUS
   //== Menu utilities

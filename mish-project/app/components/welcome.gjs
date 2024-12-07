@@ -1,4 +1,5 @@
 //== Mish main component Welcome
+//   It is referenced in 'templates/applications.hbs'
 
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
