@@ -37,8 +37,8 @@ export default class CommonStorageService extends Service {
             }
   @tracked  imdbDirs = [''];        //all available album paths at imdbRoot
   @tracked  imdbLabels = [''];      //thumbnail labels for 'imdbDirs' (paths to)
-        get imdPath() { //userDir+imdbRoot = absolut path to album root
-              return this.userDir + this.imdbRoot;
+        get imdbPath() { // userDir/imdbRoot = absolut path to album root
+              return this.userDir + '/' + this.imdbRoot;
             }
   @tracked  imdbRoot = '';          //chosen album root directory (= collection)
         get imdbRootsPrep() { return `${this.intl.t('reloadApp')}`; } // advice!
@@ -906,6 +906,7 @@ export default class CommonStorageService extends Service {
 
   //#region execute/
   execute = async (command) => { // Execute on the server, return a promise
+    if (!command) return;
     return new Promise((resolve, reject) => {
       command = command.replace (/%/g, "%25");
       var xhr = new XMLHttpRequest ();

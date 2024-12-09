@@ -38,11 +38,19 @@ export class MenuMain extends Component {
     // with subalbums are removed from the list:
     let tmp = await this.z.getAlbumDirs(allow.textEdit);
     let arr = tmp.split(LF);
+      this.z.loli(arr[1]);
 
-    // The two first lines (shifted off) have other information
+    // ***************************************************************************
+    // The two first lines (to be shifted off) have other content
+    // First, we get some system information from the server:
     await this.z.execute('echo "' + arr.shift() + '" > nodestamp.txt');
-    this.z.imdbPath = arr.shift();
-        // this.z.loli('IMDB (imdbPath) set to ' + this.z.imdbPath, 'color:red');
+    // ***************************************************************************
+    // Secondly, here 'IMDB_HOME' is (finally!) delivered from the server to be
+    // stored in 'userDir', which is our corresponding 'common-storage' varaiable.
+    // IMDB_HOME is given as an 'Express' server parameter at startup:
+    this.z.userDir = arr.shift();
+      this.z.loli('userDir and imdbPath:  ' + this.z.userDir + '  ' + this.z.imdbPath, 'color:red');
+    // ***************************************************************************
 
     let n = arr.length/3;
     this.z.imdbDirs = arr.splice(0, n); // album paths (without root)

@@ -51,6 +51,7 @@ export class DialogFind extends Component {
   @tracked keepIndex = [];
   @tracked inames = [];
   @tracked counts = [];
+  @tracked commands = [];
 
   iname = (i) => {
     return this.inames[i];
@@ -111,7 +112,7 @@ export class DialogFind extends Component {
     // Do find images using 'searchText':
     let data = await this.searchText(sTxt, and, sWhr, 0);
 
-    let cmd = [];
+    this.commands = [];
     let paths = []; // The found paths
     let albs = [];  // The list of found albums
     let lpath = this.z.imdbPath + '/' + this.z.picFound; // The path to picFound
@@ -181,7 +182,7 @@ export class DialogFind extends Component {
             nameOrder.push(n1 + '.' + r4 + ',0,0');
             let linkto = lpath + '/' + fname;
             // Arrange links of found pictures into the picFound album:
-            cmd.push ('ln -sf ' + linkfrom + ' ' + linkto);
+            this.commands.push ('ln -sf ' + linkfrom + ' ' + linkto);
           } else if (n1.length > 0) {
             paths [i] += '<span style="color:#000"> —&nbsp;visningsrättighet&nbsp;saknas</span>';
           }
@@ -191,7 +192,7 @@ export class DialogFind extends Component {
       // 'nameOrder' will be the 'sortOrder' for 'picFound':
       nameOrder = nameOrder.join('\n').trim ();
         // this.z.loli('nameOrder:\n' + nameOrder, 'color:pink');
-        // this.z.loli('cmd:\n' + cmd.join('\n'), 'color:pink');
+        this.z.loli('commands:\n' + this.commands.join('\n'), 'color:pink');
         // this.z.loli('albs:\n' + albs.join('\n'), 'color:pink');
         // console.log('counts:\n', this.counts);
         // console.log('inames:\n', this.inames);
@@ -222,9 +223,15 @@ export class DialogFind extends Component {
         }
       }
         // this.z.loli(this.keepIndex, 'color:red');
-        // this.z.loli(this.counts, 'color:red');
-        // this.z.loli(this.inames, 'color:red');
       if(keepOld) {this.countAlbs = this.countAlbs.join('<br>');}
+        this.z.loli('rm -rf ' + lpath + '/*', 'color:red');
+        this.z.loli('touch ' + lpath + '/.imdb', 'color:red');
+        this.z.loli('touch ' + lpath + '/_imdb_order.txt', 'color:red');
+        this.z.loli('echo ' + this.commands.join('\n') + ' > ' + lpath + '/_imdb_order.txt', 'color:red');
+      await this.z.execute();
+      await this.z.execute('touch ' + lpath + '/.imdb');
+      await this.z.execute('touch ' + lpath + '/_imdb_order.txt');
+      await this.z.execute('echo ' + this.commands.join('\n') + ' > ' + lpath + '/_imdb_order.txt');
     }
     this.z.openDialog('dialogFindResult');
   }
