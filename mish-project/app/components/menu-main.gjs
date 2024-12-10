@@ -49,7 +49,7 @@ export class MenuMain extends Component {
     // stored in 'userDir', which is our corresponding 'common-storage' varaiable.
     // IMDB_HOME is given as an 'Express' server parameter at startup:
     this.z.userDir = arr.shift();
-      this.z.loli('userDir and imdbPath:  ' + this.z.userDir + '  ' + this.z.imdbPath, 'color:red');
+      // this.z.loli('userDir and imdbPath:  ' + this.z.userDir + '  ' + this.z.imdbPath, 'color:red');
     // ***************************************************************************
 
     let n = arr.length/3;

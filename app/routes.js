@@ -73,12 +73,12 @@ module.exports = function(app) { // Start module.exports
       }
     }
     console.log(BGRE + decodeURIComponent(req.originalUrl) + RSET)
-      console.log('  WWW_ROOT:', WWW_ROOT)
-      console.log(' IMDB_HOME:', IMDB_HOME)
-      console.log('      IMDB:', IMDB)
-      console.log(' IMDB_ROOT:', IMDB_ROOT)
-      console.log('  IMDB_DIR:', IMDB_DIR)
-      console.log('  picFound:', picFound)
+      // console.log('  WWW_ROOT:', WWW_ROOT)
+      // console.log(' IMDB_HOME:', IMDB_HOME)
+      // console.log('      IMDB:', IMDB)
+      // console.log(' IMDB_ROOT:', IMDB_ROOT)
+      // console.log('  IMDB_DIR:', IMDB_DIR)
+      // console.log('  picFound:', picFound)
     if (show_imagedir) {
       console.log(req.params)
       console.log(req.hostname)
@@ -382,10 +382,15 @@ module.exports = function(app) { // Start module.exports
           let dirtext = dirlist.join(LF)
           dircoco = dircoco.join(LF)
           dirlabel = dirlabel.join(LF)
-          // Add 2 lines at start: Node version and imdbPath
+
+          // *********************************************************************
+          // Start with 2 extra lines to be discarded by the receiver: Node
+          // version and userDir=IMDB_HOME. This is where the IMDB_HOME server
+          // parameter is transferred to the browser!
           dirtext = "NodeJS " + process.version.trim() + LF + IMDB_HOME + LF + dirtext
+          // *********************************************************************
+
           res.location('/')
-          //NOTE: The paths include IMDB_ROOT, soon removed by caller!
           res.send(dirtext + LF + dircoco + LF + dirlabel)
           //res.end()
           console.log('Directory information sent from server')

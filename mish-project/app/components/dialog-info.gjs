@@ -76,6 +76,7 @@ export class DialogInfo extends Component {
     let arr = stat.split(BR);
 
     // Image name
+
     let txt = '<i>' + this.intl.t('Name') + '</i>: ';
     txt += '<span style="color:black">' + this.z.picName + '</span>' + BR;
 

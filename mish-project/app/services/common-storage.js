@@ -281,11 +281,14 @@ export default class CommonStorageService extends Service {
     this.openAlbum(index);
   }
 
-  homeAlbum = async (path, fileName) => { // was parAlb
+  homeAlbum = async (path, picName) => { // was parAlb
     // this.loli('path:' + path + ':');
-    // this.loli('fileName:' + fileName + ':');
+    // this.loli('picName: ' + picName, 'color:red');
   // Convert the relative path of the linked-file target,
   // to conform with z.imdbDirs server list, rooted at album root
+  if (this.imdbDir.slice(1,2) === '§') picName = (picName.trim()).replace(/\.[0-9a-z]{4}$/, '');
+    // this.loli('imdbDir: ' + this.imdbDir, 'color:orange');
+    // this.loli('picName: ' + picName, 'color:orange');
   let dir = path.replace(/^([.]*\/)*/, '/').replace(/\/[^/]+$/, '');
   let name = path.replace(/^([^/]*\/)*([^/]+)\/[^/]+$/, "$2")
   // dir is the home album (with index i) for path
@@ -301,7 +304,7 @@ export default class CommonStorageService extends Service {
     // Allow for the rendering of mini images and preload of view images
     let size = this.albumAllImg(i);
     await new Promise (z => setTimeout (z, size*60 + 100)); // album load
-    this.gotoMinipic(fileName);
+    this.gotoMinipic(picName);
   }
 }
 
@@ -622,7 +625,8 @@ export default class CommonStorageService extends Service {
   // Position to a minipic and highlight its border
   //#region gotoMinipic
   gotoMinipic = async (namepic) => {
-    // await new Promise (z => setTimeout (z, 1999)); // Scroll
+      // this.loli(namepic, 'color:red');
+    await new Promise (z => setTimeout (z, 19)); // gotoMinipic
     let hs = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
     // this.loli('hs=' + hs, 'color:red');
     let h2 = hs/2;

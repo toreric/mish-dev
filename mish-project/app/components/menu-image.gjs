@@ -94,7 +94,7 @@ export class MenuImage extends Component {
       {{!-- Go-to-origin of linked image --}}
       {{#if this.symlink}}
         <li>
-          <p class="goAlbum" style="color:#0b0;font-weight:bold;font-size:90%" title="{{t 'gotext'}} ”{{this.albname}}”"
+          <p class="goAlbum" style="color:#0b0;font-weight:bold;font-size:90%" title-2="{{t 'gotext'}} ”{{this.albname}}”"
           {{on 'click' (fn this.z.homeAlbum this.orig this.z.picName)}}> {{t 'goto'}} </p>
         </li>
       {{/if}}

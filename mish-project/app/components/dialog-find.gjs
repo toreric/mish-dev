@@ -79,20 +79,8 @@ export class DialogFind extends Component {
     return this.z.allow.notesView ? '' : 'none';
   }
 
-  /**
-  doFindText: Finds texts in the database (file _imdb_images.sqlite)
-  and populates the 'picFound' album with the corresponding images
-
-  @param {string}  sTxt whitespace separated search text words/items
-  @param {boolean} and  true=>AND (find all) | false=>OR (find any)
-  @param {boolean} sWhr (searchWhere) array = checkboxes for selected texts
-  @param {integer} exact when <>0, the LIKE searched items will NOT be '%' surrounded
-  NOTE: Non-zero ´exact´ also means "Only search for image names (file basenames)!"
-  NOTE: Negative ´exact´, -1 = called from the find? dialog, -2 = do nothing,
-        else (non-negative) = called from and return to the favorites? dialog
-  Example: Find pictures by exact matching of image names (file basenames), e.g.
-    doFindText ("img_0012 img_0123", false, [false, false, false, false, true], -1)
-   */
+  // 'doFindText' finds texts in the database (file _imdb_images.sqlite)
+  // and populates the 'picFound' album with the corresponding images
   doFindText = async () => {
     let sTxt = document.querySelector('textarea[name="searchtext"]').value + '\n';
     let and = document.querySelectorAll('.orAnd input[type="radio"]')[0].checked;
@@ -111,6 +99,17 @@ export class DialogFind extends Component {
 
     // Do find images using 'searchText':
     let data = await this.searchText(sTxt, and, sWhr, 0);
+    /** The 'searchText' parameters
+    @param {string}  sTxt whitespace separated search text words/items
+    @param {boolean} and  true=>AND (find all) | false=>OR (find any)
+    @param {boolean} sWhr (searchWhere) array = checkboxes for selected texts
+    @param {integer} exact when <>0, the LIKE searched items will NOT be '%' surrounded
+    NOTE: Non-zero ´exact´ also means "Only search for image names (file basenames)!"
+    NOTE: Negative ´exact´, -1 = called from the find? dialog, -2 = do nothing,
+          else (non-negative) = called from and return to the favorites? dialog
+    Example: Find pictures by exact matching of image names (file basenames), e.g.
+      doFindText ("img_0012 img_0123", false, [false, false, false, false, true], -1)
+    **/
 
     this.commands = [];
     let paths = []; // The found paths
@@ -190,9 +189,11 @@ export class DialogFind extends Component {
         } else filesFound++;
       }
       // 'nameOrder' will be the 'sortOrder' for 'picFound':
-      nameOrder = nameOrder.join('\n').trim ();
+      nameOrder = nameOrder.join('§¤').trim ();
+      nameOrder = nameOrder.replace(/§¤/g, '\\n');
+      // nameOrder = '"' + nameOrder + '"';
         // this.z.loli('nameOrder:\n' + nameOrder, 'color:pink');
-        this.z.loli('commands:\n' + this.commands.join('\n'), 'color:pink');
+        // this.z.loli('commands:\n' + this.commands.join('\n'), 'color:pink');
         // this.z.loli('albs:\n' + albs.join('\n'), 'color:pink');
         // console.log('counts:\n', this.counts);
         // console.log('inames:\n', this.inames);
@@ -207,31 +208,22 @@ export class DialogFind extends Component {
         if (this.counts [i]) {
           this.nchk += this.counts[i];
           this.keepIndex.push(i);
-
-          if(keepOld) {
-            let tmp = "<a class=\"hoverDark\" onclick=\"console.log('" + inames[i] + "',false,[false,false,false,false,true], 1);return false\" style=\"text-decoration:none\">" + (("     " + counts[i]).slice(-6) + "  " + this.intl.t('in') + "  ").replace (/ /g, "&nbsp;");
-            console.log("EXACT?",exact);
-            if (exact === 0 || exact === 1) { // text search result (-1 from elsewhere)
-              // NOTE. 'exact' IS '1' since here we always search for exact image name match:
-              tmp += this.z.imdbRoot + chalbs[i] + "</a>";
-              tmp += " &nbsp;&nbsp;&nbsp;&nbsp;<a class=\"hoverDark\" onclick='parent.selectJstreeNode(" + i + ");return false' style='font-family:Arial,Helvetica,sans-serif;font-size:70%;font-variant:small-caps;text-decoration:none'>" + this.intl.t('allInAlbum') + "</a>";
-            } else { // find duplicates result
-              tmp += this.z.imdbRoot + chalbs [i] + "</a>";
-            }
-            this.countAlbs.push (tmp);
-          }
         }
       }
         // this.z.loli(this.keepIndex, 'color:red');
-      if(keepOld) {this.countAlbs = this.countAlbs.join('<br>');}
-        this.z.loli('rm -rf ' + lpath + '/*', 'color:red');
-        this.z.loli('touch ' + lpath + '/.imdb', 'color:red');
-        this.z.loli('touch ' + lpath + '/_imdb_order.txt', 'color:red');
-        this.z.loli('echo ' + this.commands.join('\n') + ' > ' + lpath + '/_imdb_order.txt', 'color:red');
-      await this.z.execute();
+
+      // Just assure that this file exists
       await this.z.execute('touch ' + lpath + '/.imdb');
-      await this.z.execute('touch ' + lpath + '/_imdb_order.txt');
-      await this.z.execute('echo ' + this.commands.join('\n') + ' > ' + lpath + '/_imdb_order.txt');
+
+      // Refresh the sortOrder file with the found images. The echo command
+      // should or should not have the '-e' parameter (shell dependent).
+      // The within "" inclusion is important for the '\n' interpretation!
+      await this.z.execute('echo "' + nameOrder + '" > ' + lpath + '/_imdb_order.txt');
+
+      // Create links to the found images
+      for (let i=0; i<this.commands.length; i++) {
+        await this.z.execute(this.commands[i]);
+      }
     }
     this.z.openDialog('dialogFindResult');
   }
@@ -252,7 +244,7 @@ export class DialogFind extends Component {
   searchText = (sTxt, and, searchWhere, exact) => {
     this.seast = '';
     document.getElementById('go_back').click(); // close show, perhaps unneccessary
-    // close all dialogs? perhaps unneccessary
+    // close all dialogs is unneccessary
     let AO, andor = '';
     if (and) {AO = ' AND '} else {AO = ' OR '};
     if (sTxt === "") {sTxt = undefined;}
