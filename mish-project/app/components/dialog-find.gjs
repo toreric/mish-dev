@@ -212,11 +212,14 @@ export class DialogFind extends Component {
       }
         // this.z.loli(this.keepIndex, 'color:red');
 
-      // Just assure that this file exists
+      // Clean the 'picFound' album
+      await this.z.execute('rm -rf ' + lpath + '/*')
+
+      // Recreate the '.imdb' file
       await this.z.execute('touch ' + lpath + '/.imdb');
 
-      // Refresh the sortOrder file with the found images. The echo command
-      // should or should not have the '-e' parameter (shell dependent).
+      // Create the sortOrder file with the found images. The 'echo' command
+      // should or should not have the '-e' parameter (shell dependent, here not).
       // The within "" inclusion is important for the '\n' interpretation!
       await this.z.execute('echo "' + nameOrder + '" > ' + lpath + '/_imdb_order.txt');
 
