@@ -763,10 +763,16 @@ module.exports = function(app) { // Start module.exports
 
   // ===== Read a directory's file content; also remove broken links
   //#region findFiles
-  function findFiles(dirName) {
-
-    // console.log('FINDFILES')
-    // console.log(IMDB + dirName)
+  async function findFiles(dirName) {
+    // NOTE: Here we have to prove thar 'dirName' exists, since it may be
+    // the 'picFound' directory which is rather volatile (temporay, sometimes
+    // cleaned away). If it occasionally doesn't exist, return '':
+    try {
+      await fs.accessAsync(IMDB + dirName)
+    } catch(err) {
+      console.error('Warning: Nonexistent album')
+      return ''
+    }
 
     // return fs.readdirAsync('rln' + IMDB + dirName).map(function(fileName) { // Cannot use mapSeries here(why?)
     return fs.readdirAsync(IMDB + dirName).map(function(fileName) { // Cannot use mapSeries here(why?)

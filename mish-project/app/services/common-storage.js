@@ -21,6 +21,7 @@ export default class CommonStorageService extends Service {
 
   @tracked  aboutThis = '«Mish»'; //info (to be changed) about Mish build version etc.
   @tracked  albumHistory = [0];   //album index visit history
+  @tracked  allFiles = [];     // Image file information objects, changes with 'imdbDir'
   @tracked  bkgrColor = '#111';   //default background color
   @tracked  credentials = '';     //user credentials: \n-string from db
         get defaultUserName() { return `${this.intl.t('guest')}`; }
@@ -86,7 +87,6 @@ export default class CommonStorageService extends Service {
   //== Miniature and show images etc. information
 
   @tracked  navKeys = false; // Protects from unintended use of L/R arrow keys
-  @tracked  allFiles = [];   // Image file information objects, changes with 'imdbDir'
   @tracked  displayNames = 'none'; // Image name display switch
   @tracked  edgeImage = '';  // Text indicating first/last image
   @tracked  hasImages = false; // true if 'imdbDir' has at least one image
