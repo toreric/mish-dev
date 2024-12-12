@@ -95,7 +95,7 @@ module.exports = function(app) { // Start module.exports
   //region execute
   app.get ('/execute', async (req, res) => {
     var cmd = decodeURIComponent(req.get('command'))
-    console.log(BYEL + cmd + RSET)
+      console.log(BYEL + cmd + RSET) // hide this to protect image paths
     try {
       // NOTE: exec seems to use ``-ticks, not $()
       // Hence don't pass "`" if you don't escape it
@@ -124,10 +124,10 @@ module.exports = function(app) { // Start module.exports
     // started by the 'DialogInfo' component. It is used by the 'MenuImage' component
     // when the menu's 'Information' entry is clicked.
     if (await notFile(file)) {
-      console.log(RED + 'Illegal filestat call' + RSET)
+      console.error('Illegal filestat call')
       return
     }
-      console.log('fileStat',file)
+      console.log('.' + file.slice(IMDB_HOME.length))
     var LT = req.get('intlcode') // Language tag for dateTime
     if (LT === 'en-us') LT = 'en-uk' // European date order
       // console.log('fileStat',LT)
@@ -460,19 +460,33 @@ module.exports = function(app) { // Start module.exports
   //#region sortlist
   app.get('/sortlist', async function(req, res) {
     var imdbtxtpath = IMDB + IMDB_DIR + '/_imdb_order.txt'
-    try { // Create _imdb_order.txt if missing
+    try { // Open _imdb_order.txt
       fd = await fs.openAsync(imdbtxtpath, 'r') // check
       await fs.closeAsync(fd)
-    } catch(err) {
-      fd = await fs.openAsync(imdbtxtpath, 'w') // create
-      await fs.closeAsync(fd)
-      execSync('chmod 664 ' + imdbtxtpath)
+    } catch(err) { // Create _imdb_order.txt if missing
+      try {
+        fd = await fs.openAsync(imdbtxtpath, 'w') // create
+        await fs.closeAsync(fd)
+        execSync('chmod 664 ' + imdbtxtpath)
+      } catch(error) { // Maybe something in the path is wrong
+        console.error('Error in album path')
+        res.on('error', (error) => {
+          // console.error(error.message) hide path to albums
+          res.location('/')
+          res.send('Error!')
+        })
+      }
     }
     fs.readFileAsync (imdbtxtpath)
     .then(names => {
         // console.log ('/sortlist/:names' +'\n'+ names) // names <buffer> here converts to <text>
       res.send(names) // Sent buffer arrives as text
     }).then(console.info('File order sent from server'))
+    .catch(function(error) {
+      console.error('Error in album path?')
+      res.location('/')
+      res.send('')
+    })
   })
 
   // ##### Save the _imdb_order.txt file
@@ -520,7 +534,7 @@ module.exports = function(app) { // Start module.exports
         if (err) {
           res.send("Cannot write to " + msgName)
           console.log(err, 'ERROR', err.length)
-          console.log(RED + 'NO WRITE PERMISSION to ' + msgName + RSET)
+          console.error('NO WRITE PERMISSION to ' + msgName)
         } else {
           console.log('Xmp.dc metadata will be saved into ' + msgName)
           body = tmp [1].trim() // These trimmings are probably superfluous
@@ -969,7 +983,7 @@ module.exports = function(app) { // Start module.exports
         tmp = 'FILE NOT FOUND by ' + IMDB_ROOT + IMDB_DIR + '/' + picfile
       } else {
         tmp = 'NO PERMISSION to ' + IMDB_ROOT + IMDB_DIR + '/' + picfile
-        console.log(RED + tmp + RSET)
+        console.error(tmp)
         return tmp
       }
     })
@@ -1005,7 +1019,7 @@ module.exports = function(app) { // Start module.exports
       let pathlist = filepaths.trim().split(LF)
       for (let i=0; i<pathlist.length; i++) { // forLoop
         let filePath = '.' + pathlist[i].slice(IMDB.length) // Album relative path
-          // console.log(RED + filePath + RSET)
+          // console.error(filePath)
         // No files in the picFound album (may be occasionally uploaded,
         // temporary non-symlinks) and no symlinks should be processed:
         if (filePath.indexOf(picFound) > 0 || await isSymlink(pathlist[i])) continue;
