@@ -139,6 +139,7 @@ button:
   rightsinfo: Rights information
   save:      Save
   saveclose: Save and close
+  show:      Show all in
 
 buttons:
   left:

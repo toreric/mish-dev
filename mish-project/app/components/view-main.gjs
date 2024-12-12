@@ -341,7 +341,7 @@ class AllImages extends Component {
             <div {{on 'click' this.ediText}}>
 
               {{!-- This is the image name, should be unique --}}
-              <div class="img_name" style="display:{{this.z.displayNames}};background:inherit">
+              <div class="img_name" style="display:{{this.z.displayNames}}">
                 {{item.name}}
               </div>
 
