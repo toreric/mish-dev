@@ -90,25 +90,35 @@ export class DialogFind extends Component {
     return this.z.allow.notesView ? '' : 'none';
   }
 
-  // Show in 'picFound' those pictures with names found in album 'i'
-  openPart = async (i) => {
-    let sWhr = [false, false, false, false, true];
-    // NOTE: The names and uses below are mostly copied from 'doFindText'.
-    // 'this.inames[i]' are pic names now to be found with exact match.
-    // Simultaneously we will find duplicate names, if any.
-    let data = await this.searchText(this.inames[i], false, sWhr, -1);
-    let paths = data.trim ().split ('\n');
+  // openFound(-1) opens 'picFound' with all found images, while
+  // openFound(i) opens 'picFound' with images found in album 'i'
+  openFound = async (i) => {
     let lpath = this.z.imdbPath + '/' + this.z.picFound; // The path to picFound
     await this.z.execute('rm -rf ' + lpath + '/*');
     await this.z.execute('touch ' + lpath + '/.imdb');
     await this.z.execute('touch ' + lpath + '/_imdb_order.txt');
-    for (let i=0; i<paths.length; i++) {
-      let linkfrom = '../' + paths[i].replace(/^[^/]*\//, '');
-      let fname = paths[i].replace(/^.*\/([^/]+$)/, '$1');
-      let linkto = lpath + '/' + fname;
-      let command = 'ln -sf ' + linkfrom + ' ' + linkto;
-      await this.z.execute(command);
+    if (i < 0) {
+      // Create links to all found images
+      for (let j=0; j<this.commands.length; j++) {
+        await this.z.execute(this.commands[j]);
+      }
+    } else {
+      let sWhr = [false, false, false, false, true];
+      // NOTE: The names and uses below are mostly copied from 'doFindText'.
+      // 'this.inames[i]' are pic names now to be found with exact match.
+      // Simultaneously we will find duplicate names, if any.
+      let data = await this.searchText(this.inames[i], false, sWhr, -1);
+      let paths = data.trim ().split ('\n');
+      for (let i=0; i<paths.length; i++) {
+        let linkfrom = '../' + paths[i].replace(/^[^/]*\//, '');
+        let fname = paths[i].replace(/^.*\/([^/]+$)/, '$1');
+        let linkto = lpath + '/' + fname;
+        // Create a link to this found image
+        let command = 'ln -sf ' + linkfrom + ' ' + linkto;
+        await this.z.execute(command);
+      }
     }
+    this.z.closeDialog(dialogFindId);
     this.z.openAlbum(this.ixFound);
   }
 
@@ -151,25 +161,25 @@ export class DialogFind extends Component {
     // Maximum number of pictures from the search results to show:
     let nLimit = 100;
     let filesFound = 0;
+    let chalbs = this.z.imdbDirs;
     if (data) {
       // Don't sort, order may be important if this is a search for duplicates. Then
       // this is the final re-search by image names in sequence. The result is presented
       // in the same given order where similar images are grouped together.
-      paths = data.trim ().split ('\n');//.sort ();
+      paths = data.trim().split('\n');//.sort ();
       // Remove possibly empty values:
-      paths = paths.filter (a => {if (a.trim ()) return true; else return false});
-      // NOTE: Eventually, 'paths' is the basis of the innerHTML content in <result>
+      paths = paths.filter(a => {if (a.trim()) return true; else return false});
+      // NOTE: 'paths' is the basis of the innerHTML content of 'dialogFindResult'
         // this.z.loli('paths:\n' + paths.join('\n'), 'color:pink');
         // console.log(paths);
+
       // Prepare to display the result in the 'picFound' album
-      let chalbs = this.z.imdbDirs;
       // Find the index of the 'picFound' album (may vary by language)
       this.ixFound = chalbs.indexOf('/' + this.z.picFound);
-        this.z.loli('picFound index = ' + this.ixFound + ' (cf. menu tree)', 'color:red');
+        // this.z.loli('picFound index = ' + this.ixFound + ' (cf. menu tree)', 'color:red');
       // -- Prepare counters and imgnames (inames) for all albums
       this.counts = '0'.repeat(chalbs.length + 1).split('').map(Number); // +1 for skipped
       this.inames = ' '.repeat(chalbs.length).split('');
-
       for (let i=0; i<paths.length; i++) {
         let chalb = paths[i].replace(/^[^/]+(.*)\/[^/]+$/, '$1'); // in imdbDirs format
         // -- Allow only files/pictures in the albums of #imdbDirs (chalbs):
@@ -250,7 +260,7 @@ export class DialogFind extends Component {
 
       // Clean the 'picFound' album
       let err = await this.z.execute('rm -rf ' + lpath + '/*');
-        this.z.loli(err, 'color:red');
+        // this.z.loli(err, 'color:red');
       // Recreate the '.imdb' file
       await this.z.execute('touch ' + lpath + '/.imdb');
 
@@ -260,12 +270,22 @@ export class DialogFind extends Component {
       await this.z.execute('echo "' + nameOrder + '" > ' + lpath + '/_imdb_order.txt');
 
       // Create links to the found images
-      for (let i=0; i<this.commands.length; i++) {
-        await this.z.execute(this.commands[i]);
-      }
+      // for (let i=0; i<this.commands.length; i++) {
+      //   await this.z.execute(this.commands[i]);
+      // }
     }
+    this.z.closeDialog(dialogFindId);
     this.z.openDialog('dialogFindResult');
     document.querySelector('#dialogFindResult').style.zIndex = Number(document.querySelector('#dialogFind').style.zIndex) + 1;
+      this.z.loli('Ignored: ' + this.counts[chalbs.length], 'color:lime');
+      this.z.loli('N, max: ' + this.nchk + ', ' + this.z.maxWarning, 'color:lime');
+    if (this.nchk > this.z.maxWarning) {
+      this.z.alertMess(this.intl.t('write.maxWarning', {n: this.z.maxWarning}), 6);
+      document.querySelector('#dialogFindResult button.show').setAttribute('disabled', '');
+    } else {
+      document.querySelector('#dialogFindResult button.show').removeAttribute('disabled');
+    }
+
   }
 
   /**
@@ -329,7 +349,7 @@ export class DialogFind extends Component {
       srchData.append ("cols", searchWhere);
       if (exact !== 0) srchData.append ("info", "exact");
       else srchData.append ("info", "");
-        console.log(srchData);
+        // console.log(srchData);
       return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();
         xhr.open('POST', 'search/');
@@ -339,7 +359,7 @@ export class DialogFind extends Component {
             var data = xhr.response.trim ();
             if (exact !== 0) { // reorder like sTxt
               var datArr = data.split("\n");
-                console.log("searchText datArr.length",datArr.length);
+                // console.log("searchText datArr.length",datArr.length);
               var namArr = [];
               var seaArr = [];
               var tmpArr = [];
@@ -389,7 +409,8 @@ export class DialogFind extends Component {
       <dialog id='dialogFind' style="width:min(calc(100vw - 1rem),650px);z-index:14">
         <header data-dialog-draggable >
           <p>&nbsp;</p>
-          <p><b>{{t 'dialog.find.header'}}</b> <span></span></p>
+          <p><b>{{t 'dialog.find.header'}}</b> <span style="color:#080">
+            {{t 'dialog.find.nolinks'}}</span></p>
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogFindId)}}>×</button>
         </header>
         <main>
@@ -488,7 +509,7 @@ export class DialogFind extends Component {
           {{#each this.keepIndex as |i|}}
 
             <a class="hoverDark" style="text-decoration:none"
-             {{on 'click' (fn this.openPart i)}}>
+             {{on 'click' (fn this.openFound i)}}>
               {{{this.count i}}} &nbsp;&nbsp;{{t 'in'}}&nbsp;&nbsp; {{this.z.imdbRoot}}{{this.album i}}
             </a> &nbsp;&nbsp;&nbsp;&nbsp;
 
@@ -503,7 +524,7 @@ export class DialogFind extends Component {
 
         </main>
         <footer data-dialog-draggable>
-          <button type="button" {{on 'click' (fn this.z.openAlbum this.ixFound)}}>
+          <button class="show" type="button" {{on 'click' (fn this.openFound -1)}}>
             {{t 'button.show'}} <b>{{this.z.handsomize2sp this.z.picFound}}</b></button>&nbsp;
           <button type="button" {{on 'click' (fn this.z.closeDialog 'dialogFindResult')}}>
             {{t 'button.close'}}</button>&nbsp;

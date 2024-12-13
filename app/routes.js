@@ -95,7 +95,7 @@ module.exports = function(app) { // Start module.exports
   //region execute
   app.get ('/execute', async (req, res) => {
     var cmd = decodeURIComponent(req.get('command'))
-      console.log(BYEL + cmd + RSET) // hide this to protect image paths
+      // console.log(BYEL + cmd + RSET) // hide this to protect image paths
     try {
       // NOTE: exec seems to use ``-ticks, not $()
       // Hence don't pass "`" if you don't escape it

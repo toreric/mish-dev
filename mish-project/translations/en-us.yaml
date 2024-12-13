@@ -300,5 +300,6 @@ write:
   findHelp6: "Tip: Find out how many photos are in the album collection by searching for a ’/’ (in album names)!"
   keywords: "<b>Information about planned future addition:</b>
              Keywords to be stored as metadata for search key use"
+  maxWarning: <b>More than {n} images cannot<br>be displayed together</b>
   notes: Notes not shown with the image
   searchTerms: Enter search terms separated by spaces, lower/uppercase does not matter (choose below which texts to search in)

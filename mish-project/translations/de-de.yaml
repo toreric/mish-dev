@@ -298,5 +298,6 @@ write:
   findHelp6: "Tipp: Die Gesamtzahl der Bilder in der Albumsammlung wird durch die Suche (in Albumnamen) nach einem „/“ angezeigt!"
   keywords: "<b>Information von geplante zukünftige Ergänzung:</b>
             Wörter als Metadaten gespeichert zur Verwendung als Suchbegriffe"
+  maxWarning: <b>Mehr als {n} Bilder können nicht<br>alle gleichzeitig angezeigt werden</b>
   notes: Anmerkungen die nicht mit dem Bild erscheinen
   searchTerms: Suchbegriffe eingeben, durch Leerzeichen getrennt, Groß-/Kleinschreibung spielt keine Rolle (unten auswählen, in welchen Texten gesucht werden soll)
