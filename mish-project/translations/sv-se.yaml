@@ -69,7 +69,7 @@ hideshow: Göm eller visa
 home: till början av
 images: bilder
 imageFind: Finn bilder
-imageSearch: Sök i bildtexter
+imageSearch: Sök i bildtexter m.m.
 in: i
 information: Information
 intlcode: sv-se
@@ -239,6 +239,7 @@ dialog:
       modal: Öppna modalt textfönster
     toggle: Öppna/stäng textfönster
 erase: radera
+foundExplain: Funna bilder
 gomini: "Återgå\n
         [Esc]"
 gonext: "Nästa\n
@@ -299,5 +300,6 @@ write:
   keywords: "<b>Information om planerat framtida tillägg:</b>
             Ord lagrade som metadata för användning som särskilda sökbegrepp"
   maxWarning: <b>Fler än {n} bilder kan<br>inte visas tillsammans</b>
+  noneFound: Tyvärr, ingen bild funnen!
   notes: Anteckningar som ej visas med bilden
   searchTerms: Skriv sökbegrepp åtskilda av blanktecken, små/stora bokstäver är oviktigt (välj nedan vilka texter du vill söka i)

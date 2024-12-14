@@ -43,14 +43,28 @@ class SubAlbums extends Component {
   @service('common-storage') z;
   @service intl;
 
-  get nsub() { // No of subalbums to this album
+  get nsub() { // No of subalbums of this album
     let res =  this.z.subaIndex.length;
+    if (res < 1) res = this.intl.t('no'); // 'inget'
+    return res;
+  }
+
+  get nsubRoot() { // No of subalbums of the root album
+    let res =  this.z.subaIndex.length - 1; // for the picFound album
     if (res < 1) res = this.intl.t('no'); // 'inget'
     return res;
   }
 
   get sual() { // Subalbum(s) text
     if (this.z.subaIndex.length === 1) {
+      return this.intl.t('subalbum');
+    } else {
+      return this.intl.t('subalbums');
+    }
+  }
+
+  get sualRoot() { // Subalbum(s) text for root
+    if (this.z.subaIndex.length === 2) { // 1 + picFound
       return this.intl.t('subalbum');
     } else {
       return this.intl.t('subalbums');
@@ -97,6 +111,11 @@ class SubAlbums extends Component {
     return label;
   }
 
+  keepDir = (i) => {
+    this.z.loli(this.z.imdbDirs[i], 'color:red');
+    return this.z.imdbDirs[i].slice(1, 2) === '§' ? false : true;
+  }
+
   <template>
     <p class='albumsHdr' draggable="false" ondragstart="return false">
       <div class="miniImgs albs">
@@ -106,20 +125,22 @@ class SubAlbums extends Component {
               <b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
               {{t 'has'}} {{this.nsub}} {{this.sual}}<span title-2={{t 'plusExplain'}}>{{{this.nadd}}}</span><span>{{this.hasImages}}</span>
             </span>
-          {{else}}
+          {{else}} {{!-- root --}}
             <span>
               <b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
-              {{t 'has'}} {{this.nsub}} {{this.sual}}<span title-2={{t 'plusExplain'}}>{{{this.nadd}}}</span><span>{{this.hasImages}}</span>
+              {{t 'has'}} {{this.nsubRoot}} <span title-2={{t 'foundExplain'}}>(+1)</span> {{this.sualRoot}}<span title-2={{t 'plusExplain'}}>{{{this.nadd}}}</span><span>{{this.hasImages}}</span>
             </span>
           {{/if}}
           <br>
           {{#each this.z.subaIndex as |i|}}
-            <div class="subAlbum" title="" {{on 'click' (fn this.z.openAlbum i)}}>
-              <a class="imDir" style="background:transparent" title-2="Album ”{{this.dirName i}}”">
-                  <img src={{this.setLabel i}} alt="Album ”{{this.dirName i}}”"><br>
-                <span style="font-size:85%;color:{{this.z.subColor}}">{{this.dirName i}}</span>
-              </a>
-            </div>
+            {{#if (this.keepDir i)}}
+              <div class="subAlbum" title="" {{on 'click' (fn this.z.openAlbum i)}}>
+                <a class="imDir" style="background:transparent" title-2="Album ”{{this.dirName i}}”">
+                    <img src={{this.setLabel i}} alt="Album ”{{this.dirName i}}”"><br>
+                  <span style="font-size:85%;color:{{this.z.subColor}}">{{this.dirName i}}</span>
+                </a>
+              </div>
+            {{/if}}
           {{/each}}
         {{/if}}
       </div>
@@ -286,6 +307,8 @@ class AllImages extends Component {
       {{!-- The heading of the thumbnails' presentation --}}
       {{#if this.z.hasImages}}
         <div style="width:100%">
+
+          {{!-- If the album isn't the root album: --}}
           {{#if this.z.imdbDir}}
             <p><span title-2="{{this.z.imdbRoot}}{{this.z.imdbDir}}"><b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
 
@@ -297,6 +320,8 @@ class AllImages extends Component {
             {{/if}}
 
             ({{this.z.numMarked}} {{t 'marked'}})</span></p>
+
+          {{!-- If the album is the root album: --}}
           {{else}}
             <p><span><b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
 
@@ -308,7 +333,12 @@ class AllImages extends Component {
             {{/if}}
 
             ({{this.z.numMarked}} {{t 'marked'}})</span></p>
+
           {{/if}}
+
+          {{!-- Don't put </span></p> terminators for #if/else here! --}}
+          {{!-- Each block needs it's own terminator! --}}
+
         </div>
       {{/if}}
 

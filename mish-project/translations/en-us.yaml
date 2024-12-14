@@ -69,7 +69,7 @@ hideshow: Hide or show
 home: to the beginning of
 images: images
 imageFind: Find images
-imageSearch: Search in captions
+imageSearch: Search in captions etc.
 in: in
 information: Information
 intlcode: en-us
@@ -241,6 +241,7 @@ dialog:
       modal:   Open modal text dialog
     toggle: Toggle text dialog
 erase: erase
+foundExplain: Found images
 gomini: "Return\n
         [Esc]"
 gonext: "Next\n
@@ -301,5 +302,6 @@ write:
   keywords: "<b>Information about planned future addition:</b>
              Keywords to be stored as metadata for search key use"
   maxWarning: <b>More than {n} images cannot<br>be displayed together</b>
+  noneFound: Sorry, no image found!
   notes: Notes not shown with the image
   searchTerms: Enter search terms separated by spaces, lower/uppercase does not matter (choose below which texts to search in)

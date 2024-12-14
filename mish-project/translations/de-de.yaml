@@ -69,7 +69,7 @@ hideshow: Verstecken oder anzeigen
 home: zum anfang von
 images: Bilder
 imageFind: Bilder finden
-imageSearch: In Bildunterschriften suchen
+imageSearch: In Bildunterschriften usw. suchen
 in: in
 information: Information
 intlcode: de-de
@@ -239,6 +239,7 @@ dialog:
       modal: Modales Textfenster öffnen
     toggle: Textfenster öffnen/schließen
 erase: löschen
+foundExplain: Gefundene Bilder
 gomini: "Zurück\n
         [Esc]"
 gonext: "Nächstes\n
@@ -299,5 +300,6 @@ write:
   keywords: "<b>Information von geplante zukünftige Ergänzung:</b>
             Wörter als Metadaten gespeichert zur Verwendung als Suchbegriffe"
   maxWarning: <b>Mehr als {n} Bilder können nicht<br>alle gleichzeitig angezeigt werden</b>
+  noneFound: Leider kein Bild gefunden!
   notes: Anmerkungen die nicht mit dem Bild erscheinen
   searchTerms: Suchbegriffe eingeben, durch Leerzeichen getrennt, Groß-/Kleinschreibung spielt keine Rolle (unten auswählen, in welchen Texten gesucht werden soll)

@@ -6,6 +6,7 @@ import { tracked } from '@glimmer/tracking';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
+import { Spinner } from './spinner';
 
 import RefreshThis from './refresh-this';
 
@@ -105,14 +106,19 @@ export class DialogFind extends Component {
     } else {
       let sWhr = [false, false, false, false, true];
       // NOTE: The names and uses below are mostly copied from 'doFindText'.
-      // 'this.inames[i]' are pic names now to be found with exact match.
+      // 'this.inames[i]' are pic names, now to be found with exact match.
+
       // Simultaneously we will find duplicate names, if any.
+      // NO! WE WON'T! WHY DON'T WE FIND DUPLICATE NAMES???
+
       let data = await this.searchText(this.inames[i], false, sWhr, -1);
+      // Hide the spinner
+      document.querySelector('img.spinner').style.display = 'none';
       let paths = data.trim ().split ('\n');
       for (let i=0; i<paths.length; i++) {
-        let linkfrom = '../' + paths[i].replace(/^[^/]*\//, '');
-        let fname = paths[i].replace(/^.*\/([^/]+$)/, '$1');
-        let linkto = lpath + '/' + fname;
+        let linkfrom = '../' + paths[i].replace(/^[^/]*\//, ''); // make relative
+        let fname = paths[i].replace(/^.*\/([^/]+$)/, '$1'); // clean from catalogs
+        let linkto = lpath + '/' + fname; // absolute path
         // Create a link to this found image
         let command = 'ln -sf ' + linkfrom + ' ' + linkto;
         await this.z.execute(command);
@@ -142,6 +148,14 @@ export class DialogFind extends Component {
 
     // Do find images using 'searchText':
     let data = await this.searchText(sTxt, and, sWhr, 0);
+    // Hide the spinner
+    document.querySelector('img.spinner').style.display = 'none';
+    if (!data) {
+      this.z.alertMess(this.intl.t('write.noneFound'), 6);
+      document.querySelector('#dialogFind textarea').focus();
+      return '';
+    }
+
     /** The 'searchText' parameters
     @param {string}  sTxt whitespace separated search text words/items
     @param {boolean} and  true=>AND (find all) | false=>OR (find any)
@@ -302,8 +316,10 @@ export class DialogFind extends Component {
         else (non-negative) = called from and return to the favorites? dialog
   */
   searchText = (sTxt, and, searchWhere, exact) => {
-    document.getElementById('go_back').click(); // close show, perhaps unneccessary
+    // Display the spinner
+    document.querySelector('img.spinner').style.display = '';
     // close all dialogs is unneccessary
+    document.getElementById('go_back').click(); // close show, perhaps unneccessary
     let AO, andor = '';
     if (and) {AO = ' AND '} else {AO = ' OR '};
     if (sTxt === "") {sTxt = undefined;}
@@ -318,7 +334,10 @@ export class DialogFind extends Component {
     let txt = sTxt.trim();
     let str = '';
     let arr = [];
-    if (txt) {
+    if (!txt) {
+      document.querySelector('#dialogFind textarea').value = '';
+      return '';
+    } else {
       txt = txt.replace(/\s+/g, ' ').trim();
         // this.z.loli(txt, 'color:red');
       arr = txt.split (' ');
@@ -403,7 +422,7 @@ export class DialogFind extends Component {
   }
 
   <template>
-
+    <Spinner />
     <div style="display:flex" {{on 'keydown' this.detectEscClose}}>
 
       <dialog id='dialogFind' style="width:min(calc(100vw - 1rem),650px);z-index:14">
