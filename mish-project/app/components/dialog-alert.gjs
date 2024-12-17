@@ -8,7 +8,7 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
-export const dialogAlertId = "dialogAlert";
+export const dialogAlertId = 'dialogAlert';
 
 export class DialogAlert extends Component {
   @service('common-storage') z;

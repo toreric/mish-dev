@@ -116,32 +116,6 @@ button.close:hover {
   color: black;
   background: deeppink;
 }
-/*
-[title-2]:hover:after {
-  opacity: 1;
-  transition: all 0.1s ease 0.5s;
-  display: block;
-}
-[title-2]:after {
-  content: attr(title);
-  background-color: #aef;
-  color: #111;
-  font-size: 95%;
-  position: absolute;
-  padding: 0.1rem 0.25rem;
-  top: 0;
-  left: 0;
-  white-space: normal;
-  box-shadow: 1px 1px 3px #222222;
-  opacity: 0;
-  border: 1px solid #111111;
-  z-index: 99999;
-  display: none;
-}
-[title-2] {
-  position: relative;
-}
-*/
 .blink {
   animation: blink 200ms linear 0ms 16;
 }
@@ -995,15 +969,17 @@ img[alt] {
 }
 /* *** CSS tooltip title-2 for multiliners */
 [title-2] {
-  position: relative;
   opacity: 1;
+  position: relative;
   display: inline-block;
 }
 .hoverDark[title-2] {
+  opacity: 1;
   min-width: 6rem;
 }
 [title-2]:hover::after,
 [title-2]:active::after {
+  opacity: 1;
   content: attr(title-2);
   position: absolute;
   left: 0;
@@ -1012,7 +988,6 @@ img[alt] {
   border: 0.5px #888 solid;
   border-radius: 3px;
   background-color: #bef;
-  opacity: 1;
   padding: 1.5px 2px 3px 3px;
   color: #000;
   font-family: Georgia, "Times New Roman", Times, serif !important;
@@ -1023,9 +998,10 @@ img[alt] {
   word-break: keep-all;
   white-space: normal;
   float: left;
-  z-index:7;
+  z-index: 22222;
 }
 .rootQuest[title-2]:hover::after {
+  opacity: 1;
   width: 160px;
 }
 [title-example-not-used] {

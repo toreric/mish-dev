@@ -8,7 +8,7 @@ import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
 // Note: Dialog functions in ButtonsLeft needs dialogHelpId:
-export const dialogHelpId = "dialogHelp";
+export const dialogHelpId = 'dialogHelp';
 
 export class DialogHelp extends Component {
   @service('common-storage') z;

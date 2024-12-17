@@ -20,6 +20,7 @@ import { DialogInfo } from './dialog-info';
 import { DialogLogin } from './dialog-login';
 import { DialogText } from './dialog-text';
 import { DialogXper } from './dialog-xper';
+import { DialogUtil } from './dialog-util';
 import { default as Header } from './header';
 import { Language } from './language';
 import { MenuMain } from './menu-main';
@@ -309,6 +310,7 @@ export default class extends Welcome {
     <DialogInfo />
     <DialogAlert />
     <DialogXper @content={{this.album}} />
+    <DialogUtil />
     <Spinner />
 
   </template>;

@@ -3,14 +3,14 @@ price_banner: "{product} kostar {price, number, ::currency/EUR}"
 # For the main menu = MenuMain component
 selalbumcoll: Välj albumsamling
 albumcollinfo: Albumsamling (eller albumrot)
-albumcare: Albumåtgärder för
+albumcare: Albumverktyg för
 albumcareinfo: Ta bort, gör nytt, bildsortera, dublettsökning, med mera
 albumcoll: Albumsamling
 albumcollshow: Visa/dölj albumlistan
 tmpalbum1: Med
 tmpalbum2: "först: Tillfälligt album för visning av funna bilder"
-openallalb: Öppna alla underalbum
-closeallalb: Stäng alla underalbum
+openallalb: Visa alla underalbum
+closeallalb: Dölj alla underalbum
 showselected: Visa valt
 showselectedtext: Visa det valda albumet
 needaroot:    Välj först albumsamling!
@@ -303,3 +303,4 @@ write:
   noneFound: Tyvärr, ingen bild funnen!
   notes: Anteckningar som ej visas med bilden
   searchTerms: Skriv sökbegrepp åtskilda av blanktecken, små/stora bokstäver är oviktigt (välj nedan vilka texter du vill söka i)
+  utilHeader: Verktyg för

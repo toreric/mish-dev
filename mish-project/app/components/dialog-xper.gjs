@@ -13,7 +13,7 @@ import { MenuImage } from './menu-image';
 // import sortableGroup from 'ember-sortable/modifiers/sortable-group';
 // import sortableItem from 'ember-sortable/modifiers/sortable-item';
 
-export const dialogXperId = "dialogXper";
+export const dialogXperId = 'dialogXper';
 const LF = '\n';
 
 

@@ -11,6 +11,7 @@ import t from 'ember-intl/helpers/t';
 
 import { dialogAlertId } from './dialog-alert';
 import { dialogFindId } from './dialog-find';
+import { dialogUtilId } from './dialog-util';
 
 export const menuMainId = 'menuMain';
 const LF = '\n'; // LINE_FEED
@@ -38,7 +39,7 @@ export class MenuMain extends Component {
     // with subalbums are removed from the list:
     let tmp = await this.z.getAlbumDirs(allow.textEdit);
     let arr = tmp.split(LF);
-      this.z.loli(arr[1]);
+      // this.z.loli(arr[1]);
 
     // ***************************************************************************
     // The two first lines (to be shifted off) have other content
@@ -46,7 +47,7 @@ export class MenuMain extends Component {
     await this.z.execute('echo "' + arr.shift() + '" > nodestamp.txt');
     // ***************************************************************************
     // Secondly, here 'IMDB_HOME' is (finally!) delivered from the server to be
-    // stored in 'userDir', which is our corresponding 'common-storage' varaiable.
+    // stored in 'userDir', which is our corresponding 'common-storage' variable.
     // IMDB_HOME is given as an 'Express' server parameter at startup:
     this.z.userDir = arr.shift();
       // this.z.loli('userDir and imdbPath:  ' + this.z.userDir + '  ' + this.z.imdbPath, 'color:red');
@@ -140,7 +141,7 @@ export class MenuMain extends Component {
   albumEdit = () => {
     if (this.checkRoot()) return;
     this.z.loli('albumEdit', 'color:red');
-    // ...todo
+    this.z.openDialog(dialogUtilId);
   }
 
   // Close/open albumTree
@@ -149,13 +150,13 @@ export class MenuMain extends Component {
     let treeDiv = document.querySelector('div.albumTree');
     let what;
     if (treeDiv.style.display) {
-      what = 'open';
+      what = 'opened';
       treeDiv.style.display = '';
     }else {
-      what = 'close';
+      what = 'closed';
       treeDiv.style.display = 'none';
     }
-    this.z.loli('toggleAlbumTree ' + what);
+    this.z.loli(what + ' the album tree');
   }
 
   // Check if the alert dialog is open (then close it), or if no

@@ -136,7 +136,7 @@ export class DialogText extends Component {
         </footer>
       </dialog>
 
-      <dialog id='dialogTextNotes'>
+      <dialog id="dialogTextNotes">
         <header data-dialog-draggable>
           <p>&nbsp;</p>
           <p><b>{{t 'dialog.text.notes'}} <span>{{this.z.picName}}</span></b></p>

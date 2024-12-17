@@ -3,12 +3,12 @@ price_banner: "{product} kostet {price, number, ::currency/EUR}"
 # For the main menu = MenuMain component
 selalbumcoll: Albumsammlung wählen
 albumcollinfo: Albumsammlung (oder Albumstamm)
-albumcare: Albumpflege für
+albumcare: Albumwerkzeuge für
 albumcareinfo: Löschen, neu erstellen, Bilder sortieren, nach Duplikaten suchen, und mehr
 albumcoll: Albumsammlung
 albumcollshow: Albumliste ein-/ausblenden
-openallalb: Alle Unteralben öffnen
-closeallalb: Alle Unteralben schließen
+openallalb: Alle Unteralben zeigen
+closeallalb: Alle Unteralben verbergen
 showselected: Ausgewähltes
 showselectedtext: Ausgewähltes Album anzeigen
 tmpalbum1: Mit
@@ -303,3 +303,5 @@ write:
   noneFound: Leider kein Bild gefunden!
   notes: Anmerkungen die nicht mit dem Bild erscheinen
   searchTerms: Suchbegriffe eingeben, durch Leerzeichen getrennt, Groß-/Kleinschreibung spielt keine Rolle (unten auswählen, in welchen Texten gesucht werden soll)
+  utilHeader: Werkzeuge für
+

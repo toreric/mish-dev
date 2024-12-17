@@ -3,12 +3,12 @@ price_banner: "{product} costs {price, number, ::currency/EUR}"
 # For the main menu = MenuMain component
 selalbumcoll: Choose album collection
 albumcollinfo: Album collection (or album root)
-albumcare: Album care for
+albumcare: Album tools for
 albumcareinfo: Delete, create new, image sorting, duplicate search, and more
 albumcoll: Album collection
 albumcollshow: Show/hide album list
-openallalb: Open all subalbums
-closeallalb: Close all subalbums
+openallalb: Show all subalbums
+closeallalb: Hide all subalbums
 showselected: Selected
 showselectedtext: Show selected album
 tmpalbum1: With
@@ -305,3 +305,4 @@ write:
   noneFound: Sorry, no image found!
   notes: Notes not shown with the image
   searchTerms: Enter search terms separated by spaces, lower/uppercase does not matter (choose below which texts to search in)
+  utilHeader: Tools for

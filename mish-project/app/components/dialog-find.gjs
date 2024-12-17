@@ -100,8 +100,9 @@ export class DialogFind extends Component {
     await this.z.execute('touch ' + lpath + '/_imdb_order.txt');
     if (i < 0) {
       // Create links to all found images
-      for (let j=0; j<this.commands.length; j++) {
-        await this.z.execute(this.commands[j]);
+      // for (let j=0; j<this.commands.length; j++) { // forwards
+      for (let j=this.commands.length; j>0; j--) { // work backwards
+        await this.z.execute(this.commands[j-1]);
       }
     } else {
       let sWhr = [false, false, false, false, true];
@@ -115,9 +116,10 @@ export class DialogFind extends Component {
       // Hide the spinner
       document.querySelector('img.spinner').style.display = 'none';
       let paths = data.trim ().split ('\n');
-      for (let i=0; i<paths.length; i++) {
-        let linkfrom = '../' + paths[i].replace(/^[^/]*\//, ''); // make relative
-        let fname = paths[i].replace(/^.*\/([^/]+$)/, '$1'); // clean from catalogs
+      // for (let i=0; i<paths.length; i++) { // forwards
+      for (let i=paths.length; i>0; i--) { // work backwards
+        let linkfrom = '../' + paths[i-1].replace(/^[^/]*\//, ''); // make relative
+        let fname = paths[i-1].replace(/^.*\/([^/]+$)/, '$1'); // clean from catalogs
         let linkto = lpath + '/' + fname; // absolute path
         // Create a link to this found image
         let command = 'ln -sf ' + linkfrom + ' ' + linkto;
@@ -147,14 +149,6 @@ export class DialogFind extends Component {
     let nameOrder = [];
 
     // Do find images using 'searchText':
-    let data = await this.searchText(sTxt, and, sWhr, 0);
-    // Hide the spinner
-    document.querySelector('img.spinner').style.display = 'none';
-    if (!data) {
-      this.z.alertMess(this.intl.t('write.noneFound'), 6);
-      document.querySelector('#dialogFind textarea').focus();
-      return '';
-    }
 
     /** The 'searchText' parameters
     @param {string}  sTxt whitespace separated search text words/items
@@ -167,6 +161,14 @@ export class DialogFind extends Component {
     Example: Find pictures by exact matching of image names (file basenames), e.g.
       doFindText ("img_0012 img_0123", false, [false, false, false, false, true], -1)
     **/
+    let data = await this.searchText(sTxt, and, sWhr, 0);
+    // Hide the spinner
+    document.querySelector('img.spinner').style.display = 'none';
+    if (!data) {
+      this.z.alertMess(this.intl.t('write.noneFound'), 6);
+      document.querySelector('#dialogFind textarea').focus();
+      return '';
+    }
 
     this.commands = [];
     let paths = []; // The found paths
@@ -282,17 +284,12 @@ export class DialogFind extends Component {
       // should or should not have the '-e' parameter (shell dependent, here not).
       // The within "" inclusion is important for the '\n' interpretation!
       await this.z.execute('echo "' + nameOrder + '" > ' + lpath + '/_imdb_order.txt');
-
-      // Create links to the found images
-      // for (let i=0; i<this.commands.length; i++) {
-      //   await this.z.execute(this.commands[i]);
-      // }
     }
     this.z.closeDialog(dialogFindId);
     this.z.openDialog('dialogFindResult');
     document.querySelector('#dialogFindResult').style.zIndex = Number(document.querySelector('#dialogFind').style.zIndex) + 1;
-      this.z.loli('Ignored: ' + this.counts[chalbs.length], 'color:lime');
-      this.z.loli('N, max: ' + this.nchk + ', ' + this.z.maxWarning, 'color:lime');
+      // this.z.loli('Ignored: ' + this.counts[chalbs.length], 'color:lime');
+      // this.z.loli('N, max: ' + this.nchk + ', ' + this.z.maxWarning, 'color:lime');
     if (this.nchk > this.z.maxWarning) {
       this.z.alertMess(this.intl.t('write.maxWarning', {n: this.z.maxWarning}), 6);
       document.querySelector('#dialogFindResult button.show').setAttribute('disabled', '');
@@ -389,7 +386,7 @@ export class DialogFind extends Component {
                 albArr [i] = datArr [i].replace (/^(.*\/)*(.*)(\.[^.]*)$/,"$1").slice (1, -1);
               }
               sTxt = sTxt.replace (/ +/g, " ");
-              if (arr) seaArr = sTxt.split (" ");
+              if (arr.length > 0) seaArr = sTxt.split (" ");
               // The 'reordering template' (seaArr) depends on this special switch set in altFind:
               if (seaArr [0] === "dupName/") seaArr = tmpArr.sort ();
               else if (seaArr [0] === "dupImage/") seaArr.splice (0, 1);
@@ -422,10 +419,9 @@ export class DialogFind extends Component {
   }
 
   <template>
-    <Spinner />
     <div style="display:flex" {{on 'keydown' this.detectEscClose}}>
 
-      <dialog id='dialogFind' style="width:min(calc(100vw - 1rem),650px);z-index:14">
+      <dialog id="dialogFind" style="width:min(calc(100vw - 1rem),650px);z-index:14">
         <header data-dialog-draggable >
           <p>&nbsp;</p>
           <p><b>{{t 'dialog.find.header'}}</b> <span style="color:#080">
@@ -481,7 +477,7 @@ export class DialogFind extends Component {
         </footer>
       </dialog>
 
-      <dialog id='dialogFindHelp' style="width:min(calc(100vw - 2rem),450px)">
+      <dialog id="dialogFindHelp" style="width:min(calc(100vw - 2rem),450px)">
         <header data-dialog-draggable>
           <p>&nbsp;</p>
           <p>{{t 'write.findHelpHeader'}} <span></span></p>
@@ -515,7 +511,7 @@ export class DialogFind extends Component {
         </footer>
       </dialog>
 
-      <dialog id='dialogFindResult' style="max-width:calc(100vw - 2rem);z-index:15">
+      <dialog id="dialogFindResult" style="max-width:calc(100vw - 2rem);z-index:15">
         <header data-dialog-draggable>
           <p>&nbsp;</p>
           <p>{{{t 'write.findResultHeader' n=this.nchk c=this.z.imdbRoot}}}</p>

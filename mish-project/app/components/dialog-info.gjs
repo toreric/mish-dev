@@ -14,7 +14,7 @@ import { TrackedAsyncData } from 'ember-async-data';
 
 import { dialogAlertId } from './dialog-alert';
 
-export const dialogInfoId = "dialogInfo";
+export const dialogInfoId = 'dialogInfo';
 const LF = '\n';   // Line Feed == New Line
 const BR = '<br>'; // HTML line break
 

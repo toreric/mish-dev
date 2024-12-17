@@ -112,7 +112,7 @@ class SubAlbums extends Component {
   }
 
   keepDir = (i) => {
-    this.z.loli(this.z.imdbDirs[i], 'color:red');
+      // this.z.loli(this.z.imdbDirs[i], 'color:red');
     return this.z.imdbDirs[i].slice(1, 2) === '§' ? false : true;
   }
 
@@ -322,7 +322,7 @@ class AllImages extends Component {
             ({{this.z.numMarked}} {{t 'marked'}})</span></p>
 
           {{!-- If the album is the root album: --}}
-          {{else}}
+          {{else}} {{!-- root --}}
             <p><span><b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
 
             {{#if this.z.numHidden}}
@@ -337,7 +337,7 @@ class AllImages extends Component {
           {{/if}}
 
           {{!-- Don't put </span></p> terminators for #if/else here! --}}
-          {{!-- Each block needs it's own terminator! --}}
+          {{!-- Each #if/else-block needs it's own terminator! --}}
 
         </div>
       {{/if}}
