@@ -34,25 +34,22 @@ export class DialogUtil extends Component {
   }
 
   <template>
-    <dialog id="dialogUtil" style="width:min(calc(100vw - 2rem),450px)">
+    <dialog id="dialogUtil" style="width:min(calc(100vw - 2rem),auto)">
       <header data-dialog-draggable>
         <p>&nbsp;</p>
         <p><b>{{t 'write.utilHeader'}} <span>{{this.z.imdbDirName}}</span></b></p>
         <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogUtilId)}}>×</button>
       </header>
       <main style="padding:0 0.5rem 0 1rem;height:20rem" width="99%">
-        <div class="diaMess">
-        <div class="orAnd">{{t 'write.find6'}} &nbsp; &nbsp;
-          <br>{{t 'write.find7'}}<br>
+        <div style="line-height:1.4rem">{{t 'write.tool0'}}<br>
           <span class="glue">
-            <input id="r1" name="searchmode" value="AND" checked="" type="radio">
-            <label for="r1">{{{t 'write.find8'}}}</label>
-          </span>&nbsp;
+            <input id="util1" name="searchmode" value="AND" checked="" type="radio">
+            <label for="util1"> &nbsp;{{{t 'write.tool1' album=this.z.imdbDirName}}}</label>
+          </span><br>
           <span class="glue" style="padding-bottom:0.5rem">
-            <input id="r2" name="searchmode" value="OR" type="radio">
-            <label for="r2">{{{t 'write.find9'}}}</label>
+            <input id="util2" name="searchmode" value="OR" type="radio">
+            <label for="util2"> &nbsp;{{{t 'write.tool2' album=this.z.imdbDirName}}}</label>
           </span>
-        </div>
         </div>
         <Utility @util={{this.selUtil}} />
       </main>
@@ -65,7 +62,7 @@ export class DialogUtil extends Component {
 }
 
 const Utility = <template>
-    <div style="padding:0 0.5rem 0 1rem;height:20rem" width="99%">
+    <div style="line-height:1.4rem">
 
       {{#if (eq this.selUtil 'atool')}}
         This is the album tool

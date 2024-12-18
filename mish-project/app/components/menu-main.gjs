@@ -141,7 +141,7 @@ export class MenuMain extends Component {
   albumEdit = () => {
     if (this.checkRoot()) return;
     this.z.loli('albumEdit', 'color:red');
-    this.z.openDialog(dialogUtilId);
+    this.z.toggleDialog(dialogUtilId);
   }
 
   // Close/open albumTree
