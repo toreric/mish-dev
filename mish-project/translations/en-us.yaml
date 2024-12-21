@@ -305,7 +305,7 @@ write:
   noneFound: Sorry, no image found!
   notes: Notes not shown with the image
   searchTerms: Enter search terms separated by spaces, lower/uppercase does not matter (choose below which texts to search in)
-  tool0: "Choose a tool:"
+  tool0: "Choose:"
   tool1: Delete <b>{album}</b> (must be empty)
   tool2: Create a subalbum to <b>{album}</b>
   tool3: Sort the images in <b>{album}</b> by names

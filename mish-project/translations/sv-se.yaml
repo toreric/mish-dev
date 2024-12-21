@@ -303,7 +303,7 @@ write:
   noneFound: Tyvärr, ingen bild funnen!
   notes: Anteckningar som ej visas med bilden
   searchTerms: Skriv sökbegrepp åtskilda av blanktecken, små/stora bokstäver är oviktigt (välj nedan vilka texter du vill söka i)
-  tool0: "Välj ett verktyg:"
+  tool0: "Välj:"
   tool1: Radera <b>{album}</b> (måste vara tomt)
   tool2: Skapa ett underalbum till <b>{album}</b>
   tool3: Sortera bilderna i <b>{album}</b> efter namn
