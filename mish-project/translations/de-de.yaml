@@ -303,10 +303,10 @@ write:
   noneFound: Leider kein Bild gefunden!
   notes: Anmerkungen die nicht mit dem Bild erscheinen
   searchTerms: Suchbegriffe eingeben, durch Leerzeichen getrennt, Groß-/Kleinschreibung spielt keine Rolle (unten auswählen, in welchen Texten gesucht werden soll)
-  tool0: "Wählen:"
-  tool1: "<b>{album}</b> löschen (muss leer sein)"
-  tool2: Ein Unteralbum zu <b>{album}</b> erstellen
-  tool3: Die Bilder in <b>{album}</b> nach Namen sortieren
-  tool4: Doppelte Bildnamen in <b>{album}</b> finden
+  tool0: "Für <b>{album}</b> wählen:"
+  tool1: Löschen (das Album muss leer sein)
+  tool2: Ein Unteralbum erstellen
+  tool3: Die Bilder nach Namen sortieren
+  tool4: Doppelte Bildnamen finden
   utilHeader: Werkzeuge für
 
