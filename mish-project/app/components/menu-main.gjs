@@ -140,9 +140,9 @@ export class MenuMain extends Component {
   // Edit or create albums etc.
   albumEdit = () => {
     if (this.checkRoot()) return;
-      this.z.loli('albumEdit', 'color:red');
-      this.z.loli(this.z.picFound, 'color:red');
-      this.z.loli(this.z.imdbDir, 'color:red');
+      // this.z.loli('albumEdit', 'color:red');
+      // this.z.loli(this.z.picFound, 'color:red');
+      // this.z.loli(this.z.imdbDir, 'color:red');
     this.z.toggleDialog(dialogUtilId);
   }
 

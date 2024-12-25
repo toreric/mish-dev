@@ -270,6 +270,7 @@ time:
   buildstamp: Ember development server
 totalImgNumber: Totalt antal bilder i samlingen
 write:
+  chooseTool: Inget verktyg valt, välj ett!
   creator: "Ursprung: Foto upphov källa"
   description: "Beskrivning: När var vad vilka"
   find0: "Sök i:"
@@ -309,6 +310,6 @@ write:
   tool1: Radera albumet (måste vara tomt)
   tool2: Skapa ett underalbum
   tool3: Sortera bilderna efter namn
-  tool4: Finn dubletter av bildnamn
-  tool99: Finns inte!
+  tool4: Finn dubletter av bildnamn i hela albumsamlingen
+  tool99: Det finns tyvärr inget att välja
   utilHeader: Verktyg för

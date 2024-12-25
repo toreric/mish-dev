@@ -272,6 +272,7 @@ time:
   buildstamp: Ember development server
 totalImgNumber: Total number of images in the collection
 write:
+  chooseTool: No tool chosen, choose one!
   creator: 'Origin: Photographer Source'
   description: 'Caption: When Where What Who'
   find0: "Search in:"
@@ -311,6 +312,6 @@ write:
   tool1: Delete the album (must be empty)
   tool2: Create a subalbum
   tool3: Sort the images by names
-  tool4: Find duplicate image names
-  tool99: Does not exist!
+  tool4: Find duplicate image names in the whole album collection
+  tool99: Unfortunately there is nothing to choose
   utilHeader: Tools for

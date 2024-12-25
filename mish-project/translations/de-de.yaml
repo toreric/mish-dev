@@ -270,6 +270,7 @@ time:
   buildstamp: Ember development server
 totalImgNumber: Gesamtzahl der Bilder in der Sammlung
 write:
+  chooseTool: Ein Werkzeug wählen, keines ausgewählt!
   creator: "Herkunft: Foto Ursprung Quelle"
   description: "Beschreibung: Wann wo was welche"
   find0: "Suchen in:"
@@ -309,7 +310,7 @@ write:
   tool1: Das Album löschen (muss leer sein)
   tool2: Ein Unteralbum erstellen
   tool3: Die Bilder nach Namen sortieren
-  tool4: Doppelte Bildnamen finden
-  tool99: Existiert nicht!
+  tool4: Doppelte Bildnamen finden, in der gesamten Albumsammlung
+  tool99: Leider gibt es nichts zu wählen
   utilHeader: Werkzeuge für
 
