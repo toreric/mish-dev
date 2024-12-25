@@ -299,14 +299,17 @@ write:
   findHelp6: "Tipp: Die Gesamtzahl der Bilder in der Albumsammlung wird durch die Suche (in Albumnamen) nach einem „/“ angezeigt!"
   keywords: "<b>Information von geplante zukünftige Ergänzung:</b>
             Wörter als Metadaten gespeichert zur Verwendung als Suchbegriffe"
+  isEmpty: ist leer
   maxWarning: <b>Mehr als {n} Bilder können nicht<br>alle gleichzeitig angezeigt werden</b>
   noneFound: Leider kein Bild gefunden!
+  notEmpty:  Das Album muss zuerst geleert werden!
   notes: Anmerkungen die nicht mit dem Bild erscheinen
   searchTerms: Suchbegriffe eingeben, durch Leerzeichen getrennt, Groß-/Kleinschreibung spielt keine Rolle (unten auswählen, in welchen Texten gesucht werden soll)
   tool0: "Für <b>{album}</b> wählen:"
-  tool1: Löschen (das Album muss leer sein)
+  tool1: Das Album löschen (muss leer sein)
   tool2: Ein Unteralbum erstellen
   tool3: Die Bilder nach Namen sortieren
   tool4: Doppelte Bildnamen finden
+  tool99: Existiert nicht!
   utilHeader: Werkzeuge für
 

@@ -79,9 +79,9 @@ export class DialogUtil extends Component {
         <p><b>{{t 'write.utilHeader'}} <span>{{{this.imdbDirName}}}</span></b><br>({{this.z.imdbRoot}}{{this.z.imdbDir}})</p>
         <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogUtilId)}}>×</button>
       </header>
-      <main style="padding:0.5rem 0.75rem;height:20rem" width="99%">
+      <main style="padding:0 0.75rem;height:20rem" width="99%">
         {{!-- <RefreshThis @for={{this.z.imdbDir}}> --}}
-        <div style="line-height:1.4rem">{{{t 'write.tool0' album=this.imdbDirName}}}<br>
+        <div style="padding:0.5rem 0;line-height:1.4rem">{{{t 'write.tool0' album=this.imdbDirName}}}<br>
           {{#if this.okDelete}}
             <span class="glue">
               <input id="util1" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
@@ -104,11 +104,27 @@ export class DialogUtil extends Component {
               <input id="util4" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
               <label for="util4"> &nbsp;{{t 'write.tool4'}}</label>
             </span><br>
-      </div>
-        <Utility
-          @tool={{this.tool}}
-          @album={{this.imdbDirName}}
-        />
+        </div>
+        <div style="padding:0.5rem 0;line-height:1.4rem">
+          {{#if (eq this.tool '')}}
+            No tool chosen, choose one!
+          {{else if (eq this.tool 'util1')}}
+              {{this.imdbDirName}} ({{this.z.imdbRoot}}{{this.z.imdbDir}})<br>{{t 'write.tool1'}}
+            {{#if (eq this.z.numImages 0)}}
+              – {{t 'write.isEmpty'}}
+            {{else}}
+              <br><span style="color:blue">{{t 'write.notEmpty'}}</span>
+            {{/if}}
+          {{else if (eq this.tool 'util2')}}
+            {{this.imdbDirName}} ({{this.z.imdbRoot}}{{this.z.imdbDir}})<br>{{t 'write.tool2'}}
+          {{else if (eq this.tool 'util3')}}
+            {{this.imdbDirName}} ({{this.z.imdbRoot}}{{this.z.imdbDir}})<br>{{t 'write.tool3'}}
+          {{else if (eq this.tool 'util4')}}
+            {{this.imdbDirName}} ({{this.z.imdbRoot}}{{this.z.imdbDir}})<br>{{t 'write.tool4'}}
+          {{else}}
+            {{this.imdbDirName}} ({{this.z.imdbRoot}}{{this.z.imdbDir}})<br>{{t 'write.tool99'}}
+          {{/if}}
+        </div>
         {{!-- </RefreshThis> --}}
       </main>
       <footer data-dialog-draggable>
@@ -118,19 +134,3 @@ export class DialogUtil extends Component {
   </template>
 
 }
-
-const Utility = <template>
-  <div style="line-height:1.4rem">
-    {{#if (eq @tool '')}}
-      No tool chosen, choose one!
-    {{else if (eq @tool 'util1')}}
-      {{@tool}} ettan {{@album}}
-    {{else if (eq @tool 'util2')}}
-      {{@tool}} tvåan {{@album}}
-    {{else if (eq @tool 'util3')}}
-      {{@tool}} trean {{@album}}
-    {{else}}
-      {{@tool}} {{@album}}
-    {{/if}}
-  </div>
-</template>

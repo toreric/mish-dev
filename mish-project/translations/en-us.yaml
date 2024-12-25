@@ -299,15 +299,18 @@ write:
             &nbsp;&nbsp;&nbsp;&nbsp; <span>nils%jacobs</span> (one search term) finds images with, for example ’Nils Jacobsson’ or ’Nils Jacobsen’ (same as <span>1</span>, since only one search term)."
   findHelp5: Write what you want to search for in the box at the top and start the search. The result is presented in an album for temporary use called <b>Found images</b> with a link to the original in each thumbnail's menu. <span style="color:#0b0;text-decoration:underline">Green border below the caption</span> means linked image.
   findHelp6: "Tip: Find out how many photos are in the album collection by searching for a ’/’ (in album names)!"
+  isEmpty: is empty
   keywords: "<b>Information about planned future addition:</b>
              Keywords to be stored as metadata for search key use"
   maxWarning: <b>More than {n} images cannot<br>be displayed together</b>
   noneFound: Sorry, no image found!
+  notEmpty:   The album must first be emptied!
   notes: Notes not shown with the image
   searchTerms: Enter search terms separated by spaces, lower/uppercase does not matter (choose below which texts to search in)
   tool0: "Choose for <b>{album}</b>:"
-  tool1: Delete (the album must be empty)
+  tool1: Delete the album (must be empty)
   tool2: Create a subalbum
   tool3: Sort the images by names
   tool4: Find duplicate image names
+  tool99: Does not exist!
   utilHeader: Tools for

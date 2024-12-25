@@ -297,15 +297,18 @@ write:
             &nbsp;&nbsp;&nbsp;&nbsp; <span>nils%jacobs</span> (ett sökbegrepp) hittar bilder med till exempel ’Nils Jacobsson’ eller ’Nils Jacobsen’ i texten (som i <span>1</span>, eftersom bara ett sökbegrepp)."
   findHelp5: Skriv det du vill söka i rutan överst och starta sökningen. Resultatet presenteras i ett album för tillfälligt bruk som heter <b>Funna bilder</b> med länk till originalet i varje miniatyrbilds meny. <span style="color:#0b0;text-decoration:underline">Grön kant under bildtexten</span> betyder länkad bild.
   findHelp6: "Tips: Ta reda på hur många bilder det finns i albumsamlingen genom att söka efter ett ’/’ (i albumnamn)!"
+  isEmpty: är tomt
   keywords: "<b>Information om planerat framtida tillägg:</b>
             Ord lagrade som metadata för användning som särskilda sökbegrepp"
   maxWarning: <b>Fler än {n} bilder kan<br>inte visas tillsammans</b>
   noneFound: Tyvärr, ingen bild funnen!
+  notEmpty:  Albumet måste först tömmas!
   notes: Anteckningar som ej visas med bilden
   searchTerms: Skriv sökbegrepp åtskilda av blanktecken, små/stora bokstäver är oviktigt (välj nedan vilka texter du vill söka i)
   tool0: "Välj för <b>{album}</b>:"
-  tool1: Radera (albumet måste vara tomt)
+  tool1: Radera albumet (måste vara tomt)
   tool2: Skapa ett underalbum
   tool3: Sortera bilderna efter namn
   tool4: Finn dubletter av bildnamn
+  tool99: Finns inte!
   utilHeader: Verktyg för
