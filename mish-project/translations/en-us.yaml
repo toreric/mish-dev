@@ -130,7 +130,10 @@ albumSelectInfo: "Select here an album
 button:
   backgtitle: Change background
   close:     Close
+  delete:    Delete <b>{name}</b>
+  dosub:     Make a new subalbum
   findIn:    Search in
+  findDupNames: Find duplicate names
   keywords:  Keywords
   login:     Log in
   notes:     Notes
@@ -140,6 +143,7 @@ button:
   save:      Save
   saveclose: Save and close
   show:      Show all in
+  sort:      Sort
 
 buttons:
   left:
@@ -305,13 +309,15 @@ write:
              Keywords to be stored as metadata for search key use"
   maxWarning: <b>More than {n} images cannot<br>be displayed together</b>
   noneFound: Sorry, no image found!
-  notEmpty:   The album must first be emptied!
+  notEmpty: The album must first be emptied!
   notes: Notes not shown with the image
   searchTerms: Enter search terms separated by spaces, lower/uppercase does not matter (choose below which texts to search in)
   tool0: "Choose for <b>{album}</b>:"
   tool1: Delete the album (must be empty)
-  tool2: Create a subalbum
+  tool2: Make a subalbum
   tool3: Sort the images by names
+  tool31: in ascending order
+  tool32: in reverse order
   tool4: Find duplicate image names in the whole album collection
   tool99: Unfortunately there is nothing to choose
   utilHeader: Tools for

@@ -129,7 +129,10 @@ albumSelectInfo: "Eine Albumsammlung hier auswählen,
 button:
   backgtitle: Hintergrund ändern
   close:     Schließen
+  delete:    <b>{name}</b> löschen
+  dosub:     Ein neues Unteralbum erstellen
   findIn:    Suche in
+  findDupNames: Doppelte Namen finden
   keywords:  Stichwörter
   login:     Anmelden
   notes:     Anmerkungen
@@ -139,6 +142,7 @@ button:
   save:      Speichern
   saveclose: Speichern und schließen
   show:      Alle anzeigen in
+  sort:      Sortieren
 
 buttons:
   left:
@@ -303,13 +307,15 @@ write:
   isEmpty: ist leer
   maxWarning: <b>Mehr als {n} Bilder können nicht<br>alle gleichzeitig angezeigt werden</b>
   noneFound: Leider kein Bild gefunden!
-  notEmpty:  Das Album muss zuerst geleert werden!
+  notEmpty: Das Album muss zuerst geleert werden!
   notes: Anmerkungen die nicht mit dem Bild erscheinen
   searchTerms: Suchbegriffe eingeben, durch Leerzeichen getrennt, Groß-/Kleinschreibung spielt keine Rolle (unten auswählen, in welchen Texten gesucht werden soll)
   tool0: "Für <b>{album}</b> wählen:"
   tool1: Das Album löschen (muss leer sein)
   tool2: Ein Unteralbum erstellen
   tool3: Die Bilder nach Namen sortieren
+  tool31: in steigender Reihenfolge
+  tool32: in umgekehrter Reihenfolge
   tool4: Doppelte Bildnamen finden, in der gesamten Albumsammlung
   tool99: Leider gibt es nichts zu wählen
   utilHeader: Werkzeuge für

@@ -95,8 +95,24 @@ export class DialogUtil extends Component {
     }
   }
 
-  get isEmpty() { // true if the album is empty
-    return this.z.subaIndex.length < 1 && this.z.numImages < 1;
+  doDelete = () => {
+    this.z.alertMess(this.intl.t('futureFacility'))
+  }
+
+  doSort = () => {
+    this.z.alertMess(this.intl.t('futureFacility'))
+  }
+
+  doSubalbum = () => {
+    this.z.alertMess(this.intl.t('futureFacility'))
+  }
+
+  doDupnames = () => {
+    this.z.alertMess(this.intl.t('futureFacility'))
+  }
+
+  get notEmpty() { // true if the album is empty
+    return this.z.subaIndex.length > 0 || this.z.numImages > 0;
   }
 
   <template>
@@ -106,7 +122,7 @@ export class DialogUtil extends Component {
         <p><b>{{t 'write.utilHeader'}} <span>{{{this.imdbDirName}}}</span></b><br>({{this.z.imdbRoot}}{{this.z.imdbDir}})</p>
         <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogUtilId)}}>×</button>
       </header>
-      <main style="padding:0 0.75rem;height:20rem" width="99%">
+      <main style="padding:0 0.75rem;max-height:24rem" width="99%">
 
         {{!-- <RefreshThis @for={{this.z.imdbDir}}> --}}
         <div style="padding:0.5rem 0;line-height:1.4rem">
@@ -145,24 +161,37 @@ export class DialogUtil extends Component {
             {{t 'write.chooseTool'}}
 
           {{else if (eq this.tool 'util1')}}
-              {{t 'write.tool1'}}
-            {{#if this.isEmpty}}
-              – {{t 'write.isEmpty'}}
-            {{else}}
+              <b>{{t 'write.tool1'}}</b>
+            {{#if this.notEmpty}}
               <br><span style="color:blue">{{t 'write.notEmpty'}}</span>
+            {{else}}
+              – {{t 'write.isEmpty'}}<br>
+              <button type="button" {{on 'click' (fn this.doDelete)}}>{{{t 'button.delete' name=this.imdbDirName}}}</button>
             {{/if}}
 
           {{else if (eq this.tool 'util2')}}
-            {{t 'write.tool2'}}
+            <b>{{t 'write.tool2'}}</b><br>
+            <button type="button" {{on 'click' (fn this.doSubalbum)}}>{{t 'button.dosub'}}</button>
 
           {{else if (eq this.tool 'util3')}}
-            {{t 'write.tool3'}}
+            <b>{{t 'write.tool3'}}</b>
+            <form style="line-height:1.4rem">
+              <span class="glue">
+                <input id="util31" name="albumUtility" value="" type="radio" checked>
+                <label for="util31"> &nbsp;{{t 'write.tool31'}}</label>
+              </span><br>
+              <span class="glue">
+                <input id="util32" name="albumUtility" value="" type="radio">
+                <label for="util32"> &nbsp;{{t 'write.tool32'}}</label>
+              </span>
+            </form>
+            <button type="button" {{on 'click' (fn this.doSort)}}>{{t 'button.sort'}}</button>
+
 
           {{else if (eq this.tool 'util4')}}
-            {{t 'write.tool4'}}
+            <b>{{t 'write.tool4'}}</b><br>
+            <button type="button" {{on 'click' (fn this.doDupnames)}}>{{t 'button.findDupNames'}}</button>
 
-          {{else}}
-            <span style="color:red">{{t 'write.tool99'}}</span>
           {{/if}}
         </div>
         {{!-- </RefreshThis> --}}

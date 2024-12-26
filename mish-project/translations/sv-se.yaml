@@ -130,7 +130,10 @@ albumSelectInfo: "Välj här en album-
 button:
   backgtitle: Byt bakgrund
   close:     Stäng
+  delete:    Radera <b>{name}</b>
+  dosub:     Gör ett nytt underalbum
   findIn:    Sök i
+  findDupNames: Finn dublettnamn
   keywords:  Nyckelord
   login:     Logga in
   notes:     Anteckningar
@@ -140,6 +143,7 @@ button:
   save:      Spara
   saveclose: Spara och stäng
   show:      Visa alla i
+  sort:      Sortera
 
 buttons:
   left:
@@ -303,13 +307,15 @@ write:
             Ord lagrade som metadata för användning som särskilda sökbegrepp"
   maxWarning: <b>Fler än {n} bilder kan<br>inte visas tillsammans</b>
   noneFound: Tyvärr, ingen bild funnen!
-  notEmpty:  Albumet måste först tömmas!
+  notEmpty: Albumet måste först tömmas!
   notes: Anteckningar som ej visas med bilden
   searchTerms: Skriv sökbegrepp åtskilda av blanktecken, små/stora bokstäver är oviktigt (välj nedan vilka texter du vill söka i)
   tool0: "Välj för <b>{album}</b>:"
   tool1: Radera albumet (måste vara tomt)
-  tool2: Skapa ett underalbum
+  tool2: Gör ett underalbum
   tool3: Sortera bilderna efter namn
+  tool31: i stigande ordning
+  tool32: i fallande ordning
   tool4: Finn dubletter av bildnamn i hela albumsamlingen
   tool99: Det finns tyvärr inget att välja
   utilHeader: Verktyg för
