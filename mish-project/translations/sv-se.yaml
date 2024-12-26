@@ -130,6 +130,7 @@ albumSelectInfo: "Välj här en album-
 button:
   backgtitle: Byt bakgrund
   close:     Stäng
+  continue:  Fortsätt
   delete:    Radera <b>{name}</b>
   dosub:     Gör ett nytt underalbum
   findIn:    Sök i
@@ -274,6 +275,7 @@ time:
   buildstamp: Ember development server
 totalImgNumber: Totalt antal bilder i samlingen
 write:
+  albumName: Skriv ett albumnamn
   chooseTool: Inget verktyg valt, välj ett!
   creator: "Ursprung: Foto upphov källa"
   description: "Beskrivning: När var vad vilka"

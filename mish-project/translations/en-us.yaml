@@ -130,6 +130,7 @@ albumSelectInfo: "Select here an album
 button:
   backgtitle: Change background
   close:     Close
+  continue:  Continue
   delete:    Delete <b>{name}</b>
   dosub:     Make a new subalbum
   findIn:    Search in
@@ -276,6 +277,7 @@ time:
   buildstamp: Ember development server
 totalImgNumber: Total number of images in the collection
 write:
+  albumName: Enter an album name
   chooseTool: No tool chosen, choose one!
   creator: 'Origin: Photographer Source'
   description: 'Caption: When Where What Who'

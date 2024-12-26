@@ -194,6 +194,23 @@ export default class CommonStorageService extends Service {
   //   #region TEXT UTILS
   //== Text functions
 
+  // Check if an album/directory name can be accepted
+  acceptedDirName = (name) => { // Note that &ndash; is accepted:
+    let acceptedName = 0 === name.replace(/[/\-–@_.a-zåäöA-ZÅÄÖ0-9]+/g, "").length;
+    return acceptedName && name.slice(0,1) !== "." && !name.includes('/.');
+  }
+
+  // Check if an image file name can be accepted
+  acceptedFileName = (name) => {
+    // This function must equal the acceptedFileName server function
+    var acceptedName = 0 === name.replace(/[-_.a-zA-Z0-9]+/g, "").length
+    // Allowed file types are also set at drop-zone in the template menu-buttons.hbs
+    var ftype = name.match(/\.(jpe?g|tif{1,2}|png|gif)$/i)
+    var imtype = name.slice(0, 6) // System file prefix
+    // Here more files may be filtered out depending on o/s needs etc.:
+    return acceptedName && ftype && imtype !== '_mini_' && imtype !== '_show_' && imtype !== '_imdb_' && name.slice(0,1) !== "."
+  }
+
   // Replace <br> with \n, used in dialog-text/DialogText
   deNormalize2LF = (str) =>{
     return str.replace(/<br>/g, LF);

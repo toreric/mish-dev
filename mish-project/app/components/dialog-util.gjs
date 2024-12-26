@@ -35,6 +35,13 @@ export class DialogUtil extends Component {
     this.tool = elRadio.id;
   }
 
+  clearInput = () => {
+    let elem = document.querySelector('#newAlbNam');
+    elem.value = '';
+    elem.style.background = '#f0f0b0';
+    elem.focus();
+  }
+
   get imdbDir() {
     // Reset all at album change
     this.tool = '';
@@ -103,8 +110,33 @@ export class DialogUtil extends Component {
     this.z.alertMess(this.intl.t('futureFacility'))
   }
 
-  doSubalbum = () => {
-    this.z.alertMess(this.intl.t('futureFacility'))
+  doSubalbum = (n) => {
+    let elem = document.getElementById('newAlbNam');
+    elem.focus();
+    let name = elem.value;
+    // Buttons 'continue' and 'make-album'
+    let bucont = document.querySelector('#newAlbNam + a + br + button');
+    let bumake = document.querySelector('#newAlbNam + a + br + button + button');
+    if (n === 1) { // continue
+      name = name.trim().replace(/ +/g, '_');
+      elem.value = name;
+      if (name && this.z.acceptedDirName(name)) {
+        elem.style.background = '#dfd'; // green
+        bucont.setAttribute('disabled', true);
+        bumake.removeAttribute('disabled');
+      } else {
+        elem.style.background = 'pink'; // reddish
+        bumake.setAttribute('disabled', true);
+      }
+    }
+    if (n > 1) { // reset
+      bucont.removeAttribute('disabled');
+      bumake.setAttribute('disabled', true);
+      elem.style.background = '#f0f0b0'; // yellow
+      if (n === 3) { // make
+        this.z.alertMess('"' + document.getElementById('newAlbNam').value + '"');
+      }
+    }
   }
 
   doDupnames = () => {
@@ -135,7 +167,7 @@ export class DialogUtil extends Component {
           {{/if}}
           {{#if this.okSubalbum}}
             <span class="glue">
-              <input id="util2" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
+              <input id="util2" name="albumUtility" value="" type="radio" autofocus {{on 'click' this.detectRadio}}>
               <label for="util2"> &nbsp;{{t 'write.tool2'}}</label>
             </span><br>
           {{/if}}
@@ -160,6 +192,7 @@ export class DialogUtil extends Component {
           {{else if (eq this.tool '')}}
             {{t 'write.chooseTool'}}
 
+          {{!-- === Delete the album === --}}
           {{else if (eq this.tool 'util1')}}
               <b>{{t 'write.tool1'}}</b>
             {{#if this.notEmpty}}
@@ -169,10 +202,16 @@ export class DialogUtil extends Component {
               <button type="button" {{on 'click' (fn this.doDelete)}}>{{{t 'button.delete' name=this.imdbDirName}}}</button>
             {{/if}}
 
+          {{!-- === Make a new subalbum === --}}
           {{else if (eq this.tool 'util2')}}
             <b>{{t 'write.tool2'}}</b><br>
-            <button type="button" {{on 'click' (fn this.doSubalbum)}}>{{t 'button.dosub'}}</button>
 
+            <input id="newAlbNam" type="text" class="cred user nameNew" size="36" title="" placeholder="{{t 'write.albumName'}}" style="margin:0.2rem 0 0.5rem 0" {{on 'keydown' (fn this.doSubalbum 2)}}><a title={{t 'erase'}} {{on 'click' (fn this.clearInput)}}> ×&nbsp;</a><br>
+
+            <button type="button" {{on 'click' (fn this.doSubalbum 1)}}>{{t 'button.continue'}}</button>
+            <button type="button" {{on 'click' (fn this.doSubalbum 3)}} disabled>{{t 'button.dosub'}}</button>
+
+          {{!-- === Sort images by names === --}}
           {{else if (eq this.tool 'util3')}}
             <b>{{t 'write.tool3'}}</b>
             <form style="line-height:1.4rem">
@@ -185,11 +224,13 @@ export class DialogUtil extends Component {
                 <label for="util32"> &nbsp;{{t 'write.tool32'}}</label>
               </span>
             </form>
+
             <button type="button" {{on 'click' (fn this.doSort)}}>{{t 'button.sort'}}</button>
 
-
+          {{!-- === Find duplicate image names === --}}
           {{else if (eq this.tool 'util4')}}
             <b>{{t 'write.tool4'}}</b><br>
+
             <button type="button" {{on 'click' (fn this.doDupnames)}}>{{t 'button.findDupNames'}}</button>
 
           {{/if}}
