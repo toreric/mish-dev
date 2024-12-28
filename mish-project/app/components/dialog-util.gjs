@@ -64,23 +64,28 @@ export class DialogUtil extends Component {
     return text;
   }
 
+  get restart() {
+    return '<br><div style="text-align:center"><button class="unclosable" type="button" onclick="location.reload(true);return false">' + this.intl.t('button.restart') + '</button></div>'
+  }
+
+
   // Shoud be first called from the template, RESETS with this.imdbDir:
   get okDelete() { // true if delete allowed
     let found = this.imdbDir === this.z.picFound;
-    if (found || !this.z.imdbDir) { // root == ''
-      return false;
-    } else {
+    if (!found && this.z.imdbDir && this.z.allow.albumEdit) { // root == ''
       this.noTools = false;
       return true;
+    } else {
+      return false;
     }
   }
 
   get okSubalbum() { // true if subalbums allowed
-    if (this.z.imdbDir.slice(1) === this.z.picFound) {
-      return false;
-    } else {
+    if (this.z.imdbDir.slice(1) !== this.z.picFound && this.z.allow.albumEdit) {
       this.noTools = false;
       return true;
+    } else {
+      return false;
     }
   }
 
@@ -102,21 +107,59 @@ export class DialogUtil extends Component {
     }
   }
 
-  doDelete = () => {
-    this.z.alertMess(this.intl.t('futureFacility'))
+  get notEmpty() { // true if the album is empty
+    return this.z.subaIndex.length > 0 || this.z.numImages > 0;
   }
 
-  doSort = () => {
-    this.z.alertMess(this.intl.t('futureFacility'))
+  doDelete = async () => {
+    // this.z.alertMess(this.intl.t('futureFacility'))
+    let cmd = 'rm -rf ' + this.z.imdbPath + this.z.imdbDir;
+      // this.z.loli(cmd, 'color:red');
+    let msg = await this.z.execute(cmd);
+    if (msg) {
+      // failure is really not possible with 'rm -rf ...'
+      this.z.loli(this.z.imdbRoot + this.z.imdbDir + ': delete failed', 'color:red');
+    } else {
+      this.z.loli(this.z.imdbRoot + this.z.imdbDir + ' deleted', 'color:lightgreen');
+      this.z.alertMess(this.z.imdbRoot + this.z.imdbDir + ' ' + this.intl.t('deleted') + this.intl.t('write.reloadRequired') + this.restart);
+    }
   }
 
-  doSubalbum = (n) => {
+  doSort = async () => {
+    this.z.displayNames = 'block';
+    document.querySelector('img.spinner').style.display = '';
+    let minis = document.querySelectorAll('div.miniImgs.imgs div.img_mini');
+    let names = [];
+    for (let i=0; i<minis.length; i++) {
+      names.push(minis[i].id.slice(1));
+    }
+    // Sort example: a.sort((a,b) => {return a.value - b.value});
+    // Applied to text (though exact conformity should also consider equality
+    // using a more accurate function that correspondingly returns 1, 0, or -1):
+    names.sort((a, b) => {return a.toLowerCase() > b.toLowerCase()});
+    // The id for reverse sort radio button is 'util32' (see template)
+    if (document.getElementById('util32').checked) names.reverse();
+      // console.log(names);
+
+    // When you add an element that is already in the DOM,
+    // this element will be moved, not copied.
+    let wrap = document.getElementById('imgWrapper');
+    for (let i=0; i<minis.length; i++) {
+      wrap.appendChild(document.getElementById('i' + names[i]))
+    }
+    await new Promise (z => setTimeout (z, 399));
+    document.querySelector('img.spinner').style.display = 'none';
+    // this.z.refreshTexts++; // bad, since reveals multiple images
+    this.z.alertMess(this.z.intl.t('write.afterSort'));
+  }
+
+  doSubalbum = async (n) => {
     let elem = document.getElementById('newAlbNam');
-    elem.focus();
     let name = elem.value;
     // Buttons 'continue' and 'make-album'
     let bucont = document.querySelector('#newAlbNam + a + br + button');
     let bumake = document.querySelector('#newAlbNam + a + br + button + button');
+    elem.focus();
     if (n === 1) { // continue
       name = name.trim().replace(/ +/g, '_');
       elem.value = name;
@@ -134,17 +177,26 @@ export class DialogUtil extends Component {
       bumake.setAttribute('disabled', true);
       elem.style.background = '#f0f0b0'; // yellow
       if (n === 3) { // make
-        this.z.alertMess('"' + document.getElementById('newAlbNam').value + '"');
+        let pathNew = this.z.imdbPath + this.z.imdbDir;
+        let nameNew = '/' + document.getElementById('newAlbNam').value;
+        let cmd = 'mkdir ' + pathNew + nameNew + ' && touch ' + pathNew + nameNew + '/.imdb';
+            // this.z.loli(cmd, 'color:red');
+        let msg = await this.z.execute(cmd);
+        if (msg) {
+          // don't show msg: reveals paths
+          let mayExist = this.intl.t('mayExist');
+          this.z.loli(this.z.imdbRoot + this.z.imdbDir + nameNew + ' not created ' + mayExist, 'color:red');
+          this.z.alertMess(this.z.imdbRoot + this.z.imdbDir + nameNew + ' ' + this.intl.t('createfail') + ' ' + mayExist);
+        } else {
+          this.z.loli(this.z.imdbRoot + this.z.imdbDir + nameNew + ' created', 'color:lightgreen');
+          this.z.alertMess(this.z.imdbRoot + this.z.imdbDir + nameNew + ' ' + this.intl.t('created') + this.intl.t('write.reloadRequired') + this.restart);
+        }
       }
     }
   }
 
   doDupnames = () => {
     this.z.alertMess(this.intl.t('futureFacility'))
-  }
-
-  get notEmpty() { // true if the album is empty
-    return this.z.subaIndex.length > 0 || this.z.numImages > 0;
   }
 
   <template>
@@ -206,7 +258,7 @@ export class DialogUtil extends Component {
           {{else if (eq this.tool 'util2')}}
             <b>{{t 'write.tool2'}}</b><br>
 
-            <input id="newAlbNam" type="text" class="cred user nameNew" size="36" title="" placeholder="{{t 'write.albumName'}}" style="margin:0.2rem 0 0.5rem 0" {{on 'keydown' (fn this.doSubalbum 2)}}><a title={{t 'erase'}} {{on 'click' (fn this.clearInput)}}> ×&nbsp;</a><br>
+            <input id="newAlbNam" type="text" class="cred user nameNew" size="36" title="" placeholder="{{t 'write.albumName'}}" style="margin:0.2rem 0 0.5rem 0" {{on 'keydown' (fn this.doSubalbum 2)}} autofocus><a title={{t 'erase'}} {{on 'click' (fn this.clearInput)}}> ×&nbsp;</a><br>
 
             <button type="button" {{on 'click' (fn this.doSubalbum 1)}}>{{t 'button.continue'}}</button>
             <button type="button" {{on 'click' (fn this.doSubalbum 3)}} disabled>{{t 'button.dosub'}}</button>

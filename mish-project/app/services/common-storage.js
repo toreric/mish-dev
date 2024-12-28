@@ -135,7 +135,7 @@ export default class CommonStorageService extends Service {
   ];
 
   // allowvalue is the source of the 'allow' property values, reset at login
-  @tracked allowvalue = "0".repeat (this.allowance.length);
+  @tracked allowvalue = "0".repeat(this.allowance.length);
 
   get allowText() { return [  // IMPORTANT: Ordered as 'allow'!
     `adminAll:     ${this.intl.t('adminAll')}`,
@@ -164,7 +164,7 @@ export default class CommonStorageService extends Service {
       allow[allowance[i]] = Number(allowvalue[i]);
     }
     if (allow.adminAll) {
-      allowvalue = "1".repeat (this.allowance.length);
+      allowvalue = "1".repeat(this.allowance.length);
       for (var i=0; i<allowance.length; i++) {
         allow[allowance[i]] = 1;
       }
@@ -195,8 +195,8 @@ export default class CommonStorageService extends Service {
   //== Text functions
 
   // Check if an album/directory name can be accepted
-  acceptedDirName = (name) => { // Note that &ndash; is accepted:
-    let acceptedName = 0 === name.replace(/[/\-–@_.a-zåäöA-ZÅÄÖ0-9]+/g, "").length;
+  acceptedDirName = (name) => { // Note that – (&ndash;) and Üü are accepted:
+    let acceptedName = 0 === name.replace(/[/\-–@_.a-zåäöüA-ZÅÄÖÜ0-9]+/g, '').length;
     return acceptedName && name.slice(0,1) !== "." && !name.includes('/.');
   }
 
@@ -449,48 +449,6 @@ export default class CommonStorageService extends Service {
     this.paintHideFlags();
     // Count the number of shown, invisible, linked, unlinked, etc. images
     this.countNumbers();
-  }
-
-  //#region toggleMenuImg
-  toggleMenuImg = (open, e) => {
-    if (e) {
-      // e.preventDefault();
-      e.stopPropagation();
-      var tgt = e.target.closest('.img_mini');
-    }
-    if (tgt) {
-      let id = tgt.id;
-      let name = id.slice(1);
-      this.picName = name;
-    }
-    let name = this.picName;
-      // this.loli(this.picName + ':', 'color:red');
-      // console.log(this.allFiles[this.picIndex])
-
-    const loliClose = (name) => this.loli('closed menu of image ' + name + ' in album ' + this.imdbRoot + this.imdbDir);
-
-    let list = document.querySelector('#i' + this.escapeDots(name) + ' .menu_img_list');
-    // if (!list) list = document.querySelector('#d' + this.escapeDots(name) + ' .menu_img_list');
-    if (open) { // 1 == do open
-      this.markBorders(name);
-      let allist = document.querySelectorAll('.menu_img_list');
-      // If another image menu is open, close it:
-      for (let list of allist) {
-        if (!list.style.display) {
-          list.style.display = 'none';
-          let name = list.closest('.img_mini').id.slice(1);
-          loliClose(name);
-          break;
-        }
-      }
-      list.style.display = '';
-      this.loli('opened menu of image ' + name + ' in album ' + this.imdbRoot + this.imdbDir);
-
-    } else { // 0 == do close
-      this.markBorders(name); // Since this was the most recent image menu
-      list.style.display = 'none';
-      loliClose(name);
-    }
   }
 
   //#region toggleBackg
@@ -1369,6 +1327,47 @@ export default class CommonStorageService extends Service {
     return '';
   }
 
+  toggleMenuImg = (open, e) => {
+    if (e) {
+      // e.preventDefault();
+      e.stopPropagation();
+      var tgt = e.target.closest('.img_mini');
+    }
+    if (tgt) {
+      let id = tgt.id;
+      let name = id.slice(1);
+      this.picName = name;
+    }
+    let name = this.picName;
+      // this.loli(this.picName + ':', 'color:red');
+      // console.log(this.allFiles[this.picIndex])
+
+    const loliClose = (name) => this.loli('closed menu of image ' + name + ' in album ' + this.imdbRoot + this.imdbDir);
+
+    let list = document.querySelector('#i' + this.escapeDots(name) + ' .menu_img_list');
+    // if (!list) list = document.querySelector('#d' + this.escapeDots(name) + ' .menu_img_list');
+    if (open) { // 1 == do open
+      this.markBorders(name);
+      let allist = document.querySelectorAll('.menu_img_list');
+      // If another image menu is open, close it:
+      for (let list of allist) {
+        if (!list.style.display) {
+          list.style.display = 'none';
+          let name = list.closest('.img_mini').id.slice(1);
+          loliClose(name);
+          break;
+        }
+      }
+      list.style.display = '';
+      this.loli('opened menu of image ' + name + ' in album ' + this.imdbRoot + this.imdbDir);
+
+    } else { // 0 == do close
+      this.markBorders(name); // Since this was the most recent image menu
+      list.style.display = 'none';
+      loliClose(name);
+    }
+  }
+
   //   #region DIALOGS
   //== Dialog utilities for open/close/modal ...
 
@@ -1468,6 +1467,7 @@ export default class CommonStorageService extends Service {
 
   closeDialog = (dialogId) => {
     let diaObj = document.getElementById(dialogId);
+    if (document.querySelector('#' + dialogId + ' button.unclosable')) return;
     if (diaObj && diaObj.open) {
       diaObj.close();
       this.loli('closed ' + dialogId);

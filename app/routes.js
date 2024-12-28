@@ -717,8 +717,8 @@ module.exports = function(app) { // Start module.exports
 
   // ===== Check if an album/directory name can be accepted
   //#region acceptedDirName
-  function acceptedDirName(name) { // Note that &ndash; is accepted:
-    let acceptedName = 0 === name.replace(/[/\-–@_.a-zåäöA-ZÅÄÖ0-9]+/g, "").length
+  function acceptedDirName(name) { // Note that – (&ndash;) and Üü are accepted:
+    let acceptedName = 0 === name.replace(/[/\-–@_.a-zåäöüA-ZÅÄÖÜ0-9]+/g, '').length
     return acceptedName && name.slice(0,1) !== "." && !name.includes('/.')
   }
 

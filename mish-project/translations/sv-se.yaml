@@ -45,6 +45,9 @@ captionFor: Bildtext för
 captionSaved: sparad
 checkuncheck: Markera/avmarkera alla
 chooseShow: välj att visa
+created: skapat
+createfail: INTE SKAPAT
+deleted: raderat
 dark: Mörk
 Dimension: Dimension
 download: Ladda ned...
@@ -81,7 +84,8 @@ linkto: Länka till...
 Mark: Markera
 marked: markerade
 markhidden: Markera bara dolda
-missing: (saknas)
+mayExist: (kanske redan finns?)
+missing: (saknas) NOTE never used
 Moditime: Ändrad
 moveto: Flytta till...
 Name: Namn
@@ -139,6 +143,8 @@ button:
   login:     Logga in
   notes:     Anteckningar
   optlogin:  Inloggning
+  restart:   "Ladda om webbläsaren\n
+             genom att klicka här!"
   rights:    Om rättigheter
   rightsinfo: Rättighetsinformation
   save:      Spara
@@ -275,6 +281,14 @@ time:
   buildstamp: Ember development server
 totalImgNumber: Totalt antal bilder i samlingen
 write:
+  afterSort: Dra-och-släpp-flyttning av bilder är<br>
+             inte möjlig efter sorteringen, men det<br>
+             återställs genom att först spara
+             <a class="helpIcon">S</a><br>
+             och därefter ladda om <a id="reFr0" class="helpIcon"><img draggable="false" src="/images/reload.png"></a> albumet<br><br>
+             Gäster kan bara ladda om<br><br>
+             <span style="font-weight:normal;color:#000">Förhoppningsvis ska dra-och-släpp-<br>
+             problemet så småningom åtgärdas</span>
   albumName: Skriv ett albumnamn
   chooseTool: Inget verktyg valt, välj ett!
   creator: "Ursprung: Foto upphov källa"
@@ -311,6 +325,7 @@ write:
   noneFound: Tyvärr, ingen bild funnen!
   notEmpty: Albumet måste först tömmas!
   notes: Anteckningar som ej visas med bilden
+  reloadRequired: <br><br>Ändrad albumstruktur kräver omstart<br>
   searchTerms: Skriv sökbegrepp åtskilda av blanktecken, små/stora bokstäver är oviktigt (välj nedan vilka texter du vill söka i)
   tool0: "Välj för <b>{album}</b>:"
   tool1: Radera albumet (måste vara tomt)

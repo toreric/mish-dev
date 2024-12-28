@@ -45,6 +45,9 @@ captionFor: Bildunterschrift für
 captionSaved: gespeichert
 checkuncheck: Alle markieren/abmarkieren
 chooseShow: zum Anzeigen auswählen
+created: erstellt
+createfail: NICHT ERSTELLT
+deleted: gelöscht
 dark: Dunkel
 Dimension: Dimension
 download: Herunterladen...
@@ -81,7 +84,8 @@ linkto: Verlinken zu...
 Mark: Markieren
 marked: markierte
 markhidden: Nur versteckten markieren
-missing: (fehlt)
+mayExist: (vielleicht schon erstellt?)
+missing: (fehlt) NOTE never used
 Moditime: Geändert
 moveto: Umzug nach...
 Name: Name
@@ -138,6 +142,8 @@ button:
   login:     Anmelden
   notes:     Anmerkungen
   optlogin:  Anmeldung
+  restart:   "Den Browser neuladen\n
+             durch hier klicken!"
   rightsinfo: Rechteinformation
   rights:    Über Rechte
   save:      Speichern
@@ -275,6 +281,13 @@ time:
   buildstamp: Ember development server
 totalImgNumber: Gesamtzahl der Bilder in der Sammlung
 write:
+  afterSort: Das Verschieben von Bildern per Drag-and-Drop<br>
+             ist nach der Sortierung nicht mehr möglich, aber<br>
+             wird wiederhergestellt durch erstens Speichern <a class="helpIcon">S</a><br>
+             und danach das Album neu laden <a id="reFr0" class="helpIcon"><img draggable="false" src="/images/reload.png"></a><br><br>
+             Gäste können nur neu laden<br><br>
+             <span style="font-weight:normal;color:#000">Hoffentlich wird das Drag-and-Drop-<br>
+             Problem irgendwann behoben</span>
   albumName: Einen Albumnamen eingeben
   chooseTool: Ein Werkzeug wählen, keines ausgewählt!
   creator: "Herkunft: Foto Ursprung Quelle"
@@ -311,6 +324,7 @@ write:
   noneFound: Leider kein Bild gefunden!
   notEmpty: Das Album muss zuerst geleert werden!
   notes: Anmerkungen die nicht mit dem Bild erscheinen
+  reloadRequired: <br><br>Geänderte Albumstruktur erfordert Neustart<br>
   searchTerms: Suchbegriffe eingeben, durch Leerzeichen getrennt, Groß-/Kleinschreibung spielt keine Rolle (unten auswählen, in welchen Texten gesucht werden soll)
   tool0: "Für <b>{album}</b> wählen:"
   tool1: Das Album löschen (muss leer sein)

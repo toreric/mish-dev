@@ -343,7 +343,7 @@ class AllImages extends Component {
       {{/if}}
 
       {{!-- The div of the thumnail images --}}
-      <div style="display:flex;flex-wrap:wrap;
+      <div id="imgWrapper" style="display:flex;flex-wrap:wrap;
         margin:auto;padding:0;align-items:baseline;
         justify-content:center;position:relative"
       >

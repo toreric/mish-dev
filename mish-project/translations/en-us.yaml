@@ -45,6 +45,9 @@ captionFor: Image caption for
 captionSaved: saved
 checkuncheck: Check or uncheck all
 chooseShow: choose to view
+created: created
+createfail: NOT CREATED
+deleted: deleted
 dark: Dark
 Dimension: Dimension
 download: Download...
@@ -81,6 +84,7 @@ linkto: Link to...
 Mark: Mark
 marked: marked
 markhidden: Check hidden only
+mayExist: (may already exist?)
 missing: (missing) NOTE never used
 Moditime: Modified
 moveto: Move to...
@@ -139,6 +143,8 @@ button:
   login:     Log in
   notes:     Notes
   optlogin:  Log in
+  restart:   "Reload the browser\n
+             by clicking here!"
   rights:    About rights
   rightsinfo: Rights information
   save:      Save
@@ -277,6 +283,14 @@ time:
   buildstamp: Ember development server
 totalImgNumber: Total number of images in the collection
 write:
+  afterSort: Drag-and-drop moving of images<br>
+             is not possible after the sorting,<br>
+             but is restored by first saving
+             <a class="helpIcon">S</a><br>
+             and then reloading <a id="reFr0" class="helpIcon"><img draggable="false" src="/images/reload.png"></a> the album<br><br>
+             Guests can only reload<br><br>
+             <span style="font-weight:normal;color:#000">Hopefully, the drag-and-drop<br>
+              problem will be eventually fixed</span>
   albumName: Enter an album name
   chooseTool: No tool chosen, choose one!
   creator: 'Origin: Photographer Source'
@@ -313,6 +327,7 @@ write:
   noneFound: Sorry, no image found!
   notEmpty: The album must first be emptied!
   notes: Notes not shown with the image
+  reloadRequired: <br><br>Changed album structure requires restart<br>
   searchTerms: Enter search terms separated by spaces, lower/uppercase does not matter (choose below which texts to search in)
   tool0: "Choose for <b>{album}</b>:"
   tool1: Delete the album (must be empty)

@@ -144,7 +144,7 @@ export class MenuMain extends Component {
       // this.z.loli(this.z.picFound, 'color:red');
       // this.z.loli(this.z.imdbDir, 'color:red');
     this.z.openDialog(dialogUtilId);
-    this.z.closeMainMenu();
+    this.z.closeMainMenu('');
   }
 
   // Close/open albumTree
