@@ -106,13 +106,12 @@ export class DialogFind extends Component {
       }
     } else {
       let sWhr = [false, false, false, false, true];
-      // NOTE: The names and uses below are mostly copied from 'doFindText'.
+      // NOTE: The names and uses are mostly copied from 'doFindText' below.
       // 'this.inames[i]' are pic names, now to be found with exact match.
-
-      // Simultaneously we will find duplicate names, if any.
+      // Simultaneously, will we find duplicate names, if any?
       // NO! WE WON'T! WHY DON'T WE FIND DUPLICATE NAMES???
-
-      let data = await this.searchText(this.inames[i], false, sWhr, -1);
+      // The function 'z.searchText' code is in '#region search/' of z.
+      let data = await this.z.searchText(this.inames[i], false, sWhr, -1);
       // Hide the spinner
       document.querySelector('img.spinner').style.display = 'none';
       let paths = data.trim ().split ('\n');
@@ -161,7 +160,7 @@ export class DialogFind extends Component {
     Example: Find pictures by exact matching of image names (file basenames), e.g.
       doFindText ("img_0012 img_0123", false, [false, false, false, false, true], -1)
     **/
-    let data = await this.searchText(sTxt, and, sWhr, 0);
+    let data = await this.z.searchText(sTxt, and, sWhr, 0);
     // Hide the spinner
     document.querySelector('img.spinner').style.display = 'none';
     if (!data) {
@@ -297,125 +296,6 @@ export class DialogFind extends Component {
       document.querySelector('#dialogFindResult button.show').removeAttribute('disabled');
     }
 
-  }
-
-  /**
-  searchText: contains the server search/ call
-
-  Search the image texts in the current imdbRoot (cf. prepSearchDialog)
-  @param {string}  sTxt space separated search items
-  @param {boolean} and true=>AND | false=>OR
-  @param {boolean} searchWhere array, checkboxes for selected texts
-  @param {integer} exact <>0 removes SQL ´%´s (>0 means origin dialogTextNotes, <0 dialogFind)
-  @returns {string} \n-separated file paths
-  NOTE: Non-zero ´exact´ also means "Only search for image names (file 'basenames')!"
-  NOTE: Negative ´exact´, -1 = called from the find? dialog, -2 = do nothing,
-        else (non-negative) = called from and return to the favorites? dialog
-  */
-  searchText = (sTxt, and, searchWhere, exact) => {
-    // Display the spinner
-    document.querySelector('img.spinner').style.display = '';
-    // close all dialogs is unneccessary
-    document.getElementById('go_back').click(); // close show, perhaps unneccessary
-    let AO, andor = '';
-    if (and) {AO = ' AND '} else {AO = ' OR '};
-    if (sTxt === "") {sTxt = undefined;}
-    let cmt = '';
-    // The first line may be a comment, to ignore:
-    if (sTxt.slice (0, 1) === '#') {
-      let l = sTxt.indexOf('\n');
-      cmt = sTxt.slice(1, l); // comment line, may be used as header
-      sTxt = sTxt.slice(l + 1);
-        // this.z.loli(cmt, 'color:yellow');
-    }
-    let txt = sTxt.trim();
-    let str = '';
-    let arr = [];
-    if (!txt) {
-      document.querySelector('#dialogFind textarea').value = '';
-      return '';
-    } else {
-      txt = txt.replace(/\s+/g, ' ').trim();
-        // this.z.loli(txt, 'color:red');
-      arr = txt.split (' ');
-      for (let i = 0; i<arr.length; i++) {
-        // Replace any `'` with `''`: will be enclosed within `'`s in SQL
-        arr[i] = arr[i].replace (/'/g, "''");
-        // Replace underscore to be taken literally, needs `ESCAPE '\'`
-        arr[i] = arr[i].replace (/_/g, '\\_');
-        // First replace % (NBSP):
-        arr[i] = arr[i].replace (/%/g, ' '); // % in Mish means 'sticking space'
-        // Then use % the SQL way if applicable and add `ESCAPE '\'` for '_':
-        let esc = arr[i].indexOf('_') < 0 ? "'" : "' ESCAPE '\\'";
-        // Exact match for file (base) names, e.g. favorites search
-        if (exact !== 0) {
-          arr[i] = "'" + arr[i] + esc;
-        } else {
-          arr[i] = "'%" + arr[i] + '%' + esc;
-        }
-        if (i > 0) {andor = AO}
-        str += andor + "txtstr LIKE " + arr[i].trim ();
-      }
-        // // A double printout clarifies the %-autosubstitution of console.log
-        // this.z.loli(str, 'color:orange  ');
-        // this.z.loli(str.replace(/%/g, '*'), 'color:yellow');
-        // console.log(searchWhere);
-      let srchData = new FormData ();
-      srchData.append ("like", str);
-      srchData.append ("cols", searchWhere);
-      if (exact !== 0) srchData.append ("info", "exact");
-      else srchData.append ("info", "");
-        // console.log(srchData);
-      return new Promise((resolve, reject) => {
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', 'search/');
-        this.z.xhrSetRequestHeader(xhr);
-        xhr.onload = function () {
-          if (this.status >= 200 && this.status < 300) {
-            var data = xhr.response.trim ();
-            if (exact !== 0) { // reorder like sTxt
-              var datArr = data.split("\n");
-                // console.log("searchText datArr.length",datArr.length);
-              var namArr = [];
-              var seaArr = [];
-              var tmpArr = [];
-              var albArr = [];
-              for (let i=0; i<datArr.length; i++) {
-                namArr [i] = datArr [i].replace(/^(.*\/)*(.*)(\.[^.]*)$/,"$2");
-                tmpArr [i] = namArr [i]; // Just in case
-                albArr [i] = datArr [i].replace (/^(.*\/)*(.*)(\.[^.]*)$/,"$1").slice (1, -1);
-              }
-              sTxt = sTxt.replace (/ +/g, " ");
-              if (arr.length > 0) seaArr = sTxt.split (" ");
-              // The 'reordering template' (seaArr) depends on this special switch set in altFind:
-              if (seaArr [0] === "dupName/") seaArr = tmpArr.sort ();
-              else if (seaArr [0] === "dupImage/") seaArr.splice (0, 1);
-              else if (seaArr [0] === "actualDups/") seaArr.splice (0, 1);
-              else if (seaArr [0] === "subAlbDups/") seaArr.splice (0, 1);
-
-              data = [];
-              for (let i=0; i<seaArr.length; i++) {
-                for (let j=0; j<namArr.length; j++) {
-                  if (seaArr [i] === namArr [j]) {
-                    data [i] = datArr [j];
-                    namArr [j] = "###";
-                    break;
-                  }
-                }
-              }
-              data = data.join("\n");
-            }
-            resolve (data);
-          } else {
-            reject ({
-              status: this.status,
-              statusText: xhr.statusText
-            });
-          }
-        };
-        xhr.send (srchData);
-      });
-    }
   }
 
   <template>

@@ -42,15 +42,17 @@ export class DialogUtil extends Component {
     elem.focus();
   }
 
-  get imdbDir() {
-    // Reset all at album change
+  // Reset all at album change. Called from okDelete, which is the first
+  // of 'ok...' checks called from the template. 'imdbDir' is used for
+  // resetting before the simple return of the sliced imdbDir value:
+  get imdbDir() { // this.imdbDir
     this.tool = '';
     this.noTools = true;
     let elRadio = document.querySelectorAll('#dialogUtil input[type="radio"]');
     for (let i=0; i<elRadio.length; i++) {
       elRadio[i].checked = false;
     }
-    // and remove slash (except root: already empty)
+    // remove initial slash (except root: already empty)
     return this.z.imdbDir.slice(1);
   }
 
@@ -69,7 +71,8 @@ export class DialogUtil extends Component {
   }
 
 
-  // Shoud be first called from the template, RESETS with this.imdbDir:
+  // Should be the first called from the template
+  // The first and ONLY use of this.imdbDir is here:
   get okDelete() { // true if delete allowed
     let found = this.imdbDir === this.z.picFound;
     if (!found && this.z.imdbDir && this.z.allow.albumEdit) { // root == ''
@@ -195,8 +198,22 @@ export class DialogUtil extends Component {
     }
   }
 
-  doDupnames = () => {
-    this.z.alertMess(this.intl.t('futureFacility'))
+  // doDupnames = () => {
+  //   this.z.alertMess(this.intl.t('futureFacility'));
+  // }
+
+  doDupnames = async () => {
+    // return new Promise (async function (resolve, reject) {
+      let path = this.z.imdbPath + this.z.imdbDir;
+      try { // Start try
+        let duplist = await this.z.execute('finddupnames 1 ' + path);
+        this.z.loli('\n' + duplist, 'color:brown');
+        duplist = duplist.toString().trim().split('\n').join(' ');
+        this.z.loli('\n' + duplist, 'color:brown');
+      } catch (err) {
+        console.error('doDupnames', err.message);
+      } // End try
+    // }) // End promise
   }
 
   <template>
@@ -211,6 +228,7 @@ export class DialogUtil extends Component {
         {{!-- <RefreshThis @for={{this.z.imdbDir}}> --}}
         <div style="padding:0.5rem 0;line-height:1.4rem">
           {{{t 'write.tool0' album=this.imdbDirName}}}<br>
+          {{!-- This only reference to okDelete resets radio buttons, noTools, etc. --}}
           {{#if this.okDelete}}
             <span class="glue">
               <input id="util1" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>

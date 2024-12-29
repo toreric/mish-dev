@@ -64,6 +64,9 @@ module.exports = function(app) { // Start module.exports
         IMDB_DIR = decodeURIComponent( req.get('imdbdir') )
         IMDB = IMDB_HOME + '/' + IMDB_ROOT
         picFound = req.get('picfound')
+        // If picFound already exists it must be preserved even if it isn't
+        // touched since long ago: We should 'touch' that directory:
+        // HOW?
         // The server AUTOMATICALLY removes old search result temporary albums:
         // Remove too old picFound (search result tmp) catalogs (with added random .01yz)
         let cmd = 'find -L ' + IMDB + ' -type d -name "' + '§*" -amin +' + toold + ' | xargs rm -rf'
