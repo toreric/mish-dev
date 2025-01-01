@@ -64,12 +64,23 @@ module.exports = function(app) { // Start module.exports
         IMDB_DIR = decodeURIComponent( req.get('imdbdir') )
         IMDB = IMDB_HOME + '/' + IMDB_ROOT
         picFound = req.get('picfound')
-        // If picFound already exists it must be preserved even if it isn't
-        // touched since long ago: We should 'touch' that directory:
-        // HOW?
-        // The server AUTOMATICALLY removes old search result temporary albums:
+        // If picFound is already defined it must be preserved even if it
+        // isn't touched since long ago. We should 'touch' that directory, or
+        // possibly recreate it, since it may even be erased by another user:
+        if (IMDB && picFound) {
+          try {
+            var cmd = 'touch ' + IMDB + '/' + picFound
+            var cmd1 = '/ && touch ' + IMDB + '/' + picFound + '/.imdb'
+            await execP(cmd + cmd1)
+          } catch (error) { // command failed, dir not found
+            cmd = 'mkdir ' + IMDB + '/' + picFound
+            await execP(cmd + cmd1)
+          }
+            console.log(BYEL + cmd + cmd1 + RSET)
+        }
+        // The server automatically removes old search result temporary albums:
         // Remove too old picFound (search result tmp) catalogs (with added random .01yz)
-        let cmd = 'find -L ' + IMDB + ' -type d -name "' + '§*" -amin +' + toold + ' | xargs rm -rf'
+        cmd = 'find -L ' + IMDB + ' -type d -name "' + '§*" -amin +' + toold + ' | xargs rm -rf'
         // await cmdasync(cmd) // ger direktare diagnos
         await execP(cmd)
         // console.log(BYEL + cmd + RSET)

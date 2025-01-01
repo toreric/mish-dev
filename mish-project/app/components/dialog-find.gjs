@@ -56,7 +56,7 @@ export class DialogFind extends Component {
   @service('common-storage') z;
   @service intl;
 
-  @tracked countAlbs = [];
+  @tracked countAlbs = []; // appears never used
 
   @tracked nchk = 0;       // tot no found
   @tracked keepIndex = []; // indices of albums where found
@@ -95,9 +95,10 @@ export class DialogFind extends Component {
   // openFound(i) opens 'picFound' with images found in album 'i'
   openFound = async (i) => {
     let lpath = this.z.imdbPath + '/' + this.z.picFound; // The path to picFound
+    // Clean up picFound:
     await this.z.execute('rm -rf ' + lpath + '/*');
     await this.z.execute('touch ' + lpath + '/.imdb');
-    await this.z.execute('touch ' + lpath + '/_imdb_order.txt');
+    // await this.z.execute('touch ' + lpath + '/_imdb_order.txt');
     if (i < 0) {
       // Create links to all found images
       // for (let j=0; j<this.commands.length; j++) { // forwards
@@ -119,6 +120,8 @@ export class DialogFind extends Component {
       for (let i=paths.length; i>0; i--) { // work backwards
         let linkfrom = '../' + paths[i-1].replace(/^[^/]*\//, ''); // make relative
         let fname = paths[i-1].replace(/^.*\/([^/]+$)/, '$1'); // clean from catalogs
+        // Make a four character random 'intrusion' in the file name
+        fname = this.z.addRandom(fname)
         let linkto = lpath + '/' + fname; // absolute path
         // Create a link to this found image
         let command = 'ln -sf ' + linkfrom + ' ' + linkto;
@@ -231,9 +234,9 @@ export class DialogFind extends Component {
             // console.log('i paths[i]',i,paths[i],okay0,okay1);
           paths[i] = '<span style="color:#d00">🢒&nbsp;</span>' + n0 + n1 + n2;
         }
-
-        // -- In order to make possible show duplicates: Make the link names unique
-        // by adding four random characters (r4) to the picname (n1)
+        // -- In order to make possible show duplicates: Make the link names
+        // unique by adding four random characters (r4) to the picname (n1),
+        // equivalent with what is done in 'this.z.addRandom':
         let r4 = Math.random().toString(36).substr(2,4);
         fname = n1 + '.' + r4 + n2;
         if (filesFound < nLimit) {

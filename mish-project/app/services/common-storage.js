@@ -50,8 +50,9 @@ export default class CommonStorageService extends Service {
         get intlCode() { return `${this.intl.t('intlcode')}`; }
   @tracked  intlCodeCurr = this.intlCode;     // language code
         get picFoundBaseName() { return `${this.intl.t('picfound')}`; }
-  // The found pics temporary catalog name is amended with a random 4-code:
-  @tracked  picFound = this.picFoundBaseName +"."+ Math.random().toString(36).substring(2,6);
+  // The found pics temporary catalog name is amended with a random .4-code:
+  @tracked  picFound = this.picFoundBaseName + Math.random().toString(36).slice(1,6);
+  @tracked  picFoundIndex = -1; //set in ...
   @tracked  picName = ''; //actual/current image name
         get picIndex() { //the index of picName's file information object in allFiles
               let index = this.allFiles.findIndex(a => {return a.name === this.picName;});
@@ -209,6 +210,17 @@ export default class CommonStorageService extends Service {
     var imtype = name.slice(0, 6) // System file prefix
     // Here more files may be filtered out depending on o/s needs etc.:
     return acceptedName && ftype && imtype !== '_mini_' && imtype !== '_show_' && imtype !== '_imdb_' && name.slice(0,1) !== "."
+  }
+
+  // Place a four character random 'intrusion' within a file name
+  // Like 'filename.09av.jpg', cf. below!
+  addRandom = (fname) => {
+    // n1 = image (file) name, n2 = file extension
+    // dr4 = a dot and four random characters from [0-9a-v], e.g. '.09av'
+    let n1 = fname.replace(/(^.*)(\.[^.]+$)/, '$1');
+    let n2 = fname.replace(/(^.*)(\.[^.]+$)/, '$2');
+    let dr4 = Math.random().toString(36).slice(1,6);
+    return n1 + dr4 + n2;
   }
 
   // Replace <br> with \n, used in dialog-text/DialogText

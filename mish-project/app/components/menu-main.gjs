@@ -76,6 +76,7 @@ export class MenuMain extends Component {
     // Convert the album directory list 'data' to a JS tree. Modifications are:
     // m1. For directories only, file code is commented out.
     // m2. Properties added: index, coco, path, and label (coco = content count)
+    // m3. Store the index of the directory 'picFound' in 'picFoundIndex'
     let i = 0;
     const tree = { root: {} }
     for (const path of data) {
@@ -85,10 +86,12 @@ export class MenuMain extends Component {
       for (const part of parts) {
         partPath += `${part}/`;
         if (partPath === `${part}/`) {
-          tree.root[partPath] = (tree[partPath] ??= { name: part, index: i++, coco: this.z.imdbCoco[i-1], path: partPath, label: this.z.imdbLabels[i-1], children: [] }); // m2
+          tree.root[partPath] = (tree[partPath] ??= { name: part, index: i++, coco: this.z.imdbCoco[i-1], path: partPath, label: this.z.imdbLabels[i-1], children: [] }); // m2.
         } else if (tree[partPath] === undefined) {
-            tree[partPath] = { name: part, index: i++, coco: this.z.imdbCoco[i-1], path: partPath, label: this.z.imdbLabels[i-1], children: [] }; // m2.
-            branch.children.push(tree[partPath]);
+          tree[partPath] = { name: part, index: i++, coco: this.z.imdbCoco[i-1], path: partPath, label: this.z.imdbLabels[i-1], children: [] }; // m2.
+          branch.children.push(tree[partPath]);
+            // this.z.loli(part + ' ' + i, 'color:deeppink');
+          if (part === this.z.picFound) this.z.picFoundIndex = i - 1; // m3.
         }
         branch = tree[partPath];
       }

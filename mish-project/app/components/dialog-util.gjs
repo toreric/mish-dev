@@ -19,6 +19,7 @@ export class DialogUtil extends Component {
 
   @tracked tool = ''; // utility tool id
   @tracked noTools = true; // no tool flag
+  @tracked countImgs = 0; // duplicate image name counter
 
   // Detect closing Esc key
   detectEscClose = (e) => {
@@ -70,6 +71,10 @@ export class DialogUtil extends Component {
     return '<br><div style="text-align:center"><button class="unclosable" type="button" onclick="location.reload(true);return false">' + this.intl.t('button.restart') + '</button></div>'
   }
 
+  toShow = () => {
+    this.z.closeDialog('dialogDupResult');
+    this.z.openAlbum(this.z.picFoundIndex);
+  }
 
   // Should be the first called from the template
   // The first and ONLY use of this.imdbDir is here:
@@ -198,25 +203,42 @@ export class DialogUtil extends Component {
     }
   }
 
-  // doDupnames = () => {
-  //   this.z.alertMess(this.intl.t('futureFacility'));
-  // }
-
   doDupnames = async () => {
-    // return new Promise (async function (resolve, reject) {
-      let path = this.z.imdbPath + this.z.imdbDir;
-      try { // Start try
-        let duplist = await this.z.execute('finddupnames 1 ' + path);
-        this.z.loli('\n' + duplist, 'color:brown');
-        duplist = duplist.toString().trim().split('\n').join(' ');
-        this.z.loli('\n' + duplist, 'color:brown');
-      } catch (err) {
-        console.error('doDupnames', err.message);
-      } // End try
-    // }) // End promise
+      // return new Promise (async function (resolve, reject) {
+    this.z.closeDialog('dialogUtil');
+    this.z.displayNames = 'block';
+    let path = this.z.imdbPath + this.z.imdbDir;
+    try { // Start try
+      let duplist = await this.z.execute('finddupnames 2 ' + path);
+        // this.z.loli('\n' + duplist, 'color:brown');
+      let paths = duplist.toString().trim().split('\n');
+      this.countImgs = paths.length;
+      let lpath = this.z.imdbPath + '/' + this.z.picFound; // The path to picFound
+      // Clean up picFound
+      await this.z.execute('rm -rf ' + lpath + '/*');
+      await this.z.execute('touch ' + lpath + '/.imdb');
+      for (let i=paths.length; i>0; i--) { // work backwards
+        let linkfrom = '../' + paths[i-1].replace(/^[^/]*\//, ''); // make relative
+        let fname = paths[i-1].replace(/^.*\/([^/]+$)/, '$1'); // clean from catalogs
+        // Make a four character random 'intrusion' in the file name
+        fname = this.z.addRandom(fname);
+          // this.z.loli(fname, 'color:red');
+        let linkto = lpath + '/' + fname; // absolute path
+        // Create a link to this found image
+        let command = 'ln -sf ' + linkfrom + ' ' + linkto;
+          // this.z.loli(command, 'color:red');
+        await this.z.execute(command);
+      }
+      this.z.openDialog('dialogDupResult');
+    } catch (err) {
+      console.error('doDupnames of DialogUtil:', err.message);
+    } // End try
+      // }) // End promise
+      // The Promise way makes 'async' superfluous but hides 'this'
   }
 
   <template>
+
     <dialog id="dialogUtil" style="width:min(calc(100vw - 2rem),auto)" {{on 'keydown' this.detectEscClose}}>
       <header data-dialog-draggable>
         <p>&nbsp;</p>
@@ -312,6 +334,29 @@ export class DialogUtil extends Component {
         <button type="button" {{on 'click' (fn this.z.closeDialog dialogUtilId)}}>{{t 'button.close'}}</button>&nbsp;
       </footer>
     </dialog>
+
+    <dialog id="dialogDupResult" style="max-width:calc(100vw - 2rem);z-index:15">
+      <header data-dialog-draggable>
+        <p>&nbsp;</p>
+        <p>{{{t 'write.findResultHeader' n=this.nchk c=this.z.imdbRoot}}}</p>
+        <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogDupResult')}}>×</button>
+      </header>
+      <main style="padding:0 0.5rem 0 1rem;height:auto;line-height:150%;overflow:auto" width="99%">
+
+        <br>{{t 'found'}},  {{t 'chooseShow'}}:<br>
+
+        <br>{{{this.countImgs}}}<br><br>
+        <br>
+
+      </main>
+      <footer data-dialog-draggable>
+        <button class="show" type="button" {{on 'click' this.toShow}}>
+          {{t 'button.show'}} <b>{{this.z.handsomize2sp this.z.picFound}}</b></button>&nbsp;
+        <button type="button" {{on 'click' (fn this.z.closeDialog 'dialogDupResult')}}>
+          {{t 'button.close'}}</button>&nbsp;
+      </footer>
+    </dialog>
+
   </template>
 
 }
