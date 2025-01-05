@@ -64,7 +64,7 @@ export class DialogXper extends Component {
           {{@content}}
         <br>  <br>
         <button type="button" {{on 'click' this.toggleTmpHeader}}>
-          Dölj/visa tillfälligt
+          Dölj/visa testkomponenten '&lt;Header /&gt;'
         </button>
         <br>
         <button type="button" {{on 'click' (fn this.updateOrder 1)}}>

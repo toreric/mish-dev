@@ -39,18 +39,19 @@ setSetting:   ändra inställningar
 textEdit:     redigera/spara bildtexter, se dolda album³
 
 all: Alla
-allInAlbum: (hela albumet)
+allInAlbum: (till albumet)
 and: och
 captionFor: Bildtext för
 captionSaved: sparad
 checkuncheck: Markera/avmarkera alla
-chooseShow: välj att visa
+chooseShow: Välj att visa i <b>{f}</b>
 created: skapat
 createfail: INTE SKAPAT
 deleted: raderat
 dark: Mörk
 Dimension: Dimension
 download: Ladda ned...
+dupImgNames: dubletter av bildnamn
 editext: Redigera text...
 editimage: Redigera bild...
 errTxtNotSaved: Texten sparades inte!
@@ -93,6 +94,7 @@ next: nästa
 no: inga
 notAvailable: Inte tillgänglig
 numbererror: V A R N I N G<br><br>Bildantalet stämmer inte!
+Original: Original
 own: egna
 Phototime: Fototid
 placefirst: Placera först
@@ -293,6 +295,7 @@ write:
   chooseTool: Inget verktyg valt, välj ett!
   creator: "Ursprung: Foto upphov källa"
   description: "Beskrivning: När var vad vilka"
+  dialogDupResult: Dublettnamnsökning i <b>{a}</b>
   find0: "Sök i:"
   find1: bildtext (övre texten)
   find2: ursprung (nedre texten)
@@ -322,6 +325,7 @@ write:
   keywords: "<b>Information om planerat framtida tillägg:</b>
             Ord lagrade som metadata för användning som särskilda sökbegrepp"
   maxWarning: <b>Fler än {n} bilder kan<br>inte visas tillsammans</b>
+  noDupNamesFound: Fann inga dubletter av bildnamn i <b>{a}</b> med underalbum
   noneFound: Tyvärr, ingen bild funnen!
   notEmpty: Albumet måste först tömmas!
   notes: Anteckningar som ej visas med bilden
@@ -333,6 +337,8 @@ write:
   tool3: Sortera bilderna efter namn
   tool31: i stigande ordning
   tool32: i fallande ordning
-  tool4: Finn dubletter av bildnamn i hela albumsamlingen
+  tool4: Finn dubletter av bildnamn
+  tool41: Finn dubletter av bildnamn i <b>{a}</b> inklusive alla underalbum
+  tool42: Finn dubletter av bildnamn i hela albumsamlingen
   tool99: Det finns tyvärr inget att välja
   utilHeader: Verktyg för

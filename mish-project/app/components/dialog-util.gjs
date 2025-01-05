@@ -106,8 +106,11 @@ export class DialogUtil extends Component {
     }
   }
 
-  get okNameDups() { // true if at root to search the collection
-    if (this.z.imdbDir) {
+  get okNameDups() {
+    // true to search the collection if at root, alternatively
+    // at any 'node' except picFound, if there is some reason:
+    if (this.z.imdbDir.slice(1) === this.z.picFound) {
+    // if (this.z.imdbDir) {
       return false;
     } else {
       this.noTools = false;
@@ -212,6 +215,8 @@ export class DialogUtil extends Component {
       let duplist = await this.z.execute('finddupnames 2 ' + path);
         // this.z.loli('\n' + duplist, 'color:brown');
       let paths = duplist.toString().trim().split('\n');
+        // this.z.loli('"'+paths[0]+'"', 'color:red');
+      if (paths.length === 1 && paths[0].length === 0) paths = [];
       this.countImgs = paths.length;
       let lpath = this.z.imdbPath + '/' + this.z.picFound; // The path to picFound
       // Clean up picFound
@@ -239,7 +244,7 @@ export class DialogUtil extends Component {
 
   <template>
 
-    <dialog id="dialogUtil" style="width:min(calc(100vw - 2rem),auto)" {{on 'keydown' this.detectEscClose}}>
+    <dialog id="dialogUtil" style="width:min(calc(100vw - 2rem),auto);max-width:480px" {{on 'keydown' this.detectEscClose}}>
       <header data-dialog-draggable>
         <p>&nbsp;</p>
         <p><b>{{t 'write.utilHeader'}} <span>{{{this.imdbDirName}}}</span></b><br>({{this.z.imdbRoot}}{{this.z.imdbDir}})</p>
@@ -321,10 +326,14 @@ export class DialogUtil extends Component {
 
           {{!-- === Find duplicate image names === --}}
           {{else if (eq this.tool 'util4')}}
-            <b>{{t 'write.tool4'}}</b><br>
+
+            {{#if this.z.imdbDir}}
+              {{{t 'write.tool41' a=this.imdbDirName}}}<br>
+            {{else}}
+              <b>{{t 'write.tool42'}}</b><br>
+            {{/if}}
 
             <button type="button" {{on 'click' (fn this.doDupnames)}}>{{t 'button.findDupNames'}}</button>
-
           {{/if}}
         </div>
         {{!-- </RefreshThis> --}}
@@ -335,23 +344,27 @@ export class DialogUtil extends Component {
       </footer>
     </dialog>
 
-    <dialog id="dialogDupResult" style="max-width:calc(100vw - 2rem);z-index:15">
+    <dialog id="dialogDupResult" style="max-width:calc(100vw - 2rem);z-index:15;max-width:480px"{{on 'keydown' this.detectEscClose}}>
       <header data-dialog-draggable>
         <p>&nbsp;</p>
-        <p>{{{t 'write.findResultHeader' n=this.nchk c=this.z.imdbRoot}}}</p>
+        <p>{{{t 'write.dialogDupResult' a=this.imdbDirName}}}</p>
         <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogDupResult')}}>×</button>
       </header>
       <main style="padding:0 0.5rem 0 1rem;height:auto;line-height:150%;overflow:auto" width="99%">
 
-        <br>{{t 'found'}},  {{t 'chooseShow'}}:<br>
-
-        <br>{{{this.countImgs}}}<br><br>
-        <br>
+        <div style="padding:0.5rem 0;line-height:1.4rem">
+          {{#if this.countImgs}}
+            {{t 'found'}} {{t 'dupImgNames'}}: {{{this.countImgs}}}<br>
+            <button class="show" type="button" {{on 'click' this.toShow}}>
+              {{t 'button.show'}} <b>{{this.z.handsomize2sp this.z.picFound}}</b>
+            </button><br>
+          {{else}}
+            {{{t 'write.noDupNamesFound' a=this.imdbDirName}}}<br>
+          {{/if}}
+        </div>
 
       </main>
       <footer data-dialog-draggable>
-        <button class="show" type="button" {{on 'click' this.toShow}}>
-          {{t 'button.show'}} <b>{{this.z.handsomize2sp this.z.picFound}}</b></button>&nbsp;
         <button type="button" {{on 'click' (fn this.z.closeDialog 'dialogDupResult')}}>
           {{t 'button.close'}}</button>&nbsp;
       </footer>

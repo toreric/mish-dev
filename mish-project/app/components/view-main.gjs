@@ -185,12 +185,29 @@ class AllImages extends Component {
   //   this.z.markBorders(item.name);
   // }
 
-  // Copies 'allFiles' to 'items' by real-value duplication
-  allFiles = async () => {
-    this.items = [];
-    for (let file of this.z.allFiles) {
-      this.items.push(file);
+    // Copies 'allFiles' to 'items' by real-value duplication
+    // NOTE: the function is only called from the hidden preload button!
+    allFiles = async () => {
+      this.items = [];
+      for (let file of this.z.allFiles) {
+        this.items.push(file);
+      }
     }
+
+  // Are we within the temporary album?
+  get isPicFound() {
+    if (this.z.imdbDir.slice(1) === this.z.picFound) return true;
+    else return false;
+  }
+
+  // Get the album path to the original image
+  get path2orig() {
+    let a = '';
+    let i = this.z.picIndex;
+    if (i < 0) return a; //important
+    let b = this.z.allFiles[i];
+    if (b) a = b.orig; //path to home album
+    return this.z.imdbRoot + a.slice(3);
   }
 
   // The image caption texts (from metadata)
@@ -228,8 +245,9 @@ class AllImages extends Component {
     document.querySelector('textarea[name="description"]').focus();
   }
 
-  // The 'double classing', seemingly unnecessary and
-  // irrational, comes from historic css reasons, sorry.
+  // Toggle the select mark in the upper right corner of the image.
+  // The confusing 'double classing', seemingly unnecessary, has
+  // historic css reasons, sorry.
   toggleSelect = (flag, e) => {
     e.stopPropagation();
 
@@ -247,7 +265,7 @@ class AllImages extends Component {
       this.z.numHidden = document.querySelectorAll('.img_mini.hidden').length;
       this.z.ifToggleHide(); // Show/hide 'toggleHide', a left button
 
-    } else { // 1 == slideshow image
+    } else { // 1 == slideshow image (copies to the thumbnail)
       let thisPic = document.querySelector('#i' + this.z.escapeDots(this.z.picName));
       let clicked = document.querySelector('#markShow');
       if (thisPic.classList.contains('selected')) {
@@ -336,63 +354,63 @@ class AllImages extends Component {
 
           {{/if}}
 
-          {{!-- Don't put </span></p> terminators for #if/else here! --}}
-          {{!-- Each #if/else-block needs it's own terminator! --}}
+          {{!-- Don't put </span></p> terminators for #if/else here!
+                Each #if/else-block needs it's own terminator! --}}
 
         </div>
       {{/if}}
 
-      {{!-- The div of the thumnail images --}}
-      <div id="imgWrapper" style="display:flex;flex-wrap:wrap;
-        margin:auto;padding:0;align-items:baseline;
-        justify-content:center;position:relative"
-      >
-        {{!-- The thumnail images are displayed --}}
-        <RefreshThis @for={{this.z.refreshTexts}}>
-        {{#each this.items as |item|}}
-          <div class="img_mini {{item.symlink}}" id="i{{item.name}}"
-            {{sortableItem data=item onDrop=this.move}}
-            {{on 'mousedown' this.z.resetBorders}}
-          >
+        {{!-- The div of the thumnail images --}}
+        <div id="imgWrapper" style="display:flex;flex-wrap:wrap;
+          margin:auto;padding:0;align-items:baseline;
+          justify-content:center;position:relative"
+        >
+          {{!-- The thumnail images are displayed --}}
+          <RefreshThis @for={{this.z.refreshTexts}}>
+          {{#each this.items as |item|}}
+            <div class="img_mini {{item.symlink}}" id="i{{item.name}}"
+              {{sortableItem data=item onDrop=this.move}}
+              {{on 'mousedown' this.z.resetBorders}}
+            >
 
-            {{!-- The thumbnail menu --}}
-            <MenuImage />
-            <div style="margin:auto auto 0 auto;position:relative;width:max-content;">
+              {{!-- The thumbnail menu --}}
+              <MenuImage />
+              <div style="margin:auto auto 0 auto;position:relative;width:max-content;">
 
-              {{!-- The check mark in the thumnail's upper right corner --}}
-              <div class="markFalse" alt="MARKER" draggable="false" ondragstart="return false" {{on 'click' (fn this.toggleSelect 0)}}>
-                <img src="/images/markericon.svg" draggable="false" ondragstart="return false" class="mark" title={{t 'Mark'}}>
+                {{!-- The check mark in the thumnail's upper right corner --}}
+                <div class="markFalse" alt="MARKER" draggable="false" ondragstart="return false" {{on 'click' (fn this.toggleSelect 0)}}>
+                  <img src="/images/markericon.svg" draggable="false" ondragstart="return false" class="mark" title={{t 'Mark'}}>
+                </div>
+
+                {{!-- Here comes the thumbnail --}}
+                <img src="{{item.mini}}" class="left-click" title="{{this.z.imdbRoot}}{{item.linkto}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage item.name item.show)}}>
+
               </div>
+              <div {{on 'click' this.ediText}}>
 
-              {{!-- Here comes the thumbnail --}}
-              <img src="{{item.mini}}" class="left-click" title="{{this.z.imdbRoot}}{{item.linkto}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage item.name item.show)}}>
+                {{!-- This is the image name, should be unique --}}
+                <div class="img_name" style="display:{{this.z.displayNames}}">
+                  {{item.name}}
+                </div>
+
+                {{!-- The text from Xmp.dc.description metadata --}}
+                <div class="img_txt1" draggable="false" ondragstart="return false" title-2="{{this.z.noTags item.txt1}}">
+                  {{{this.z.noTagsShort item.txt1}}}
+                </div><br>
+
+                {{!-- The text from Xmp.dc.creator metadata --}}
+                <div class="img_txt2" draggable="false" ondragstart="return false" title-2="{{this.z.noTags item.txt2}}">
+                  {{{this.z.noTagsShort item.txt2}}}
+                </div>
+                {{!-- <span class='handle' {{sortableHandle}}>&varr;</span> --}}
+
+              </div>
 
             </div>
-            <div {{on 'click' this.ediText}}>
+          {{/each}}
+          </RefreshThis>
 
-              {{!-- This is the image name, should be unique --}}
-              <div class="img_name" style="display:{{this.z.displayNames}}">
-                {{item.name}}
-              </div>
-
-              {{!-- The text from Xmp.dc.description metadata --}}
-              <div class="img_txt1" draggable="false" ondragstart="return false" title-2="{{this.z.noTags item.txt1}}">
-                {{{this.z.noTagsShort item.txt1}}}
-              </div><br>
-
-              {{!-- The text from Xmp.dc.creator metadata --}}
-              <div class="img_txt2" draggable="false" ondragstart="return false" title-2="{{this.z.noTags item.txt2}}">
-                {{{this.z.noTagsShort item.txt2}}}
-              </div>
-              {{!-- <span class='handle' {{sortableHandle}}>&varr;</span> --}}
-
-            </div>
-
-          </div>
-        {{/each}}
-        </RefreshThis>
-
-      </div>
+        </div>
       </div>
 
     </div>
@@ -458,6 +476,13 @@ class AllImages extends Component {
           <div class="img_txt2" draggable="false" ondragstart="return false" title="">
             {{{this.txt 2 this.z.picName}}}
           </div>
+
+          {{#if this.isPicFound}}
+            <div style="text-align:left;margin:0.2rem 0 -0.2rem 0">
+              <em style="color:#9e9;font-size:90%">{{t 'Original'}}: {{this.path2orig}}</em>
+            </div>
+          {{/if}}
+
         </div>
         </RefreshThis>
 

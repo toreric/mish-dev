@@ -84,26 +84,7 @@ document.addEventListener('keydown', (event) => {
       toggleDialog(dialogHelpId);
   }
 });
-
-const resetBorders = () => { //copy from z
-  var minObj = document.querySelectorAll('.img_mini img.left-click');
-  for (let min of minObj) {
-    min.classList.remove('dotted');
-  }
-}
-const toggleDialog = (dialogId, origPos) => { //copy from z
-  let diaObj = document.getElementById(dialogId);
-  let what = 'closed ';
-  if (diaObj.hasAttribute('open')) {
-    diaObj.close();
-  } else {
-    what = 'opened ';
-    if (origPos) diaObj.style.display = '';
-    diaObj.show();
-  }
-  console.log('-"-: ' + what + dialogId);
-}
-
+/*
 // ALL bubbling mousedowns are caught, even programmatical clicks!
 document.addEventListener('mousedown', async (event) => {
   // event.preventDefault(); // Kills everything
@@ -147,7 +128,26 @@ document.addEventListener('mousedown', async (event) => {
   // Close the show image view, if open
   document.getElementById('go_back').click();
   return;
-});
+}); */
+
+const resetBorders = () => { //copy from z
+  var minObj = document.querySelectorAll('.img_mini img.left-click');
+  for (let min of minObj) {
+    min.classList.remove('dotted');
+  }
+}
+const toggleDialog = (dialogId, origPos) => { //copy from z
+  let diaObj = document.getElementById(dialogId);
+  let what = 'closed ';
+  if (diaObj.hasAttribute('open')) {
+    diaObj.close();
+  } else {
+    what = 'opened ';
+    if (origPos) diaObj.style.display = '';
+    diaObj.show();
+  }
+  console.log('-"-: ' + what + dialogId);
+}
 
 class Welcome extends Component {
   @service('common-storage') z;

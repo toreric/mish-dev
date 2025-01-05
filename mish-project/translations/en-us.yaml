@@ -39,18 +39,19 @@ setSetting:   change settings
 textEdit:     edit/save image texts/captions, access hidden albums³
 
 all: All
-allInAlbum: (whole album)
+allInAlbum: (to the album)
 and: and
 captionFor: Image caption for
 captionSaved: saved
 checkuncheck: Check or uncheck all
-chooseShow: choose to view
+chooseShow: Choose to view in <b>{f}</b>
 created: created
 createfail: NOT CREATED
 deleted: deleted
 dark: Dark
 Dimension: Dimension
 download: Download...
+dupImgNames: duplicate image names
 editext: Edit text...
 editimage: Edit image...
 errTxtNotSaved: The text was not saved!
@@ -93,6 +94,7 @@ next: next
 no: no
 notAvailable: Not available
 numbererror: W A R N I N G<br><br>Image count mismatch!
+Original: Original
 own: own
 Phototime: Photo time
 placefirst: Place first
@@ -295,6 +297,7 @@ write:
   chooseTool: No tool chosen, choose one!
   creator: 'Origin: Photographer Source'
   description: 'Caption: When Where What Who'
+  dialogDupResult: Duplicate name search in <b>{a}</b>
   find0: "Search in:"
   find1: captions (upper texts)
   find2: origins (bottom texts)
@@ -324,6 +327,7 @@ write:
   keywords: "<b>Information about planned future addition:</b>
              Keywords to be stored as metadata for search key use"
   maxWarning: <b>More than {n} images cannot<br>be displayed together</b>
+  noDupNamesFound: Found no duplicate image names in <b>{a}</b> with subalbums
   noneFound: Sorry, no image found!
   notEmpty: The album must first be emptied!
   notes: Notes not shown with the image
@@ -335,6 +339,7 @@ write:
   tool3: Sort the images by names
   tool31: in ascending order
   tool32: in reverse order
-  tool4: Find duplicate image names in the whole album collection
-  tool99: Unfortunately there is nothing to choose
+  tool4: Find duplicate image names
+  tool41: Find duplicate image names in <b>{a}</b> including all subalbums
+  tool42: Find duplicate image names in the whole album collection
   utilHeader: Tools for

@@ -53,8 +53,6 @@ export class DialogInfo extends Component {
     }
   }
 
-  get that() {return this;}
-
   // ================================================
   // Get information about this image from the server
   // This promise has to be run indirectly with TrackedAsyncData

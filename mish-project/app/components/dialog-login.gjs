@@ -63,7 +63,7 @@ export class DialogLogin extends Component {
 
     } else {
       document.getElementById('logInError').style.display = '';
-      await new Promise (z => setTimeout (z, 5222)); // Error message
+      await new Promise (z => setTimeout (z, 5222)); // logIn error message
       document.getElementById('logInError').style.display = 'none';
     }
   }

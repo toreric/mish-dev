@@ -52,7 +52,7 @@ export default class CommonStorageService extends Service {
         get picFoundBaseName() { return `${this.intl.t('picfound')}`; }
   // The found pics temporary catalog name is amended with a random .4-code:
   @tracked  picFound = this.picFoundBaseName + Math.random().toString(36).slice(1,6);
-  @tracked  picFoundIndex = -1; //set in ...
+  @tracked  picFoundIndex = -1; //set in MenuMain, the index may vary by language
   @tracked  picName = ''; //actual/current image name
         get picIndex() { //the index of picName's file information object in allFiles
               let index = this.allFiles.findIndex(a => {return a.name === this.picName;});
@@ -310,9 +310,10 @@ export default class CommonStorageService extends Service {
     this.openAlbum(index);
   }
 
+  //#region homeAlbum
   homeAlbum = async (path, picName) => { // was parAlb
-    // this.loli('path:' + path + ':');
-    // this.loli('picName: ' + picName, 'color:red');
+    this.loli('path:' + path + ':');
+    this.loli('picName: ' + picName, 'color:red');
   // Convert the relative path of the linked-file target,
   // to conform with z.imdbDirs server list, rooted at album root
   if (this.imdbDir.slice(1,2) === '§') picName = (picName.trim()).replace(/\.[0-9a-z]{4}$/, '');
@@ -354,6 +355,12 @@ export default class CommonStorageService extends Service {
     document.querySelector('.img_show').style.display = 'none'; //was 'table'
     // Open the thumbnail view
     document.querySelector('.miniImgs.imgs').style.display = 'flex';
+    // Hide the right side buttons
+    document.querySelector('.nav_links').style.display = 'none';
+    // Show left buttons, language buttons, subalbums
+    document.querySelector('#smallButtons').style.display = '';
+    document.querySelector('#upperButtons').style.display = '';
+    document.querySelector('.albumsHdr').style.display = '';
     // Display the spinner
     document.querySelector('img.spinner').style.display = '';
     // Set marked zero
@@ -461,6 +468,7 @@ export default class CommonStorageService extends Service {
     this.paintHideFlags();
     // Count the number of shown, invisible, linked, unlinked, etc. images
     this.countNumbers();
+    this.numMarked = document.querySelectorAll('.img_mini.selected').length;
   }
 
   //#region toggleBackg
@@ -500,6 +508,7 @@ export default class CommonStorageService extends Service {
 
     for (let p of order) {
       let i = p.indexOf(',');
+      if (!p.slice(0, i)) this.loli('CommonStorageService error 0', 'color:red');
       let mini = document.getElementById('i' + p.slice(0, i));
       if (p[i + 1] === '1') {
         mini.classList.add('hidden');
@@ -517,6 +526,7 @@ export default class CommonStorageService extends Service {
   // Check the slide-view's symlink/hide status and set classes
   //#region paintViewImg
   paintViewImg = () => {
+    if (!this.picName) this.loli('CommonStorageService error 1', 'color:red');
     let mini = document.getElementById('i' + this.picName);
     let show = document.getElementById('link_texts');
     if (mini.classList.contains('symlink')) {
@@ -603,6 +613,7 @@ export default class CommonStorageService extends Service {
       minObj[i].setAttribute('src', minipic);
     }
   }
+
   //#region markBorders
   markBorders = async (namepic) => { // Mark a mini-image border
     await new Promise (z => setTimeout (z, 25)); // Allow the dom to settle
@@ -612,11 +623,13 @@ export default class CommonStorageService extends Service {
   // Position to a minipic and highlight its border
   //#region gotoMinipic
   gotoMinipic = async (namepic) => {
+    if (!namepic) return;
       // this.loli(namepic, 'color:red');
-    await new Promise (z => setTimeout (z, 19)); // gotoMinipic
+    await new Promise (z => setTimeout (z, 39)); // gotoMinipic
     let hs = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
     // this.loli('hs=' + hs, 'color:red');
     let h2 = hs/2;
+    if (!namepic) this.loli('CommonStorageService error 2', 'color:red');
     // NOTE: No escapeDots for getElementById:
     let p = document.getElementById('i' + namepic);
     // this.loli('p=' + p, 'color:red');
@@ -672,6 +685,7 @@ export default class CommonStorageService extends Service {
         this.picName = tgt.closest('.img_mini').id.slice(1);
       }
       if (e.button === 0) { // mouse button
+        if (!this.picName) this.loli('CommonStorageService error 3', 'color:red');
         let pic = document.getElementById('i' + this.picName);
         if (e.ctrlKey) {
           pic.querySelector('.menu_img').click();
@@ -695,6 +709,7 @@ export default class CommonStorageService extends Service {
       let pic = document.querySelector('#link_show img');
       pic.src = 'rln' + path;
       // Copy the check mark class from the thumbnail
+      if (!this.picName) this.loli('CommonStorageService error 4', 'color:red');
       let minipic = document.getElementById('i' + this.picName);
       let miniclass = minipic.querySelector('div[alt="MARKER"]').className;
       document.getElementById('markShow').className = miniclass + 'Show';
@@ -728,7 +743,7 @@ export default class CommonStorageService extends Service {
       this.edgeImage = '';
       // Hide the right side buttons
       document.querySelector('.nav_links').style.display = 'none';
-      if (document.querySelector('.img_show').style.display === 'none') return;
+      // if (document.querySelector('.img_show').style.display === 'none') return;??
       // Close the show image view
       document.querySelector('.img_show').style.display = 'none'; //was 'table'
       // Open the thumbnail view and update any selection mark changes
@@ -772,6 +787,7 @@ export default class CommonStorageService extends Service {
       }
     }
     var next, nextName;
+    if (!this.picName) this.loli('CommonStorageService error 5', 'color:red');
     var actual = document.getElementById('i' + this.picName);
     var actualParent = actual.parentElement;
     var allFiles = this.allFiles;
@@ -1494,7 +1510,7 @@ export default class CommonStorageService extends Service {
       this.loli('opened menu of image ' + name + ' in album ' + this.imdbRoot + this.imdbDir);
 
     } else { // 0 == do close
-      this.markBorders(name); // Since this was the most recent image menu
+      // this.markBorders(name); // Since this was the most recent image menu
       list.style.display = 'none';
       loliClose(name);
     }
@@ -1545,7 +1561,7 @@ export default class CommonStorageService extends Service {
   }
 
   saveDialog = async (dialogId) => {
-    // should have alternatives for any dialogId occurring
+    // should have alternatives for any dialogId occurring with 'save' button
     if (dialogId === 'dialogText' && this.picIndex > -1) {
       // Close any previous alert:
       this.closeDialog('dialogAlert');

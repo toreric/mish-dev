@@ -58,17 +58,17 @@ export class MenuImage extends Component {
   }
 
   toggleDialog = (id) => {
-    this.z.markBorders(this.z.picName);
+    // this.z.markBorders(this.z.picName); //seems unnecessary
     this.z.toggleDialog(id);
   }
 
-  futureNotYet = (cmd) => {
-    this.z.markBorders(this.z.picName);
+  futureNotYet = (menuItem) => {
+    // this.z.markBorders(this.z.picName);
     let alrt = document.getElementById(dialogAlertId);
     if (alrt.open) {
       alrt.close();
     } else {
-      this.z.alertMess('<div style="text-align:center">' + this.intl.t(cmd) + ':' + BR + BR + this.intl.t('futureFacility') + '</div>');
+      this.z.alertMess('<div style="text-align:center">' + this.intl.t(menuItem) + ':' + BR + BR + this.intl.t('futureFacility') + '</div>');
     }
   }
 

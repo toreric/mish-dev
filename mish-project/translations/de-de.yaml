@@ -39,18 +39,19 @@ setSetting:   Einstellungen ändern
 textEdit:     Untertiteln bearbeiten/speichern, ausgeblendete Alben anzeigen³
 
 all: Alle
-allInAlbum: (ganze album)
+allInAlbum: (zum album)
 and: und
 captionFor: Bildunterschrift für
 captionSaved: gespeichert
 checkuncheck: Alle markieren/abmarkieren
-chooseShow: zum Anzeigen auswählen
+chooseShow: Zum Anzeigen in <b>{f}</b> auswählen
 created: erstellt
 createfail: NICHT ERSTELLT
 deleted: gelöscht
 dark: Dunkel
 Dimension: Dimension
 download: Herunterladen...
+dupImgNames: doppelte Bildnamen
 editext: Text bearbeiten...
 editimage: Bild bearbeiten...
 errTxtNotSaved: Der Text wurde nicht gespeichert!
@@ -93,6 +94,7 @@ next: nächstes
 no: keine
 notAvailable: Nicht verfügbar
 numbererror: W A R N U N G<br><br>Nicht übereinstimmende Bildanzahl!
+Original: Original
 own: eigene
 Phototime: Fotozeit
 placefirst: Als erstes platzieren
@@ -292,6 +294,7 @@ write:
   chooseTool: Ein Werkzeug wählen, keines ausgewählt!
   creator: "Herkunft: Foto Ursprung Quelle"
   description: "Beschreibung: Wann wo was welche"
+  dialogDupResult: Suche nach doppelten Namen in <b>{a}</b>
   find0: "Suchen in:"
   find1: Bildunterschrift (oberer Text)
   find2: Herkunft (unterer Text)
@@ -321,6 +324,7 @@ write:
             Wörter als Metadaten gespeichert zur Verwendung als Suchbegriffe"
   isEmpty: ist leer
   maxWarning: <b>Mehr als {n} Bilder können nicht<br>alle gleichzeitig angezeigt werden</b>
+  noDupNamesFound: In <b>{a}</b> mit Unteralben wurden keine doppelten Bildnamen gefunden
   noneFound: Leider kein Bild gefunden!
   notEmpty: Das Album muss zuerst geleert werden!
   notes: Anmerkungen die nicht mit dem Bild erscheinen
@@ -332,7 +336,9 @@ write:
   tool3: Die Bilder nach Namen sortieren
   tool31: in steigender Reihenfolge
   tool32: in umgekehrter Reihenfolge
-  tool4: Doppelte Bildnamen finden, in der gesamten Albumsammlung
+  tool4: Doppelte Bildnamen finden
+  tool41: Doppelte Bildnamen in <b>{a}</b> inklusive aller Unteralben finden
+  tool42: Doppelte Bildnamen in der gesamten Albumsammlung finden
   tool99: Leider gibt es nichts zu wählen
   utilHeader: Werkzeuge für
 
