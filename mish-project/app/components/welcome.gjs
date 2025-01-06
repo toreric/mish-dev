@@ -62,7 +62,9 @@ document.addEventListener('keydown', (event) => {
       for (let list of allist) list.style.display = 'none';
       if (!document.querySelector('#menuMain').style.display)
         document.querySelector('#menuButton').click(); //close menu
-      document.querySelector('#go_back').click(); //close view image
+      // The view image is displayed with its navigation buttons:
+      if (!document.querySelector('div.nav_links').style.display)
+        document.getElementById('go_back').click(); //close view image
       break;
     case 37:  // <
       if (document.activeElement.nodeName === 'TEXTAREA') break;
@@ -84,7 +86,7 @@ document.addEventListener('keydown', (event) => {
       toggleDialog(dialogHelpId);
   }
 });
-/*
+
 // ALL bubbling mousedowns are caught, even programmatical clicks!
 document.addEventListener('mousedown', async (event) => {
   // event.preventDefault(); // Kills everything
@@ -126,9 +128,10 @@ document.addEventListener('mousedown', async (event) => {
     !tmp1.contains(tgt)
   ) tmp0.click();
   // Close the show image view, if open
-  document.getElementById('go_back').click();
+  if (!document.querySelector('div.nav_links').style.display)
+    document.getElementById('go_back').click();
   return;
-}); */
+});
 
 const resetBorders = () => { //copy from z
   var minObj = document.querySelectorAll('.img_mini img.left-click');

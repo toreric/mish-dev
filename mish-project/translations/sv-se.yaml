@@ -188,7 +188,7 @@ dialog:
     nolinks: (ej länkade)
   help:
     header: Användarhandledning
-    header1: (främst för dator med tangentbord eller pekplatta)
+    header1: (främst för dator med tangentbord och mus eller pekplatta)
     login0: Inloggad som gäst
     login1: har du bara vissa rättigheter (gömma, markera och flytta miniatyrer med dra + släpp; gå till originalbild). Med personlig inloggning kan du få fler rättigheter (till exempel göra bildtextändringar och och spara dem). Personlig inloggning kan bara fås från en systemadministratör
     ihrcm0: Varje bild har en meny

@@ -188,7 +188,7 @@ dialog:
     nolinks: (nicht verlinkte)
   help:
     header: Benutzeranweisung
-    header1: (vor allem für Computers mit Tastatur oder Touchpad)
+    header1: (vor allem für Computers mit Tastatur und Maus oder Touchpad)
     login0: Wer als Gast-Benutzer⋅in (gast) angemeldet ist
     login1: hat nur beschränkte Rechte (Vorschaubilder verstecken, markieren und mit drag & drop bewegen; zum Originalbild gehen). Nach persönlichem Login (Anmeldung) erfolgen weitere Rechte (z.B. Bildunterschriften ändern und speichern). Nur Systemadministrierende können ein persönliches Login bereitstellen
     ihrcm0: Jedes Bild hat ein Menü
