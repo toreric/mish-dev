@@ -379,6 +379,7 @@ export default class CommonStorageService extends Service {
       tmp.style.color = '';
     }
     // Set color mark on the selected album name and make it visible
+    // NOTE; This is about the selected albun in the ALBUM tree.
     document.querySelector('span.album.a' + i).style.color = '#f46aff';
     let selected = document.querySelector('div.album.a' + i);
     selected.style.display = '';
@@ -1246,8 +1247,17 @@ export default class CommonStorageService extends Service {
   updateOrder = (noJoin) => {
     let old = this.sortOrder.split(LF);
     let name = [];
+    let hide = [];
     for (let elem of document.querySelectorAll('div.img_mini')) {
       name.push(elem.id.slice(1));
+      if (elem.classList.contains('hidden')) {
+        hide.push(',1');
+        if (document.getElementById('toggleHide').style.backgroundImage === 'url("/images/eyes-blue.png")') {
+          elem.classList.add('invisible');
+        }
+      } else {
+        hide.push(',0');
+      }
     }
     var save = '§§';
     for (let i=0;i<name.length;i++) {
@@ -1258,7 +1268,7 @@ export default class CommonStorageService extends Service {
           break;
         }
       }
-      if (name[i] !== save) name[i] += ',0,0';
+      if (name[i] !== save) name[i] += hide[i] + ',0';
     }
     if (noJoin) {
       return name;
@@ -1475,7 +1485,7 @@ export default class CommonStorageService extends Service {
     return '';
   }
 
-  toggleMenuImg = (open, e) => {
+  toggleMenuImg = async (open, e) => {
     if (e) {
       // e.preventDefault();
       e.stopPropagation();
@@ -1493,7 +1503,7 @@ export default class CommonStorageService extends Service {
     const loliClose = (name) => this.loli('closed menu of image ' + name + ' in album ' + this.imdbRoot + this.imdbDir);
 
     let list = document.querySelector('#i' + this.escapeDots(name) + ' .menu_img_list');
-    // if (!list) list = document.querySelector('#d' + this.escapeDots(name) + ' .menu_img_list');
+    if (!list.style.display) open = 0;
     if (open) { // 1 == do open
       this.markBorders(name);
       let allist = document.querySelectorAll('.menu_img_list');
@@ -1512,6 +1522,7 @@ export default class CommonStorageService extends Service {
     } else { // 0 == do close
       // this.markBorders(name); // Since this was the most recent image menu
       list.style.display = 'none';
+      this.markBorders(name);
       loliClose(name);
     }
   }
