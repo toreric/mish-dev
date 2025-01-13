@@ -80,7 +80,11 @@ export class MenuImage extends Component {
     let pics;
     if (document.getElementById('i' + this.z.picName).classList.contains('selected'))
       pics = document.querySelectorAll('.img_mini.selected');
+    // If only this unselected image, get an array of a single elment:
     else pics = document.querySelectorAll('#i' + this.z.escapeDots(this.z.picName));
+    if (pics.length > 1) {
+      if (this.z.alertMess('<div style="text-align:center">' + 'Ska  alla ' + pics.length + ' gömmas/visas?</div>', 0, true)) return;
+    }
     for (let pic of pics) {
       if (pic.classList.contains('hidden')) pic.classList.remove('hidden');
       else pic.classList.add('hidden');

@@ -567,7 +567,7 @@ export default class CommonStorageService extends Service {
 
   // Setting sec to 0 doesn't avoid `inherited Timeout` close!
   //#region alertMess
-  alertMess = async (mess, sec) => {
+  alertMess = async (mess, sec, yesNo) => {
     this.closeDialog('dialogAlert');
     this.infoHeader = this.intl.t('infoHeader'); // default header
     this.infoMessage = mess.replace(/\n/g, '<br>');
@@ -577,6 +577,7 @@ export default class CommonStorageService extends Service {
       await new Promise (z => setTimeout (z, sec*1000)); // alertMess
       this.closeDialog('dialogAlert');
     }
+    if (yesNo) this.closeDialog('dialogAlert', true);
   }
 
   //#region albumAllImg
@@ -1505,7 +1506,6 @@ export default class CommonStorageService extends Service {
     let list = document.querySelector('#i' + this.escapeDots(name) + ' .menu_img_list');
     if (!list.style.display) open = 0;
     if (open) { // 1 == do open
-      this.markBorders(name);
       let allist = document.querySelectorAll('.menu_img_list');
       // If another image menu is open, close it:
       for (let list of allist) {
@@ -1517,12 +1517,13 @@ export default class CommonStorageService extends Service {
         }
       }
       list.style.display = '';
+      // this.markBorders(name);
       this.loli('opened menu of image ' + name + ' in album ' + this.imdbRoot + this.imdbDir);
 
     } else { // 0 == do close
       // this.markBorders(name); // Since this was the most recent image menu
       list.style.display = 'none';
-      this.markBorders(name);
+      // this.markBorders(name);
       loliClose(name);
     }
   }

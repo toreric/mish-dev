@@ -33,6 +33,10 @@ export class DialogAlert extends Component {
     }
   }
 
+  get yesNo() {
+    return true;
+  }
+
 <template>
   <dialog id="dialogAlert" style="z-index:999" {{on 'keydown' this.detectEscClose}}>
     <header data-dialog-draggable>
@@ -48,7 +52,12 @@ export class DialogAlert extends Component {
 
     </main>
     <footer data-dialog-draggable>
+      {{#if this.yesNo}}
       <button type="button" {{on 'click' (fn this.z.closeDialog dialogAlertId)}}>{{t 'button.close'}}</button>&nbsp;
+      <button type="button" {{on 'click' (fn this.z.closeDialog dialogAlertId)}}>{{t 'button.close'}}</button>&nbsp;
+      {{else}}
+      <button type="button" {{on 'click' (fn this.z.closeDialog dialogAlertId)}}>{{t 'button.close'}}</button>&nbsp;
+      {{/if}}
     </footer>
   </dialog>
 </template>
