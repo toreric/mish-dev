@@ -14,8 +14,13 @@ import { dialogAlertId } from './dialog-alert';
 import { dialogInfoId } from './dialog-info';
 import { dialogTextId } from './dialog-text';
 
+import RefreshThis from './refresh-this';
+export const dialogChooseId = 'dialogChoose';
+
 const LF = '\n'   // Line Feed == New Line
 const BR = '<br>' // HTML line break
+var yesNo = 0;
+
 
 // document.addEventListener('mousedown', async (event) => {
 //   event.preventDefault(); // Kills everything
@@ -24,6 +29,8 @@ const BR = '<br>' // HTML line break
 export class MenuImage extends Component {
   @service('common-storage') z;
   @service intl;
+
+  @tracked chooseMess = 'Choose!';
 
   // Detect closing Esc key
   detectClose = (e) => {
@@ -76,21 +83,38 @@ export class MenuImage extends Component {
     }
   }
 
-  hideShow = () => {
+  hideShow = async () => {
     let pics;
     if (document.getElementById('i' + this.z.picName).classList.contains('selected'))
       pics = document.querySelectorAll('.img_mini.selected');
     // If only this unselected image, get an array of a single elment:
     else pics = document.querySelectorAll('#i' + this.z.escapeDots(this.z.picName));
+
+    const hs = () => { // begin local function ---------
+      for (let pic of pics) {
+        if (pic.classList.contains('hidden')) pic.classList.remove('hidden');
+        else pic.classList.add('hidden');
+      }
+    } // end local function -------------------------
+
     if (pics.length > 1) {
-      if (this.z.alertMess('<div style="text-align:center">' + 'Ska  alla ' + pics.length + ' gömmas/visas?</div>', 0, true)) return;
-    }
-    for (let pic of pics) {
-      if (pic.classList.contains('hidden')) pic.classList.remove('hidden');
-      else pic.classList.add('hidden');
-    }
+      // this.chooseMess = this.intl.t('hideShowAll ', {n: pics.length});
+      this.chooseMess = '<div style="text-align:center">' + 'Ska  alla ' + pics.length + ' gömmas/visas?</div>';
+      await new Promise (z => setTimeout (z, 99)); // hideShow
+      this.z.openDialog(dialogChooseId);
+      while (!yesNo) {
+        await new Promise (z => setTimeout (z, 99)); // hideShow
+        if (yesNo === 1) { hs(); } // first button
+      }
+      this.z.closeDialog(dialogChooseId);
+    } else { hs(); }
     this.z.sortOrder = this.z.updateOrder();
     this.z.toggleMenuImg(0);
+    yesNo = 0;
+  }
+
+  selectChoice = (yN) => {
+    yesNo = yN;
   }
 
   <template>
@@ -189,6 +213,27 @@ export class MenuImage extends Component {
         ○</span>{{t 'remove'}}</p></li>
 
     </ul>
+
+    <RefreshThis @for={{this.chooseMess}}>
+    <dialog id="dialogChoose" style="z-index:999" {{on 'keydown' this.detectEscClose}}>
+      <header data-dialog-draggable>
+        <div style="width:99%">
+          <p style="color:blue">{{this.z.infoHeader}}<span></span></p>
+        </div><div>
+          <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogChooseId)}}>×</button>
+        </div>
+      </header>
+      <main>
+
+        <p style="padding:1rem;font-weight:bold;color:blue">{{{this.chooseMess}}}</p>
+
+      </main>
+      <footer data-dialog-draggable>
+        <button type="button" {{on 'click' (fn this.selectChoice 1)}}>{{t 'button.accept'}}</button>&nbsp;
+        <button autofocus type="button" {{on 'click' (fn this.selectChoice 2)}}>{{t 'button.reject'}}</button>
+      </footer>
+    </dialog>
+    </RefreshThis>
 
   </template>
 

@@ -7,6 +7,7 @@ import { htmlSafe } from '@ember/template';
 
 import { replace } from 'tar';
 import he from 'he';
+import { query } from 'express';
 // USE: <div title={{he.decode 'text'}}></div> ['he' = HTML entities]
 // or  txt = he.decode('text')  or  txt = he.encode('text')
 
@@ -71,7 +72,7 @@ export default class CommonStorageService extends Service {
               }
               return subindex;
             }
-  @tracked  textColor = '#fff';          //default text color
+  @tracked  textColor = '#fff'; //default text color
   //        Maybe your home dir., server start argument IMDB_HOME:
   @tracked  userDir = '/path/to/albums';
   //        userName may be changed in other ways later (e.g. logins):
@@ -87,7 +88,6 @@ export default class CommonStorageService extends Service {
   //   #region VIEW VARS
   //== Miniature and show images etc. information
 
-  @tracked  navKeys = false; // Protects from unintended use of L/R arrow keys
   @tracked  displayNames = 'none'; // Image name display switch
   @tracked  edgeImage = '';  // Text indicating first/last image
   @tracked  hasImages = false; // true if 'imdbDir' has at least one image
@@ -565,19 +565,17 @@ export default class CommonStorageService extends Service {
 
 
 
-  // Setting sec to 0 doesn't avoid `inherited Timeout` close!
+  // Setting sec to 0 doesn't hinder `inherited Timeout` to close!
   //#region alertMess
-  alertMess = async (mess, sec, yesNo) => {
+  alertMess = async (mess, sec) => {
     this.closeDialog('dialogAlert');
     this.infoHeader = this.intl.t('infoHeader'); // default header
     this.infoMessage = mess.replace(/\n/g, '<br>');
     this.openDialog('dialogAlert');
-    // this.openModalDialog('dialogAlert');
     if (sec) { // means close after sec seconds
       await new Promise (z => setTimeout (z, sec*1000)); // alertMess
       this.closeDialog('dialogAlert');
     }
-    if (yesNo) this.closeDialog('dialogAlert', true);
   }
 
   //#region albumAllImg
@@ -1096,9 +1094,6 @@ export default class CommonStorageService extends Service {
             that.numInvisible = 0;
             that.numMarked = 0;
             that.numShown = 0;
-            // ///document.querySelectorAll("span.ifZero").style.display = 'hide';
-            // document.querySelectorAll('#navKeys').text ('false');
-            that.navKeys = false; // Protects from unintended use of L/R arrows
           }
           for (i=0; i<n_files; i++) {
             result [j + 4] = result [j + 4].replace (/&lt;br&gt;/g,'<br>'); // j + 5??

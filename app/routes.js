@@ -143,6 +143,7 @@ module.exports = function(app) { // Start module.exports
     }
       console.log('.' + file.slice(IMDB_HOME.length))
     var LT = req.get('intlcode') // Language tag for dateTime
+    if (!LT) LT = 'sv-se' // Swedish (ISO) date order
     if (LT === 'en-us') LT = 'en-uk' // European date order
       // console.log('fileStat',LT)
     var missing = 'NA'

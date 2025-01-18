@@ -18,6 +18,7 @@ export class DialogAlert extends Component {
     e.stopPropagation();
     if (e.keyCode === 27) { // Esc key
       if (document.getElementById(dialogAlertId).open) this.z.closeDialog(dialogAlertId);
+      if (document.getElementById(dialogChooseId).open) this.z.closeDialog(dialogChooseId);
     }
   }
 
@@ -33,32 +34,28 @@ export class DialogAlert extends Component {
     }
   }
 
-  get yesNo() {
-    return true;
-  }
+  <template>
+    <dialog id="dialogAlert" style="z-index:999" {{on 'keydown' this.detectEscClose}}>
+      <header data-dialog-draggable>
+        <div style="width:99%">
+          <p style="color:blue">{{this.z.infoHeader}}<span></span></p>
+        </div><div>
+          <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogAlertId)}}>×</button>
+        </div>
+      </header>
+      <main>
 
-<template>
-  <dialog id="dialogAlert" style="z-index:999" {{on 'keydown' this.detectEscClose}}>
-    <header data-dialog-draggable>
-      <div style="width:99%">
-        <p style="color:blue">{{this.z.infoHeader}}<span></span></p>
-      </div><div>
-        <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogAlertId)}}>×</button>
-      </div>
-    </header>
-    <main>
+        <p style="padding:1rem;font-weight:bold;color:blue">{{{this.z.infoMessage}}}</p>
 
-      <p style="padding:1rem;font-weight:bold;color:blue">{{{this.z.infoMessage}}}</p>
-
-    </main>
-    <footer data-dialog-draggable>
-      {{#if this.yesNo}}
-      <button type="button" {{on 'click' (fn this.z.closeDialog dialogAlertId)}}>{{t 'button.close'}}</button>&nbsp;
-      <button type="button" {{on 'click' (fn this.z.closeDialog dialogAlertId)}}>{{t 'button.close'}}</button>&nbsp;
-      {{else}}
-      <button type="button" {{on 'click' (fn this.z.closeDialog dialogAlertId)}}>{{t 'button.close'}}</button>&nbsp;
-      {{/if}}
-    </footer>
-  </dialog>
-</template>
+      </main>
+      <footer data-dialog-draggable>
+        <button type="button" {{on 'click' (fn this.z.closeDialog dialogAlertId)}}>{{t 'button.close'}}</button>&nbsp;
+      </footer>
+    </dialog>
+  </template>
 }
+
+// const Buttons = <template>
+//   <button type="button" {{on 'click' (fn this.selectChoice true)}}>@accept</button>&nbsp;
+//   <button autofocus type="button" {{on 'click' (fn this.selectChoice false)}}>@reject</button>
+// </template>
