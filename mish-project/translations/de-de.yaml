@@ -133,6 +133,7 @@ albumSelectInfo: "Eine Albumsammlung hier auswählen,
                  – Tipps bei Problemen:
                  Den Browser neuladen!"
 button:
+  ok: OK
   backgtitle: Hintergrund ändern
   close:     Schließen
   continue:  Weitermachen

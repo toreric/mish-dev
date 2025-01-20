@@ -499,13 +499,18 @@ export default class CommonStorageService extends Service {
 
 
 
+
+  //#region ifHideSet
+  ifHideSet = () => { // whether the hidden imgs are invisible
+    document.getElementById('toggleHide')
+    .style.backgroundImage === 'url("/images/eyes-blue.png")';
+  }
+
+
   // Check each thumbnails' hide status and set classes
   //#region paintHideFlags
   paintHideFlags = () => {
     let order = this.updateOrder(true); // array if true, else text
-
-    let hide = document.getElementById('toggleHide')
-      .style.backgroundImage === 'url("/images/eyes-blue.png")';
 
     for (let p of order) {
       let i = p.indexOf(',');
@@ -513,13 +518,15 @@ export default class CommonStorageService extends Service {
       let mini = document.getElementById('i' + p.slice(0, i));
       if (p[i + 1] === '1') {
         mini.classList.add('hidden');
+        mini.classList.remove('invisible');
       } else {
         mini.classList.remove('hidden');
+        mini.classList.remove('invisible');
       }
-      if (hide && p[i + 1] === '1') {
+      if (this.ifHideSet() && p[i + 1] === '1') {
         mini.classList.add('invisible');
       } else {
-        mini.classList.remove('invisible');
+        mini.classList.remove('invisible'); // there is some redundance here
       }
     }
   }
@@ -616,7 +623,14 @@ export default class CommonStorageService extends Service {
 
   //#region markBorders
   markBorders = async (namepic) => { // Mark a mini-image border
-    await new Promise (z => setTimeout (z, 25)); // Allow the dom to settle
+
+    // console.trace();
+    // await new Promise (z => setTimeout (z, 25)); // Allow the dom to settle
+
+      this.loli('markBorders done! --------', 'color:red');
+      // console.log((new Error()).stack?.split("\n")[2]?.trim().split(" ")[1]);
+      // console.log((new Error()).stack?.split("\n")[1]?.trim().split(" ")[1]);
+
     document.querySelector('#i' + this.escapeDots(namepic) + ' img.left-click').classList.add('dotted');
   }
 

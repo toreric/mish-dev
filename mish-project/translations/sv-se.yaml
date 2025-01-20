@@ -134,6 +134,7 @@ albumSelectInfo: "Välj här en album-
                  – Tips vid problem:
                  Ladda om webbläsaren!"
 button:
+  ok: OK
   backgtitle: Byt bakgrund
   close:     Stäng
   continue:  Fortsätt

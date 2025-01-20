@@ -134,6 +134,7 @@ albumSelectInfo: "Select here an album
                   – Tips at problems:
                   Reload the browser!"
 button:
+  ok: OK
   backgtitle: Change background
   close:     Close
   continue:  Continue

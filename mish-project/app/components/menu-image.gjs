@@ -19,18 +19,53 @@ export const dialogChooseId = 'dialogChoose';
 
 const LF = '\n'   // Line Feed == New Line
 const BR = '<br>' // HTML line break
-var yesNo = 0;
-
-
-// document.addEventListener('mousedown', async (event) => {
-//   event.preventDefault(); // Kills everything
-// });
 
 export class MenuImage extends Component {
   @service('common-storage') z;
   @service intl;
 
-  @tracked chooseMess = 'Choose!';
+  @tracked yesNo = 0;
+
+  selectChoice = (yN) => {
+    this.yesNo = yN;
+  }
+
+  hideShow = async () => {
+    const pics = () => { // begin local function ---------
+      document.getElementById('go_back').click(); //close view image if open
+      this.z.toggleMenuImg(0); //close image menu
+      if (document.getElementById('i' + this.z.picName).classList.contains('selected'))
+        return document.querySelectorAll('.img_mini.selected');
+      // If only this unselected image, get an array of a single elment:
+      else return document.querySelectorAll('#i' + this.z.escapeDots(this.z.picName));
+    }
+    const hs = () => { // begin local function ---------
+      let pics = pics();
+      for (let pic of pics) {
+        if (pic.classList.contains('hidden')) {
+          pic.classList.remove('hidden');
+          pic.classList.remove('invisible');
+        } else {
+          pic.classList.add('hidden');
+          if (this.z.ifHideSet()) pic.classList.add('invisible');
+        }
+      }
+    } // end local functions ----------------------------
+
+    let imgs = pics();
+    if (imgs.length > 1) {
+      // this.chooseMess = this.intl.t('hideShowAll', {n: imgs.length});
+      this.yesNo = 0;
+      await new Promise (z => setTimeout (z, 99)); // hideShow
+      this.z.openDialog(dialogChooseId);
+      while (!this.yesNo) {
+        await new Promise (z => setTimeout (z, 99)); // hideShow
+        if (this.yesNo === 1) { hs(); } // first button
+      }
+    } else { hs(); }
+    this.z.closeDialog(dialogChooseId);
+    this.z.sortOrder = this.z.updateOrder();
+  }
 
   // Detect closing Esc key
   detectClose = (e) => {
@@ -81,40 +116,6 @@ export class MenuImage extends Component {
     } else {
       this.z.alertMess('<div style="text-align:center">' + this.intl.t(menuItem) + ':' + BR + BR + this.intl.t('futureFacility') + '</div>');
     }
-  }
-
-  hideShow = async () => {
-    let pics;
-    if (document.getElementById('i' + this.z.picName).classList.contains('selected'))
-      pics = document.querySelectorAll('.img_mini.selected');
-    // If only this unselected image, get an array of a single elment:
-    else pics = document.querySelectorAll('#i' + this.z.escapeDots(this.z.picName));
-
-    const hs = () => { // begin local function ---------
-      for (let pic of pics) {
-        if (pic.classList.contains('hidden')) pic.classList.remove('hidden');
-        else pic.classList.add('hidden');
-      }
-    } // end local function -------------------------
-
-    if (pics.length > 1) {
-      // this.chooseMess = this.intl.t('hideShowAll ', {n: pics.length});
-      this.chooseMess = '<div style="text-align:center">' + 'Ska  alla ' + pics.length + ' gömmas/visas?</div>';
-      await new Promise (z => setTimeout (z, 99)); // hideShow
-      this.z.openDialog(dialogChooseId);
-      while (!yesNo) {
-        await new Promise (z => setTimeout (z, 99)); // hideShow
-        if (yesNo === 1) { hs(); } // first button
-      }
-      this.z.closeDialog(dialogChooseId);
-    } else { hs(); }
-    this.z.sortOrder = this.z.updateOrder();
-    this.z.toggleMenuImg(0);
-    yesNo = 0;
-  }
-
-  selectChoice = (yN) => {
-    yesNo = yN;
   }
 
   <template>
@@ -214,27 +215,26 @@ export class MenuImage extends Component {
 
     </ul>
 
-    <RefreshThis @for={{this.chooseMess}}>
-    <dialog id="dialogChoose" style="z-index:999" {{on 'keydown' this.detectEscClose}}>
-      <header data-dialog-draggable>
+   <dialog id="dialogChoose" style="z-index:999" {{on 'keydown' this.detectEscClose}} draggable="false" ondragstart="return false">
+      <header data-dialog-draggable draggable="false" ondragstart="return false">
         <div style="width:99%">
           <p style="color:blue">{{this.z.infoHeader}}<span></span></p>
         </div><div>
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogChooseId)}}>×</button>
         </div>
       </header>
-      <main>
+      <main draggable="false" ondragstart="return false">
 
+      {{!-- <RefreshThis @for={{this.chooseMess}}> --}}
         <p style="padding:1rem;font-weight:bold;color:blue">{{{this.chooseMess}}}</p>
+      {{!-- </RefreshThis> --}}
 
       </main>
-      <footer data-dialog-draggable>
-        <button type="button" {{on 'click' (fn this.selectChoice 1)}}>{{t 'button.accept'}}</button>&nbsp;
-        <button autofocus type="button" {{on 'click' (fn this.selectChoice 2)}}>{{t 'button.reject'}}</button>
+      <footer data-dialog-draggable draggable="false" ondragstart="return false">
+        <button type="button" {{on 'click' (fn this.selectChoice 1)}}>{{t 'button.ok'}}</button>&nbsp;
+        <button autofocus type="button" {{on 'click' (fn this.selectChoice 2)}}>{{t 'button.close'}}</button>
       </footer>
     </dialog>
-    </RefreshThis>
-
   </template>
 
 }
