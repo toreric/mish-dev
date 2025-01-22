@@ -30,39 +30,44 @@ export class MenuImage extends Component {
     this.yesNo = yN;
   }
 
+  get chooseMess() {
+    return 'Ska alla ' + this.z.numMarked + 'gömmas eller visas?'
+  }
+
   hideShow = async () => {
     const pics = () => { // begin local function ---------
-      document.getElementById('go_back').click(); //close view image if open
+      let butt = document.getElementById('go_back');
+      if (!butt.style.display) butt.click(); //close view image if open
       this.z.toggleMenuImg(0); //close image menu
       if (document.getElementById('i' + this.z.picName).classList.contains('selected'))
         return document.querySelectorAll('.img_mini.selected');
       // If only this unselected image, get an array of a single elment:
       else return document.querySelectorAll('#i' + this.z.escapeDots(this.z.picName));
     }
-    const hs = () => { // begin local function ---------
-      let pics = pics();
-      for (let pic of pics) {
+    const hs = async () => { // begin local function ---------
+      let imgs = pics();
+      await new Promise (z => setTimeout (z, 99)); // hideShow 1
+      for (let pic of imgs) {
         if (pic.classList.contains('hidden')) {
           pic.classList.remove('hidden');
           pic.classList.remove('invisible');
         } else {
           pic.classList.add('hidden');
-          if (this.z.ifHideSet()) pic.classList.add('invisible');
+          pic.classList.add('invisible'); // MÅSTE FIXAS EJ GENERELLT
         }
       }
     } // end local functions ----------------------------
-
     let imgs = pics();
     if (imgs.length > 1) {
-      // this.chooseMess = this.intl.t('hideShowAll', {n: imgs.length});
       this.yesNo = 0;
-      await new Promise (z => setTimeout (z, 99)); // hideShow
+      await new Promise (z => setTimeout (z, 99)); // hideShow 2
       this.z.openDialog(dialogChooseId);
       while (!this.yesNo) {
-        await new Promise (z => setTimeout (z, 99)); // hideShow
-        if (this.yesNo === 1) { hs(); } // first button
+        await new Promise (z => setTimeout (z, 99)); // hideShow 3
+        if (this.yesNo === 1) { await hs(); } // first button
       }
-    } else { hs(); }
+    } else { await hs(); }
+    this.z.countNumbers();
     this.z.closeDialog(dialogChooseId);
     this.z.sortOrder = this.z.updateOrder();
   }
@@ -225,8 +230,8 @@ export class MenuImage extends Component {
       </header>
       <main draggable="false" ondragstart="return false">
 
-      {{!-- <RefreshThis @for={{this.chooseMess}}> --}}
-        <p style="padding:1rem;font-weight:bold;color:blue">{{{this.chooseMess}}}</p>
+      {{!-- <RefreshThis @for={{this.z.numMarked}}> --}}
+        <p style="padding:1rem;font-weight:bold;color:blue">{{this.chooseMess}}</p>
       {{!-- </RefreshThis> --}}
 
       </main>

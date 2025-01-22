@@ -338,15 +338,6 @@ export default class CommonStorageService extends Service {
   }
 }
 
-  //#region ifToggleHide
-  ifToggleHide = () => {
-    if (this.numHidden) {
-      document.getElementById('toggleHide').style.display = '';
-    } else {
-      document.getElementById('toggleHide').style.display = 'none';
-    }
-  }
-
   //#region openAlbum
   openAlbum = async (i) => {
     this.picName = '';
@@ -469,7 +460,6 @@ export default class CommonStorageService extends Service {
     this.paintHideFlags();
     // Count the number of shown, invisible, linked, unlinked, etc. images
     this.countNumbers();
-    this.numMarked = document.querySelectorAll('.img_mini.selected').length;
   }
 
   //#region toggleBackg
@@ -502,10 +492,31 @@ export default class CommonStorageService extends Service {
 
   //#region ifHideSet
   ifHideSet = () => { // whether the hidden imgs are invisible
-    document.getElementById('toggleHide')
+    return document.getElementById('toggleHide')
     .style.backgroundImage === 'url("/images/eyes-blue.png")';
   }
 
+
+  //#region showHidden
+  showHidden = () => {
+    document.getElementById('toggleHide').style.backgroundImage = 'url(/images/eyes-white.png)';
+    for (let pic of document.querySelectorAll('.img_mini.hidden')) {
+      pic.classList.remove('invisible');
+    }
+    this.numInvisible = 0;
+    this.numShown = this.numImages;
+  }
+  //#region hideHidden
+  hideHidden = () => {
+    document.getElementById('toggleHide').style.backgroundImage = 'url(/images/eyes-blue.png)';
+    let n = 0;
+    for (let pic of document.querySelectorAll('.img_mini.hidden')) {
+      pic.classList.add('invisible');
+      n++;
+    }
+    this.numInvisible = n;
+    this.numShown = this.numImages - this.numInvisible;
+  }
 
   // Check each thumbnails' hide status and set classes
   //#region paintHideFlags
@@ -523,6 +534,8 @@ export default class CommonStorageService extends Service {
         mini.classList.remove('hidden');
         mini.classList.remove('invisible');
       }
+        // this.loli('ifHideSet=' + this.ifHideSet(), 'color:red');
+        // console.log(document.getElementById('toggleHide').style.backgroundImage);
       if (this.ifHideSet() && p[i + 1] === '1') {
         mini.classList.add('invisible');
       } else {
@@ -551,8 +564,13 @@ export default class CommonStorageService extends Service {
 
   //#region countNumbers
   countNumbers = () => {
+    this.numMarked = document.querySelectorAll('.img_mini.selected').length;
     this.numHidden = document.querySelectorAll('.img_mini.hidden').length;
-    this.ifToggleHide();
+    if (this.numHidden) document.getElementById('toggleHide').style.display = '';
+    else {
+      document.getElementById('toggleHide').style.display = 'none';
+      document.getElementById('toggleHide').style.backgroundImage = 'url(/images/eyes-blue.png)';
+    }
     this.numInvisible = document.querySelectorAll('.img_mini.invisible').length;
     this.numLinked = document.querySelectorAll('.img_mini.symlink').length;
     this.numOrigin = this.numImages - this.numLinked;
@@ -622,12 +640,12 @@ export default class CommonStorageService extends Service {
   }
 
   //#region markBorders
-  markBorders = async (namepic) => { // Mark a mini-image border
+  markBorders = async (namepic, from) => { // Mark a mini-image border
 
     // console.trace();
     // await new Promise (z => setTimeout (z, 25)); // Allow the dom to settle
 
-      this.loli('markBorders done! --------', 'color:red');
+      this.loli('markBorders ' + namepic + ' ' + from, 'color:red');
       // console.log((new Error()).stack?.split("\n")[2]?.trim().split(" ")[1]);
       // console.log((new Error()).stack?.split("\n")[1]?.trim().split(" ")[1]);
 
@@ -661,28 +679,7 @@ export default class CommonStorageService extends Service {
     // if (y > b - hs) y = b - hs;
     scrollTo(null, y);
     this.resetBorders(); // Reset all borders
-    this.markBorders(namepic); // Mark this one
-  }
-
-  //#region showHidden
-  showHidden = () => {
-    document.getElementById('toggleHide').style.backgroundImage = 'url(/images/eyes-white.png)';
-    for (let pic of document.querySelectorAll('.img_mini.hidden')) {
-      pic.classList.remove('invisible');
-    }
-    this.numInvisible = 0;
-    this.numShown = this.numImages;
-  }
-  //#region hideHidden
-  hideHidden = () => {
-    document.getElementById('toggleHide').style.backgroundImage = 'url(/images/eyes-blue.png)';
-    let n = 0;
-    for (let pic of document.querySelectorAll('.img_mini.hidden')) {
-      pic.classList.add('invisible');
-      n++;
-    }
-    this.numInvisible = n;
-    this.numShown = this.numImages - this.numInvisible;
+    this.markBorders(namepic, 'z.gotoMinipic'); // Mark this one
   }
 
   // Open or close the named show image, path = its path in the current album
@@ -1262,9 +1259,9 @@ export default class CommonStorageService extends Service {
       name.push(elem.id.slice(1));
       if (elem.classList.contains('hidden')) {
         hide.push(',1');
-        if (document.getElementById('toggleHide').style.backgroundImage === 'url("/images/eyes-blue.png")') {
-          elem.classList.add('invisible');
-        }
+        // if (document.getElementById('toggleHide').style.backgroundImage === 'url("/images/eyes-blue.png")') {
+        //   elem.classList.add('invisible');
+        // }
       } else {
         hide.push(',0');
       }
@@ -1622,7 +1619,7 @@ export default class CommonStorageService extends Service {
       await new Promise (z => setTimeout (z, size*6 + 10)); // album rerender
       this.paintHideFlags(); // AFTER RERENDER!
       this.paintViewImg();   // AFTER RERENDER!
-      this.markBorders(this.picName);
+      this.markBorders(this.picName, 'z.saveDialog');
       // Remove the initial '../..etc.' if 'path' is from 'f.orig' //**
       path = this.imdbRoot + path.replace(/^\.*(\/\.+)*/, '');
         // this.loli(path, 'color:red');

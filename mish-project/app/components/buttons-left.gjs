@@ -14,7 +14,16 @@ export class ButtonsLeft extends Component {
   @service('common-storage') z;
   @service intl;
 
-  someFunction = (param) => {this.z.loli(param, 'color:red');}
+  // someFunction = (param) => {this.z.loli(param, 'color:red');}
+
+  toggleMainMenu = (e) => {
+    if (e) e.stopPropagation();
+    if (document.getElementById("menuMain").style.display === "") {
+      this.z.closeMainMenu('');
+    } else {
+      this.z.openMainMenu();
+    }
+  }
 
   toggleHideFlagged = (e) => {
     if (e) e.stopPropagation();
@@ -27,13 +36,10 @@ export class ButtonsLeft extends Component {
     }
   }
 
-  toggleMainMenu = (e) => {
+  reloadAlbum = (e) => {
     if (e) e.stopPropagation();
-    if (document.getElementById("menuMain").style.display === "") {
-      this.z.closeMainMenu('');
-    } else {
-      this.z.openMainMenu();
-    }
+    // this.z.hideHidden();
+    this.z.openAlbum(this.z.imdbDirIndex);
   }
 
   toggleNameView = (e) => {
@@ -55,7 +61,7 @@ export class ButtonsLeft extends Component {
 
       {{!-- <a id="reFr" {{on 'click' (fn this.someFunction 'refresh')}} title="NOTE: refresh was reLd" style="display:none"></a> --}}
 
-      <a id="reLd" class="smBu" title={{t 'buttons.left.reload'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.z.openAlbum this.z.imdbDirIndex)}} src="/images/reload.png"></a>
+      <a id="reLd" class="smBu" title={{t 'buttons.left.reload'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.reloadAlbum)}} src="/images/reload.png"></a>
 
       <a id="toggleName" class="smBu" title={{t 'buttons.left.name'}} draggable="false" ondragstart="return false" style="display:" {{on 'click' (fn this.toggleNameView)}}>N</a>
 

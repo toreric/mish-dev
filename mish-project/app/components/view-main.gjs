@@ -234,7 +234,7 @@ class AllImages extends Component {
     // NOTE: The picName is already set at .img_show (perhaps not at .img_mini):
     if (tgt.closest('.img_mini')) {
       this.z.picName = tgt.closest('.img_mini').id.slice(1);
-      this.z.markBorders(this.z.picName);
+      this.z.markBorders(this.z.picName, 'ViewMain.ediText');
     }
     if (old === this.z.picName) {
       this.z.toggleDialog (dialogTextId);
@@ -261,9 +261,7 @@ class AllImages extends Component {
         thisPic.classList.add('selected');
         clicked.className = 'markTrue';
       }
-      this.z.numMarked = document.querySelectorAll('.img_mini.selected').length;
-      this.z.numHidden = document.querySelectorAll('.img_mini.hidden').length;
-      this.z.ifToggleHide(); // Show/hide 'toggleHide', a left button
+      this.z.countNumbers();
 
     } else { // 1 == slideshow image (copies to the thumbnail)
       let thisPic = document.querySelector('#i' + this.z.escapeDots(this.z.picName));
