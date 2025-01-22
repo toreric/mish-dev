@@ -31,7 +31,12 @@ export class MenuImage extends Component {
   }
 
   get chooseMess() {
-    return 'Ska alla ' + this.z.numMarked + 'gömmas eller visas?'
+    // The case one wouldn't have a choice!
+    if (this.z.numMarked === 2) {
+      return this.intl.t('write.chooseBoth');
+    } else {
+      return this.intl.t('write.chooseMany', {n: this.z.numMarked});
+    }
   }
 
   hideShow = async () => {
@@ -53,7 +58,7 @@ export class MenuImage extends Component {
           pic.classList.remove('invisible');
         } else {
           pic.classList.add('hidden');
-          pic.classList.add('invisible'); // MÅSTE FIXAS EJ GENERELLT
+          if (this.z.ifHideSet()) pic.classList.add('invisible');
         }
       }
     } // end local functions ----------------------------
@@ -109,12 +114,10 @@ export class MenuImage extends Component {
   }
 
   toggleDialog = (id) => {
-    // this.z.markBorders(this.z.picName); //seems unnecessary
     this.z.toggleDialog(id);
   }
 
   futureNotYet = (menuItem) => {
-    // this.z.markBorders(this.z.picName);
     let alrt = document.getElementById(dialogAlertId);
     if (alrt.open) {
       alrt.close();

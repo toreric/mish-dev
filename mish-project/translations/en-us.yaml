@@ -295,6 +295,8 @@ write:
              <span style="font-weight:normal;color:#000">Hopefully, the drag-and-drop<br>
               problem will be eventually fixed</span>
   albumName: Enter an album name
+  chooseBoth: Ska båda markerade gömmas eller visas?
+  chooseMany: Ska alla {n} markerade gömmas eller visas?
   chooseTool: No tool chosen, choose one!
   creator: 'Origin: Photographer Source'
   description: 'Caption: When Where What Who'

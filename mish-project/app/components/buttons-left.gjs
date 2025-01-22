@@ -27,12 +27,11 @@ export class ButtonsLeft extends Component {
 
   toggleHideFlagged = (e) => {
     if (e) e.stopPropagation();
-    if (document.querySelector('.img_mini.hidden')) {
-      if (document.querySelector('.img_mini.hidden.invisible')) {
-        this.z.showHidden();
-      } else {
-        this.z.hideHidden();
-      }
+    // If there is at least one invisible:
+    if (document.querySelector('.img_mini.invisible')) {
+      this.z.showHidden();
+    } else {
+      this.z.hideHidden();
     }
   }
 

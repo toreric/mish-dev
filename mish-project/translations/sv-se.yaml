@@ -293,6 +293,8 @@ write:
              <span style="font-weight:normal;color:#000">Förhoppningsvis ska dra-och-släpp-<br>
              problemet så småningom åtgärdas</span>
   albumName: Skriv ett albumnamn
+  chooseBoth: Ska båda markerade gömmas eller visas?
+  chooseMany: Ska alla {n} markerade gömmas eller visas?
   chooseTool: Inget verktyg valt, välj ett!
   creator: "Ursprung: Foto upphov källa"
   description: "Beskrivning: När var vad vilka"
