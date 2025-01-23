@@ -14,6 +14,7 @@ import { Clock } from './clock';
 import { ButtonsLeft } from './buttons-left';
 import { ButtonsRight } from './buttons-right';
 import { DialogAlert } from './dialog-alert';
+import { DialogChoose } from './dialog-choose';
 import { DialogFind } from './dialog-find';
 import { DialogHelp } from './dialog-help';
 import { DialogInfo } from './dialog-info';
@@ -312,6 +313,7 @@ export default class extends Welcome {
     <DialogHelp />
     <DialogInfo />
     <DialogAlert />
+    <DialogChoose />
     <DialogXper @content={{this.album}} />
     <DialogUtil />
     <Spinner />

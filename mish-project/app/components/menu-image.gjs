@@ -11,11 +11,10 @@ import t from 'ember-intl/helpers/t';
 import { MenuMain } from './menu-main';
 
 import { dialogAlertId } from './dialog-alert';
+import { dialogChooseId } from './dialog-choose';
 import { dialogInfoId } from './dialog-info';
 import { dialogTextId } from './dialog-text';
 
-import RefreshThis from './refresh-this';
-export const dialogChooseId = 'dialogChoose';
 
 const LF = '\n'   // Line Feed == New Line
 const BR = '<br>' // HTML line break
@@ -23,12 +22,6 @@ const BR = '<br>' // HTML line break
 export class MenuImage extends Component {
   @service('common-storage') z;
   @service intl;
-
-  @tracked yesNo = 0;
-
-  selectChoice = (yN) => {
-    this.yesNo = yN;
-  }
 
   get chooseMess() {
     // The case one wouldn't have a choice!
@@ -41,8 +34,10 @@ export class MenuImage extends Component {
 
   hideShow = async () => {
     const pics = () => { // begin local function ---------
-      let butt = document.getElementById('go_back');
-      if (!butt.style.display) butt.click(); //close view image if open
+      //close view image (and nav-links) if open:
+      if (!document.querySelector('div.nav_links').style.display) {
+        document.getElementById('go_back').click();
+      }
       this.z.toggleMenuImg(0); //close image menu
       if (document.getElementById('i' + this.z.picName).classList.contains('selected'))
         return document.querySelectorAll('.img_mini.selected');
@@ -64,14 +59,14 @@ export class MenuImage extends Component {
     } // end local functions ----------------------------
     let imgs = pics();
     if (imgs.length > 1) {
-      this.yesNo = 0;
+      this.z.buttonNumber = 0;
       await new Promise (z => setTimeout (z, 99)); // hideShow 2
       this.z.openDialog(dialogChooseId);
-      while (!this.yesNo) {
-        await new Promise (z => setTimeout (z, 99)); // hideShow 3
-        if (this.yesNo === 1) { await hs(); } // first button
-      }
-    } else { await hs(); }
+      while (!this.z.buttonNumber) {
+        await new Promise (z => setTimeout (z, 199)); // hideShow 3
+        if (this.z.buttonNumber === 1) { await hs(); } // first button confirms
+      } // if another button leave and close
+    } else { await hs(); } // a single img need no confirm
     this.z.countNumbers();
     this.z.closeDialog(dialogChooseId);
     this.z.sortOrder = this.z.updateOrder();
@@ -222,27 +217,6 @@ export class MenuImage extends Component {
         ○</span>{{t 'remove'}}</p></li>
 
     </ul>
-
-   <dialog id="dialogChoose" style="z-index:999" {{on 'keydown' this.detectEscClose}} draggable="false" ondragstart="return false">
-      <header data-dialog-draggable draggable="false" ondragstart="return false">
-        <div style="width:99%">
-          <p style="color:blue">{{this.z.infoHeader}}<span></span></p>
-        </div><div>
-          <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogChooseId)}}>×</button>
-        </div>
-      </header>
-      <main draggable="false" ondragstart="return false">
-
-      {{!-- <RefreshThis @for={{this.z.numMarked}}> --}}
-        <p style="padding:1rem;font-weight:bold;color:blue">{{this.chooseMess}}</p>
-      {{!-- </RefreshThis> --}}
-
-      </main>
-      <footer data-dialog-draggable draggable="false" ondragstart="return false">
-        <button type="button" {{on 'click' (fn this.selectChoice 1)}}>{{t 'button.ok'}}</button>&nbsp;
-        <button autofocus type="button" {{on 'click' (fn this.selectChoice 2)}}>{{t 'button.close'}}</button>
-      </footer>
-    </dialog>
   </template>
 
 }

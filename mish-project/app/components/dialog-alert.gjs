@@ -54,8 +54,3 @@ export class DialogAlert extends Component {
     </dialog>
   </template>
 }
-
-// const Buttons = <template>
-//   <button type="button" {{on 'click' (fn this.selectChoice true)}}>@accept</button>&nbsp;
-//   <button autofocus type="button" {{on 'click' (fn this.selectChoice false)}}>@reject</button>
-// </template>

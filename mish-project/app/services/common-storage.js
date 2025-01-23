@@ -104,6 +104,13 @@ export default class CommonStorageService extends Service {
 
   @tracked  refreshTexts = 0; // Refresh trigger for RefreshThis
 
+  // For the DialogChoose dialog component, where
+  // generally 0=no, 1=ok, and 2=cancel button selected
+  @tracked buttonNumber = 0;
+    selectChoice = (yesNo) => {
+    this.buttonNumber = yesNo;
+  }
+
   //   #region ALOWANCE
   //== Allowances variables/properties/methods
 
