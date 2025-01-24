@@ -5,6 +5,7 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
+import { dialogAlertId } from './dialog-alert';
 export const dialogChooseId = 'dialogChoose';
 
 export class DialogChoose extends Component {
@@ -32,13 +33,13 @@ export class DialogChoose extends Component {
       <main draggable="false" ondragstart="return false">
 
       {{!-- <RefreshThis @for={{this.z.numMarked}}> --}}
-        <p style="padding:1rem;font-weight:bold;color:blue">{{this.chooseMess}}</p>
+        <p style="padding:1rem;font-weight:bold;color:blue">{{this.z.chooseText}}</p>
       {{!-- </RefreshThis> --}}
 
       </main>
       <footer data-dialog-draggable>
         <button type="button" {{on 'click' (fn this.z.selectChoice 1)}}>{{t 'button.ok'}}</button>&nbsp;
-        <button autofocus type="button" {{on 'click' (fn this.z.selectChoice 2)}}>{{t 'button.close'}}</button>
+        <button autofocus type="button" {{on 'click' (fn this.z.selectChoice 2)}}>{{t 'button.cancel'}}</button>
       </footer>
     </dialog>
   </template>

@@ -88,6 +88,7 @@ export default class CommonStorageService extends Service {
   //   #region VIEW VARS
   //== Miniature and show images etc. information
 
+  @tracked  chooseText = 'Choose what?'; // Choice text
   @tracked  displayNames = 'none'; // Image name display switch
   @tracked  edgeImage = '';  // Text indicating first/last image
   @tracked  hasImages = false; // true if 'imdbDir' has at least one image
@@ -1524,7 +1525,9 @@ export default class CommonStorageService extends Service {
       for (let list of allist) {
         if (!list.style.display) {
           list.style.display = 'none';
-          let name = list.closest('.img_mini').id.slice(1);
+            this.loli(list.style.display, 'color:red');   // HERE?
+            console.log(list);                              // HERE?
+          let name = list.closest('.img_mini').id.slice(1); // HERE? »Ctrl error«
           loliClose(name);
           break;
         }

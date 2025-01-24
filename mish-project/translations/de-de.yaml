@@ -133,8 +133,9 @@ albumSelectInfo: "Eine Albumsammlung hier auswählen,
                  – Tipps bei Problemen:
                  Den Browser neuladen!"
 button:
-  ok: OK
+  ok:         Ja
   backgtitle: Hintergrund ändern
+  cancel:    Annulieren
   close:     Schließen
   continue:  Weitermachen
   delete:    <b>{name}</b> löschen
@@ -206,7 +207,7 @@ dialog:
     qmark: Benutzeranweisung öffnen/schließen
     rload: Das Album neuladen, alle nicht gespeicherten Änderungen wiederherstellen („reset-Taste“, jedoch nicht für Textänderungen)¹ ²
     names: Bildnamen ein-/ausblenden (Dateiname ohne .file-Typ)
-    hide:  „Versteckte Bilder“ ein-/ausblenden (im Bildmenü ausgeblendet)
+    hide:  „Versteckte Bilder“ ein-/ausblenden (beim Bildmenü versteckt)
     save:  Bildänderungen¹ speichern, die ansonsten temporär sind und wiederhergestellt werden können²
     uptop: Zum Seitenanfang
     note1: "¹ Änderungen sind: Verschieben von Miniaturbilder per Drag-and-Drop, Ausblenden oder Anzeigen mit Miniaturansichtsmenü"
@@ -292,8 +293,9 @@ write:
              <span style="font-weight:normal;color:#000">Hoffentlich wird das Drag-and-Drop-<br>
              Problem irgendwann behoben</span>
   albumName: Einen Albumnamen eingeben
-  chooseBoth: Ska båda markerade gömmas eller visas?
-  chooseMany: Ska alla {n} markerade gömmas eller visas?
+  chooseBoth: Sollen beide Ausgewählten versteckt oder angezeigt werden?
+  chooseHeader: Wählen
+  chooseMany: Sollen alle {n} Ausgewählten versteckt oder angezeigt werden?
   chooseTool: Ein Werkzeug wählen, keines ausgewählt!
   creator: "Herkunft: Foto Ursprung Quelle"
   description: "Beschreibung: Wann wo was welche"

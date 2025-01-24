@@ -279,7 +279,7 @@ class AllImages extends Component {
   }
 
   // itemVisualClass = 'sortable-item--active';
-
+  //  *** NEXT check ember-sortable 5.0 on NPM 2025-01-24
   //============================================================
   // Requires: ember install ember-draggable-modifiers (before: ember-sortable)
   //============================================================

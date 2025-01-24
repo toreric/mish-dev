@@ -83,7 +83,7 @@ linked: linked
 Linkname: Link name
 linkto: Link to...
 Mark: Mark
-marked: marked
+marked: checked
 markhidden: Check hidden only
 mayExist: (may already exist?)
 missing: (missing) NOTE never used
@@ -134,8 +134,9 @@ albumSelectInfo: "Select here an album
                   – Tips at problems:
                   Reload the browser!"
 button:
-  ok: OK
+  ok:        "Yes"
   backgtitle: Change background
+  cancel:    Cancel
   close:     Close
   continue:  Continue
   delete:    Delete <b>{name}</b>
@@ -295,8 +296,9 @@ write:
              <span style="font-weight:normal;color:#000">Hopefully, the drag-and-drop<br>
               problem will be eventually fixed</span>
   albumName: Enter an album name
-  chooseBoth: Ska båda markerade gömmas eller visas?
-  chooseMany: Ska alla {n} markerade gömmas eller visas?
+  chooseBoth: Should both selected be hidden or shown?
+  chooseHeader: Choose
+  chooseMany: Should all {n} selected be hidden or shown?
   chooseTool: No tool chosen, choose one!
   creator: 'Origin: Photographer Source'
   description: 'Caption: When Where What Who'

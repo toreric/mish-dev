@@ -134,8 +134,9 @@ albumSelectInfo: "Välj här en album-
                  – Tips vid problem:
                  Ladda om webbläsaren!"
 button:
-  ok: OK
+  ok:        Ja
   backgtitle: Byt bakgrund
+  cancel:    Avbryt
   close:     Stäng
   continue:  Fortsätt
   delete:    Radera <b>{name}</b>
@@ -294,6 +295,7 @@ write:
              problemet så småningom åtgärdas</span>
   albumName: Skriv ett albumnamn
   chooseBoth: Ska båda markerade gömmas eller visas?
+  chooseHeader: Välj
   chooseMany: Ska alla {n} markerade gömmas eller visas?
   chooseTool: Inget verktyg valt, välj ett!
   creator: "Ursprung: Foto upphov källa"

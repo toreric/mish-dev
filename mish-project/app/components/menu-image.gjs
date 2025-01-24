@@ -15,7 +15,6 @@ import { dialogChooseId } from './dialog-choose';
 import { dialogInfoId } from './dialog-info';
 import { dialogTextId } from './dialog-text';
 
-
 const LF = '\n'   // Line Feed == New Line
 const BR = '<br>' // HTML line break
 
@@ -23,7 +22,7 @@ export class MenuImage extends Component {
   @service('common-storage') z;
   @service intl;
 
-  get chooseMess() {
+  get chooseText() {
     // The case one wouldn't have a choice!
     if (this.z.numMarked === 2) {
       return this.intl.t('write.chooseBoth');
@@ -32,6 +31,11 @@ export class MenuImage extends Component {
     }
   }
 
+  toggleDialog = (id) => {
+    this.z.toggleDialog(id);
+  }
+
+  // Hide or show one, or some checked, thumbnail images
   hideShow = async () => {
     const pics = () => { // begin local function ---------
       //close view image (and nav-links) if open:
@@ -59,6 +63,8 @@ export class MenuImage extends Component {
     } // end local functions ----------------------------
     let imgs = pics();
     if (imgs.length > 1) {
+      this.z.chooseText = this.chooseText;
+      this.z.infoHeader = this.intl.t('write.chooseHeader'); // default header
       this.z.buttonNumber = 0;
       await new Promise (z => setTimeout (z, 99)); // hideShow 2
       this.z.openDialog(dialogChooseId);
@@ -69,6 +75,68 @@ export class MenuImage extends Component {
     } else { await hs(); } // a single img need no confirm
     this.z.countNumbers();
     this.z.closeDialog(dialogChooseId);
+    this.z.sortOrder = this.z.updateOrder();
+  }
+
+  // Check or uncheck all thumbnail images (check = mark as selected)
+  checkUncheck = () => {
+    //close view image (and nav-links) if open (not 'display:none'):
+    if (!document.querySelector('div.nav_links').style.display) {
+      document.getElementById('go_back').click();
+    }
+    if (document.getElementById('i' + this.z.picName).classList.contains('selected')) {
+      let pics =  document.querySelectorAll('.img_mini.selected');
+      for (let pic of pics) {
+        pic.classList.remove('selected');
+        pic.querySelector('div[alt="MARKER"]').className = 'markFalse';
+      }
+    } else {
+      let pics = document.querySelectorAll('.img_mini');
+      for (let pic of pics) {
+        pic.classList.add('selected');
+        pic.querySelector('div[alt="MARKER"]').className = 'markTrue';
+      }
+    }
+    this.z.countNumbers();
+    this.z.toggleMenuImg(0); //close image menu
+    this.z.sortOrder = this.z.updateOrder();
+  }
+
+  // Mark (check as selected) only hidden images
+  markHidden = () => {
+    if (!document.querySelector('div.nav_links').style.display) {
+      document.getElementById('go_back').click();
+    }
+    for (let pic of document.querySelectorAll('.img_mini')) {
+      if (pic.classList.contains('hidden')) {
+        pic.classList.add('selected');
+        pic.querySelector('div[alt="MARKER"]').className = 'markTrue';
+      } else {
+        pic.classList.remove('selected');
+        pic.querySelector('div[alt="MARKER"]').className = 'markFalse';
+      }
+    }
+    this.z.countNumbers();
+    this.z.toggleMenuImg(0); //close image menu
+    this.z.sortOrder = this.z.updateOrder();
+  }
+
+  // Invert selections (marked/checked)
+  invertSelection = () => {
+    if (!document.querySelector('div.nav_links').style.display) {
+      document.getElementById('go_back').click();
+    }
+    for (let pic of document.querySelectorAll('.img_mini')) {
+      if (pic.classList.contains('selected')) {
+        pic.classList.remove('selected');
+        pic.querySelector('div[alt="MARKER"]').className = 'markFalse';
+      } else {
+        pic.classList.add('selected');
+        pic.querySelector('div[alt="MARKER"]').className = 'markTrue';
+      }
+    }
+    this.z.countNumbers();
+    this.z.toggleMenuImg(0); //close image menu
     this.z.sortOrder = this.z.updateOrder();
   }
 
@@ -106,10 +174,6 @@ export class MenuImage extends Component {
     let b = this.z.allFiles[i];
     if (b) a = b.symlink; //has a home album
     return a;
-  }
-
-  toggleDialog = (id) => {
-    this.z.toggleDialog(id);
   }
 
   futureNotYet = (menuItem) => {
@@ -168,17 +232,17 @@ export class MenuImage extends Component {
       <li><hr style="margin:0.25rem 0.5rem"></li>
 
       {{!-- Check or uncheck all images --}}
-      <li><p {{on 'click' (fn this.futureNotYet 'checkuncheck')}}>
+      <li><p {{on 'click' (fn this.checkUncheck)}}>
         <span style="font-size:124%;line-height:50%">
           ○</span>{{t 'checkuncheck'}}</p></li>
 
       {{!-- Mark (check) only hidden images --}}
-      <li><p {{on 'click' (fn this.futureNotYet 'markhidden')}}>
+      <li><p {{on 'click' (fn this.markHidden)}}>
         <span style="font-size:124%;line-height:50%">
           ○</span>{{t 'markhidden'}}</p></li>
 
       {{!-- Invert selection (marked/checked) --}}
-      <li><p {{on 'click' (fn this.futureNotYet 'invertsel')}}>
+      <li><p {{on 'click' (fn this.invertSelection)}}>
         <span style="font-size:124%;line-height:50%">
           ○</span>{{t 'invertsel'}}</p></li>
 
