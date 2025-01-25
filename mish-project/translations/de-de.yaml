@@ -269,6 +269,7 @@ hello:
 imageFirst: erstes bild
 imageLast:  letztes bild
 imageMenu: "Bild-\nmenü"
+imageNumber: bild nummer {n}
 infoHeader: Information
 loggedIn: Angemeldet
 noCollSelected: Keine Albumsammlung ausgewählt

@@ -270,6 +270,7 @@ hello:
   world:  Hello World!
 imageFirst: first image
 imageLast:  last image
+imageNumber: image number {n}
 imageMenu: "Image\nmenu"
 infoHeader: Information
 loggedIn: Logged in

@@ -529,15 +529,15 @@ export default class CommonStorageService extends Service {
   // Check each thumbnails' hide status and set classes
   //#region paintHideFlags
   paintHideFlags = () => {
-    let order = this.updateOrder(true); // array if true, else text
-
+    // let order = this.updateOrder(true); // array if true, else text
+    let order = this.sortOrder.split(LF);
     for (let p of order) {
       let i = p.indexOf(',');
       if (!p.slice(0, i)) this.loli('CommonStorageService error 0', 'color:red');
       let mini = document.getElementById('i' + p.slice(0, i));
       if (p[i + 1] === '1') {
         mini.classList.add('hidden');
-        mini.classList.remove('invisible');
+        if (this.ifHideSet()) mini.classList.add('invisible');
       } else {
         mini.classList.remove('hidden');
         mini.classList.remove('invisible');
@@ -549,24 +549,6 @@ export default class CommonStorageService extends Service {
       } else {
         mini.classList.remove('invisible'); // there is some redundance here
       }
-    }
-  }
-
-  // Check the slide-view's symlink/hide status and set classes
-  //#region paintViewImg
-  paintViewImg = () => {
-    if (!this.picName) this.loli('CommonStorageService error 1', 'color:red');
-    let mini = document.getElementById('i' + this.picName);
-    let show = document.getElementById('link_texts');
-    if (mini.classList.contains('symlink')) {
-      show.classList.add('symlink');
-    } else {
-      show.classList.remove('symlink');
-    }
-    if (mini.classList.contains('hidden')) {
-      show.classList.add('hidden');
-    } else {
-      show.classList.remove('hidden');
     }
   }
 
@@ -648,15 +630,13 @@ export default class CommonStorageService extends Service {
   }
 
   //#region markBorders
+  // Flashing white thumbnail borders, highly temporary
   markBorders = async (namepic, from) => { // Mark a mini-image border
-
     // console.trace();
     // await new Promise (z => setTimeout (z, 25)); // Allow the dom to settle
-
-      this.loli('markBorders ' + namepic + ' ' + from, 'color:red');
+      // this.loli('markBorders ' + namepic + ' ' + from, 'color:red');
       // console.log((new Error()).stack?.split("\n")[2]?.trim().split(" ")[1]);
       // console.log((new Error()).stack?.split("\n")[1]?.trim().split(" ")[1]);
-
     document.querySelector('#i' + this.escapeDots(namepic) + ' img.left-click').classList.add('dotted');
   }
 
@@ -805,28 +785,33 @@ export default class CommonStorageService extends Service {
         }
       }
     }
-    var next, nextName;
+    var next, nextName, ino = 0;
     if (!this.picName) this.loli('CommonStorageService error 5', 'color:red');
     var actual = document.getElementById('i' + this.picName);
     var actualParent = actual.parentElement;
     var allFiles = this.allFiles;
     if (forward) {
 
+      ino = 0; // börja längst framifrån ??
       // Ensure that invisibles are skipped over
       while (actual.nextElementSibling && actual.nextElementSibling.classList.contains('invisible')) {
         actual = actual.nextElementSibling;
+        ino++;
       }
       next = actual.nextElementSibling;
 
       if (next) {
         nextName = (next.id).slice(1);
+        ino++;
       } else { // Go to the beginning
         next = actualParent.firstElementChild;
+        ino = 1;
 
         // Ensure once again that invisibles are skipped over
         if (next && next.classList.contains('invisible')) {
           while (next.nextElementSibling && next.nextElementSibling.classList.contains('invisible')) {
             next = next.nextElementSibling;
+            ino++;
           }
           next = next.nextElementSibling;
         }
@@ -835,21 +820,26 @@ export default class CommonStorageService extends Service {
 
     } else { // backward
 
+      ino = this.numImages + 1; // börja längst bakifrån ??
       // Ensure that invisibles are skipped over
       while (actual.previousElementSibling && actual.previousElementSibling.classList.contains('invisible')) {
         actual = actual.previousElementSibling;
+        ino--;
       }
       next = actual.previousElementSibling;
 
       if (next) {
         nextName = (next.id).slice(1);
+        ino--;
       } else { // Go to the beginning
         next = actualParent.lastElementChild;
+        ino = this.numImages + 1;
 
         // Ensure once again that invisibles are skipped over
         if (next && next.classList.contains('invisible')) {
           while (next.previousElementSibling && next.previousElementSibling.classList.contains('invisible')) {
             next = next.previousElementSibling;
+            ino--;
           }
           next = next.previousElementSibling;
         }
@@ -873,7 +863,8 @@ export default class CommonStorageService extends Service {
       this.edgeImage = '';
       actual = document.querySelector('#i' + this.escapeDots(this.picName));
       if (!actual.nextElementSibling) this.edgeImage = this.intl.t('imageLast');
-      if (!actual.previousElementSibling) this.edgeImage = this.intl.t('imageFirst');
+      else if (!actual.previousElementSibling) this.edgeImage = this.intl.t('imageFirst');
+      // else this.edgeImage = this.intl.t('imageNumber', {n: ino})
     }
   }
 
@@ -1266,25 +1257,15 @@ export default class CommonStorageService extends Service {
     for (let elem of document.querySelectorAll('div.img_mini')) {
       name.push(elem.id.slice(1));
       if (elem.classList.contains('hidden')) {
-        hide.push(',1');
-        // if (document.getElementById('toggleHide').style.backgroundImage === 'url("/images/eyes-blue.png")') {
-        //   elem.classList.add('invisible');
-        // }
+        hide.push(',1,0');
       } else {
-        hide.push(',0');
+        hide.push(',0,0');
       }
     }
-    var save = '§§';
     for (let i=0;i<name.length;i++) {
-      for (var item of old) {
-        if (item.startsWith(name[i] + ',')) {
-          save = item;
-          name[i] = item;
-          break;
-        }
-      }
-      if (name[i] !== save) name[i] += hide[i] + ',0';
+      name[i] += hide[i];
     }
+      // this.loli(LF + name.join(LF), 'color:red');
     if (noJoin) {
       return name;
     } else {
@@ -1628,7 +1609,7 @@ export default class CommonStorageService extends Service {
       let size = this.albumAllImg(this.imdbDirs.indexOf(this.imdbDir));
       await new Promise (z => setTimeout (z, size*6 + 10)); // album rerender
       this.paintHideFlags(); // AFTER RERENDER!
-      this.paintViewImg();   // AFTER RERENDER!
+      // this.paintViewImg();   // AFTER RERENDER!
       this.markBorders(this.picName, 'z.saveDialog');
       // Remove the initial '../..etc.' if 'path' is from 'f.orig' //**
       path = this.imdbRoot + path.replace(/^\.*(\/\.+)*/, '');
