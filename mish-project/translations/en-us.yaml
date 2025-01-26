@@ -289,17 +289,18 @@ time:
 totalImgNumber: Total number of images in the collection
 write:
   afterSort: Drag-and-drop moving of images<br>
-             is not possible after the sorting,<br>
-             but is restored by first saving
-             <a class="helpIcon">S</a><br>
-             and then reloading <a id="reFr0" class="helpIcon"><img draggable="false" src="/images/reload.png"></a> the album<br><br>
+             is not possible hereafter, but is<br>
+             restored by reloading <a id="reFr0" class="helpIcon"><img draggable="false" src="/images/reload.png"></a> the album,<br>
+             after perhaps having saved <a class="helpIcon">S</a> it<br><br>
              Guests can only reload<br><br>
              <span style="font-weight:normal;color:#000">Hopefully, the drag-and-drop<br>
               problem will be eventually fixed</span>
   albumName: Enter an album name
-  chooseBoth: Should both selected be hidden or shown?
+  chooseBoth: Should both selected
   chooseHeader: Choose
-  chooseMany: Should all {n} selected be hidden or shown?
+  chooseHide: be hidden or shown?
+  chooseLast: be moved to the end?
+  chooseMany: Should all {n} selected
   chooseTool: No tool chosen, choose one!
   creator: 'Origin: Photographer Source'
   description: 'Caption: When Where What Who'

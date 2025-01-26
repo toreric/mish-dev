@@ -158,10 +158,11 @@ export class DialogUtil extends Component {
     for (let i=0; i<minis.length; i++) {
       wrap.appendChild(document.getElementById('i' + names[i]))
     }
-    await new Promise (z => setTimeout (z, 399));
+    this.z.closeDialogs();
+    await new Promise (z => setTimeout (z, 399)); // doSort
     document.querySelector('img.spinner').style.display = 'none';
-    // this.z.refreshTexts++; // bad, since reveals multiple images
     this.z.alertMess(this.z.intl.t('write.afterSort'));
+    this.z.displayNames = 'block';
   }
 
   doSubalbum = async (n) => {

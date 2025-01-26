@@ -263,7 +263,7 @@ class AllImages extends Component {
       }
       this.z.countNumbers();
 
-    } else { // 1 == slideshow image (copies to the thumbnail)
+    } else { // 1 == slideshow image (copy info to the thumbnail)
       let thisPic = document.querySelector('#i' + this.z.escapeDots(this.z.picName));
       let clicked = document.querySelector('#markShow');
       if (thisPic.classList.contains('selected')) {

@@ -1135,7 +1135,7 @@ export default class CommonStorageService extends Service {
               f.albname = that.removeUnderscore(tmp, true);
             }
 
-            // // Explanations among printouts, the namings may seem weird - be careful!
+            // // Explanations among printouts below, the namings may seem weird - be careful!
             // let tmp = f.symlink ? f.symlink : 'ordinary';
             // that.loli(tmp, 'color:white');
             // // The real file reference, if symlink: it's resolution (from here):

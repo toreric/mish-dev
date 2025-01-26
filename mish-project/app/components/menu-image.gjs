@@ -18,6 +18,20 @@ import { dialogTextId } from './dialog-text';
 const LF = '\n'   // Line Feed == New Line
 const BR = '<br>' // HTML line break
 
+// Get the image array to be operated on
+const pics = (picName) => {
+  //close view image (and nav-links) if open:
+  if (!document.querySelector('div.nav_links').style.display) {
+    document.getElementById('go_back').click();
+  }
+  if (document.getElementById('i' + picName).classList.contains('selected'))
+    return document.querySelectorAll('.img_mini.selected');
+  // If only this unselected image, get an array of a single element:
+  // Don't forget escapeDots (like in common-storage)
+  else return document.querySelectorAll('#i' + picName.replace (/\./g, "\\."));
+}
+
+
 export class MenuImage extends Component {
   @service('common-storage') z;
   @service intl;
@@ -31,25 +45,25 @@ export class MenuImage extends Component {
     }
   }
 
-  toggleDialog = (id) => {
-    this.z.toggleDialog(id);
+  get chooseHide() {
+    return this.intl.t('write.chooseHide');
+  }
+
+  get chooseFirst() {
+    return this.intl.t('write.chooseFirst');
+  }
+
+  get chooseLast() {
+    return this.intl.t('write.chooseLast');
   }
 
   // Hide or show one, or some checked, thumbnail images
   hideShow = async () => {
-    const pics = () => { // begin local function ---------
-      //close view image (and nav-links) if open:
-      if (!document.querySelector('div.nav_links').style.display) {
-        document.getElementById('go_back').click();
-      }
-      this.z.toggleMenuImg(0); //close image menu
-      if (document.getElementById('i' + this.z.picName).classList.contains('selected'))
-        return document.querySelectorAll('.img_mini.selected');
-      // If only this unselected image, get an array of a single elment:
-      else return document.querySelectorAll('#i' + this.z.escapeDots(this.z.picName));
-    }
-    const hs = async () => { // begin local function ---------
-      let imgs = pics();
+    let imgs = pics(this.z.picName);
+
+    // begin local function ---------
+    const hs = async () => {
+      // let imgs = pics(this.z.picName);
       await new Promise (z => setTimeout (z, 99)); // hideShow 1
       for (let pic of imgs) {
         if (pic.classList.contains('hidden')) {
@@ -60,10 +74,12 @@ export class MenuImage extends Component {
           if (this.z.ifHideSet()) pic.classList.add('invisible');
         }
       }
-    } // end local functions ----------------------------
-    let imgs = pics();
+    }// end local function -----------
+
+    // let imgs = pics(this.z.picName);
+    this.z.toggleMenuImg(0); //close image menu
     if (imgs.length > 1) {
-      this.z.chooseText = this.chooseText;
+      this.z.chooseText = this.chooseText + '<br>' + this.chooseHide;
       this.z.infoHeader = this.intl.t('write.chooseHeader'); // default header
       this.z.buttonNumber = 0;
       await new Promise (z => setTimeout (z, 99)); // hideShow 2
@@ -74,7 +90,26 @@ export class MenuImage extends Component {
       } // if another button leave and close
     } else { await hs(); } // a single img need no confirm
     this.z.countNumbers();
-    this.z.closeDialog(dialogChooseId);
+    this.z.closeDialogs();
+    this.z.sortOrder = this.z.updateOrder();
+  }
+
+  // Mark (check as selected) only hidden images
+  markHidden = () => {
+    if (!document.querySelector('div.nav_links').style.display) {
+      document.getElementById('go_back').click();
+    }
+    for (let pic of document.querySelectorAll('.img_mini')) {
+      if (pic.classList.contains('hidden')) {
+        pic.classList.add('selected');
+        pic.querySelector('div[alt="MARKER"]').className = 'markTrue';
+      } else {
+        pic.classList.remove('selected');
+        pic.querySelector('div[alt="MARKER"]').className = 'markFalse';
+      }
+    }
+    this.z.countNumbers();
+    this.z.toggleMenuImg(0); //close image menu
     this.z.sortOrder = this.z.updateOrder();
   }
 
@@ -98,26 +133,7 @@ export class MenuImage extends Component {
       }
     }
     this.z.countNumbers();
-    this.z.toggleMenuImg(0); //close image menu
-    this.z.sortOrder = this.z.updateOrder();
-  }
-
-  // Mark (check as selected) only hidden images
-  markHidden = () => {
-    if (!document.querySelector('div.nav_links').style.display) {
-      document.getElementById('go_back').click();
-    }
-    for (let pic of document.querySelectorAll('.img_mini')) {
-      if (pic.classList.contains('hidden')) {
-        pic.classList.add('selected');
-        pic.querySelector('div[alt="MARKER"]').className = 'markTrue';
-      } else {
-        pic.classList.remove('selected');
-        pic.querySelector('div[alt="MARKER"]').className = 'markFalse';
-      }
-    }
-    this.z.countNumbers();
-    this.z.toggleMenuImg(0); //close image menu
+    // this.z.toggleMenuImg(0); //close image menu
     this.z.sortOrder = this.z.updateOrder();
   }
 
@@ -139,6 +155,52 @@ export class MenuImage extends Component {
     this.z.toggleMenuImg(0); //close image menu
     this.z.sortOrder = this.z.updateOrder();
   }
+
+  // Move one, or some checked, thumbnail images to the end
+  placeFirst = async () => {
+    var parent = document.getElementById('imgWrapper');
+
+  }
+
+  // Move one, or some checked, thumbnail images to the end
+  placeLast = async () => {
+
+    // begin local function ---------
+    const hs = async () => {
+      await new Promise (z => setTimeout (z, 99)); // placeLast 1
+      // When you add an element that is already in the DOM,
+      // this element will be moved, not copied.
+      for (let pic of imgs) {
+        parent.appendChild(pic);
+      }
+    }// end local function ----------
+
+    var parent = document.getElementById('imgWrapper');
+    let imgs = pics(this.z.picName);
+    this.z.closeDialogs();
+    this.z.toggleMenuImg(0); //close image menu
+    if (imgs.length > 1) {
+      this.z.chooseText = this.chooseText + '<br>' + this.chooseLast;
+      this.z.infoHeader = this.intl.t('write.chooseHeader'); // default header
+      this.z.buttonNumber = 0;
+      await new Promise (z => setTimeout (z, 99)); // placeLast 2
+      this.z.openDialog(dialogChooseId);
+      while (!this.z.buttonNumber) {
+        await new Promise (z => setTimeout (z, 199)); // placeLast 3
+        if (this.z.buttonNumber === 1) { // first button confirms
+          await hs();
+          this.z.alertMess(this.z.intl.t('write.afterSort')); // TEMPORARY
+        }
+      } // if another button leave and close
+    } else { // a single img need no confirm
+      await hs();
+      this.z.alertMess(this.z.intl.t('write.afterSort')); // TEMPORARY
+    }
+    this.z.countNumbers();
+    this.z.sortOrder = this.z.updateOrder();
+  }
+
+
 
   // Detect closing Esc key
   detectClose = (e) => {
@@ -208,12 +270,12 @@ export class MenuImage extends Component {
       {{/if}}
 
       {{!-- Open image file information dialog --}}
-      <li><p {{on 'click' (fn this.toggleDialog dialogInfoId)}}>
+      <li><p {{on 'click' (fn this.z.toggleDialog dialogInfoId)}}>
         {{t 'information'}}</p></li>
 
       {{!-- Open image text edit dialog --}}
       {{#if this.z.allow.textEdit}}
-        <li><p {{on 'click' (fn this.toggleDialog dialogTextId)}}>
+        <li><p {{on 'click' (fn this.z.toggleDialog dialogTextId)}}>
           {{t 'editext'}}</p></li>
       {{/if}}
 
@@ -231,15 +293,14 @@ export class MenuImage extends Component {
       {{/if}}
       <li><hr style="margin:0.25rem 0.5rem"></li>
 
+      {{!-- Mark (check) only hidden images --}}
+      <li><p {{on 'click' (fn this.markHidden)}}>
+        {{t 'markhidden'}}</p></li>
+
       {{!-- Check or uncheck all images --}}
       <li><p {{on 'click' (fn this.checkUncheck)}}>
         <span style="font-size:124%;line-height:50%">
           ○</span>{{t 'checkuncheck'}}</p></li>
-
-      {{!-- Mark (check) only hidden images --}}
-      <li><p {{on 'click' (fn this.markHidden)}}>
-        <span style="font-size:124%;line-height:50%">
-          ○</span>{{t 'markhidden'}}</p></li>
 
       {{!-- Invert selection (marked/checked) --}}
       <li><p {{on 'click' (fn this.invertSelection)}}>
@@ -253,7 +314,7 @@ export class MenuImage extends Component {
             ○</span>{{t 'placefirst'}}</p></li>
 
         {{!-- Placeimages(s) a the end --}}
-        <li><p {{on 'click' (fn this.futureNotYet 'placelast')}}>
+        <li><p {{on 'click' (fn this.placeLast)}}>
           <span style="font-size:124%;line-height:50%">
             ○</span>{{t 'placelast'}}</p></li>
       {{/if}}

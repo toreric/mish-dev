@@ -84,7 +84,7 @@ Linkname: Länknamn
 linkto: Länka till...
 Mark: Markera
 marked: markerade
-markhidden: Markera bara dolda
+markhidden: Markera bara gömda
 mayExist: (kanske redan finns?)
 missing: (saknas) NOTE never used
 Moditime: Ändrad
@@ -287,17 +287,18 @@ time:
 totalImgNumber: Totalt antal bilder i samlingen
 write:
   afterSort: Dra-och-släpp-flyttning av bilder är<br>
-             inte möjlig efter sorteringen, men det<br>
-             återställs genom att först spara
-             <a class="helpIcon">S</a><br>
-             och därefter ladda om <a id="reFr0" class="helpIcon"><img draggable="false" src="/images/reload.png"></a> albumet<br><br>
+             inte möjlig efter detta, men återställs<br>
+             genom att ladda om <a id="reFr0" class="helpIcon"><img draggable="false" src="/images/reload.png"></a> albumet, efter<br>
+             att först eventuellt ha sparat <a class="helpIcon">S</a> det<br><br>
              Gäster kan bara ladda om<br><br>
              <span style="font-weight:normal;color:#000">Förhoppningsvis ska dra-och-släpp-<br>
              problemet så småningom åtgärdas</span>
   albumName: Skriv ett albumnamn
-  chooseBoth: Ska båda markerade gömmas eller visas?
+  chooseBoth: Ska båda markerade
   chooseHeader: Välj
-  chooseMany: Ska alla {n} markerade gömmas eller visas?
+  chooseHide: gömmas eller visas?
+  chooseLast: placeras sist?
+  chooseMany: Ska alla {n} markerade
   chooseTool: Inget verktyg valt, välj ett!
   creator: "Ursprung: Foto upphov källa"
   description: "Beskrivning: När var vad vilka"

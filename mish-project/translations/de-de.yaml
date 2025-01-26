@@ -97,8 +97,8 @@ numbererror: W A R N U N G<br><br>Nicht übereinstimmende Bildanzahl!
 Original: Original
 own: eigene
 Phototime: Fotozeit
-placefirst: Als erstes platzieren
-placelast: Als letztes platzieren
+placefirst: Zum Anfang bewegen
+placelast: Zum Ende bewegen
 plus: plus
 previous: vorheriges
 remove: LÖSCHEN...
@@ -287,16 +287,18 @@ time:
 totalImgNumber: Gesamtzahl der Bilder in der Sammlung
 write:
   afterSort: Das Verschieben von Bildern per Drag-and-Drop<br>
-             ist nach der Sortierung nicht mehr möglich, aber<br>
-             wird wiederhergestellt durch erstens Speichern <a class="helpIcon">S</a><br>
-             und danach das Album neu laden <a id="reFr0" class="helpIcon"><img draggable="false" src="/images/reload.png"></a><br><br>
+             ist jetzt nicht mehr möglich, aber wird<br>
+             wiederhergestellt durch das Album neu laden <a id="reFr0" class="helpIcon"><img draggable="false" src="/images/reload.png"></a>,<br>
+             vielleicht nach vorherigem Speichern <a class="helpIcon">S</a><br><br>
              Gäste können nur neu laden<br><br>
              <span style="font-weight:normal;color:#000">Hoffentlich wird das Drag-and-Drop-<br>
              Problem irgendwann behoben</span>
   albumName: Einen Albumnamen eingeben
-  chooseBoth: Sollen beide Ausgewählten versteckt oder angezeigt werden?
+  chooseBoth: Sollen beide Ausgewählten
   chooseHeader: Wählen
-  chooseMany: Sollen alle {n} Ausgewählten versteckt oder angezeigt werden?
+  chooseHide: versteckt oder angezeigt werden?
+  chooseLast: ans Ende verschoben werden?
+  chooseMany: Sollen alle {n} Ausgewählten
   chooseTool: Ein Werkzeug wählen, keines ausgewählt!
   creator: "Herkunft: Foto Ursprung Quelle"
   description: "Beschreibung: Wann wo was welche"

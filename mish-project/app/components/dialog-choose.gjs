@@ -33,7 +33,7 @@ export class DialogChoose extends Component {
       <main draggable="false" ondragstart="return false">
 
       {{!-- <RefreshThis @for={{this.z.numMarked}}> --}}
-        <p style="padding:1rem;font-weight:bold;color:blue">{{this.z.chooseText}}</p>
+        <p style="padding:1rem;font-weight:bold;color:blue">{{{this.z.chooseText}}}</p>
       {{!-- </RefreshThis> --}}
 
       </main>
