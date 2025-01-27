@@ -156,37 +156,37 @@ export class MenuImage extends Component {
     this.z.sortOrder = this.z.updateOrder();
   }
 
-  // Move one, or some checked, thumbnail images to the end
-  placeFirst = async () => {
-    var parent = document.getElementById('imgWrapper');
-
-  }
-
-  // Move one, or some checked, thumbnail images to the end
-  placeLast = async () => {
+  // Move one, or some checked, thumbnail image(s),
+  // if (isTrue === true): to the beginning,
+  // if (isTrue === false): to the end
+  placeFirst = async (isTrue) => {
 
     // begin local function ---------
     const hs = async () => {
-      await new Promise (z => setTimeout (z, 99)); // placeLast 1
+      await new Promise (z => setTimeout (z, 99)); // placeFirst 1
       // When you add an element that is already in the DOM,
       // this element will be moved, not copied.
       for (let pic of imgs) {
-        parent.appendChild(pic);
+        if (isTrue) parent.insertBefore(pic, parent.firstChild);
+        else parent.appendChild(pic);
       }
+      this.z.closeDialogs();
+      this.z.toggleMenuImg(0); //close image menu
     }// end local function ----------
 
     var parent = document.getElementById('imgWrapper');
     let imgs = pics(this.z.picName);
-    this.z.closeDialogs();
-    this.z.toggleMenuImg(0); //close image menu
+    let addline;
     if (imgs.length > 1) {
-      this.z.chooseText = this.chooseText + '<br>' + this.chooseLast;
+      if (isTrue) addline = this.chooseFirst;
+      else addline = this.chooseLast;
+      this.z.chooseText = this.chooseText + '<br>' + addline;
       this.z.infoHeader = this.intl.t('write.chooseHeader'); // default header
       this.z.buttonNumber = 0;
-      await new Promise (z => setTimeout (z, 99)); // placeLast 2
+      await new Promise (z => setTimeout (z, 99)); // placeFirst 2
       this.z.openDialog(dialogChooseId);
       while (!this.z.buttonNumber) {
-        await new Promise (z => setTimeout (z, 199)); // placeLast 3
+        await new Promise (z => setTimeout (z, 199)); // placeFirst 3
         if (this.z.buttonNumber === 1) { // first button confirms
           await hs();
           this.z.alertMess(this.z.intl.t('write.afterSort')); // TEMPORARY
@@ -199,8 +199,6 @@ export class MenuImage extends Component {
     this.z.countNumbers();
     this.z.sortOrder = this.z.updateOrder();
   }
-
-
 
   // Detect closing Esc key
   detectClose = (e) => {
@@ -309,12 +307,12 @@ export class MenuImage extends Component {
 
       {{#if this.z.allow.imgReorder}}
         {{!-- Place image(s) first --}}
-        <li><p {{on 'click' (fn this.futureNotYet 'placefirst')}}>
+        <li><p {{on 'click' (fn this.placeFirst true)}}>
           <span style="font-size:124%;line-height:50%">
             ○</span>{{t 'placefirst'}}</p></li>
 
         {{!-- Placeimages(s) a the end --}}
-        <li><p {{on 'click' (fn this.placeLast)}}>
+        <li><p {{on 'click' (fn this.placeFirst false)}}>
           <span style="font-size:124%;line-height:50%">
             ○</span>{{t 'placelast'}}</p></li>
       {{/if}}

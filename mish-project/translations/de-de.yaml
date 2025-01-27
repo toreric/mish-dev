@@ -295,6 +295,7 @@ write:
              Problem irgendwann behoben</span>
   albumName: Einen Albumnamen eingeben
   chooseBoth: Sollen beide Ausgewählten
+  chooseFirst: an den Anfang verschoben werden?
   chooseHeader: Wählen
   chooseHide: versteckt oder angezeigt werden?
   chooseLast: ans Ende verschoben werden?

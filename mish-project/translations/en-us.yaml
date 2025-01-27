@@ -297,6 +297,7 @@ write:
               problem will be eventually fixed</span>
   albumName: Enter an album name
   chooseBoth: Should both selected
+  chooseFirst: be moved to the beginning?
   chooseHeader: Choose
   chooseHide: be hidden or shown?
   chooseLast: be moved to the end?

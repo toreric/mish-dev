@@ -295,6 +295,7 @@ write:
              problemet så småningom åtgärdas</span>
   albumName: Skriv ett albumnamn
   chooseBoth: Ska båda markerade
+  chooseFirst: placeras först?
   chooseHeader: Välj
   chooseHide: gömmas eller visas?
   chooseLast: placeras sist?
