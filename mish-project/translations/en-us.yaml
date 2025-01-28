@@ -197,7 +197,7 @@ dialog:
     login1: you will have limited rights (hide, select, and move thumbnails by drag'n-drop; go to original image). You can get more rights with a personal login (for example, make and save caption changes). A personal login can only be obtained from a system administrator
     ihrcm0: Each image has a menu
     ihrcm1: ( <b>⡇</b>) with commands/functions
-    ctrlclick:  Ctrl + click / ⌘ + click
+    ctrlclick:  Ctrl + click (⌘ + click)
     ihrcm2: also shows the menu (⌘ with Mac keyboard)
     shift0: Shift + click an image
     shift1: selects/deselects it
@@ -256,6 +256,9 @@ dialog:
       modal:   Open modal text dialog
     toggle: Toggle text dialog
 erase: erase
+fav:
+  images: Favorite images
+  manage: Manage favorite images
 foundExplain: Found images
 gomini: "Return\n
         [Esc]"
@@ -350,4 +353,6 @@ write:
   tool4: Find duplicate image names
   tool41: Find duplicate image names in <b>{a}</b> including all subalbums
   tool42: Find duplicate image names in the whole album collection
+  tool99: Unfortunately there is nothing to choose
+  tool5: Update search data for the entire album collection
   utilHeader: Tools for

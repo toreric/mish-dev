@@ -14,10 +14,11 @@ import { dialogFindId } from './dialog-find';
 import { dialogUtilId } from './dialog-util';
 
 export const menuMainId = 'menuMain';
-const LF = '\n'; // LINE_FEED
-const OP = '⊕'; // OPENS
-const CL = '⊖'; // CLOSES
-const SA = '‡';  // SUBALBUM indicator, NOTE! set in server (routes.js)
+const BR = '<br>'; // HTML line break
+const LF = '\n';   // LINE_FEED == New line
+const OP = '⊕';   // OPENS
+const CL = '⊖';   // CLOSES
+const SA = '‡';    // SUBALBUM indicator, NOTE! set in server (routes.js)
 
 export class MenuMain extends Component {
   @service('common-storage') z;
@@ -128,21 +129,26 @@ export class MenuMain extends Component {
 
   // Search album texts to find images
   findText = () => {
-    if (this.checkRoot()) return;
+    if (this.missingRoot()) return;
     this.z.openDialog(dialogFindId);
     this.z.closeMainMenu('after opening find dialog'); // Close the main menu
   }
 
   // Manage favorite image lists
   seeFavorites = () => {
-    if (this.checkRoot()) return;
-    this.z.loli('seeFavorites', 'color:red');
+    if (this.missingRoot()) return;
+    let alrt = document.getElementById(dialogAlertId);
+    if (alrt.open) {
+      alrt.close();
+    } else {
+      this.z.alertMess('<div style="text-align:center">' + this.intl.t('fav.manage') + ':' + BR + BR + this.intl.t('futureFacility') + '</div>');
+    }
     // ...todo
   }
 
   // Edit or create albums etc.
   albumEdit = () => {
-    if (this.checkRoot()) return;
+    if (this.missingRoot()) return;
       // this.z.loli('albumEdit', 'color:red');
       // this.z.loli(this.z.picFound, 'color:red');
       // this.z.loli(this.z.imdbDir, 'color:red');
@@ -152,7 +158,7 @@ export class MenuMain extends Component {
 
   // Close/open albumTree
   toggleAlbumTree = () => {
-    if (this.checkRoot()) return;
+    if (this.missingRoot()) return;
     let treeDiv = document.querySelector('div.albumTree');
     let what;
     if (treeDiv.style.display) {
@@ -167,7 +173,7 @@ export class MenuMain extends Component {
 
   // Check if the alert dialog is open (then close it), or if no
   // album root/collection (imdbRoot) is chosen (then open it)
-  checkRoot = () => {
+  missingRoot = () => {
     if (document.getElementById('dialogAlert').hasAttribute('open')) {
       this.z.closeDialog(dialogAlertId);
       return true;
@@ -228,8 +234,10 @@ export class MenuMain extends Component {
         <a id="searchText" {{on "click" (fn this.findText)}}>{{t 'imageFind'}}<span style="font:normal 1em monospace!important">[F]</span></a>
       </p><br>
 
-      <p onclick="return false" draggable="false" ondragstart="return false" title-2="Favoritskötsel">
-        <a id ="favorites" {{on "click" (fn this.seeFavorites)}}>Favoritbilder</a>
+      {{!-- <p onclick="return false" draggable="false" ondragstart="return false" title-2="Favoritskötsel"> --}}
+      <p onclick="return false" draggable="false" ondragstart="return false" title-2={{t 'fav.manage'}}>
+        {{!-- <a id ="favorites" {{on "click" (fn this.seeFavorites)}}>Favoritbilder</a> --}}
+        <a id ="favorites" {{on "click" (fn this.seeFavorites)}}>{{t 'fav.images'}}</a>
       </p><br>
 
       <p onclick="return false" draggable="false" ondragstart="return false">

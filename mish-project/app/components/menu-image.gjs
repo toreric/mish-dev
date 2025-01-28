@@ -15,8 +15,8 @@ import { dialogChooseId } from './dialog-choose';
 import { dialogInfoId } from './dialog-info';
 import { dialogTextId } from './dialog-text';
 
-const LF = '\n'   // Line Feed == New Line
-const BR = '<br>' // HTML line break
+const LF = '\n';   // Line Feed == New Line
+const BR = '<br>'; // HTML line break
 
 // Get the image array to be operated on
 const pics = (picName) => {
@@ -156,10 +156,10 @@ export class MenuImage extends Component {
     this.z.sortOrder = this.z.updateOrder();
   }
 
-  // Move one, or some checked, thumbnail image(s),
+  // Move (within the screen) one, or some checked, thumbnail image(s),
   // if (isTrue === true): to the beginning,
   // if (isTrue === false): to the end
-  placeFirst = async (isTrue) => {
+  placeFirst = async (isTrue) => { // NOTE: place LAST by 'placeFirst(false)'!
 
     // begin local function ---------
     const hs = async () => {
@@ -200,6 +200,19 @@ export class MenuImage extends Component {
     this.z.sortOrder = this.z.updateOrder();
   }
 
+  // Move (to another album within the collection)
+  // a single image, or a number of checked images.
+  moveFunc = () => {
+    let tmp = [...this.z.imdbDirs]; // clone-copy albums
+    let albums = [];
+    // Remove the actual album and the temporary Found_images album:
+      this.z.loli(LF + tmp.join(LF), 'color:pink');
+    for (let alb of tmp) {
+      if (alb !== this.z.imdbDir && alb.slice(1) !== this.z.picFound) albums.push(alb);
+    }
+      this.z.loli(LF + albums.join(LF), 'color:brown');
+  }
+
   // Detect closing Esc key
   detectClose = (e) => {
     e.stopPropagation();
@@ -236,15 +249,6 @@ export class MenuImage extends Component {
     return a;
   }
 
-  futureNotYet = (menuItem) => {
-    let alrt = document.getElementById(dialogAlertId);
-    if (alrt.open) {
-      alrt.close();
-    } else {
-      this.z.alertMess('<div style="text-align:center">' + this.intl.t(menuItem) + ':' + BR + BR + this.intl.t('futureFacility') + '</div>');
-    }
-  }
-
   <template>
     <button class='menu_img' type="button" title="{{t 'imageMenu'}}"
     {{on 'click' (fn this.z.toggleMenuImg 1)}}
@@ -279,7 +283,7 @@ export class MenuImage extends Component {
 
       {{!-- Edit this image --}}
       {{#if this.z.allow.imgEdit}}
-        <li><p {{on 'click' (fn this.futureNotYet 'editimage')}}>
+        <li><p {{on 'click' (fn this.z.futureNotYet 'editimage')}}>
           {{t 'editimage'}}</p></li>
       {{/if}}
 
@@ -288,12 +292,12 @@ export class MenuImage extends Component {
         <li><p {{on 'click' (fn this.hideShow)}}>
           <span style="font-size:124%;line-height:50%">
             ○</span>{{t 'hideshow'}}</p></li>
-      {{/if}}
-      <li><hr style="margin:0.25rem 0.5rem"></li>
 
       {{!-- Mark (check) only hidden images --}}
       <li><p {{on 'click' (fn this.markHidden)}}>
         {{t 'markhidden'}}</p></li>
+      {{/if}}
+      <li><hr style="margin:0.25rem 0.5rem"></li>
 
       {{!-- Check or uncheck all images --}}
       <li><p {{on 'click' (fn this.checkUncheck)}}>
@@ -319,23 +323,23 @@ export class MenuImage extends Component {
 
       {{!-- Download images to this album --}}
       {{#if this.z.allow.imgUpload}}
-        <li><p {{on 'click' (fn this.futureNotYet 'download')}}>
+        <li><p {{on 'click' (fn this.z.futureNotYet 'download')}}>
           {{t 'download'}}</p></li>
       {{/if}}
       <li><hr style="margin:0.25rem 0.5rem"></li>
 
       {{!-- Link image(s) to another album --}}
-      <li><p {{on 'click' (fn this.futureNotYet 'linkto')}}>
+      <li><p {{on 'click' (fn this.z.futureNotYet 'linkto')}}>
         <span style="font-size:124%;line-height:50%">
         ○</span>{{t 'linkto'}}</p></li>
 
       {{!-- Move image(s) to another album --}}
-      <li><p {{on 'click' (fn this.futureNotYet 'moveto')}}>
+      <li><p {{on 'click' (fn this.moveFunc)}}>
         <span style="font-size:124%;line-height:50%">
         ○</span>{{t 'moveto'}}</p></li>
 
       {{!-- Erase image(s)  --}}
-      <li><p {{on 'click' (fn this.futureNotYet 'remove')}}>
+      <li><p {{on 'click' (fn this.z.futureNotYet 'remove')}}>
         <span style="font-size:124%;line-height:50%">
         ○</span>{{t 'remove'}}</p></li>
 

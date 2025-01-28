@@ -71,9 +71,11 @@ export class DialogUtil extends Component {
     return '<br><div style="text-align:center"><button class="unclosable" type="button" onclick="location.reload(true);return false">' + this.intl.t('button.restart') + '</button></div>'
   }
 
-  toShow = () => {
-    this.z.closeDialog('dialogDupResult');
+  toShow = async () => {
     this.z.openAlbum(this.z.picFoundIndex);
+    this.z.closeDialog('dialogDupResult');
+    await new Promise (z => setTimeout(z, this.countImgs*20 + 99)); // toShow
+    this.z.displayNames = 'block';
   }
 
   // Should be the first called from the template
@@ -118,6 +120,17 @@ export class DialogUtil extends Component {
     }
   }
 
+  get okDbUpdate() {
+    //only at collection root
+    if (this.z.imdbDir) {
+      return false;
+    }
+    if (this.z.allow.albumEdit) {
+      this.noTools = false;
+      return true
+    }
+  }
+
   get notEmpty() { // true if the album is empty
     return this.z.subaIndex.length > 0 || this.z.numImages > 0;
   }
@@ -137,7 +150,6 @@ export class DialogUtil extends Component {
   }
 
   doSort = async () => {
-    this.z.displayNames = 'block';
     document.querySelector('img.spinner').style.display = '';
     let minis = document.querySelectorAll('div.miniImgs.imgs div.img_mini');
     let names = [];
@@ -210,7 +222,6 @@ export class DialogUtil extends Component {
   doDupnames = async () => {
       // return new Promise (async function (resolve, reject) {
     this.z.closeDialog('dialogUtil');
-    this.z.displayNames = 'block';
     let path = this.z.imdbPath + this.z.imdbDir;
     try { // Start try
       let duplist = await this.z.execute('finddupnames 2 ' + path);
@@ -241,6 +252,10 @@ export class DialogUtil extends Component {
     } // End try
       // }) // End promise
       // The Promise way makes 'async' superfluous but hides 'this'
+  }
+
+  doDbUpdate = () => {
+    this.z.futureNotYet('write.tool5');
   }
 
   <template>
@@ -279,6 +294,12 @@ export class DialogUtil extends Component {
             <span class="glue">
               <input id="util4" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
               <label for="util4"> &nbsp;{{t 'write.tool4'}}</label>
+            </span><br>
+          {{/if}}
+          {{#if this.okDbUpdate}}
+            <span class="glue">
+              <input id="util5" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
+              <label for="util5"> &nbsp;{{t 'write.tool5'}}</label>
             </span><br>
           {{/if}}
         </div>
@@ -328,20 +349,27 @@ export class DialogUtil extends Component {
           {{!-- === Find duplicate image names === --}}
           {{else if (eq this.tool 'util4')}}
 
-            {{#if this.z.imdbDir}}
+            {{#if this.z.imdbDir}} {{!-- subtree --}}
               {{{t 'write.tool41' a=this.imdbDirName}}}<br>
-            {{else}}
+            {{else}} {{!-- root --}}
               <b>{{t 'write.tool42'}}</b><br>
             {{/if}}
 
             <button type="button" {{on 'click' (fn this.doDupnames)}}>{{t 'button.findDupNames'}}</button>
+
+          {{!-- Update search data for the entire album collection --}}
+          {{else if (eq this.tool 'util5')}}
+
+            <button type="button" {{on 'click' (fn this.doDbUpdate)}}>{{t 'write.tool5'}}</button>
+
           {{/if}}
+
         </div>
         {{!-- </RefreshThis> --}}
 
       </main>
       <footer data-dialog-draggable>
-        <button type="button" {{on 'click' (fn this.z.closeDialog dialogUtilId)}}>{{t 'button.close'}}</button>&nbsp;
+        <button type="button" {{on 'click' (fn this.z.closeDialog dialogUtilId)}}>{{t 'button.cancel'}}</button>&nbsp;
       </footer>
     </dialog>
 

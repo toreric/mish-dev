@@ -135,7 +135,7 @@ albumSelectInfo: "Eine Albumsammlung hier auswählen,
 button:
   ok:         Ja
   backgtitle: Hintergrund ändern
-  cancel:    Annulieren
+  cancel:    Absagen
   close:     Schließen
   continue:  Weitermachen
   delete:    <b>{name}</b> löschen
@@ -195,7 +195,7 @@ dialog:
     login1: hat nur beschränkte Rechte (Vorschaubilder verstecken, markieren und mit drag & drop bewegen; zum Originalbild gehen). Nach persönlichem Login (Anmeldung) erfolgen weitere Rechte (z.B. Bildunterschriften ändern und speichern). Nur Systemadministrierende können ein persönliches Login bereitstellen
     ihrcm0: Jedes Bild hat ein Menü
     ihrcm1: ( <b>⡇</b>) mit Befehlen/Funktionen
-    ctrlclick: Ctrl + klicken / ⌘ + klicken
+    ctrlclick: Ctrl + klicken (⌘ + klicken)
     ihrcm2: öffnet es auch (⌘ mit Mac-Tastatur)
     shift0: Shift + klicken auf einem Bild
     shift1: macht markieren/ausmarkieren
@@ -254,6 +254,9 @@ dialog:
       modal: Modales Textfenster öffnen
     toggle: Textfenster öffnen/schließen
 erase: löschen
+fav:
+  images: Bildfavoriten
+  manage: Bildfavoriten verwalten
 foundExplain: Gefundene Bilder
 gomini: "Zurück\n
         [Esc]"
@@ -348,6 +351,7 @@ write:
   tool4: Doppelte Bildnamen finden
   tool41: Doppelte Bildnamen in <b>{a}</b> inklusive aller Unteralben finden
   tool42: Doppelte Bildnamen in der gesamten Albumsammlung finden
+  tool5: Suchdaten für die gesamte Albumsammlung aktualisieren
   tool99: Leider gibt es nichts zu wählen
   utilHeader: Werkzeuge für
 

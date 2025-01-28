@@ -195,7 +195,7 @@ dialog:
     login1: har du bara vissa rättigheter (gömma, markera och flytta miniatyrer med dra + släpp; gå till originalbild). Med personlig inloggning kan du få fler rättigheter (till exempel göra bildtextändringar och och spara dem). Personlig inloggning kan bara fås från en systemadministratör
     ihrcm0: Varje bild har en meny
     ihrcm1: ( <b>⡇</b>) med kommandon/funktioner
-    ctrlclick: Ctrl + klick / ⌘ + klick
+    ctrlclick: Ctrl + klick (⌘ + klick)
     ihrcm2: visar också menyn (⌘ med Mac-tangentbord)
     shift0: Skifttangent + klick på en bild
     shift1: markerar/avmarkerar den
@@ -254,6 +254,9 @@ dialog:
       modal: Öppna modalt textfönster
     toggle: Öppna/stäng textfönster
 erase: radera
+fav:
+  images: Favoritbilder
+  manage: Favoritbildhantering
 foundExplain: Funna bilder
 gomini: "Återgå\n
         [Esc]"
@@ -348,5 +351,6 @@ write:
   tool4: Finn dubletter av bildnamn
   tool41: Finn dubletter av bildnamn i <b>{a}</b> inklusive alla underalbum
   tool42: Finn dubletter av bildnamn i hela albumsamlingen
+  tool5: Uppdatera sökdata för hela albumsamlingen
   tool99: Det finns tyvärr inget att välja
   utilHeader: Verktyg för
