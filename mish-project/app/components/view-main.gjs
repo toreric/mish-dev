@@ -128,7 +128,7 @@ class SubAlbums extends Component {
           {{else}} {{!-- root --}}
             <span>
               <b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
-              {{t 'has'}} {{this.nsubRoot}} <span title-2={{t 'foundExplain'}}>(+1)</span> {{this.sualRoot}}<span title-2={{t 'plusExplain'}}>{{{this.nadd}}}</span><span>{{this.hasImages}}</span>
+              {{t 'has'}} {{this.nsubRoot}} <span title-2="”{{t 'foundExplain'}}”">(+1)</span> {{this.sualRoot}}<span title-2={{t 'plusExplain'}}>{{{this.nadd}}}</span><span>{{this.hasImages}}</span>
             </span>
           {{/if}}
           <br>
@@ -387,7 +387,7 @@ class AllImages extends Component {
               <div {{on 'click' this.ediText}}>
 
                 {{!-- This is the image name, should be unique --}}
-                <div class="img_name" style="display:{{this.z.displayNames}}">
+                <div class="img_name" style="padding-right:1rem;display:{{this.z.displayNames}}">
                   {{item.name}}
                 </div>
 

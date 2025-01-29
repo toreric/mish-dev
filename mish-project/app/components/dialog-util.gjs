@@ -71,13 +71,6 @@ export class DialogUtil extends Component {
     return '<br><div style="text-align:center"><button class="unclosable" type="button" onclick="location.reload(true);return false">' + this.intl.t('button.restart') + '</button></div>'
   }
 
-  toShow = async () => {
-    this.z.openAlbum(this.z.picFoundIndex);
-    this.z.closeDialog('dialogDupResult');
-    await new Promise (z => setTimeout(z, this.countImgs*20 + 99)); // toShow
-    this.z.displayNames = 'block';
-  }
-
   // Should be the first called from the template
   // The first and ONLY use of this.imdbDir is here:
   get okDelete() { // true if delete allowed
@@ -108,7 +101,7 @@ export class DialogUtil extends Component {
     }
   }
 
-  get okNameDups() {
+  get okDupNames() {
     // true to search the collection if at root, alternatively
     // at any 'node' except picFound, if there is some reason:
     if (this.z.imdbDir.slice(1) === this.z.picFound) {
@@ -219,8 +212,9 @@ export class DialogUtil extends Component {
     }
   }
 
-  doDupnames = async () => {
+  doDupNames = async () => {
       // return new Promise (async function (resolve, reject) {
+    document.querySelector('img.spinner').style.display = '';
     this.z.closeDialog('dialogUtil');
     let path = this.z.imdbPath + this.z.imdbDir;
     try { // Start try
@@ -247,11 +241,20 @@ export class DialogUtil extends Component {
         await this.z.execute(command);
       }
       this.z.openDialog('dialogDupResult');
+      document.querySelector('img.spinner').style.display = 'none';
     } catch (err) {
-      console.error('doDupnames of DialogUtil:', err.message);
+      console.error('doDupNames of DialogUtil:', err.message);
     } // End try
       // }) // End promise
       // The Promise way makes 'async' superfluous but hides 'this'
+  }
+  doDupNamesShow = async () => {
+    document.querySelector('img.spinner').style.display = '';
+    this.z.openAlbum(this.z.picFoundIndex);
+    this.z.closeDialog('dialogDupResult');
+    await new Promise (z => setTimeout(z, this.countImgs*50 + 99)); // doDupNamesShow
+    this.z.displayNames = 'block';
+    document.querySelector('img.spinner').style.display = 'none';
   }
 
   doDbUpdate = () => {
@@ -290,7 +293,7 @@ export class DialogUtil extends Component {
               <label for="util3"> &nbsp;{{t 'write.tool3'}}</label>
             </span><br>
           {{/if}}
-          {{#if this.okNameDups}}
+          {{#if this.okDupNames}}
             <span class="glue">
               <input id="util4" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
               <label for="util4"> &nbsp;{{t 'write.tool4'}}</label>
@@ -355,7 +358,7 @@ export class DialogUtil extends Component {
               <b>{{t 'write.tool42'}}</b><br>
             {{/if}}
 
-            <button type="button" {{on 'click' (fn this.doDupnames)}}>{{t 'button.findDupNames'}}</button>
+            <button type="button" {{on 'click' (fn this.doDupNames)}}>{{t 'button.findDupNames'}}</button>
 
           {{!-- Update search data for the entire album collection --}}
           {{else if (eq this.tool 'util5')}}
@@ -384,7 +387,7 @@ export class DialogUtil extends Component {
         <div style="padding:0.5rem 0;line-height:1.4rem">
           {{#if this.countImgs}}
             {{t 'found'}} {{t 'dupImgNames'}}: {{{this.countImgs}}}<br>
-            <button class="show" type="button" {{on 'click' this.toShow}}>
+            <button class="show" type="button" {{on 'click' this.doDupNamesShow}}>
               {{t 'button.show'}} <b>{{this.z.handsomize2sp this.z.picFound}}</b>
             </button><br>
           {{else}}

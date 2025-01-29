@@ -545,9 +545,10 @@ export default class CommonStorageService extends Service {
   paintHideFlags = () => {
     // let order = this.updateOrder(true); // array if true, else text
     let order = this.sortOrder.split(LF);
+    if (order.length === 1 && !order[0]) order = [];
     for (let p of order) {
       let i = p.indexOf(',');
-      if (!p.slice(0, i)) this.loli('CommonStorageService error 0', 'color:red');
+      if (!p.slice(0, i)) this.loli('CommonStorageService error 1', 'color:red');
       let mini = document.getElementById('i' + p.slice(0, i));
       if (p[i + 1] === '1') {
         mini.classList.add('hidden');

@@ -361,32 +361,6 @@ textarea.favorites {
   width: 90%;
   z-index: 130;
 }
-.selectOption {
-  font-family: Georgia, "Times New Roman", Times, serif !important;
-  color: blue;
-  padding: 0px;
-  margin: 0 0 1.1em 0;
-  line-height: 2em;
-  background-color: #fff;
-  border: 0px solid gray;
-  border-radius: 4px;
-  cursor: pointer;
-  /*for firefox
-  -moz-appearance: none;
-  for chrome
-  -webkit-appearance:none;*/
-}
-.selectOption:hover {
-  color: #000;
-}
-.selectOption + span {
-  line-height: 2.5em;
-  font-weight: bold;
-}
-.selectOption::-ms-expand {
-  /*for IE10*/
-  display: none;
-}
 #buildStamp {
   /* scripted into index.html */
   font-family: Verdana, Geneva, Tahoma, sans-serif !important;

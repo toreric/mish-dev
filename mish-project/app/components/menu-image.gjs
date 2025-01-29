@@ -62,7 +62,7 @@ export class MenuImage extends Component {
     let imgs = pics(this.z.picName);
 
     // begin local function ---------
-    const hs = async () => {
+    const perform = async () => {
       // let imgs = pics(this.z.picName);
       await new Promise (z => setTimeout (z, 99)); // hideShow 1
       for (let pic of imgs) {
@@ -86,9 +86,9 @@ export class MenuImage extends Component {
       this.z.openDialog(dialogChooseId);
       while (!this.z.buttonNumber) {
         await new Promise (z => setTimeout (z, 199)); // hideShow 3
-        if (this.z.buttonNumber === 1) { await hs(); } // first button confirms
+        if (this.z.buttonNumber === 1) { await perform(); } // first button confirms
       } // if another button leave and close
-    } else { await hs(); } // a single img need no confirm
+    } else { await perform(); } // a single img need no confirm
     this.z.countNumbers();
     this.z.closeDialogs();
     this.z.sortOrder = this.z.updateOrder();
@@ -162,7 +162,7 @@ export class MenuImage extends Component {
   placeFirst = async (isTrue) => { // NOTE: place LAST by 'placeFirst(false)'!
 
     // begin local function ---------
-    const hs = async () => {
+    const perform = async () => {
       await new Promise (z => setTimeout (z, 99)); // placeFirst 1
       // When you add an element that is already in the DOM,
       // this element will be moved, not copied.
@@ -188,12 +188,12 @@ export class MenuImage extends Component {
       while (!this.z.buttonNumber) {
         await new Promise (z => setTimeout (z, 199)); // placeFirst 3
         if (this.z.buttonNumber === 1) { // first button confirms
-          await hs();
+          await perform();
           this.z.alertMess(this.z.intl.t('write.afterSort')); // TEMPORARY
         }
       } // if another button leave and close
     } else { // a single img need no confirm
-      await hs();
+      await perform();
       this.z.alertMess(this.z.intl.t('write.afterSort')); // TEMPORARY
     }
     this.z.countNumbers();
@@ -206,11 +206,21 @@ export class MenuImage extends Component {
     let tmp = [...this.z.imdbDirs]; // clone-copy albums
     let albums = [];
     // Remove the actual album and the temporary Found_images album:
-      this.z.loli(LF + tmp.join(LF), 'color:pink');
+      // this.z.loli(LF + tmp.join(LF), 'color:pink');
     for (let alb of tmp) {
       if (alb !== this.z.imdbDir && alb.slice(1) !== this.z.picFound) albums.push(alb);
     }
-      this.z.loli(LF + albums.join(LF), 'color:brown');
+      this.z.loli("Possible targets:" + LF + albums.join(LF), 'color:brown');
+
+    let code = 'Välj album att flytta till <span style="font-weight:normal">(”.” = ”' + this.z.imdbRoot + '”):</span><br><br><div class="" style="border:0.5px solid #666;border-radius:4px;padding:0.5rem;overflow-y:scroll;background:#ddd;max-height:12rem">';
+    for (let v of albums) {
+      code += "<p style=\"font-weight:normal;margin:0.25rem 0;padding:0\" {{on 'click' (fn this.selectMove '" + v + "')}}>" + '”.' + v + '”</p>';
+    }
+    // for (let v of albums) {
+    //   code += "<a {{on 'click' (fn this.selectMove '" + v + "')}}>" + '”.' + v + '”</a><br>';
+    // }
+    code += '</div>'
+    this.z.alertMess(code);
   }
 
   // Detect closing Esc key
