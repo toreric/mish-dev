@@ -10,6 +10,9 @@ import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 import { MenuMain } from './menu-main';
 
+import { TrackedArray } from 'tracked-built-ins';
+import RefreshThis from './refresh-this';
+
 import { dialogAlertId } from './dialog-alert';
 import { dialogChooseId } from './dialog-choose';
 import { dialogInfoId } from './dialog-info';
@@ -17,6 +20,10 @@ import { dialogTextId } from './dialog-text';
 
 const LF = '\n';   // Line Feed == New Line
 const BR = '<br>'; // HTML line break
+const SP = '&nbsp;'; // single space
+const SP2 = '&nbsp;&nbsp;'; // double space
+const SP3 = '&nbsp;&nbsp;&nbsp;'; // triple space
+const SP4 = '&nbsp;&nbsp;&nbsp;&nbsp;'; // four spaces
 
 // Get the image array to be operated on
 const pics = (picName) => {
@@ -27,17 +34,58 @@ const pics = (picName) => {
   if (document.getElementById('i' + picName).classList.contains('selected'))
     return document.querySelectorAll('.img_mini.selected');
   // If only this unselected image, get an array of a single element:
-  // Don't forget escapeDots (like in common-storage)
+  // Don't forget escapeDots (see common-storage.js)
   else return document.querySelectorAll('#i' + picName.replace (/\./g, "\\."));
 }
 
+// let albumsIndex = [];
+// let albums = [];
 
 export class MenuImage extends Component {
   @service('common-storage') z;
   @service intl;
 
+  // @tracked albumsIndex = [];
+  // @tracked albums = [];
+  albumsIndex = new TrackedArray([]);
+  albums = new TrackedArray([]);
+
+  toggleDialog = async (dialogId, origPos) => {
+    let diaObj = document.getElementById(dialogId);
+    let what = 'closed ';
+    await new Promise (z => setTimeout (z, 20)); // toggleDialog
+    if (diaObj.hasAttribute("open")) {
+      diaObj.close();
+    } else {
+      what = 'opened ';
+      await new Promise (z => setTimeout (z, 20)); // toggleDialog
+      if (origPos) diaObj.style.display = '';
+      diaObj.show();
+    }
+    this.z.loli(what + dialogId);
+  }
+
+// Detect closing Esc key
+  detectEscClose = (e) => {
+    e.stopPropagation();
+    if (e.keyCode === 27) { // Esc key
+      if (document.getElementById(dialogAlertId).open) this.z.closeDialog('chooseAlbum');
+    }
+  }
+
+  // Detect closing Esc key
+  detectClose = (e) => {
+    e.stopPropagation();
+    if (e.type === 'keydown' && e.keyCode === 27 || e.type === 'click') { // Esc key
+      // Close any open image menu
+      for (let list of document.querySelectorAll('.menu_img_list')) list.style.display = 'none';
+      // Sorry, no loli message!
+    }
+    document.querySelector('body').focus();
+  }
+
   get chooseText() {
-    // The case one wouldn't have a choice!
+    // A single image wouldn't have a choice!
     if (this.z.numMarked === 2) {
       return this.intl.t('write.chooseBoth');
     } else {
@@ -57,13 +105,16 @@ export class MenuImage extends Component {
     return this.intl.t('write.chooseLast');
   }
 
+  get chooseMove() {
+    return this.intl.t('write.chooseMove');
+  }
+
   // Hide or show one, or some checked, thumbnail images
   hideShow = async () => {
     let imgs = pics(this.z.picName);
 
     // begin local function ---------
     const perform = async () => {
-      // let imgs = pics(this.z.picName);
       await new Promise (z => setTimeout (z, 99)); // hideShow 1
       for (let pic of imgs) {
         if (pic.classList.contains('hidden')) {
@@ -76,7 +127,6 @@ export class MenuImage extends Component {
       }
     }// end local function -----------
 
-    // let imgs = pics(this.z.picName);
     this.z.toggleMenuImg(0); //close image menu
     if (imgs.length > 1) {
       this.z.chooseText = this.chooseText + '<br>' + this.chooseHide;
@@ -133,7 +183,6 @@ export class MenuImage extends Component {
       }
     }
     this.z.countNumbers();
-    // this.z.toggleMenuImg(0); //close image menu
     this.z.sortOrder = this.z.updateOrder();
   }
 
@@ -152,7 +201,6 @@ export class MenuImage extends Component {
       }
     }
     this.z.countNumbers();
-    this.z.toggleMenuImg(0); //close image menu
     this.z.sortOrder = this.z.updateOrder();
   }
 
@@ -177,6 +225,7 @@ export class MenuImage extends Component {
     var parent = document.getElementById('imgWrapper');
     let imgs = pics(this.z.picName);
     let addline;
+
     if (imgs.length > 1) {
       if (isTrue) addline = this.chooseFirst;
       else addline = this.chooseLast;
@@ -189,49 +238,19 @@ export class MenuImage extends Component {
         await new Promise (z => setTimeout (z, 199)); // placeFirst 3
         if (this.z.buttonNumber === 1) { // first button confirms
           await perform();
+          this.z.toggleMenuImg(0); //close image menu
           this.z.alertMess(this.z.intl.t('write.afterSort')); // TEMPORARY
         }
-      } // if another button leave and close
+        // if another button leave and close
+      }
     } else { // a single img need no confirm
       await perform();
+      this.z.toggleMenuImg(0); //close image menu
       this.z.alertMess(this.z.intl.t('write.afterSort')); // TEMPORARY
     }
+    this.z.closeDialog(dialogChooseId);
     this.z.countNumbers();
     this.z.sortOrder = this.z.updateOrder();
-  }
-
-  // Move (to another album within the collection)
-  // a single image, or a number of checked images.
-  moveFunc = () => {
-    let tmp = [...this.z.imdbDirs]; // clone-copy albums
-    let albums = [];
-    // Remove the actual album and the temporary Found_images album:
-      // this.z.loli(LF + tmp.join(LF), 'color:pink');
-    for (let alb of tmp) {
-      if (alb !== this.z.imdbDir && alb.slice(1) !== this.z.picFound) albums.push(alb);
-    }
-      this.z.loli("Possible targets:" + LF + albums.join(LF), 'color:brown');
-
-    let code = 'Välj album att flytta till <span style="font-weight:normal">(”.” = ”' + this.z.imdbRoot + '”):</span><br><br><div class="" style="border:0.5px solid #666;border-radius:4px;padding:0.5rem;overflow-y:scroll;background:#ddd;max-height:12rem">';
-    for (let v of albums) {
-      code += "<p style=\"font-weight:normal;margin:0.25rem 0;padding:0\" {{on 'click' (fn this.selectMove '" + v + "')}}>" + '”.' + v + '”</p>';
-    }
-    // for (let v of albums) {
-    //   code += "<a {{on 'click' (fn this.selectMove '" + v + "')}}>" + '”.' + v + '”</a><br>';
-    // }
-    code += '</div>'
-    this.z.alertMess(code);
-  }
-
-  // Detect closing Esc key
-  detectClose = (e) => {
-    e.stopPropagation();
-    if (e.type === 'keydown' && e.keyCode === 27 || e.type === 'click') { // Esc key
-      // Close any open image menu
-      for (let list of document.querySelectorAll('.menu_img_list')) list.style.display = 'none';
-      // Sorry, no loli message!
-    }
-    document.querySelector('body').focus();
   }
 
   get albname() {
@@ -257,6 +276,62 @@ export class MenuImage extends Component {
     let b = this.z.allFiles[i];
     if (b) a = b.symlink; //has a home album
     return a;
+  }
+
+  doMove = () => {
+    this.z.alertMess('doMove!');
+  }
+
+  // Move (to another album within the collection)
+  // a single image, or a number of checked images.
+  moveFunc = async () => {
+    let imgs = pics(this.z.picName);
+
+    // begin local function ---------
+    const perform = async () => {
+      await new Promise (z => setTimeout (z, 99)); // moveFunc 1
+      this.z.alertMess('perform moveFunc');
+
+
+      let tmp = [...this.z.imdbDirs]; // clone-copy albums
+      this.albums = [];
+      // Remove the actual album and the temporary Found_images album:
+        // this.z.loli(LF + tmp.join(LF), 'color:pink');
+      for (let alb of tmp) {
+        if (alb !== this.z.imdbDir && alb.slice(1) !== this.z.picFound) this.albums.push(alb);
+      }
+      this.albumsIndex = [];
+      for (let i=0; i<this.albums.length; i++) this.albumsIndex.push(i);
+
+        // this.z.loli("Possible targets:" + LF + this.albums.join(LF), 'color:brown');
+        // this.z.loli(this.albumsIndex);
+
+      this.toggleDialog('chooseAlbum');
+
+
+    }// end local function -----------
+
+    this.z.toggleMenuImg(0); //close image menu
+    if (imgs.length > 1) {
+      this.z.chooseText = this.chooseText + '<br>' + this.chooseMove;
+      this.z.infoHeader = this.intl.t('write.chooseHeader'); // default header
+      this.z.buttonNumber = 0;
+      await new Promise (z => setTimeout (z, 99)); // moveFunc 2
+      this.z.openDialog(dialogChooseId);
+      while (!this.z.buttonNumber) {
+        await new Promise (z => setTimeout (z, 199)); // moveFunc 3
+        if (this.z.buttonNumber === 1) { await perform(); } // first button confirms
+      } // if another button leave and close
+    } else { await perform(); } // a single img need no confirm
+    this.z.countNumbers();
+    this.z.closeDialogs();
+    this.z.sortOrder = this.z.updateOrder();
+    return; // and skip the rest, to be moved up to perform()?
+
+  }
+
+  getAlbum = (i) => {
+    return this.albums[i];
   }
 
   <template>
@@ -354,6 +429,41 @@ export class MenuImage extends Component {
         ○</span>{{t 'remove'}}</p></li>
 
     </ul>
+
+    {{!-- <RefreshThis @for={{this.albums}}> --}}
+    <dialog id="chooseAlbum" style="z-index:999" {{on 'keydown' this.detectEscClose}}>
+      <header data-dialog-draggable>
+        <div style="width:99%">
+          <p style="color:blue">{{t 'selectTarget'}}<span></span></p>
+        </div><div>
+          <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'chooseAlbum')}}>×</button>
+        </div>
+      </header>
+      <main style="padding:0.5rem">
+        <b>{{t 'selectAlbum'}}</b>
+        <span>(”.” = ”{{this.z.imdbRoot}}”):</span><br>
+        <div class="albumList">
+
+          {{#each this.albumsIndex as |i|}}
+            <span class="pselect glue">
+              <input id="album{{i}}" type="radio" name="albumList">
+              <label for="album{{i}}" style="display:block;margin-left:1rem">
+                ”.{{fn (this.getAlbum i)}}”
+              </label>
+            </span>
+          {{else}}
+            NOTHING RENDERED
+          {{/each}}
+
+        </div>
+        <button type="button" {{on 'click' (fn this.doMove)}}>{{t 'button.move'}}</button>
+        &nbsp;<button type="button" {{on 'click' (fn this.z.closeDialog 'chooseAlbum')}}>{{t 'button.cancel'}}</button><br>
+      </main>
+      <footer data-dialog-draggable>
+        <button type="button" {{on 'click' (fn this.z.closeDialog 'chooseAlbum')}}>{{t 'button.close'}}</button>&nbsp;
+      </footer>
+    </dialog>
+    {{!-- </RefreshThis> --}}
   </template>
 
 }

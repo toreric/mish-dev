@@ -76,7 +76,7 @@ module.exports = function(app) { // Start module.exports
             cmd = 'mkdir ' + IMDB + '/' + picFound
             await execP(cmd + cmd1)
           }
-            console.log(BYEL + cmd + cmd1 + RSET)
+            // console.log(BYEL + cmd + cmd1 + RSET) // Does reveal paths!
         }
         // The server automatically removes old search result temporary albums:
         // Remove too old picFound (search result tmp) catalogs (with added random .01yz)

@@ -304,7 +304,7 @@ div.diaMess .orAnd {
   margin: 0.34em 0;
 }
 span.glue {
-  display: inline-block; /* IE */
+  display: block;
   white-space: nowrap;
 }
 button.updText {
@@ -795,7 +795,25 @@ a#do_mail,
   color: #7df;
   opacity: 1;
 }
-.btn-std {
+.albumList {
+  border:0.5px solid #666;
+  border-radius:4px;
+  margin:0.5rem 0;
+  padding:0.5rem;
+  overflow-y:scroll;
+  background:#c0c0c0;
+  max-height:12rem;
+  min-height:3rem
+}
+.pselect {
+  font-weight: normal;
+  margin: 0.5rem 0;
+}
+.pselect:hover {
+  background: #ddd;
+  cursor: pointer;
+}
+  .btn-std {
   font-weight: bold;
   color: #333;
   background-color: #ddd;

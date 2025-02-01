@@ -25,7 +25,7 @@ adminAll:     irgendetwas tun
 albumEdit:    Album erstellen/löschen
 appendixEdit: (mit Anhängen arbeiten +4)¹
 appendixView: (Anhänge anschauen)¹
-delcreLink:   Bilder in andere Alben verschieben, Links erstellen/löschen
+delcreLink:   Bilder in andere Alben umplatzieren, Links erstellen/löschen
 deleteImg:    Bilder löschen +5
 imgEdit:      (Bilder bearbeiten)¹
 imgHidden:    Bilder ein-/ausblenden
@@ -144,6 +144,7 @@ button:
   findDupNames: Doppelte Namen finden
   keywords:  Stichwörter
   login:     Anmelden
+  move:      Bilder umplatzieren
   notes:     Anmerkungen
   optlogin:  Anmeldung
   restart:   "Den Browser neuladen\n
@@ -282,8 +283,10 @@ reloadApp: Die App neu laden!
 select:
   language: Sprache wählen
   languagetext: Deutsch
+selectAlbum: Verschiebenalbum wählen
+selectTarget: Zielalbum auswählen
 sizewarning: M E N G E N W A R N U N G<br><br>Mehr als
-spinwait: W A R T E N — oder mit einem Klick abbrechen, wenn es zu lange dreht
+spinwait: W A R T E N — oder mit einem Klick abbrechen, wenn es zuuu lange dreht
 time:
   text: "Zeitangabe:"
   buildstamp: Ember development server
@@ -303,6 +306,7 @@ write:
   chooseHide: versteckt oder angezeigt werden?
   chooseLast: ans Ende verschoben werden?
   chooseMany: Sollen alle {n} Ausgewählten
+  chooseMove: umplatziert werden?
   chooseTool: Ein Werkzeug wählen, keines ausgewählt!
   creator: "Herkunft: Foto Ursprung Quelle"
   description: "Beschreibung: Wann wo was welche"

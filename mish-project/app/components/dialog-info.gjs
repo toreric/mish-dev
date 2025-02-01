@@ -7,7 +7,7 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 import { htmlSafe } from '@ember/template';
-import { MenuImage } from './menu-image';
+// import { MenuImage } from './menu-image';
 
 import { cached } from '@glimmer/tracking';
 import { TrackedAsyncData } from 'ember-async-data';

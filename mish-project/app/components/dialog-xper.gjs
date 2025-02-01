@@ -8,7 +8,7 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 import { htmlSafe } from '@ember/template';
-import { MenuImage } from './menu-image';
+// import { MenuImage } from './menu-image';
 
 // import sortableGroup from 'ember-sortable/modifiers/sortable-group';
 // import sortableItem from 'ember-sortable/modifiers/sortable-item';

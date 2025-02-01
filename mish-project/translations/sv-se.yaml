@@ -145,6 +145,7 @@ button:
   findDupNames: Finn dublettnamn
   keywords:  Nyckelord
   login:     Logga in
+  move:      Flytta bilder
   notes:     Anteckningar
   optlogin:  Inloggning
   restart:   "Ladda om webbläsaren\n
@@ -282,6 +283,8 @@ reloadApp: Ladda om appen!
 select:
   language: Välj språk
   languagetext: Svenska
+selectAlbum: Välj album att flytta till
+selectTarget: Välj destinationsalbum
 sizewarning: M Ä N G D V A R N I N G<br><br>Fler än
 spinwait: V Ä N T A — eller stoppa med klick om det snurrar för länge
 time:
@@ -303,6 +306,7 @@ write:
   chooseHide: gömmas eller visas?
   chooseLast: placeras sist?
   chooseMany: Ska alla {n} markerade
+  chooseMove: flyttas?
   chooseTool: Inget verktyg valt, välj ett!
   creator: "Ursprung: Foto upphov källa"
   description: "Beskrivning: När var vad vilka"

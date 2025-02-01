@@ -111,7 +111,8 @@ export default class CommonStorageService extends Service {
   // For the DialogChoose dialog component, where
   // generally 0=no, 1=ok, and 2=cancel button selected
   @tracked buttonNumber = 0;
-    selectChoice = (yesNo) => {
+
+  selectChoice = (yesNo) => {
     this.buttonNumber = yesNo;
   }
 
@@ -1521,9 +1522,9 @@ export default class CommonStorageService extends Service {
       for (let list of allist) {
         if (!list.style.display) {
           list.style.display = 'none';
-            this.loli(list.style.display, 'color:red');   // HERE?
-            console.log(list);                              // HERE?
-          let name = list.closest('.img_mini').id.slice(1); // HERE? »Ctrl error«
+            // this.loli('toggleMenuImg: ' + list.style.display, 'color:red');
+            // console.log(list);
+          let name = list.closest('.img_mini').id.slice(1);
           loliClose(name);
           break;
         }
