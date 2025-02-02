@@ -387,7 +387,7 @@ class AllImages extends Component {
               <div {{on 'click' this.ediText}}>
 
                 {{!-- This is the image name, should be unique --}}
-                <div class="img_name" style="padding-right:1rem;display:{{this.z.displayNames}}">
+                <div class="img_name" style="padding-right:0.7rem;display:{{this.z.displayNames}}">
                   {{item.name}}
                 </div>
 

@@ -355,7 +355,8 @@ write:
   tool4: Doppelte Bildnamen finden
   tool41: Doppelte Bildnamen in <b>{a}</b> inklusive aller Unteralben finden
   tool42: Doppelte Bildnamen in der gesamten Albumsammlung finden
-  tool5: Suchdaten für die gesamte Albumsammlung aktualisieren
+  tool5: Neue Bilder hochladen
+  tool6: Suchdaten für die gesamte Albumsammlung aktualisieren
   tool99: Leider gibt es nichts zu wählen
   utilHeader: Werkzeuge für
 

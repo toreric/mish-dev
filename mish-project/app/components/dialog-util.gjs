@@ -113,6 +113,15 @@ export class DialogUtil extends Component {
     }
   }
 
+  get okUpload() {
+    if (this.z.allow.deleteImg) {
+      this.noTools = false;
+      return true
+    } else {
+      return false;
+    }
+  }
+
   get okDbUpdate() {
     //only at collection root
     if (this.z.imdbDir) {
@@ -257,8 +266,12 @@ export class DialogUtil extends Component {
     document.querySelector('img.spinner').style.display = 'none';
   }
 
-  doDbUpdate = () => {
+  doUpload = () => {
     this.z.futureNotYet('write.tool5');
+  }
+
+  doDbUpdate = () => {
+    this.z.futureNotYet('write.tool6');
   }
 
   <template>
@@ -299,10 +312,16 @@ export class DialogUtil extends Component {
               <label for="util4"> &nbsp;{{t 'write.tool4'}}</label>
             </span><br>
           {{/if}}
-          {{#if this.okDbUpdate}}
+          {{#if this.okUpload}}
             <span class="glue">
               <input id="util5" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
               <label for="util5"> &nbsp;{{t 'write.tool5'}}</label>
+            </span><br>
+          {{/if}}
+          {{#if this.okDbUpdate}}
+            <span class="glue">
+              <input id="util6" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
+              <label for="util6"> &nbsp;{{t 'write.tool6'}}</label>
             </span><br>
           {{/if}}
         </div>
@@ -344,7 +363,7 @@ export class DialogUtil extends Component {
               <span class="glue">
                 <input id="util32" name="albumUtility" value="" type="radio">
                 <label for="util32"> &nbsp;{{t 'write.tool32'}}</label>
-              </span>
+              </span><br>
             </form>
 
             <button type="button" {{on 'click' (fn this.doSort)}}>{{t 'button.sort'}}</button>
@@ -360,10 +379,15 @@ export class DialogUtil extends Component {
 
             <button type="button" {{on 'click' (fn this.doDupNames)}}>{{t 'button.findDupNames'}}</button>
 
-          {{!-- Update search data for the entire album collection --}}
+          {{!-- Upload images --}}
           {{else if (eq this.tool 'util5')}}
 
-            <button type="button" {{on 'click' (fn this.doDbUpdate)}}>{{t 'write.tool5'}}</button>
+            <button type="button" {{on 'click' (fn this.doUpload)}}>{{t 'write.tool5'}}</button>
+
+          {{!-- Update search data for the entire album collection --}}
+          {{else if (eq this.tool 'util6')}}
+
+            <button type="button" {{on 'click' (fn this.doDbUpdate)}}>{{t 'write.tool6'}}</button>
 
           {{/if}}
 

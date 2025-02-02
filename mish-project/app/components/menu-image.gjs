@@ -25,8 +25,9 @@ const SP2 = '&nbsp;&nbsp;'; // double space
 const SP3 = '&nbsp;&nbsp;&nbsp;'; // triple space
 const SP4 = '&nbsp;&nbsp;&nbsp;&nbsp;'; // four spaces
 
-// Get the image array to be operated on
-const pics = (picName) => {
+// Get the thumbnail-containing elements to be operated on,
+// either one unselected, or all co-selected elements:
+const selMinImgs = (picName) => {
   //close view image (and nav-links) if open:
   if (!document.querySelector('div.nav_links').style.display) {
     document.getElementById('go_back').click();
@@ -35,7 +36,7 @@ const pics = (picName) => {
     return document.querySelectorAll('.img_mini.selected');
   // If only this unselected image, get an array of a single element:
   // Don't forget escapeDots (see common-storage.js)
-  else return document.querySelectorAll('#i' + picName.replace (/\./g, "\\."));
+  else return document.querySelectorAll('#i' + picName.replace(/\./g, "\\."));
 }
 
 // let albumsIndex = [];
@@ -45,10 +46,10 @@ export class MenuImage extends Component {
   @service('common-storage') z;
   @service intl;
 
-  // @tracked albumsIndex = [];
   // @tracked albums = [];
-  albumsIndex = new TrackedArray([]);
+  // @tracked albumsIndex = [];
   albums = new TrackedArray([]);
+  albumsIndex = new TrackedArray([]);
 
   toggleDialog = async (dialogId, origPos) => {
     let diaObj = document.getElementById(dialogId);
@@ -111,7 +112,7 @@ export class MenuImage extends Component {
 
   // Hide or show one, or some checked, thumbnail images
   hideShow = async () => {
-    let imgs = pics(this.z.picName);
+    let imgs = selMinImgs(this.z.picName);
 
     // begin local function ---------
     const perform = async () => {
@@ -138,7 +139,7 @@ export class MenuImage extends Component {
         await new Promise (z => setTimeout (z, 199)); // hideShow 3
         if (this.z.buttonNumber === 1) { await perform(); } // first button confirms
       } // if another button leave and close
-    } else { await perform(); } // a single img need no confirm
+    } else { await perform(); } // a single img needs no confirmation
     this.z.countNumbers();
     this.z.closeDialogs();
     this.z.sortOrder = this.z.updateOrder();
@@ -223,7 +224,7 @@ export class MenuImage extends Component {
     }// end local function ----------
 
     var parent = document.getElementById('imgWrapper');
-    let imgs = pics(this.z.picName);
+    let imgs = selMinImgs(this.z.picName);
     let addline;
 
     if (imgs.length > 1) {
@@ -243,7 +244,7 @@ export class MenuImage extends Component {
         }
         // if another button leave and close
       }
-    } else { // a single img need no confirm
+    } else { // a single img needs no confirmation
       await perform();
       this.z.toggleMenuImg(0); //close image menu
       this.z.alertMess(this.z.intl.t('write.afterSort')); // TEMPORARY
@@ -278,21 +279,11 @@ export class MenuImage extends Component {
     return a;
   }
 
-  doMove = () => {
-    this.z.alertMess('doMove!');
-  }
-
   // Move (to another album within the collection)
   // a single image, or a number of checked images.
   moveFunc = async () => {
-    let imgs = pics(this.z.picName);
-
-    // begin local function ---------
-    const perform = async () => {
-      await new Promise (z => setTimeout (z, 99)); // moveFunc 1
-      this.z.alertMess('perform moveFunc');
-
-
+    const perform = async () => { // begin local function
+      // this.z.alertMess('perform moveFunc');
       let tmp = [...this.z.imdbDirs]; // clone-copy albums
       this.albums = [];
       // Remove the actual album and the temporary Found_images album:
@@ -302,15 +293,13 @@ export class MenuImage extends Component {
       }
       this.albumsIndex = [];
       for (let i=0; i<this.albums.length; i++) this.albumsIndex.push(i);
-
-        // this.z.loli("Possible targets:" + LF + this.albums.join(LF), 'color:brown');
+        this.z.loli("Possible targets:" + LF + this.albums.join(LF), 'color:brown');
         // this.z.loli(this.albumsIndex);
-
       this.toggleDialog('chooseAlbum');
+    }
 
-
-    }// end local function -----------
-
+    let imgs = selMinImgs(this.z.picName);
+    await new Promise (z => setTimeout (z, 199)); // moveFunc 1
     this.z.toggleMenuImg(0); //close image menu
     if (imgs.length > 1) {
       this.z.chooseText = this.chooseText + '<br>' + this.chooseMove;
@@ -320,14 +309,21 @@ export class MenuImage extends Component {
       this.z.openDialog(dialogChooseId);
       while (!this.z.buttonNumber) {
         await new Promise (z => setTimeout (z, 199)); // moveFunc 3
-        if (this.z.buttonNumber === 1) { await perform(); } // first button confirms
+        if (this.z.buttonNumber === 1) { await perform(); } // button 1 confirms
       } // if another button leave and close
-    } else { await perform(); } // a single img need no confirm
+    } else {
+      // a single img needs no confirmation but we mark it
+      this.z.markBorders(this.z.picName);
+      await perform();
+    }
     this.z.countNumbers();
     this.z.closeDialogs();
     this.z.sortOrder = this.z.updateOrder();
-    return; // and skip the rest, to be moved up to perform()?
-
+    return;
+  }
+  doMove = () => {
+    this.z.alertMess('perform doMove');
+    this.z.closeDialog('chooseAlbum');
   }
 
   getAlbum = (i) => {
@@ -443,6 +439,9 @@ export class MenuImage extends Component {
         <b>{{t 'selectAlbum'}}</b>
         <span>(”.” = ”{{this.z.imdbRoot}}”):</span><br>
         <div class="albumList">
+
+          {{!-- {{log this.albums}}
+          {{log this.albumsIndex}} --}}
 
           {{#each this.albumsIndex as |i|}}
             <span class="pselect glue">
