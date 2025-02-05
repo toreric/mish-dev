@@ -25,20 +25,6 @@ const SP2 = '&nbsp;&nbsp;'; // double space
 const SP3 = '&nbsp;&nbsp;&nbsp;'; // triple space
 const SP4 = '&nbsp;&nbsp;&nbsp;&nbsp;'; // four spaces
 
-// Get the thumbnail-containing elements to be operated on,
-// either one unselected, or all co-selected elements:
-const selMinImgs = (picName) => {
-  //close view image (and nav-links) if open:
-  if (!document.querySelector('div.nav_links').style.display) {
-    document.getElementById('go_back').click();
-  }
-  if (document.getElementById('i' + picName).classList.contains('selected'))
-    return document.querySelectorAll('.img_mini.selected');
-  // If only this unselected image, get an array of a single element:
-  // Don't forget escapeDots (see common-storage.js)
-  else return document.querySelectorAll('#i' + picName.replace(/\./g, "\\."));
-}
-
 // let albumsIndex = [];
 // let albums = [];
 
@@ -50,6 +36,20 @@ export class MenuImage extends Component {
   // @tracked albumsIndex = [];
   albums = new TrackedArray([]);
   albumsIndex = new TrackedArray([]);
+
+  // Get the thumbnail-containing elements to be operated on,
+  // either one unselected, or all co-selected elements:
+  selMinImgs = (picName) => {
+    //close view image (and nav-links) if open:
+    if (!document.querySelector('div.nav_links').style.display) {
+      document.getElementById('go_back').click();
+    }
+    if (document.getElementById('i' + picName).classList.contains('selected'))
+      return document.querySelectorAll('.img_mini.selected');
+    // If only this unselected image, get an array of a single element:
+    // Don't forget escapeDots (see common-storage.js)
+    else return document.querySelectorAll('#i' + picName.replace(/\./g, "\\."));
+  }
 
   toggleDialog = async (dialogId, origPos) => {
     let diaObj = document.getElementById(dialogId);
@@ -66,7 +66,7 @@ export class MenuImage extends Component {
     this.z.loli(what + dialogId);
   }
 
-// Detect closing Esc key
+  // Detect closing Esc key
   detectEscClose = (e) => {
     e.stopPropagation();
     if (e.keyCode === 27) { // Esc key
@@ -112,7 +112,7 @@ export class MenuImage extends Component {
 
   // Hide or show one, or some checked, thumbnail images
   hideShow = async () => {
-    let imgs = selMinImgs(this.z.picName);
+    let imgs = this.selMinImgs(this.z.picName);
 
     // begin local function ---------
     const perform = async () => {
@@ -224,7 +224,7 @@ export class MenuImage extends Component {
     }// end local function ----------
 
     var parent = document.getElementById('imgWrapper');
-    let imgs = selMinImgs(this.z.picName);
+    let imgs = this.selMinImgs(this.z.picName);
     let addline;
 
     if (imgs.length > 1) {
@@ -279,27 +279,50 @@ export class MenuImage extends Component {
     return a;
   }
 
+  getAlbum = (i) => {
+    return this.albums[i];
+  }
+
+  // Link (into another album within the collection)
+  // a single image, or a number of checked images.
+  linkFunc = async () => {
+    let imgs = this.selMinImgs(this.z.picName);
+    await new Promise (z => setTimeout (z, 99)); // linkFunc 1
+    let sym = false;
+    for (let img of imgs) {
+      if (img.classList.contains('symlink')) sym = true;
+    }
+    if (sym) {
+      this.z.alertMess(this.intl.t('write.noLinkLink'));
+      return;
+    }
+    this.z.toggleMenuImg(0); //close image menu
+    if (imgs.length > 1) {
+      this.z.chooseText = this.chooseText + '<br>' + this.chooseMove;
+      this.z.infoHeader = this.intl.t('write.chooseHeader'); // default header
+      this.z.buttonNumber = 0;
+      await new Promise (z => setTimeout (z, 99)); // linkFunc 2
+      this.z.openDialog(dialogChooseId);
+      while (!this.z.buttonNumber) {
+        await new Promise (z => setTimeout (z, 99)); // linkFunc 3
+        if (this.z.buttonNumber === 1) { this.z.openDialog('chooseAlbum'); } // 1 confirms
+      } // if another button: leave and close
+    } else {
+      // a single img needs no confirmation but we mark it
+      this.z.markBorders(this.z.picName);
+      this.z.toggleDialog('chooseAlbum');
+    }
+    this.z.countNumbers();
+    this.z.closeDialogs();
+    this.z.sortOrder = this.z.updateOrder();
+    return;
+  }
+
   // Move (to another album within the collection)
   // a single image, or a number of checked images.
   moveFunc = async () => {
-    const perform = async () => { // begin local function
-      // this.z.alertMess('perform moveFunc');
-      let tmp = [...this.z.imdbDirs]; // clone-copy albums
-      this.albums = [];
-      // Remove the actual album and the temporary Found_images album:
-        // this.z.loli(LF + tmp.join(LF), 'color:pink');
-      for (let alb of tmp) {
-        if (alb !== this.z.imdbDir && alb.slice(1) !== this.z.picFound) this.albums.push(alb);
-      }
-      this.albumsIndex = [];
-      for (let i=0; i<this.albums.length; i++) this.albumsIndex.push(i);
-        this.z.loli("Possible targets:" + LF + this.albums.join(LF), 'color:brown');
-        // this.z.loli(this.albumsIndex);
-      this.toggleDialog('chooseAlbum');
-    }
-
-    let imgs = selMinImgs(this.z.picName);
-    await new Promise (z => setTimeout (z, 199)); // moveFunc 1
+    let imgs = this.selMinImgs(this.z.picName);
+    await new Promise (z => setTimeout (z, 99)); // moveFunc 1
     this.z.toggleMenuImg(0); //close image menu
     if (imgs.length > 1) {
       this.z.chooseText = this.chooseText + '<br>' + this.chooseMove;
@@ -308,33 +331,24 @@ export class MenuImage extends Component {
       await new Promise (z => setTimeout (z, 99)); // moveFunc 2
       this.z.openDialog(dialogChooseId);
       while (!this.z.buttonNumber) {
-        await new Promise (z => setTimeout (z, 199)); // moveFunc 3
-        if (this.z.buttonNumber === 1) { await perform(); } // button 1 confirms
+        await new Promise (z => setTimeout (z, 99)); // moveFunc 3
+        if (this.z.buttonNumber === 1) { this.z.openDialog('chooseAlbum'); } // 1 confirms
       } // if another button leave and close
     } else {
       // a single img needs no confirmation but we mark it
       this.z.markBorders(this.z.picName);
-      await perform();
+      this.z.toggleDialog('chooseAlbum');
     }
     this.z.countNumbers();
     this.z.closeDialogs();
     this.z.sortOrder = this.z.updateOrder();
     return;
   }
-  doMove = () => {
-    this.z.alertMess('perform doMove');
-    this.z.closeDialog('chooseAlbum');
-  }
-
-  getAlbum = (i) => {
-    return this.albums[i];
-  }
 
   <template>
     <button class='menu_img' type="button" title="{{t 'imageMenu'}}"
     {{on 'click' (fn this.z.toggleMenuImg 1)}}
     {{on 'keydown' this.detectClose}}>⡇</button>
-
     <ul class="menu_img_list" style="text-align:left;display:none">
 
       <li><p style="text-align:right;color:deeppink;
@@ -410,7 +424,7 @@ export class MenuImage extends Component {
       <li><hr style="margin:0.25rem 0.5rem"></li>
 
       {{!-- Link image(s) to another album --}}
-      <li><p {{on 'click' (fn this.z.futureNotYet 'linkto')}}>
+      <li><p {{on 'click' (fn this.linkFunc)}}>
         <span style="font-size:124%;line-height:50%">
         ○</span>{{t 'linkto'}}</p></li>
 
@@ -425,8 +439,23 @@ export class MenuImage extends Component {
         ○</span>{{t 'remove'}}</p></li>
 
     </ul>
+  </template>
 
-    {{!-- <RefreshThis @for={{this.albums}}> --}}
+}
+
+export class ChooseAlbum extends Component {
+  @service('common-storage') z;
+
+  doMove = () => {
+    this.z.alertMess('perform doMove');
+    this.z.closeDialog('chooseAlbum');
+  }
+
+  filterAlbum = (index) => {
+    return this.z.imdbDirs[index] === this.z.imdbDir || this.z.imdbDirs[index].slice(1) === this.z.picFound ? false : true;
+  }
+
+  <template>
     <dialog id="chooseAlbum" style="z-index:999" {{on 'keydown' this.detectEscClose}}>
       <header data-dialog-draggable>
         <div style="width:99%">
@@ -440,18 +469,17 @@ export class MenuImage extends Component {
         <span>(”.” = ”{{this.z.imdbRoot}}”):</span><br>
         <div class="albumList">
 
-          {{!-- {{log this.albums}}
-          {{log this.albumsIndex}} --}}
-
-          {{#each this.albumsIndex as |i|}}
-            <span class="pselect glue">
-              <input id="album{{i}}" type="radio" name="albumList">
-              <label for="album{{i}}" style="display:block;margin-left:1rem">
-                ”.{{fn (this.getAlbum i)}}”
-              </label>
-            </span>
+          {{#each this.z.imdbDirs as |album index|}}
+            {{#if (this.filterAlbum index)}}
+              <span class="pselect glue">
+                <input id="album{{index}}" type="radio" name="albumList">
+                <label for="album{{index}}" style="display:block;margin-left:1rem">
+                  &nbsp;”.{{album}}”
+                </label>
+              </span><br>
+            {{/if}}
           {{else}}
-            NOTHING RENDERED
+            {{t 'write.foundNoAlbums'}}
           {{/each}}
 
         </div>
@@ -462,7 +490,6 @@ export class MenuImage extends Component {
         <button type="button" {{on 'click' (fn this.z.closeDialog 'chooseAlbum')}}>{{t 'button.close'}}</button>&nbsp;
       </footer>
     </dialog>
-    {{!-- </RefreshThis> --}}
   </template>
 
 }

@@ -336,11 +336,13 @@ write:
             &nbsp;&nbsp;&nbsp;&nbsp; <span>nils%jacobs</span> (ein Suchbegriff) findet Bilder mit zum Beispiel „Nils Jacobsson“ oder „Nils Jacobsen“ (wie in <span>1</span>, weil nur ein Suchbegriff)."
   findHelp5: Schreiben in das Feld oben, wonach gesucht werden soll, dann die Suche starten. Das Ergebnis wird in einem temporären Album mit dem Namen <b>Gefundene Bilder</b> präsentiert. Es gibt einem Link zum Original im Menü jedes Miniaturbildes. <span style="color:#0b0;text-decoration:underline">Ein grüner Rand unter der Bildunterschrift</span> bedeutet ein verlinktes Bild.
   findHelp6: "Tipp: Die Gesamtzahl der Bilder in der Albumsammlung wird durch die Suche (in Albumnamen) nach einem „/“ angezeigt!"
+  foundNoAlbums: Keine Alben gefunden!
+  isEmpty: ist leer
   keywords: "<b>Information von geplante zukünftige Ergänzung:</b>
             Wörter als Metadaten gespeichert zur Verwendung als Suchbegriffe"
-  isEmpty: ist leer
   maxWarning: <b>Mehr als {n} Bilder können nicht<br>alle gleichzeitig angezeigt werden</b>
   noDupNamesFound: In <b>{a}</b> mit Unteralben wurden keine doppelten Bildnamen gefunden
+  noLinkLink: Verlinkte Bilder können nicht zu anderen Alben verlinkt werden!
   noneFound: Leider kein Bild gefunden!
   notEmpty: Das Album muss zuerst geleert werden!
   notes: Anmerkungen die nicht mit dem Bild erscheinen

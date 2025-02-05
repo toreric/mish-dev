@@ -11,9 +11,6 @@ import he from 'he';
 // USE: <div title={{he.decode 'text'}}></div> ['he' = HTML entities]
 // or  txt = he.decode('text')  or  txt = he.encode('text')
 
-// This should perhaps be avoided, there is some redundancy!?!
-import { dialogAlertId } from '../components/dialog-alert'
-
 const LF = '\n'   // Line Feed == New Line
 const BR = '<br>' // HTML line break
 
@@ -296,7 +293,7 @@ export default class CommonStorageService extends Service {
   // Alert a not yet implemented facility (text)
   //#region futureNotYet
   futureNotYet = (facility) => {
-    let alrt = document.getElementById(dialogAlertId);
+    let alrt = document.getElementById('dialogAlert');
     if (alrt.open) {
       alrt.close();
     } else {

@@ -336,11 +336,13 @@ write:
             &nbsp;&nbsp;&nbsp;&nbsp; <span>nils%jacobs</span> (ett sökbegrepp) hittar bilder med till exempel ’Nils Jacobsson’ eller ’Nils Jacobsen’ i texten (som i <span>1</span>, eftersom bara ett sökbegrepp)."
   findHelp5: Skriv det du vill söka i rutan överst och starta sökningen. Resultatet presenteras i ett album för tillfälligt bruk som heter <b>Funna bilder</b> med länk till originalet i varje miniatyrbilds meny. <span style="color:#0b0;text-decoration:underline">Grön kant under bildtexten</span> betyder länkad bild.
   findHelp6: "Tips: Ta reda på hur många bilder det finns i albumsamlingen genom att söka efter ett ’/’ (i albumnamn)!"
+  foundNoAlbums: Fann inga album!
   isEmpty: är tomt
   keywords: "<b>Information om planerat framtida tillägg:</b>
             Ord lagrade som metadata för användning som särskilda sökbegrepp"
   maxWarning: <b>Fler än {n} bilder kan<br>inte visas tillsammans</b>
   noDupNamesFound: Fann inga dubletter av bildnamn i <b>{a}</b> med underalbum
+  noLinkLink: Länkade bilder kan inte länkas till andra album!
   noneFound: Tyvärr, ingen bild funnen!
   notEmpty: Albumet måste först tömmas!
   notes: Anteckningar som ej visas med bilden

@@ -338,11 +338,13 @@ write:
             &nbsp;&nbsp;&nbsp;&nbsp; <span>nils%jacobs</span> (one search term) finds images with, for example ’Nils Jacobsson’ or ’Nils Jacobsen’ (same as <span>1</span>, since only one search term)."
   findHelp5: Write what you want to search for in the box at the top and start the search. The result is presented in an album for temporary use called <b>Found images</b> with a link to the original in each thumbnail's menu. <span style="color:#0b0;text-decoration:underline">Green border below the caption</span> means linked image.
   findHelp6: "Tip: Find out how many photos are in the album collection by searching for a ’/’ (in album names)!"
+  foundNoAlbums: No albums found!
   isEmpty: is empty
   keywords: "<b>Information about planned future addition:</b>
              Keywords to be stored as metadata for search key use"
   maxWarning: <b>More than {n} images cannot<br>be displayed together</b>
   noDupNamesFound: Found no duplicate image names in <b>{a}</b> with subalbums
+  noLinkLinks: Linked images cannot be linked to other albums!
   noneFound: Sorry, no image found!
   notEmpty: The album must first be emptied!
   notes: Notes not shown with the image

@@ -800,6 +800,7 @@ a#do_mail,
   border-radius:4px;
   margin:0.5rem 0;
   padding:0.5rem;
+  line-height: 1.9rem;
   overflow-y:scroll;
   background:#c0c0c0;
   max-height:12rem;
@@ -807,7 +808,7 @@ a#do_mail,
 }
 .pselect {
   font-weight: normal;
-  margin: 0.5rem 0;
+  margin: 0;
 }
 .pselect:hover {
   background: #ddd;

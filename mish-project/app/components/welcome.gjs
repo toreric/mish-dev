@@ -25,6 +25,7 @@ import { DialogUtil } from './dialog-util';
 import { default as Header } from './header';
 import { Language } from './language';
 import { MenuImage } from './menu-image';
+import { ChooseAlbum } from './menu-image';
 import { MenuMain } from './menu-main';
 import { ViewMain } from './view-main';
 import { Spinner } from './spinner';
@@ -287,7 +288,8 @@ export default class extends Welcome {
 
     <ButtonsLeft />
     <MenuMain />
-    <MenuImage />
+    <ChooseAlbum />
+    {{!-- <MenuImage /> included in ViewMain --}}
     <ButtonsRight />
     <Header />
     <ViewMain />
