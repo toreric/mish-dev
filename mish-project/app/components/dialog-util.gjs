@@ -292,41 +292,41 @@ export class DialogUtil extends Component {
             <span class="glue">
               <input id="util1" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
               <label for="util1"> &nbsp;{{t 'write.tool1'}}</label>
-            </span><br>
+            </span>
           {{/if}}
           {{#if this.okSubalbum}}
             <span class="glue">
               <input id="util2" name="albumUtility" value="" type="radio" autofocus {{on 'click' this.detectRadio}}>
               <label for="util2"> &nbsp;{{t 'write.tool2'}}</label>
-            </span><br>
+            </span>
           {{/if}}
           {{#if this.okSort}}
             <span class="glue">
               <input id="util3" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
               <label for="util3"> &nbsp;{{t 'write.tool3'}}</label>
-            </span><br>
+            </span>
           {{/if}}
           {{#if this.okDupNames}}
             <span class="glue">
               <input id="util4" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
               <label for="util4"> &nbsp;{{t 'write.tool4'}}</label>
-            </span><br>
+            </span>
           {{/if}}
           {{#if this.okUpload}}
             <span class="glue">
               <input id="util5" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
               <label for="util5"> &nbsp;{{t 'write.tool5'}}</label>
-            </span><br>
+            </span>
           {{/if}}
           {{#if this.okDbUpdate}}
             <span class="glue">
               <input id="util6" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
               <label for="util6"> &nbsp;{{t 'write.tool6'}}</label>
-            </span><br>
+            </span>
           {{/if}}
         </div>
 
-        <div style="padding:0.5rem 0;line-height:1.4rem">
+        <div style="padding:0.5rem 0">
           {{#if this.noTools}}
             <span style="color:blue">{{t 'write.tool99'}}</span>
 
@@ -355,15 +355,15 @@ export class DialogUtil extends Component {
           {{!-- === Sort images by names === --}}
           {{else if (eq this.tool 'util3')}}
             <b>{{t 'write.tool3'}}</b>
-            <form style="line-height:1.4rem">
+            <form style="line-height:1.35rem">
               <span class="glue">
                 <input id="util31" name="albumUtility" value="" type="radio" checked>
                 <label for="util31"> &nbsp;{{t 'write.tool31'}}</label>
-              </span><br>
+              </span>
               <span class="glue">
                 <input id="util32" name="albumUtility" value="" type="radio">
                 <label for="util32"> &nbsp;{{t 'write.tool32'}}</label>
-              </span><br>
+              </span>
             </form>
 
             <button type="button" {{on 'click' (fn this.doSort)}}>{{t 'button.sort'}}</button>

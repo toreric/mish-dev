@@ -145,7 +145,7 @@ button:
   findDupNames: Find duplicate names
   keywords:  Keywords
   login:     Log in
-  move:      Move images
+  move:      To the album
   notes:     Notes
   optlogin:  Log in
   restart:   "Reload the browser\n
@@ -285,7 +285,7 @@ reloadApp: Reload the app!
 select:
   language: Select language
   languagetext: English
-selectAlbum: Select album to move to
+selectAlbum: To which album?
 selectTarget: Select destination album
 sizewarning: S I Z E &nbsp; W A R N I N G<br><br>More than
 spinwait: W A I T — or stop with a click if it spins too long
@@ -307,8 +307,9 @@ write:
   chooseHeader: Choose
   chooseHide: be hidden or shown?
   chooseLast: be moved to the end?
+  chooseLink: be linked to another album?
   chooseMany: Should all {n} selected
-  chooseMove: be moved?
+  chooseMove: be moved to another album?
   chooseTool: No tool chosen, choose one!
   creator: 'Origin: Photographer Source'
   description: 'Caption: When Where What Who'

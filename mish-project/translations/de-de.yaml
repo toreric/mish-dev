@@ -144,7 +144,7 @@ button:
   findDupNames: Doppelte Namen finden
   keywords:  Stichwörter
   login:     Anmelden
-  move:      Bilder umplatzieren
+  move:      Zum Album
   notes:     Anmerkungen
   optlogin:  Anmeldung
   restart:   "Den Browser neuladen\n
@@ -283,7 +283,7 @@ reloadApp: Die App neu laden!
 select:
   language: Sprache wählen
   languagetext: Deutsch
-selectAlbum: Verschiebenalbum wählen
+selectAlbum: Zu welchem ​​Album?
 selectTarget: Zielalbum auswählen
 sizewarning: M E N G E N W A R N U N G<br><br>Mehr als
 spinwait: W A R T E N — oder mit einem Klick abbrechen, wenn es zuuu lange dreht
@@ -300,13 +300,14 @@ write:
              <span style="font-weight:normal;color:#000">Hoffentlich wird das Drag-and-Drop-<br>
              Problem irgendwann behoben</span>
   albumName: Einen Albumnamen eingeben
-  chooseBoth: Sollen beide Ausgewählten
+  chooseBoth: Sollen beide Ausgewählten Bilder
   chooseFirst: an den Anfang verschoben werden?
   chooseHeader: Wählen
   chooseHide: versteckt oder angezeigt werden?
   chooseLast: ans Ende verschoben werden?
-  chooseMany: Sollen alle {n} Ausgewählten
-  chooseMove: umplatziert werden?
+  chooseLink: zu einem anderen Album verlinkt werden?
+  chooseMany: Sollen alle {n} Ausgewählten Bilder
+  chooseMove: zu einem anderen Album verschiebt werden?
   chooseTool: Ein Werkzeug wählen, keines ausgewählt!
   creator: "Herkunft: Foto Ursprung Quelle"
   description: "Beschreibung: Wann wo was welche"

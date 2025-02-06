@@ -28,6 +28,20 @@ const SP4 = '&nbsp;&nbsp;&nbsp;&nbsp;'; // four spaces
 // let albumsIndex = [];
 // let albums = [];
 
+// Get the thumbnail-containing elements to be operated on,
+// either one unselected, or all co-selected elements:
+const selMinImgs = (picName) => {
+  //close view image (and nav-links) if open:
+  if (!document.querySelector('div.nav_links').style.display) {
+    document.getElementById('go_back').click();
+  }
+  if (document.getElementById('i' + picName).classList.contains('selected'))
+    return document.querySelectorAll('.img_mini.selected');
+  // If only this unselected image, get an array of a single element:
+  // Don't forget escapeDots (see common-storage.js)
+  else return document.querySelectorAll('#i' + picName.replace(/\./g, "\\."));
+}
+
 export class MenuImage extends Component {
   @service('common-storage') z;
   @service intl;
@@ -36,35 +50,6 @@ export class MenuImage extends Component {
   // @tracked albumsIndex = [];
   albums = new TrackedArray([]);
   albumsIndex = new TrackedArray([]);
-
-  // Get the thumbnail-containing elements to be operated on,
-  // either one unselected, or all co-selected elements:
-  selMinImgs = (picName) => {
-    //close view image (and nav-links) if open:
-    if (!document.querySelector('div.nav_links').style.display) {
-      document.getElementById('go_back').click();
-    }
-    if (document.getElementById('i' + picName).classList.contains('selected'))
-      return document.querySelectorAll('.img_mini.selected');
-    // If only this unselected image, get an array of a single element:
-    // Don't forget escapeDots (see common-storage.js)
-    else return document.querySelectorAll('#i' + picName.replace(/\./g, "\\."));
-  }
-
-  toggleDialog = async (dialogId, origPos) => {
-    let diaObj = document.getElementById(dialogId);
-    let what = 'closed ';
-    await new Promise (z => setTimeout (z, 20)); // toggleDialog
-    if (diaObj.hasAttribute("open")) {
-      diaObj.close();
-    } else {
-      what = 'opened ';
-      await new Promise (z => setTimeout (z, 20)); // toggleDialog
-      if (origPos) diaObj.style.display = '';
-      diaObj.show();
-    }
-    this.z.loli(what + dialogId);
-  }
 
   // Detect closing Esc key
   detectEscClose = (e) => {
@@ -106,13 +91,17 @@ export class MenuImage extends Component {
     return this.intl.t('write.chooseLast');
   }
 
+  get chooseLink() {
+    return this.intl.t('write.chooseLink');
+  }
+
   get chooseMove() {
     return this.intl.t('write.chooseMove');
   }
 
   // Hide or show one, or some checked, thumbnail images
   hideShow = async () => {
-    let imgs = this.selMinImgs(this.z.picName);
+    let imgs = selMinImgs(this.z.picName);
 
     // begin local function ---------
     const perform = async () => {
@@ -206,9 +195,9 @@ export class MenuImage extends Component {
   }
 
   // Move (within the screen) one, or some checked, thumbnail image(s),
-  // if (isTrue === true): to the beginning,
-  // if (isTrue === false): to the end
-  placeFirst = async (isTrue) => { // NOTE: place LAST by 'placeFirst(false)'!
+  // if (isTrue === true): to the beginning,     placeFirst
+  // if (isTrue === false): to the end,          placeLast
+  placeFirst = async (isTrue) => { // NOTE: 'placeLast()' is 'placeFirst(false)'!
 
     // begin local function ---------
     const perform = async () => {
@@ -224,7 +213,7 @@ export class MenuImage extends Component {
     }// end local function ----------
 
     var parent = document.getElementById('imgWrapper');
-    let imgs = this.selMinImgs(this.z.picName);
+    let imgs = selMinImgs(this.z.picName);
     let addline;
 
     if (imgs.length > 1) {
@@ -286,7 +275,7 @@ export class MenuImage extends Component {
   // Link (into another album within the collection)
   // a single image, or a number of checked images.
   linkFunc = async () => {
-    let imgs = this.selMinImgs(this.z.picName);
+    let imgs = selMinImgs(this.z.picName);
     await new Promise (z => setTimeout (z, 99)); // linkFunc 1
     let sym = false;
     for (let img of imgs) {
@@ -298,7 +287,7 @@ export class MenuImage extends Component {
     }
     this.z.toggleMenuImg(0); //close image menu
     if (imgs.length > 1) {
-      this.z.chooseText = this.chooseText + '<br>' + this.chooseMove;
+      this.z.chooseText = this.chooseText + '<br>' + this.chooseLink;
       this.z.infoHeader = this.intl.t('write.chooseHeader'); // default header
       this.z.buttonNumber = 0;
       await new Promise (z => setTimeout (z, 99)); // linkFunc 2
@@ -321,7 +310,7 @@ export class MenuImage extends Component {
   // Move (to another album within the collection)
   // a single image, or a number of checked images.
   moveFunc = async () => {
-    let imgs = this.selMinImgs(this.z.picName);
+    let imgs = selMinImgs(this.z.picName);
     await new Promise (z => setTimeout (z, 99)); // moveFunc 1
     this.z.toggleMenuImg(0); //close image menu
     if (imgs.length > 1) {
@@ -446,9 +435,18 @@ export class MenuImage extends Component {
 export class ChooseAlbum extends Component {
   @service('common-storage') z;
 
+  @tracked which = -1;
+
   doMove = () => {
     this.z.alertMess('perform doMove');
     this.z.closeDialog('chooseAlbum');
+  }
+
+  whichAlbum = () => {
+    const elRadio = e.target.closest('input[type="radio"]');
+    if (!elRadio) return; // Not a radio element
+      // this.z.loli(`${elRadio.id} ${elRadio.checked}`, 'color:red');
+    this.which = Number(elRadio.id.slice(5));
   }
 
   filterAlbum = (index) => {
@@ -466,28 +464,32 @@ export class ChooseAlbum extends Component {
       </header>
       <main style="padding:0.5rem">
         <b>{{t 'selectAlbum'}}</b>
-        <span>(”.” = ”{{this.z.imdbRoot}}”):</span><br>
+        <span>(”.” = ”{{this.z.imdbRoot}}”)</span><br>
         <div class="albumList">
 
           {{#each this.z.imdbDirs as |album index|}}
             {{#if (this.filterAlbum index)}}
               <span class="pselect glue">
-                <input id="album{{index}}" type="radio" name="albumList">
+                <input id="album{{index}}" type="radio" name="albumList" {{on 'click' this.whichAlbum}}>
                 <label for="album{{index}}" style="display:block;margin-left:1rem">
-                  &nbsp;”.{{album}}”
+                  &nbsp;<span style="font-size:77%;vertical-align:top">{{index}}</span>&nbsp;”.{{album}}”
                 </label>
-              </span><br>
+              </span>
             {{/if}}
           {{else}}
             {{t 'write.foundNoAlbums'}}
           {{/each}}
 
         </div>
-        <button type="button" {{on 'click' (fn this.doMove)}}>{{t 'button.move'}}</button>
-        &nbsp;<button type="button" {{on 'click' (fn this.z.closeDialog 'chooseAlbum')}}>{{t 'button.cancel'}}</button><br>
+        {{#if (eq this.which -1)}}
+          No album chosen, select one!<br>
+        {{else}}
+          Album {{this.which}} was chosen<br>
+        {{/if}}
+        <button type="button" {{on 'click' (fn this.doMove)}}>{{t 'button.move'}}</button><br>
       </main>
       <footer data-dialog-draggable>
-        <button type="button" {{on 'click' (fn this.z.closeDialog 'chooseAlbum')}}>{{t 'button.close'}}</button>&nbsp;
+        <button type="button" {{on 'click' (fn this.z.closeDialog 'chooseAlbum')}}>{{t 'button.cancel'}}</button>&nbsp;
       </footer>
     </dialog>
   </template>

@@ -304,6 +304,10 @@ div.diaMess .orAnd {
   margin: 0.34em 0;
 }
 span.glue {
+  display: block;
+  white-space: nowrap;
+}
+span.glueInline {
   display: inline-block;
   white-space: nowrap;
 }
@@ -799,8 +803,8 @@ a#do_mail,
   border:0.5px solid #666;
   border-radius:4px;
   margin:0.5rem 0;
-  padding:0.5rem;
-  line-height: 1.9rem;
+  padding: .6rem .5rem .5rem 0;
+  line-height: 1.45rem;
   overflow-y:scroll;
   background:#c0c0c0;
   max-height:12rem;
@@ -1428,7 +1432,7 @@ input[type="checkbox"] {
   display: none;
 }
 #setAllow input[type="checkbox"] + label::before {
-  margin: 0 0 -0.25em 0em;
+  margin: 0 0 -0.25em 0;
 }
 input[type="checkbox"] + label::before {
   content: "";
@@ -1438,15 +1442,6 @@ input[type="checkbox"] + label::before {
   margin: 0 -0.1em 0 0;
   width: 0.5em;
   height: 0.5em;
-}
-input[type="checkbox"] + label[for="eraOrig"]::before {
-  content: "";
-  display: inline-block;
-  border: 1px solid white;
-  border-radius: 50%;
-  margin: 0 0 -0.1px 0;
-  width: 0.7em;
-  height: 0.7em;
 }
 /* styling the checked 'checkbox': */
 input[type="checkbox"]:checked + label::before {
@@ -1467,7 +1462,7 @@ input[type="radio"] + label::before {
   display: inline-block;
   border: 2px solid white;
   border-radius: 50%;
-  margin: 0 -0.04em 0 0em;
+  margin: 0;
   width: 0.4em;
   height: 0.4em;
 }

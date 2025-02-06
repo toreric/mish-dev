@@ -322,23 +322,23 @@ export class DialogFind extends Component {
           <div class="diaMess">
             <div class="edWarn" style="font-weight:normal;text-align:right"></div>
             <div class="srchIn"> {{t 'write.find0'}}&nbsp;
-              <span class="glue">
+              <span class="glueInline">
                 <input id="t1" name="search1" value="description" checked="" type="checkbox">
                 <label for="t1">&nbsp;{{t 'write.find1'}}</label>&nbsp;
               </span>
-              <span class="glue">
+              <span class="glueInline">
                 <input id="t2" name="search2" value="creator" checked="" type="checkbox">
                 <label for="t2">&nbsp;{{t 'write.find2'}}</label>&nbsp;
               </span>
-              <span class="glue" style="display:{{this.searchNotes}}">
+              <span class="glueInline" style="display:{{this.searchNotes}}">
                 <input id="t3" name="search3" value="source" type="checkbox">
                 <label for="t3">&nbsp;{{t 'write.find3'}}</label>&nbsp;
               </span>
-              <span class="glue">
+              <span class="glueInline">
                 <input id="t4" name="search4" value="album" checked="" type="checkbox">
                 <label for="t4">&nbsp;{{t 'write.find4'}}</label>&nbsp;
               </span>
-              <span class="glue">
+              <span class="glueInline">
                 <input id="t5" name="search5" value="name" checked="" type="checkbox">
                 <label for="t5">&nbsp;{{t 'write.find5'}}</label>
               </span>
@@ -346,11 +346,11 @@ export class DialogFind extends Component {
             <div class="orAnd">{{t 'write.find6'}} &nbsp; &nbsp;
                 <a class="hoverDark" style="font-family:sans-serif;font-variant:all-small-caps" tabindex="-1" {{on 'click' (fn this.z.toggleDialog 'dialogFindHelp')}}>{{t 'searchHelp'}}</a>
               <br>{{t 'write.find7'}}<br>
-              <span class="glue">
+              <span class="glueInline">
                 <input id="r1" name="searchmode" value="AND" checked="" type="radio">
                 <label for="r1">{{{t 'write.find8'}}}</label>
               </span>&nbsp;
-              <span class="glue" style="padding-bottom:0.5rem">
+              <span class="glueInline" style="padding-bottom:0.5rem">
                 <input id="r2" name="searchmode" value="OR" type="radio">
                 <label for="r2">{{{t 'write.find9'}}}</label>
               </span>
