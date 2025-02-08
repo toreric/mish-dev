@@ -143,8 +143,10 @@ button:
   findIn:    Suche in
   findDupNames: Doppelte Namen finden
   keywords:  Stichwörter
+  linkFunc:  Zum ausgewählten Album verlinken
   login:     Anmelden
   move:      Zum Album
+  moveFunc:  Verschieben in das ausgewählte Album
   notes:     Anmerkungen
   optlogin:  Anmeldung
   restart:   "Den Browser neuladen\n
@@ -300,6 +302,7 @@ write:
              <span style="font-weight:normal;color:#000">Hoffentlich wird das Drag-and-Drop-<br>
              Problem irgendwann behoben</span>
   albumName: Einen Albumnamen eingeben
+  chooseAlbum: Nichts ausgewählt, ein Album auswählen!
   chooseBoth: Sollen beide Ausgewählten Bilder
   chooseFirst: an den Anfang verschoben werden?
   chooseHeader: Wählen
@@ -308,6 +311,7 @@ write:
   chooseLink: zu einem anderen Album verlinkt werden?
   chooseMany: Sollen alle {n} Ausgewählten Bilder
   chooseMove: zu einem anderen Album verschiebt werden?
+  chooseThis: "Ausgewähltes Album: <b>{a}</b>"
   chooseTool: Ein Werkzeug wählen, keines ausgewählt!
   creator: "Herkunft: Foto Ursprung Quelle"
   description: "Beschreibung: Wann wo was welche"

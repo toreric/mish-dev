@@ -144,8 +144,10 @@ button:
   findIn:    Search in
   findDupNames: Find duplicate names
   keywords:  Keywords
+  linkFunc:  Link to the selected album
   login:     Log in
   move:      To the album
+  moveFunc:  Transfer to the selected album
   notes:     Notes
   optlogin:  Log in
   restart:   "Reload the browser\n
@@ -302,14 +304,16 @@ write:
              <span style="font-weight:normal;color:#000">Hopefully, the drag-and-drop<br>
               problem will be eventually fixed</span>
   albumName: Enter an album name
-  chooseBoth: Should both selected
+  chooseAlbum: No album chosen, select one!
+  chooseBoth: Should both selected images
   chooseFirst: be moved to the beginning?
   chooseHeader: Choose
   chooseHide: be hidden or shown?
   chooseLast: be moved to the end?
   chooseLink: be linked to another album?
-  chooseMany: Should all {n} selected
+  chooseMany: Should all {n} selected images
   chooseMove: be moved to another album?
+  chooseThis: "Selected album: <b>{a}</b>"
   chooseTool: No tool chosen, choose one!
   creator: 'Origin: Photographer Source'
   description: 'Caption: When Where What Who'
@@ -345,7 +349,7 @@ write:
              Keywords to be stored as metadata for search key use"
   maxWarning: <b>More than {n} images cannot<br>be displayed together</b>
   noDupNamesFound: Found no duplicate image names in <b>{a}</b> with subalbums
-  noLinkLinks: Linked images cannot be linked to other albums!
+  noLinkLink: Linked images cannot be linked to other albums!
   noneFound: Sorry, no image found!
   notEmpty: The album must first be emptied!
   notes: Notes not shown with the image

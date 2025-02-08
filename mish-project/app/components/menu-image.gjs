@@ -294,12 +294,16 @@ export class MenuImage extends Component {
       this.z.openDialog(dialogChooseId);
       while (!this.z.buttonNumber) {
         await new Promise (z => setTimeout (z, 99)); // linkFunc 3
-        if (this.z.buttonNumber === 1) { this.z.openDialog('chooseAlbum'); } // 1 confirms
+        if (this.z.buttonNumber === 1) {
+          this.z.openDialog('chooseAlbum'); // 1 confirms
+          this.z.chooseText = this.intl.t('button.linkFunc');
+        }
       } // if another button: leave and close
     } else {
       // a single img needs no confirmation but we mark it
       this.z.markBorders(this.z.picName);
       this.z.toggleDialog('chooseAlbum');
+      this.z.chooseText = this.intl.t('button.linkFunc');
     }
     this.z.countNumbers();
     this.z.closeDialogs();
@@ -321,11 +325,15 @@ export class MenuImage extends Component {
       this.z.openDialog(dialogChooseId);
       while (!this.z.buttonNumber) {
         await new Promise (z => setTimeout (z, 99)); // moveFunc 3
-        if (this.z.buttonNumber === 1) { this.z.openDialog('chooseAlbum'); } // 1 confirms
+        if (this.z.buttonNumber === 1) {
+          this.z.chooseText = this.intl.t('button.moveFunc');
+          this.z.openDialog('chooseAlbum'); // 1 confirms
+        }
       } // if another button leave and close
     } else {
       // a single img needs no confirmation but we mark it
       this.z.markBorders(this.z.picName);
+      this.z.chooseText = this.intl.t('button.moveFunc');
       this.z.toggleDialog('chooseAlbum');
     }
     this.z.countNumbers();
@@ -437,20 +445,33 @@ export class ChooseAlbum extends Component {
 
   @tracked which = -1;
 
-  doMove = () => {
-    this.z.alertMess('perform doMove');
-    this.z.closeDialog('chooseAlbum');
-  }
-
-  whichAlbum = () => {
-    const elRadio = e.target.closest('input[type="radio"]');
-    if (!elRadio) return; // Not a radio element
+  whichAlbum = (e) => {
+    var elRadio = e.target;
       // this.z.loli(`${elRadio.id} ${elRadio.checked}`, 'color:red');
     this.which = Number(elRadio.id.slice(5));
+    document.querySelector('#chooseAlbum main button').disabled = false;
   }
 
   filterAlbum = (index) => {
     return this.z.imdbDirs[index] === this.z.imdbDir || this.z.imdbDirs[index].slice(1) === this.z.picFound ? false : true;
+  }
+
+  get chosenAlbum() {
+    let a = this.z.imdbDirs[this.which];
+    // Extract the album name or it's root
+    if (a) return this.z.handsomize2sp(a.replace(/^.*\/([^/])/, '$1'));
+    else return this.z.imdbRoot;
+  }
+
+  closeChoose = (doit) => {
+    this.which = -1;
+    document.querySelector('#chooseAlbum main button').disabled = true;
+    this.z.closeDialog('chooseAlbum');
+    if (doit) this.perform();
+  }
+
+  perform = () => {
+    this.z.alertMess('perform something');
   }
 
   <template>
@@ -467,6 +488,7 @@ export class ChooseAlbum extends Component {
         <span>(”.” = ”{{this.z.imdbRoot}}”)</span><br>
         <div class="albumList">
 
+          {{#if (eq this.which this.which)}}
           {{#each this.z.imdbDirs as |album index|}}
             {{#if (this.filterAlbum index)}}
               <span class="pselect glue">
@@ -479,17 +501,18 @@ export class ChooseAlbum extends Component {
           {{else}}
             {{t 'write.foundNoAlbums'}}
           {{/each}}
+          {{/if}}
 
         </div>
         {{#if (eq this.which -1)}}
-          No album chosen, select one!<br>
+          <b style="color:blue">{{t 'write.chooseAlbum'}}</b><br>
         {{else}}
-          Album {{this.which}} was chosen<br>
+          {{{t 'write.chooseThis' a=this.chosenAlbum}}}<br>
         {{/if}}
-        <button type="button" {{on 'click' (fn this.doMove)}}>{{t 'button.move'}}</button><br>
+        <button type="button" {{on 'click' (fn this.closeChoose true)}} disabled>{{{this.z.chooseText}}}</button><br>
       </main>
       <footer data-dialog-draggable>
-        <button type="button" {{on 'click' (fn this.z.closeDialog 'chooseAlbum')}}>{{t 'button.cancel'}}</button>&nbsp;
+        <button type="button" {{on 'click' (fn this.closeChoose false)}}>{{t 'button.cancel'}}</button>&nbsp;
       </footer>
     </dialog>
   </template>

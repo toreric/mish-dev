@@ -144,8 +144,10 @@ button:
   findIn:    Sök i
   findDupNames: Finn dublettnamn
   keywords:  Nyckelord
+  linkFunc:  Länka till det valda albumet
   login:     Logga in
   move:      Till albumet
+  moveFunc:  Flytta till det valda albumet
   notes:     Anteckningar
   optlogin:  Inloggning
   restart:   "Ladda om webbläsaren\n
@@ -300,14 +302,16 @@ write:
              <span style="font-weight:normal;color:#000">Förhoppningsvis ska dra-och-släpp-<br>
              problemet så småningom åtgärdas</span>
   albumName: Skriv ett albumnamn
-  chooseBoth: Ska båda markerade
+  chooseAlbum: Inget album är valt, välj ett!
+  chooseBoth: Ska båda markerade bilderna
   chooseFirst: placeras först?
   chooseHeader: Välj
   chooseHide: gömmas eller visas?
   chooseLast: placeras sist?
-  chooseLink: länkas till annat album?
-  chooseMany: Ska alla {n} markerade
-  chooseMove: flyttas till annat album?
+  chooseLink: länkas till ett annat album?
+  chooseMany: Ska alla {n} markerade bilderna
+  chooseMove: flyttas till ett annat album?
+  chooseThis: "Valt album: <b>{a}</b>"
   chooseTool: Inget verktyg valt, välj ett!
   creator: "Ursprung: Foto upphov källa"
   description: "Beskrivning: När var vad vilka"
