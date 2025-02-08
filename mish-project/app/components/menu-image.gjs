@@ -442,6 +442,7 @@ export class MenuImage extends Component {
 
 export class ChooseAlbum extends Component {
   @service('common-storage') z;
+  @service intl;
 
   @tracked which = -1;
 
@@ -450,29 +451,34 @@ export class ChooseAlbum extends Component {
       // this.z.loli(`${elRadio.id} ${elRadio.checked}`, 'color:red');
     this.which = Number(elRadio.id.slice(5));
     document.querySelector('#chooseAlbum main button').disabled = false;
+    document.getElementById('putWhere').style.display = '';
   }
 
+  // Filter away this and the temporary
   filterAlbum = (index) => {
     return this.z.imdbDirs[index] === this.z.imdbDir || this.z.imdbDirs[index].slice(1) === this.z.picFound ? false : true;
   }
 
+  // Display the album name or root
   get chosenAlbum() {
     let a = this.z.imdbDirs[this.which];
-    // Extract the album name or it's root
-    if (a) return this.z.handsomize2sp(a.replace(/^.*\/([^/])/, '$1'));
-    else return this.z.imdbRoot;
+    return a ? this.z.handsomize2sp(a.replace(/^.*\/([^/]+)$/, '$1')) : this.z.imdbRoot;
   }
 
   closeChoose = (doit) => {
     this.which = -1;
     document.querySelector('#chooseAlbum main button').disabled = true;
+    document.getElementById('putWhere').style.display = 'none';
     this.z.closeDialog('chooseAlbum');
     if (doit) this.perform();
   }
 
   perform = () => {
-    this.z.alertMess('perform something');
+    if (Number(this.z.chooseText.slice(0, 1))) this.z.alertMess('perform some linking');
+    else this.z.alertMess('perform some moving');
   }
+
+  drop1 = (txt) => txt.slice(1);
 
   <template>
     <dialog id="chooseAlbum" style="z-index:999" {{on 'keydown' this.detectEscClose}}>
@@ -489,6 +495,7 @@ export class ChooseAlbum extends Component {
         <div class="albumList">
 
           {{#if (eq this.which this.which)}}
+
           {{#each this.z.imdbDirs as |album index|}}
             {{#if (this.filterAlbum index)}}
               <span class="pselect glue">
@@ -501,6 +508,7 @@ export class ChooseAlbum extends Component {
           {{else}}
             {{t 'write.foundNoAlbums'}}
           {{/each}}
+
           {{/if}}
 
         </div>
@@ -509,7 +517,19 @@ export class ChooseAlbum extends Component {
         {{else}}
           {{{t 'write.chooseThis' a=this.chosenAlbum}}}<br>
         {{/if}}
-        <button type="button" {{on 'click' (fn this.closeChoose true)}} disabled>{{{this.z.chooseText}}}</button><br>
+        <button type="button" {{on 'click' (fn this.closeChoose true)}} disabled>{{{this.drop1 this.z.chooseText}}}</button><br>
+
+        <span id="putWhere" class="pselect glue" style="display:none">
+          <input id="putFirst" type="radio" name="orderList" checked>
+          <label for="putFirst" style="display:block;margin-left:.1rem">
+            &nbsp;&nbsp;{{t 'placeFirst'}}
+          </label>
+          <input id="putLast" type="radio" name="orderList">
+          <label for="putLast" style="display:block;margin-left:.1rem">
+            &nbsp;&nbsp;{{t 'placeLast'}}
+          </label>
+        </span>
+
       </main>
       <footer data-dialog-draggable>
         <button type="button" {{on 'click' (fn this.closeChoose false)}}>{{t 'button.cancel'}}</button>&nbsp;

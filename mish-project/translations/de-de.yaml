@@ -97,7 +97,9 @@ numbererror: W A R N U N G<br><br>Nicht übereinstimmende Bildanzahl!
 Original: Original
 own: eigene
 Phototime: Fotozeit
+placeFirst: Am Anfang des Albums platzieren
 placefirst: Zum Anfang bewegen
+placeLast: Am Ende des Albums platzieren
 placelast: Zum Ende bewegen
 plus: plus
 previous: vorheriges
@@ -143,10 +145,12 @@ button:
   findIn:    Suche in
   findDupNames: Doppelte Namen finden
   keywords:  Stichwörter
-  linkFunc:  Zum ausgewählten Album verlinken
+  #the initial 1 means link==true, move==false
+  linkFunc:  1Zum ausgewählten Album verlinken
   login:     Anmelden
   move:      Zum Album
-  moveFunc:  Verschieben in das ausgewählte Album
+  #the initial 0 means link==false, move==true
+  moveFunc:  0Verschieben in das ausgewählte Album
   notes:     Anmerkungen
   optlogin:  Anmeldung
   restart:   "Den Browser neuladen\n

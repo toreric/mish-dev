@@ -97,7 +97,9 @@ numbererror: V A R N I N G<br><br>Bildantalet stämmer inte!
 Original: Original
 own: egna
 Phototime: Fototid
+placeFirst: Placera i början av albumet
 placefirst: Placera först
+placeLast: Placera i slutet av albumet
 placelast: Placera sist
 previous: föregående
 plus: plus
@@ -144,10 +146,12 @@ button:
   findIn:    Sök i
   findDupNames: Finn dublettnamn
   keywords:  Nyckelord
-  linkFunc:  Länka till det valda albumet
+  #the initial 1 means link==true, move==false
+  linkFunc:  1Länka till det valda albumet
   login:     Logga in
   move:      Till albumet
-  moveFunc:  Flytta till det valda albumet
+  #the initial 0 means link==false, move==true
+  moveFunc:  0Flytta till det valda albumet
   notes:     Anteckningar
   optlogin:  Inloggning
   restart:   "Ladda om webbläsaren\n

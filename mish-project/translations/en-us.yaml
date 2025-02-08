@@ -97,7 +97,9 @@ numbererror: W A R N I N G<br><br>Image count mismatch!
 Original: Original
 own: own
 Phototime: Photo time
+placeFirst: Place at the beginning of the album
 placefirst: Place first
+placeLast: Place at the end of the album
 placelast: Place last
 plus: plus
 previous: previous
@@ -144,10 +146,12 @@ button:
   findIn:    Search in
   findDupNames: Find duplicate names
   keywords:  Keywords
-  linkFunc:  Link to the selected album
+  #the initial 1 means link==true, move==false
+  linkFunc:  1Link to the selected album
   login:     Log in
   move:      To the album
-  moveFunc:  Transfer to the selected album
+  #the initial 0 means link==false, move==true
+  moveFunc:  0Transfer to the selected album
   notes:     Notes
   optlogin:  Log in
   restart:   "Reload the browser\n
