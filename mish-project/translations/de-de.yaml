@@ -121,7 +121,7 @@ wait: warten
 with: mit
 xplErrImg: Beurteilung der technischen \nQualität des Originalbildes
 
-albumcollselect: Bitte eine Albumsammlung auswählen!
+albumcollselect: Bitte eine Albumsammlung auswählen im Hauptmenü!
 albumMissing: Dieses Album kann, möglicherweise<br>
               aufgrund unzureichender Rechte,<br>
               nicht angezeigt werden

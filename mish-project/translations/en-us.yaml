@@ -121,7 +121,7 @@ wait: wait
 with: with
 xplErrImg: Assessment of the technical \nquality of the original image
 
-albumcollselect: Please select an album collection!
+albumcollselect: Please select an album collection in the main menu!
 albumMissing: This album cannot be shown,<br>
               possibly due to insufficient rights
 albumSelectInfo: "Select here an album

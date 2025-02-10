@@ -378,7 +378,7 @@ export class DialogUtil extends Component {
               <button type="button" {{on 'click' (fn this.doDupNames)}}>{{t 'write.tool42'}}</button>
             {{/if}}
 
-          {{!-- Upload images --}}
+          {{!-- === Upload images === --}}
           {{else if (eq this.tool 'util5')}}
 
             <button type="button" {{on 'click' (fn this.doUpload)}}>{{t 'write.tool5'}}</button>
@@ -394,7 +394,7 @@ export class DialogUtil extends Component {
               </span>
             </form>
 
-          {{!-- Update search data for the entire album collection --}}
+          {{!-- === Update search data for the entire album collection === --}}
           {{else if (eq this.tool 'util6')}}
 
             <button type="button" {{on 'click' (fn this.doDbUpdate)}}>{{t 'write.tool6'}}</button>

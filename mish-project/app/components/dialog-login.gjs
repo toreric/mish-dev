@@ -39,6 +39,8 @@ export class DialogLogin extends Component {
       this.clearInput('user_');
       this.clearInput('password_');
       if (user !== oldUser) {
+        // Don't show any old rubbish:
+        this.z.hasImages = false;
         // User change measures: name, credentials, reselect album root
         this.z.userName = user;
         this.z.userStatus = cred[1];
@@ -57,6 +59,11 @@ export class DialogLogin extends Component {
         this.z.imdbRoot = '';
         this.z.imdbTree = null;
         this.z.openMainMenu();
+        // Add blinking to emphasize a new user
+        let usr = document.getElementById('loggedInUser'); //see Welcome
+        usr.classList.add('blink');
+        await new Promise (z => setTimeout (z, 999)); // logIn blink pause
+        usr.classList.remove('blink');
       }
       this.z.closeDialog(dialogLoginId);
       document.querySelector('.mainMenu select').focus();

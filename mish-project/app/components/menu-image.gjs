@@ -52,14 +52,6 @@ export class MenuImage extends Component {
   albumsIndex = new TrackedArray([]);
 
   // Detect closing Esc key
-  detectEscClose = (e) => {
-    e.stopPropagation();
-    if (e.keyCode === 27) { // Esc key
-      if (document.getElementById(dialogAlertId).open) this.z.closeDialog('chooseAlbum');
-    }
-  }
-
-  // Detect closing Esc key
   detectClose = (e) => {
     e.stopPropagation();
     if (e.type === 'keydown' && e.keyCode === 27 || e.type === 'click') { // Esc key
@@ -446,6 +438,12 @@ export class ChooseAlbum extends Component {
 
   @tracked which = -1;
 
+  // Detect closing Esc (27) key
+  detectEscClose = (e) => {
+    e.stopPropagation();
+    if (e.keyCode === 27) this.closeChoose();
+  }
+
   whichAlbum = (e) => {
     var elRadio = e.target;
       // this.z.loli(`${elRadio.id} ${elRadio.checked}`, 'color:red');
@@ -466,16 +464,40 @@ export class ChooseAlbum extends Component {
   }
 
   closeChoose = (doit) => {
-    this.which = -1;
     document.querySelector('#chooseAlbum main button').disabled = true;
     document.getElementById('putWhere').style.display = 'none';
     this.z.closeDialog('chooseAlbum');
-    if (doit) this.perform();
+    if (doit) this.doLinkMove();
+    else this.which = -1;
   }
 
-  perform = () => {
-    if (Number(this.z.chooseText.slice(0, 1))) this.z.alertMess('perform some linking');
-    else this.z.alertMess('perform some moving');
+  doLinkMove = () => {
+    if (Number(this.z.chooseText.slice(0, 1))) {
+      this.z.alertMess('perform some linking');
+      this.z.loli('linking to ' + this.z.imdbRoot + this.z.imdbDirs[this.which]);
+      let lpath = this.z.imdbPath + this.z.imdbDirs[this.which];
+        this.z.loli(lpath, 'color:red');
+      // let picNames =
+
+// console.log("Link to ." + this.value);
+// var picNames = $("#picNames").text().split("\\n");
+// var cmd=[];
+// for (var i=0;i<picNames.length;i++) {
+//   var linkfrom = document.getElementById("i" + picNames[i]).getElementsByTagName("img")[0].getAttribute ("title");
+//   linkfrom = "../".repeat(this.value.split("/").length - 1) + linkfrom.slice(1);
+//   var linkto = lpath + "/" + picNames[i];
+//   linkto += linkfrom.match(/\\.[^.]*$/);
+//   cmd.push("ln -sf "+linkfrom+" "+linkto);
+// }
+// $("#temporary").text(lpath);
+// $("#temporary_1").text (cmd.join("\\n"));
+// $("#checkNames").trigger("click");
+// $("#yesBut").text("Länka");
+
+    } else {
+      this.z.alertMess('perform some moving');
+    }
+    this.which = -1;
   }
 
   drop1 = (txt) => txt.slice(1);
@@ -486,7 +508,7 @@ export class ChooseAlbum extends Component {
         <div style="width:99%">
           <p style="color:blue">{{t 'selectTarget'}}<span></span></p>
         </div><div>
-          <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'chooseAlbum')}}>×</button>
+          <button class="close" type="button" {{on 'click' (fn this.closeChoose false)}}>×</button>
         </div>
       </header>
       <main style="padding:0.5rem">
@@ -519,7 +541,7 @@ export class ChooseAlbum extends Component {
         {{/if}}
         <button type="button" {{on 'click' (fn this.closeChoose true)}} disabled>{{{this.drop1 this.z.chooseText}}}</button><br>
 
-        <span id="putWhere" class="pselect glue" style="display:none">
+        <span id="putWhere" class="glue" style="display:none">
           <input id="putFirst" type="radio" name="orderList" checked>
           <label for="putFirst" style="display:block;margin-left:.1rem">
             &nbsp;&nbsp;{{t 'placeFirst'}}

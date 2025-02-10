@@ -254,7 +254,7 @@ export default class extends Welcome {
 
         </span> &nbsp;
 
-        <span>
+        <span id="loggedInUser">
           {{t 'loggedIn'}}: <b>{{this.z.userName}}</b> {{t 'with'}} [{{this.z.userStatus}}]-{{t 'rights'}}
         </span>
       </div>

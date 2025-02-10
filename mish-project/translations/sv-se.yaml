@@ -121,7 +121,7 @@ with: med
 txtGif: Gif-bild! Kan bara ges tillfällig text som inte bevaras permanent
 xplErrImg: Uppskattning av original-\nbildens tekniska kvalitet
 
-albumcollselect: Vänligen välj en albumsamling!
+albumcollselect: Vänligen välj en albumsamling i huvudmenyn!
 albumMissing: Det här albumet kan inte visas, kanske<br>
               på grund av otillräckliga rättigheter
 albumSelectInfo: "Välj här en album-

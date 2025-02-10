@@ -390,7 +390,7 @@ export default class CommonStorageService extends Service {
       tmp.style.color = '';
     }
     // Set color mark on the selected album name and make it visible
-    // NOTE; This is about the selected albun in the ALBUM tree.
+    // NOTE: This is about the selected albun in the ALBUM tree.
     document.querySelector('span.album.a' + i).style.color = '#f46aff';
     let selected = document.querySelector('div.album.a' + i);
     selected.style.display = '';
