@@ -54,6 +54,7 @@ download: Ladda ned...
 dupImgNames: dubletter av bildnamn
 editext: Redigera text...
 editimage: Redigera bild...
+eraseCancelled: Raderingen genomförs inte
 errTxtNotSaved: Texten sparades inte!
 errTxtCannotSave: Bildtexten kan inte uppdateras, är filen ändringsskyddad?
 errTxtRecover: Försvunnen text återfås med att ladda om albumet (återställ osparade ändringar)
@@ -101,6 +102,7 @@ placeFirst: Placera i början av albumet
 placefirst: Placera först
 placeLast: Placera i slutet av albumet
 placelast: Placera sist
+placeWhere: placeras i slutet av albumet
 previous: föregående
 plus: plus
 remove: RADERA...
@@ -307,7 +309,8 @@ write:
              problemet så småningom åtgärdas</span>
   albumName: Skriv ett albumnamn
   chooseAlbum: Inget album är valt, välj ett!
-  chooseBoth: Ska båda markerade bilderna
+  chooseBoth:  Ska båda markerade bilderna
+  chooseErase: verkligen raderas?
   chooseFirst: placeras först?
   chooseHeader: Välj
   chooseHide: gömmas eller visas?
@@ -315,11 +318,17 @@ write:
   chooseLink: länkas till ett annat album?
   chooseMany: Ska alla {n} markerade bilderna
   chooseMove: flyttas till ett annat album?
+  chooseNone: Ingen bild vald!<br>
+              <br>Åtminstone den bild du klickar måste också markeras.
+              <br>Det gäller för radering som en säkerhetsåtgärd.
+  chooseOne:  Ska den här bilden
   chooseThis: "Valt album: <b>{a}</b>"
   chooseTool: Inget verktyg valt, välj ett!
+  confirm: <b>Bekräfta</b>
   creator: "Ursprung: Foto upphov källa"
   description: "Beskrivning: När var vad vilka"
   dialogDupResult: Dublettnamnsökning i <b>{a}</b>
+  eraseFunc: Att ta bort (kan inte ångras!)
   find0: "Sök i:"
   find1: bildtext (övre texten)
   find2: ursprung (nedre texten)

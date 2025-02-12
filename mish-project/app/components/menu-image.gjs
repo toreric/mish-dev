@@ -62,9 +62,13 @@ export class MenuImage extends Component {
     document.querySelector('body').focus();
   }
 
+  // A single image sometimes doesn't have this choice
   get chooseText() {
-    // A single image wouldn't have a choice!
-    if (this.z.numMarked === 2) {
+    if (this.z.numMarked === 0) {
+      return this.intl.t('write.chooseNone');
+    } else if (this.z.numMarked === 1) {
+      return this.intl.t('write.chooseOne');
+    } else if (this.z.numMarked === 2) {
       return this.intl.t('write.chooseBoth');
     } else {
       return this.intl.t('write.chooseMany', {n: this.z.numMarked});
@@ -89,6 +93,10 @@ export class MenuImage extends Component {
 
   get chooseMove() {
     return this.intl.t('write.chooseMove');
+  }
+
+  get chooseErase() {
+    return this.intl.t('write.chooseErase');
   }
 
   // Hide or show one, or some checked, thumbnail images
@@ -334,6 +342,54 @@ export class MenuImage extends Component {
     return;
   }
 
+  eraseFunc = async () => {
+      this.z.loli(this.z.picName, 'color:red');
+    let imgs = selMinImgs(this.z.picName);
+    await new Promise (z => setTimeout (z, 99)); // eraseFunc 1
+    this.z.toggleMenuImg(0); //close image menu
+    if (imgs.length > 0 && document.getElementById('i' + this.z.picName).classList.contains('selected')) {
+
+      this.z.chooseText = this.chooseText + '<br>' + this.chooseErase;
+      this.z.infoHeader = this.intl.t('write.chooseHeader'); // default header
+      this.z.buttonNumber = 0;
+      await new Promise (z => setTimeout (z, 99)); // eraseFunc 2
+      this.z.openDialog(dialogChooseId);
+
+      while (!this.z.buttonNumber) {
+        await new Promise (z => setTimeout (z, 99)); // eraseFunc 3
+      }
+      if (this.z.buttonNumber === 1) {
+        this.z.closeDialog(dialogChooseId);
+        this.z.infoHeader = this.intl.t('write.confirm');
+        this.z.chooseText = '<span style="color:brown">'
+        this.z.chooseText += this.intl.t('write.eraseFunc') + ':</span><br><br>';
+        this.z.chooseText += '<span style="font-weight:normal">';
+        for (let pic of imgs) {
+          this.z.chooseText += pic.querySelector('.img_name').innerHTML.toString().slice(0, -2) + ', ';
+        }
+        this.z.chooseText = this.z.chooseText.slice(0, -2);
+        this.z.chooseText += '</span>'
+        this.z.buttonNumber = 0;
+        this.z.openDialog(dialogChooseId);
+
+        while (!this.z.buttonNumber) {
+          await new Promise (z => setTimeout (z, 99)); // eraseFunc 4
+        }
+        if (this.z.buttonNumber === 1) {
+          this.z.alertMess('LÖSCHEN/ERASE/RADERA');
+        } else {
+          this.z.alertMess(this.intl.t('eraseCancelled'), 3);
+        }
+      }
+    } else {
+      this.z.alertMess(this.intl.t('write.chooseNone'));
+    }
+    this.z.countNumbers();
+    this.z.closeDialogs();
+    this.z.sortOrder = this.z.updateOrder();
+    return;
+  }
+
   <template>
     <button class='menu_img' type="button" title="{{t 'imageMenu'}}"
     {{on 'click' (fn this.z.toggleMenuImg 1)}}
@@ -423,7 +479,7 @@ export class MenuImage extends Component {
         ○</span>{{t 'moveto'}}</p></li>
 
       {{!-- Erase image(s)  --}}
-      <li><p {{on 'click' (fn this.z.futureNotYet 'remove')}}>
+      <li><p {{on 'click' (fn this.eraseFunc)}}>
         <span style="font-size:124%;line-height:50%">
         ○</span>{{t 'remove'}}</p></li>
 
@@ -437,6 +493,7 @@ export class ChooseAlbum extends Component {
   @service intl;
 
   @tracked which = -1;
+  @tracked indices = [];
 
   // Detect closing Esc (27) key
   detectEscClose = (e) => {
@@ -471,28 +528,49 @@ export class ChooseAlbum extends Component {
     else this.which = -1;
   }
 
-  doLinkMove = () => {
+  doLinkMove = async () => {
+    let pics = selMinImgs(this.z.picName);
+    let cmd = [];
+    var picNames = [];
     if (Number(this.z.chooseText.slice(0, 1))) {
       this.z.alertMess('perform some linking');
-      this.z.loli('linking to ' + this.z.imdbRoot + this.z.imdbDirs[this.which]);
-      let lpath = this.z.imdbPath + this.z.imdbDirs[this.which];
+      let value = this.z.imdbDirs[this.which];
+      this.z.loli('linking to ' + this.z.imdbRoot + value);
+      let lpath = this.z.imdbPath + value;
         this.z.loli(lpath, 'color:red');
-      // let picNames =
-
-// console.log("Link to ." + this.value);
-// var picNames = $("#picNames").text().split("\\n");
-// var cmd=[];
-// for (var i=0;i<picNames.length;i++) {
-//   var linkfrom = document.getElementById("i" + picNames[i]).getElementsByTagName("img")[0].getAttribute ("title");
-//   linkfrom = "../".repeat(this.value.split("/").length - 1) + linkfrom.slice(1);
-//   var linkto = lpath + "/" + picNames[i];
-//   linkto += linkfrom.match(/\\.[^.]*$/);
-//   cmd.push("ln -sf "+linkfrom+" "+linkto);
-// }
-// $("#temporary").text(lpath);
-// $("#temporary_1").text (cmd.join("\\n"));
-// $("#checkNames").trigger("click");
-// $("#yesBut").text("Länka");
+      for (let i=0;i<pics.length;i++) {
+          this.z.loli(pics[i].id.slice(1), 'color:red');
+        picNames.push(pics[i].id.slice(1));
+      }
+      for (let i=0;i<pics.length;i++) {
+        let linkfrom = document.getElementById('i' + picNames[i]).querySelector('img.left-click').getAttribute ('title').replace(/^[^/]+/, '');
+        linkfrom = '../'.repeat(value.split('/').length - 1) + linkfrom.slice(1);
+        let linkto = lpath + '/' + picNames[i];
+        linkto += linkfrom.match(/\.[^.]*$/);
+        cmd.push('ln -sf ' + linkfrom + ' ' + linkto);
+      }
+      this.z.loli(LF + cmd.join(LF), 'color:pink');
+      for (let i=0;i<pics.length;i++) {
+        let r = await this.z.execute(cmd[i]);
+        if (r) this.z.loli('Not linked: ' + picNames[i]);
+      }
+//var lpath = "";
+//if (this.selectedIndex === 0) return false;
+//lpath = $("#imdbPath").text() + this.value; // select option.value
+//console.log("Link to ." + this.value);
+//var picNames = $("#picNames").text().split("\\n");
+//var cmd=[];
+//for (var i=0;i<picNames.length;i++) {
+//  var linkfrom = document.getElementById("i" + picNames[i]).getElementsByTagName("img")[0].getAttribute ("title");
+//  linkfrom = "../".repeat(this.value.split("/").length - 1) + linkfrom.slice(1);
+//  var linkto = lpath + "/" + picNames[i];
+//  linkto += linkfrom.match(/\\.[^.]*$/);
+//  cmd.push("ln -sf "+linkfrom+" "+linkto);
+//}
+//$("#temporary").text(lpath);
+//$("#temporary_1").text (cmd.join("\\n"));
+//$("#checkNames").trigger("click");
+//$("#yesBut").text("Länka");
 
     } else {
       this.z.alertMess('perform some moving');
@@ -537,19 +615,20 @@ export class ChooseAlbum extends Component {
         {{#if (eq this.which -1)}}
           <b style="color:blue">{{t 'write.chooseAlbum'}}</b><br>
         {{else}}
-          {{{t 'write.chooseThis' a=this.chosenAlbum}}}<br>
+          {{{t 'write.chooseThis' a=this.chosenAlbum}}}<br>({{t 'placeWhere'}})<br>
         {{/if}}
         <button type="button" {{on 'click' (fn this.closeChoose true)}} disabled>{{{this.drop1 this.z.chooseText}}}</button><br>
 
         <span id="putWhere" class="glue" style="display:none">
-          <input id="putFirst" type="radio" name="orderList" checked>
+          {{!-- BELOW: Perhaps a future option! --}}
+          {{!-- <input id="putFirst" type="radio" name="orderList" checked>
           <label for="putFirst" style="display:block;margin-left:.1rem">
             &nbsp;&nbsp;{{t 'placeFirst'}}
           </label>
           <input id="putLast" type="radio" name="orderList">
           <label for="putLast" style="display:block;margin-left:.1rem">
             &nbsp;&nbsp;{{t 'placeLast'}}
-          </label>
+          </label> --}}
         </span>
 
       </main>

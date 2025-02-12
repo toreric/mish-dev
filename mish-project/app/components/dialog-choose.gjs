@@ -22,10 +22,10 @@ export class DialogChoose extends Component {
   }
 
   <template>
-   <dialog id="dialogChoose" style="z-index:999" {{on 'keydown' this.detectEscClose}}>
+   <dialog id="dialogChoose" style="max-width:36rem;z-index:999" {{on 'keydown' this.detectEscClose}}>
       <header data-dialog-draggable>
         <div style="width:99%">
-          <p style="color:blue">{{this.z.infoHeader}}<span></span></p>
+          <p style="color:blue">{{{this.z.infoHeader}}}<span></span></p>
         </div><div>
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogChooseId)}}>×</button>
         </div>

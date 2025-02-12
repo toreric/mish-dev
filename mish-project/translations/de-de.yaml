@@ -54,6 +54,7 @@ download: Herunterladen...
 dupImgNames: doppelte Bildnamen
 editext: Text bearbeiten...
 editimage: Bild bearbeiten...
+eraseCancelled: Das Entfernen wird nicht durchgeführt
 errTxtNotSaved: Der Text wurde nicht gespeichert!
 errTxtCannotSave: Die Beschriftung kann nicht aktualisiert werden. Ist die Datei geschützt?
 errTxtRecover: Verlorener Text wird zurückgegeben durch Neuladen des Albums (ungespeicherte Änderungen zurücksetzen)
@@ -101,6 +102,7 @@ placeFirst: Am Anfang des Albums platzieren
 placefirst: Zum Anfang bewegen
 placeLast: Am Ende des Albums platzieren
 placelast: Zum Ende bewegen
+placeWhere: wird am Ende des Albums platziert
 plus: plus
 previous: vorheriges
 remove: LÖSCHEN...
@@ -308,6 +310,7 @@ write:
   albumName: Einen Albumnamen eingeben
   chooseAlbum: Nichts ausgewählt, ein Album auswählen!
   chooseBoth: Sollen beide Ausgewählten Bilder
+  chooseErase: wirklich entfernt werden?
   chooseFirst: an den Anfang verschoben werden?
   chooseHeader: Wählen
   chooseHide: versteckt oder angezeigt werden?
@@ -315,11 +318,17 @@ write:
   chooseLink: zu einem anderen Album verlinkt werden?
   chooseMany: Sollen alle {n} Ausgewählten Bilder
   chooseMove: zu einem anderen Album verschiebt werden?
+  chooseNone: Kein Bild ausgewählt!<br>
+              <br>Zumindest das angeklickte Bild muss auch markiert sein.
+              <br>Es ist eine Sicherheitsmaßnahme beim Löschen.
+  chooseOne:  Soll dieses Bild
   chooseThis: "Ausgewähltes Album: <b>{a}</b>"
   chooseTool: Ein Werkzeug wählen, keines ausgewählt!
+  confirm: <b>Bestätigen</b>
   creator: "Herkunft: Foto Ursprung Quelle"
   description: "Beschreibung: Wann wo was welche"
   dialogDupResult: Suche nach doppelten Namen in <b>{a}</b>
+  eraseFunc: Zum Entfernen (kann nicht zurückgesetzt werden!)
   find0: "Suchen in:"
   find1: Bildunterschrift (oberer Text)
   find2: Herkunft (unterer Text)

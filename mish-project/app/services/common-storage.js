@@ -46,7 +46,7 @@ export default class CommonStorageService extends Service {
         get imdbRootsPrep() { return `${this.intl.t('reloadApp')}`; } // advice!
   @tracked  imdbRoots = [this.imdbRootsPrep]; //available album root directories
   @tracked  imdbTree = null;                  //will have the 'imdbDirs' object tree
-  @tracked  infoHeader = 'Header text';       //for the alert dialog DialogAlert
+  @tracked  infoHeader = 'Header text';       //for DialogAlert and DialogChoose
   @tracked  infoMessage = 'No information';   //for dialog texts (e.g. DialogAlert)
         get intlCode() { return `${this.intl.t('intlcode')}`; }
   @tracked  intlCodeCurr = this.intlCode;     // language code
@@ -1095,7 +1095,7 @@ export default class CommonStorageService extends Service {
     // from each image file. It is reordered into 'newdata' in 'sortnames' order, as
     // far as possible; 'sortnames' is cleaned from non-existent (removed) files and
     // extended with new (added) files, in order as is. So far, the sort order is
-    // 'sortnames' with hideFlag (and albumIndex?)
+    // 'sortnames' with hideFlag (and ?)
     var that = this;
     return new Promise((resolve, reject) => {
       var xhr = new XMLHttpRequest();

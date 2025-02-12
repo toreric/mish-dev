@@ -54,6 +54,7 @@ download: Download...
 dupImgNames: duplicate image names
 editext: Edit text...
 editimage: Edit image...
+eraseCancelled: The deletion is cancelled
 errTxtNotSaved: The text was not saved!
 errTxtCannotSave: The caption cannot be updated, is the file protected?
 errTxtRecover: Recover lost text by reloading the album (restore unsaved changes)
@@ -101,6 +102,7 @@ placeFirst: Place at the beginning of the album
 placefirst: Place first
 placeLast: Place at the end of the album
 placelast: Place last
+placeWhere: will be placed at the end of the album
 plus: plus
 previous: previous
 remove: REMOVE...
@@ -310,6 +312,7 @@ write:
   albumName: Enter an album name
   chooseAlbum: No album chosen, select one!
   chooseBoth: Should both selected images
+  chooseErase: really be removed?
   chooseFirst: be moved to the beginning?
   chooseHeader: Choose
   chooseHide: be hidden or shown?
@@ -317,11 +320,17 @@ write:
   chooseLink: be linked to another album?
   chooseMany: Should all {n} selected images
   chooseMove: be moved to another album?
+  chooseNone: No image chosen!<br>
+              <br>At least the image you click must also be marked.
+              <br>This applies to deletion as a security measure.
+  chooseOne:  Should this image
   chooseThis: "Selected album: <b>{a}</b>"
   chooseTool: No tool chosen, choose one!
+  confirm: <b>Confirm</b>
   creator: 'Origin: Photographer Source'
   description: 'Caption: When Where What Who'
   dialogDupResult: Duplicate name search in <b>{a}</b>
+  eraseFunc: To remove (cannot be undone!)
   find0: "Search in:"
   find1: captions (upper texts)
   find2: origins (bottom texts)

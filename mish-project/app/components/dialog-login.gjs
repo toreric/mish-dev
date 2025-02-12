@@ -39,18 +39,18 @@ export class DialogLogin extends Component {
       this.clearInput('user_');
       this.clearInput('password_');
       if (user !== oldUser) {
-        // Don't show any old rubbish:
-        this.z.hasImages = false;
-        // User change measures: name, credentials, reselect album root
+        this.z.clearMiniImgs();   // remove from display
+        this.z.hasImages = false; // Don't show any old remains
+        // User change measures: name, credentials, reselect album root:
         this.z.userName = user;
         this.z.userStatus = cred[1];
         this.z.allowvalue = cred[2];
         this.z.freeUsers = cred[3];
         this.z.allowFunc(); // SET ALLOWANCES PATTERN
         this.z.loli('logged in');
+        // Manage the main menu and reset everything
         document.getElementById('rootSel').selectedIndex = -1;
         document.querySelector('div.albumTree').style.display = 'none';
-        this.z.clearMiniImgs(); // remove from display
         this.z.imdbCoco = '';
         this.z.imdbDir = '';
         this.z.imdbDirIndex = 0;
