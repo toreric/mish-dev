@@ -8,6 +8,7 @@ import { eq } from 'ember-truth-helpers';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
+import { Spinner } from './spinner';
 import { MenuMain } from './menu-main';
 
 import { TrackedArray } from 'tracked-built-ins';
@@ -362,10 +363,16 @@ export class MenuImage extends Component {
         this.z.closeDialog(dialogChooseId);
         this.z.infoHeader = this.intl.t('write.confirm');
         this.z.chooseText = '<span style="color:brown">'
-        this.z.chooseText += this.intl.t('write.eraseFunc') + ':</span><br><br>';
+        if (imgs.length > 1) {
+          this.z.chooseText += this.intl.t('write.imageSeveral', {n: imgs.length});
+        } else {
+          this.z.chooseText += this.intl.t('write.imageSingle');
+        }
+        this.z.chooseText += '<br>' + this.intl.t('write.eraseFunc');
+        this.z.chooseText += ':</span><br><br>';
         this.z.chooseText += '<span style="font-weight:normal">';
         for (let pic of imgs) {
-          this.z.chooseText += pic.querySelector('.img_name').innerHTML.toString().slice(0, -2) + ', ';
+          this.z.chooseText += pic.querySelector('.img_name').innerText.trim() + ', ';
         }
         this.z.chooseText = this.z.chooseText.slice(0, -2);
         this.z.chooseText += '</span>'
@@ -376,7 +383,11 @@ export class MenuImage extends Component {
           await new Promise (z => setTimeout (z, 99)); // eraseFunc 4
         }
         if (this.z.buttonNumber === 1) {
-          this.z.alertMess('LÖSCHEN/ERASE/RADERA');
+          this.z.closeDialog(dialogChooseId);
+          this.z.alertMess('LÖSCHEN/ERASE/RADERA', 3);
+          document.querySelector('img.spinner').style.display = '';
+          await new Promise (z => setTimeout (z, 2987)); // eraseFunc 5
+          document.querySelector('img.spinner').style.display = 'none';
         } else {
           this.z.alertMess(this.intl.t('eraseCancelled'), 3);
         }

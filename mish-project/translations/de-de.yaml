@@ -141,6 +141,7 @@ button:
   backgtitle: Hintergrund ändern
   cancel:    Absagen
   close:     Schließen
+  confirm:   Bestätigen
   continue:  Weitermachen
   delete:    <b>{name}</b> löschen
   dosub:     Ein neues Unteralbum erstellen
@@ -312,7 +313,7 @@ write:
   chooseBoth: Sollen beide Ausgewählten Bilder
   chooseErase: wirklich entfernt werden?
   chooseFirst: an den Anfang verschoben werden?
-  chooseHeader: Wählen
+  chooseHeader: Absagen oder bestätigen
   chooseHide: versteckt oder angezeigt werden?
   chooseLast: ans Ende verschoben werden?
   chooseLink: zu einem anderen Album verlinkt werden?
@@ -324,11 +325,11 @@ write:
   chooseOne:  Soll dieses Bild
   chooseThis: "Ausgewähltes Album: <b>{a}</b>"
   chooseTool: Ein Werkzeug wählen, keines ausgewählt!
-  confirm: <b>Bestätigen</b>
+  confirm: <b>Absagen oder bestätigen</b>
   creator: "Herkunft: Foto Ursprung Quelle"
   description: "Beschreibung: Wann wo was welche"
   dialogDupResult: Suche nach doppelten Namen in <b>{a}</b>
-  eraseFunc: Zum Entfernen (kann nicht zurückgesetzt werden!)
+  eraseFunc: (kann nicht zurückgesetzt werden!)
   find0: "Suchen in:"
   find1: Bildunterschrift (oberer Text)
   find2: Herkunft (unterer Text)
@@ -356,6 +357,8 @@ write:
   findHelp6: "Tipp: Die Gesamtzahl der Bilder in der Albumsammlung wird durch die Suche (in Albumnamen) nach einem „/“ angezeigt!"
   foundNoAlbums: Keine Alben gefunden!
   isEmpty: ist leer
+  imageSeveral: Die Namen von {n} Bildern, die entfernt werden sollen
+  imageSingle:  ", der Bildname"
   keywords: "<b>Information von geplante zukünftige Ergänzung:</b>
             Wörter als Metadaten gespeichert zur Verwendung als Suchbegriffe"
   maxWarning: <b>Mehr als {n} Bilder können nicht<br>alle gleichzeitig angezeigt werden</b>

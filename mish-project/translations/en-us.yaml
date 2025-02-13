@@ -142,6 +142,7 @@ button:
   backgtitle: Change background
   cancel:    Cancel
   close:     Close
+  confirm:   Confirm
   continue:  Continue
   delete:    Delete <b>{name}</b>
   dosub:     Make a new subalbum
@@ -314,7 +315,7 @@ write:
   chooseBoth: Should both selected images
   chooseErase: really be removed?
   chooseFirst: be moved to the beginning?
-  chooseHeader: Choose
+  chooseHeader: Cancel or confirm
   chooseHide: be hidden or shown?
   chooseLast: be moved to the end?
   chooseLink: be linked to another album?
@@ -326,11 +327,11 @@ write:
   chooseOne:  Should this image
   chooseThis: "Selected album: <b>{a}</b>"
   chooseTool: No tool chosen, choose one!
-  confirm: <b>Confirm</b>
+  confirm: <b>Cancel or confirm</b>
   creator: 'Origin: Photographer Source'
   description: 'Caption: When Where What Who'
   dialogDupResult: Duplicate name search in <b>{a}</b>
-  eraseFunc: To remove (cannot be undone!)
+  eraseFunc: (cannot be undone!)
   find0: "Search in:"
   find1: captions (upper texts)
   find2: origins (bottom texts)
@@ -357,6 +358,8 @@ write:
   findHelp5: Write what you want to search for in the box at the top and start the search. The result is presented in an album for temporary use called <b>Found images</b> with a link to the original in each thumbnail's menu. <span style="color:#0b0;text-decoration:underline">Green border below the caption</span> means linked image.
   findHelp6: "Tip: Find out how many photos are in the album collection by searching for a ’/’ (in album names)!"
   foundNoAlbums: No albums found!
+  imageSeveral: The names of {n} images to be removed
+  imageSingle:  The name of the image to be removed
   isEmpty: is empty
   keywords: "<b>Information about planned future addition:</b>
              Keywords to be stored as metadata for search key use"

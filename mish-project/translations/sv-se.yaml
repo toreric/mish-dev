@@ -142,6 +142,7 @@ button:
   backgtitle: Byt bakgrund
   cancel:    Avbryt
   close:     Stäng
+  confirm:   Bekräfta
   continue:  Fortsätt
   delete:    Radera <b>{name}</b>
   dosub:     Gör ett nytt underalbum
@@ -312,7 +313,7 @@ write:
   chooseBoth:  Ska båda markerade bilderna
   chooseErase: verkligen raderas?
   chooseFirst: placeras först?
-  chooseHeader: Välj
+  chooseHeader: Avbryt eller bekräfta
   chooseHide: gömmas eller visas?
   chooseLast: placeras sist?
   chooseLink: länkas till ett annat album?
@@ -324,11 +325,11 @@ write:
   chooseOne:  Ska den här bilden
   chooseThis: "Valt album: <b>{a}</b>"
   chooseTool: Inget verktyg valt, välj ett!
-  confirm: <b>Bekräfta</b>
+  confirm: <b>Avbryt eller bekräfta</b>
   creator: "Ursprung: Foto upphov källa"
   description: "Beskrivning: När var vad vilka"
   dialogDupResult: Dublettnamnsökning i <b>{a}</b>
-  eraseFunc: Att ta bort (kan inte ångras!)
+  eraseFunc: (kan inte ångras!)
   find0: "Sök i:"
   find1: bildtext (övre texten)
   find2: ursprung (nedre texten)
@@ -355,6 +356,8 @@ write:
   findHelp5: Skriv det du vill söka i rutan överst och starta sökningen. Resultatet presenteras i ett album för tillfälligt bruk som heter <b>Funna bilder</b> med länk till originalet i varje miniatyrbilds meny. <span style="color:#0b0;text-decoration:underline">Grön kant under bildtexten</span> betyder länkad bild.
   findHelp6: "Tips: Ta reda på hur många bilder det finns i albumsamlingen genom att söka efter ett ’/’ (i albumnamn)!"
   foundNoAlbums: Fann inga album!
+  imageSeveral: Namnen på {n} bilder som ska tas bort
+  imageSingle:  Namnet på bilden som ska tas bort
   isEmpty: är tomt
   keywords: "<b>Information om planerat framtida tillägg:</b>
             Ord lagrade som metadata för användning som särskilda sökbegrepp"

@@ -38,7 +38,7 @@ export class DialogChoose extends Component {
 
       </main>
       <footer data-dialog-draggable>
-        <button type="button" {{on 'click' (fn this.z.selectChoice 1)}}>{{t 'button.ok'}}</button>&nbsp;
+        <button type="button" {{on 'click' (fn this.z.selectChoice 1)}}>{{t 'button.confirm'}}</button>&nbsp;
         <button autofocus type="button" {{on 'click' (fn this.z.selectChoice 2)}}>{{t 'button.cancel'}}</button>
       </footer>
     </dialog>
