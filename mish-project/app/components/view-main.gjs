@@ -117,6 +117,7 @@ class SubAlbums extends Component {
   }
 
   <template>
+   <RefreshThis @for={{this.z.numShown}}>
     <p class='albumsHdr' draggable="false" ondragstart="return false">
       <div class="miniImgs albs">
         {{#if this.z.imdbRoot}}
@@ -145,6 +146,7 @@ class SubAlbums extends Component {
         {{/if}}
       </div>
     </p>
+   </RefreshThis>
   </template>
 
 }

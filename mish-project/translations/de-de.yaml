@@ -207,6 +207,7 @@ dialog:
     ihrcm1: ( <b>⡇</b>) mit Befehlen/Funktionen
     ctrlclick: Ctrl + klicken (⌘ + klicken)
     ihrcm2: öffnet es auch (⌘ mit Mac-Tastatur)
+    mark0:  "<b>Ein Bild auswählen</b> in der oberen rechten Ecke, oder:"
     shift0: Shift + klicken auf einem Bild
     shift1: macht markieren/ausmarkieren
     green0: Ein Bild mit einem grünen unteren Rand
@@ -292,7 +293,8 @@ reloadApp: Die App neu laden!
 select:
   language: Sprache wählen
   languagetext: Deutsch
-selectAlbum: Zu welchem ​​Album?
+selectAlbumMove: Zu welchem Album verschieben?
+selectAlbumLink: Zu welchem Album verlinken?
 selectTarget: Zielalbum auswählen
 sizewarning: M E N G E N W A R N U N G<br><br>Mehr als
 spinwait: W A R T E N — oder mit einem Klick abbrechen, wenn es zuuu lange dreht
@@ -313,7 +315,7 @@ write:
   chooseBoth: Sollen beide Ausgewählten Bilder
   chooseErase: wirklich entfernt werden?
   chooseFirst: an den Anfang verschoben werden?
-  chooseHeader: Absagen oder bestätigen
+  chooseHeader: <b>Absagen oder bestätigen</b>
   chooseHide: versteckt oder angezeigt werden?
   chooseLast: ans Ende verschoben werden?
   chooseLink: zu einem anderen Album verlinkt werden?
@@ -325,11 +327,13 @@ write:
   chooseOne:  Soll dieses Bild
   chooseThis: "Ausgewähltes Album: <b>{a}</b>"
   chooseTool: Ein Werkzeug wählen, keines ausgewählt!
-  confirm: <b>Absagen oder bestätigen</b>
+  confirm: Nicht verwendet, melden!
   creator: "Herkunft: Foto Ursprung Quelle"
   description: "Beschreibung: Wann wo was welche"
   dialogDupResult: Suche nach doppelten Namen in <b>{a}</b>
-  eraseFunc: (kann nicht zurückgesetzt werden!)
+  doErased: "{n} Bild(er) aus ”{a}” entfernt"
+  doLinked: "{n} Bild(er) zu ”{a}” verlinkt"
+  eraseFunc: LÖSCHEN von Originalbildern kann nicht rückgängig gemacht werden, gelöschte verlinkte Bilder (Links) können jedoch neu erstellt werden
   find0: "Suchen in:"
   find1: Bildunterschrift (oberer Text)
   find2: Herkunft (unterer Text)
@@ -358,15 +362,18 @@ write:
   foundNoAlbums: Keine Alben gefunden!
   isEmpty: ist leer
   imageSeveral: Die Namen von {n} Bildern, die entfernt werden sollen
-  imageSingle:  ", der Bildname"
+  imageSingle:  Der Name des Bildes, das entfernt werden soll
   keywords: "<b>Information von geplante zukünftige Ergänzung:</b>
             Wörter als Metadaten gespeichert zur Verwendung als Suchbegriffe"
   maxWarning: <b>Mehr als {n} Bilder können nicht<br>alle gleichzeitig angezeigt werden</b>
   noDupNamesFound: In <b>{a}</b> mit Unteralben wurden keine doppelten Bildnamen gefunden
+  noErased: aber {n} konnte nicht entfernt werden:<br><br>{a}
   noLinkLink: Verlinkte Bilder können nicht zu anderen Alben verlinkt werden!
   noneFound: Leider kein Bild gefunden!
   notEmpty: Das Album muss zuerst geleert werden!
   notes: Anmerkungen die nicht mit dem Bild erscheinen
+  originTouch: "ACHTUNG: Keine Links..."
+  originUntouch: "<b>HINWEIS</b>, dass es einen Unterschied zwischen Bildern gibt: Grüne Bildnamen beziehen sich nicht auf Originalbilder, sondern auf <b>verlinkte Bilder</b> (einfacher: <b>Links</b>). Ein Bild mit einem grünen unteren Rand ist eigentlich nur ein Link zu seinem Originalbild in einem anderen Album.<br><br>Ein <b>Originalbild</b> bleibt unberührt, auch wenn der Link dazu entfernt wird."
   reloadRequired: <br><br>Geänderte Albumstruktur erfordert Neustart<br>
   searchTerms: Suchbegriffe eingeben, durch Leerzeichen getrennt, Groß-/Kleinschreibung spielt keine Rolle (unten auswählen, in welchen Texten gesucht werden soll)
   tool0: "Für <b>{album}</b> wählen:"

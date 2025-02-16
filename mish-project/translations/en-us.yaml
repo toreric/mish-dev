@@ -209,6 +209,7 @@ dialog:
     ihrcm1: ( <b>⡇</b>) with commands/functions
     ctrlclick:  Ctrl + click (⌘ + click)
     ihrcm2: also shows the menu (⌘ with Mac keyboard)
+    mark0:  "<b>Select an image</b> in the upper right corner, or:"
     shift0: Shift + click an image
     shift1: selects/deselects it
     green0: An image with a green bottom border
@@ -294,7 +295,8 @@ reloadApp: Reload the app!
 select:
   language: Select language
   languagetext: English
-selectAlbum: To which album?
+selectAlbumMove: Move to which album?
+selectAlbumLink: Link to which album?
 selectTarget: Select destination album
 sizewarning: S I Z E &nbsp; W A R N I N G<br><br>More than
 spinwait: W A I T — or stop with a click if it spins too long
@@ -315,7 +317,7 @@ write:
   chooseBoth: Should both selected images
   chooseErase: really be removed?
   chooseFirst: be moved to the beginning?
-  chooseHeader: Cancel or confirm
+  chooseHeader: <b>Cancel or confirm</b>
   chooseHide: be hidden or shown?
   chooseLast: be moved to the end?
   chooseLink: be linked to another album?
@@ -327,11 +329,13 @@ write:
   chooseOne:  Should this image
   chooseThis: "Selected album: <b>{a}</b>"
   chooseTool: No tool chosen, choose one!
-  confirm: <b>Cancel or confirm</b>
+  confirm: Not used, report!
   creator: 'Origin: Photographer Source'
   description: 'Caption: When Where What Who'
   dialogDupResult: Duplicate name search in <b>{a}</b>
-  eraseFunc: (cannot be undone!)
+  doErased: Removed {n} image(s) from “{a}”
+  doLinked: Linked {n} image(s) to ”{a}”
+  eraseFunc: DELETING original images cannot be undone, but deleted linked images (links) can be recreated
   find0: "Search in:"
   find1: captions (upper texts)
   find2: origins (bottom texts)
@@ -365,10 +369,13 @@ write:
              Keywords to be stored as metadata for search key use"
   maxWarning: <b>More than {n} images cannot<br>be displayed together</b>
   noDupNamesFound: Found no duplicate image names in <b>{a}</b> with subalbums
+  noErased: but {n} could not be removed:<br><br>{a}
   noLinkLink: Linked images cannot be linked to other albums!
   noneFound: Sorry, no image found!
   notEmpty: The album must first be emptied!
   notes: Notes not shown with the image
+  originTouch: "WARNING: No links..."
+  originUntouch: "<b>NOTE</b> that there is a difference between images: Green image names do not refer to original images but to <b>linked images</b> (more simply: <b>links</b>). An image with a green bottom border is actually just a link to its original image in another album.<br><br>An <b>original image</b> remains untouched even if the link to it is removed."
   reloadRequired: <br><br>Changed album structure requires restart<br>
   searchTerms: Enter search terms separated by spaces, lower/uppercase does not matter (choose below which texts to search in)
   tool0: "Choose for <b>{album}</b>:"

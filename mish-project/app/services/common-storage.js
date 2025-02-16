@@ -88,7 +88,7 @@ export default class CommonStorageService extends Service {
   //   #region VIEW VARS
   //== Miniature and show images etc. information
 
-  @tracked  chooseText = 'Choose what?'; // Choice text
+  @tracked  chooseText = '0Choose what?'; // Choice text
   @tracked  displayNames = 'none'; // Image name display switch
   @tracked  edgeImage = '';  // Text indicating first/last image
   @tracked  hasImages = false; // true if 'imdbDir' has at least one image
@@ -109,8 +109,8 @@ export default class CommonStorageService extends Service {
   // generally 0=no, 1=ok, and 2=cancel button selected
   @tracked buttonNumber = 0;
 
-  selectChoice = (yesNo) => {
-    this.buttonNumber = yesNo;
+  selectChoice = (nr) => {
+    this.buttonNumber = nr;
   }
 
   //   #region ALOWANCE
@@ -332,8 +332,8 @@ export default class CommonStorageService extends Service {
 
   //#region homeAlbum
   homeAlbum = async (path, picName) => { // was parAlb
-    this.loli('path:' + path + ':');
-    this.loli('picName: ' + picName, 'color:red');
+    // this.loli('path:' + path + ':');
+    // this.loli('picName: ' + picName, 'color:red');
   // Convert the relative path of the linked-file target,
   // to conform with z.imdbDirs server list, rooted at album root
   if (this.imdbDir.slice(1,2) === '§') picName = (picName.trim()).replace(/\.[0-9a-z]{4}$/, '');
@@ -579,8 +579,14 @@ export default class CommonStorageService extends Service {
     this.numOrigin = this.numImages - this.numLinked;
     this.numShown = document.querySelectorAll('.img_mini').length - this.numInvisible;
     if (this.numImages !== this.numShown + this.numInvisible) {
-      this.alertMess(this.intl.t('numbererror'), 0);
-      this.loli('shown:' + this.numShown + ' + invisible:' + this.numInvisible + ' != sum:' + this.numImages, 'color:red');
+      // If the total number of images in the open album (numImages) isn't correctly
+      // updated at deletion/addition of images, one has to reload it, since the count
+      // is made elsewhere only in openAlbum.It may be done by pressing the reload
+      // button with "document.getElementById('reLd').click();" or directly like here:
+      this.openAlbum(this.imdbDirIndex);
+      this.alertMess(this.intl.t('numbererror'), 0.25);
+      // To have this log printout correct some awaiting would probably be required:
+      // this.loli('shown:' + this.numShown + ' + invisible:' + this.numInvisible + ' != sum:' + this.numImages, 'color:red');
     }
   }
 
@@ -596,10 +602,11 @@ export default class CommonStorageService extends Service {
   // Setting sec to 0 doesn't hinder `inherited Timeout` to close!
   //#region alertMess
   alertMess = async (mess, sec) => {
-    this.closeDialog('dialogAlert');
+    this.closeDialog('dialogAlert'); // just in case
+    this.closeDialog('dialogChoose'); // just in case
     this.infoHeader = this.intl.t('infoHeader'); // default header
     this.infoMessage = mess.replace(/\n/g, '<br>');
-    this.openDialog('dialogAlert');
+    this.openModalDialog('dialogAlert');
     if (sec) { // means close after sec seconds
       await new Promise (z => setTimeout (z, sec*1000)); // alertMess
       this.closeDialog('dialogAlert');
@@ -1519,6 +1526,7 @@ export default class CommonStorageService extends Service {
       for (let list of allist) {
         if (!list.style.display) {
           list.style.display = 'none';
+          this.closeDialog('dialogAlert'); // May iterfer, later
             // this.loli('toggleMenuImg: ' + list.style.display, 'color:red');
             // console.log(list);
           let name = list.closest('.img_mini').id.slice(1);
@@ -1533,7 +1541,6 @@ export default class CommonStorageService extends Service {
     } else { // 0 == do close
       // this.markBorders(name); // Since this was the most recent image menu
       list.style.display = 'none';
-      // this.markBorders(name);
       loliClose(name);
     }
   }

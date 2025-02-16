@@ -13,6 +13,8 @@ import { dialogAlertId } from './dialog-alert';
 import { dialogFindId } from './dialog-find';
 import { dialogUtilId } from './dialog-util';
 
+import RefreshThis from './refresh-this'
+
 export const menuMainId = 'menuMain';
 const BR = '<br>'; // HTML line break
 const LF = '\n';   // LINE_FEED == New line
@@ -266,6 +268,7 @@ export class MenuMain extends Component {
 
       {{/if}}
 
+      {{!-- <RefreshThis @for={{this.z.numShown}}> --}}
       <div class="albumTree" style="display:none">
         <span style="display:flex;justify-content:space-between">
           <span style="margin:0.2rem;padding:0.1rem 0.2rem;float:right" title=""><em>{{t 'totalImgNumber'}}</em>:&nbsp;{{this.totalImgNumber}}</span>
@@ -290,6 +293,7 @@ export class MenuMain extends Component {
           </p>
         {{/if}}
       </div>
+      {{!-- </RefreshThis> --}}
 
     </div>
 

@@ -31,11 +31,7 @@ export class DialogChoose extends Component {
         </div>
       </header>
       <main draggable="false" ondragstart="return false">
-
-      {{!-- <RefreshThis @for={{this.z.numMarked}}> --}}
         <p style="padding:1rem;font-weight:bold;color:blue">{{{this.z.chooseText}}}</p>
-      {{!-- </RefreshThis> --}}
-
       </main>
       <footer data-dialog-draggable>
         <button type="button" {{on 'click' (fn this.z.selectChoice 1)}}>{{t 'button.confirm'}}</button>&nbsp;

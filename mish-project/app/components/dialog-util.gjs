@@ -8,7 +8,6 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 import { cached } from '@glimmer/tracking';
-import RefreshThis from './refresh-this';
 
 export const dialogUtilId = 'dialogUtil';
 const LF = '\n';
@@ -175,7 +174,7 @@ export class DialogUtil extends Component {
     this.z.closeDialogs();
     await new Promise (z => setTimeout (z, 399)); // doSort
     document.querySelector('img.spinner').style.display = 'none';
-    this.z.alertMess(this.z.intl.t('write.afterSort'));
+    this.z.alertMess(this.z.intl.t('write.afterSort')); // TEMPORARY
     this.z.displayNames = 'block';
   }
 
@@ -284,7 +283,6 @@ export class DialogUtil extends Component {
       </header>
       <main style="padding:0 0.75rem;max-height:24rem" width="99%">
 
-        {{!-- <RefreshThis @for={{this.z.imdbDir}}> --}}
         <div style="padding:0.5rem 0;line-height:1.4rem">
           {{{t 'write.tool0' album=this.imdbDirName}}}<br>
           {{!-- This only reference to okDelete resets radio buttons, noTools, etc. --}}
@@ -402,7 +400,6 @@ export class DialogUtil extends Component {
           {{/if}}
 
         </div>
-        {{!-- </RefreshThis> --}}
 
       </main>
       <footer data-dialog-draggable>

@@ -28,7 +28,7 @@ dialog > div {
   gap: 0.001rem;
 }
 dialog::backdrop, #menuMain::backdrop {
-  backdrop-filter: blur(1px);
+  backdrop-filter: blur(0.5px);
 }
 dialog header, dialog nav {
   display: flex;

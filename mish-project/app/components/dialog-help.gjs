@@ -38,7 +38,8 @@ export class DialogHelp extends Component {
 
         <p><b>{{t 'dialog.help.ihrcm0'}}</b> {{{t 'dialog.help.ihrcm1'}}}<br><b>{{t 'dialog.help.ctrlclick'}}</b> {{t 'dialog.help.ihrcm2'}}</p>
 
-        <p><b>{{t 'dialog.help.shift0'}}</b> {{t 'dialog.help.shift1'}}</p>
+        <p>{{{t 'dialog.help.mark0'}}}<br>
+          <b>{{t 'dialog.help.shift0'}}</b> {{t 'dialog.help.shift1'}}</p>
 
         <p><b style="color:#0b0;text-decoration:underline">{{t 'dialog.help.green0'}}</b> {{t 'dialog.help.green1'}}</p>
       </p>

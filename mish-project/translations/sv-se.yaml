@@ -207,6 +207,7 @@ dialog:
     ihrcm1: ( <b>⡇</b>) med kommandon/funktioner
     ctrlclick: Ctrl + klick (⌘ + klick)
     ihrcm2: visar också menyn (⌘ med Mac-tangentbord)
+    mark0:  "<b>Markera en bild</b> uppe i högra hörnet, eller:"
     shift0: Skifttangent + klick på en bild
     shift1: markerar/avmarkerar den
     green0: En bild med grön underkant är länkad
@@ -292,7 +293,8 @@ reloadApp: Ladda om appen!
 select:
   language: Välj språk
   languagetext: Svenska
-selectAlbum: Till vilket album?
+selectAlbumMove: Flytta till vilket album?
+selectAlbumLink: Länka till vilket album?
 selectTarget: Välj destinationsalbum
 sizewarning: M Ä N G D V A R N I N G<br><br>Fler än
 spinwait: V Ä N T A — eller stoppa med klick om det snurrar för länge
@@ -313,7 +315,7 @@ write:
   chooseBoth:  Ska båda markerade bilderna
   chooseErase: verkligen raderas?
   chooseFirst: placeras först?
-  chooseHeader: Avbryt eller bekräfta
+  chooseHeader: <b>Avbryt eller bekräfta</b>
   chooseHide: gömmas eller visas?
   chooseLast: placeras sist?
   chooseLink: länkas till ett annat album?
@@ -325,11 +327,13 @@ write:
   chooseOne:  Ska den här bilden
   chooseThis: "Valt album: <b>{a}</b>"
   chooseTool: Inget verktyg valt, välj ett!
-  confirm: <b>Avbryt eller bekräfta</b>
+  confirm: Används inte, rapportera!
   creator: "Ursprung: Foto upphov källa"
   description: "Beskrivning: När var vad vilka"
   dialogDupResult: Dublettnamnsökning i <b>{a}</b>
-  eraseFunc: (kan inte ångras!)
+  doErased: Tog bort {n} bild(er) från ”{a}”
+  doLinked: Länkade {n} bild(er) till ”{a}”
+  eraseFunc: RADERING av originalbilder kan inte ångras, men raderade länkade bilder (länkar) kan återskapas
   find0: "Sök i:"
   find1: bildtext (övre texten)
   find2: ursprung (nedre texten)
@@ -363,10 +367,13 @@ write:
             Ord lagrade som metadata för användning som särskilda sökbegrepp"
   maxWarning: <b>Fler än {n} bilder kan<br>inte visas tillsammans</b>
   noDupNamesFound: Fann inga dubletter av bildnamn i <b>{a}</b> med underalbum
+  noErased: men {n} kunde inte tas bort:<br><br>{a}
   noLinkLink: Länkade bilder kan inte länkas till andra album!
   noneFound: Tyvärr, ingen bild funnen!
   notEmpty: Albumet måste först tömmas!
   notes: Anteckningar som ej visas med bilden
+  origiTouch: "VARNING: Inga länkar..."
+  originUntouch: "<b>OBSERVERA</b> att det är skillnad på bilder: Gröna bildnamn avser inte originalbilder utan <b>länkade bilder</b> (enklare: <b>länkar</b>). En bild med grön underkant är egentligen bara en länk till sin originalbild i ett annat album.<br><br>En <b>originalbild</b> förblir orörd även när länken till den tas bort."
   reloadRequired: <br><br>Ändrad albumstruktur kräver omstart<br>
   searchTerms: Skriv sökbegrepp åtskilda av blanktecken, små/stora bokstäver är oviktigt (välj nedan vilka texter du vill söka i)
   tool0: "Välj för <b>{album}</b>:"

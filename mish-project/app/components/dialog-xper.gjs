@@ -64,7 +64,7 @@ export class DialogXper extends Component {
           {{@content}}
         <br>  <br>
         <button type="button" {{on 'click' this.toggleTmpHeader}}>
-          Dölj/visa testkomponenten '&lt;Header /&gt;'
+          Dölj/visa testkomponenten ”&lt;Header /&gt;”
         </button>
         <br>
         <button type="button" {{on 'click' (fn this.updateOrder 1)}}>
@@ -73,6 +73,12 @@ export class DialogXper extends Component {
         <button type="button" {{on 'click' (fn this.updateOrder 2)}}>
           Ny sortOrder
         </button>
+
+        <br>
+        <button type="button" {{on 'click' (fn this.z.openModalDialog 'chooseAlbum')}}>
+          chooseAlbum
+        </button>
+
         <div style="display:flex;justify-content:center">
           <div title-2="Här visas CSS: title-2">
           <br>&nbsp; <br>

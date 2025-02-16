@@ -12,7 +12,6 @@ import { Spinner } from './spinner';
 import { MenuMain } from './menu-main';
 
 import { TrackedArray } from 'tracked-built-ins';
-import RefreshThis from './refresh-this';
 
 import { dialogAlertId } from './dialog-alert';
 import { dialogChooseId } from './dialog-choose';
@@ -65,9 +64,10 @@ export class MenuImage extends Component {
 
   // A single image sometimes doesn't have this choice
   get chooseText() {
-    if (this.z.numMarked === 0) {
-      return this.intl.t('write.chooseNone');
-    } else if (this.z.numMarked === 1) {
+    // if (this.z.numMarked === 0) {
+    //   return this.intl.t('write.chooseNone');
+    // } else
+    if (this.z.numMarked === 1) {
       return this.intl.t('write.chooseOne');
     } else if (this.z.numMarked === 2) {
       return this.intl.t('write.chooseBoth');
@@ -121,10 +121,10 @@ export class MenuImage extends Component {
     this.z.toggleMenuImg(0); //close image menu
     if (imgs.length > 1) {
       this.z.chooseText = this.chooseText + '<br>' + this.chooseHide;
-      this.z.infoHeader = this.intl.t('write.chooseHeader'); // default header
+      this.z.infoHeader = this.intl.t('write.chooseHeader');
       this.z.buttonNumber = 0;
       await new Promise (z => setTimeout (z, 99)); // hideShow 2
-      this.z.openDialog(dialogChooseId);
+      this.z.openModalDialog(dialogChooseId);
       while (!this.z.buttonNumber) {
         await new Promise (z => setTimeout (z, 199)); // hideShow 3
         if (this.z.buttonNumber === 1) { await perform(); } // first button confirms
@@ -221,10 +221,10 @@ export class MenuImage extends Component {
       if (isTrue) addline = this.chooseFirst;
       else addline = this.chooseLast;
       this.z.chooseText = this.chooseText + '<br>' + addline;
-      this.z.infoHeader = this.intl.t('write.chooseHeader'); // default header
+      this.z.infoHeader = this.intl.t('write.chooseHeader');
       this.z.buttonNumber = 0;
       await new Promise (z => setTimeout (z, 99)); // placeFirst 2
-      this.z.openDialog(dialogChooseId);
+      this.z.openModalDialog(dialogChooseId);
       while (!this.z.buttonNumber) {
         await new Promise (z => setTimeout (z, 199)); // placeFirst 3
         if (this.z.buttonNumber === 1) { // first button confirms
@@ -269,6 +269,10 @@ export class MenuImage extends Component {
     return a;
   }
 
+  get notSymlink() {
+    return !this.symlink;
+  }
+
   getAlbum = (i) => {
     return this.albums[i];
   }
@@ -289,26 +293,29 @@ export class MenuImage extends Component {
     this.z.toggleMenuImg(0); //close image menu
     if (imgs.length > 1) {
       this.z.chooseText = this.chooseText + '<br>' + this.chooseLink;
-      this.z.infoHeader = this.intl.t('write.chooseHeader'); // default header
+      this.z.infoHeader = this.intl.t('write.chooseHeader');
       this.z.buttonNumber = 0;
+      // this.z.buttonNumber is set with this.z.selectChoice
+      // to 1 or 2 when a DialogChoose button is clicked:
       await new Promise (z => setTimeout (z, 99)); // linkFunc 2
-      this.z.openDialog(dialogChooseId);
+      this.z.openModalDialog(dialogChooseId);
       while (!this.z.buttonNumber) {
         await new Promise (z => setTimeout (z, 99)); // linkFunc 3
         if (this.z.buttonNumber === 1) {
-          this.z.openDialog('chooseAlbum'); // 1 confirms
+          this.z.closeDialog(dialogChooseId);
           this.z.chooseText = this.intl.t('button.linkFunc');
+          this.z.openModalDialog('chooseAlbum'); // 1 confirms
         }
       } // if another button: leave and close
     } else {
       // a single img needs no confirmation but we mark it
       this.z.markBorders(this.z.picName);
-      this.z.toggleDialog('chooseAlbum');
       this.z.chooseText = this.intl.t('button.linkFunc');
+      this.z.openModalDialog('chooseAlbum');
     }
-    this.z.countNumbers();
-    this.z.closeDialogs();
-    this.z.sortOrder = this.z.updateOrder();
+    this.z.countNumbers();//??
+    // this.z.closeDialogs();
+    // this.z.sortOrder = this.z.updateOrder();
     return;
   }
 
@@ -320,83 +327,126 @@ export class MenuImage extends Component {
     this.z.toggleMenuImg(0); //close image menu
     if (imgs.length > 1) {
       this.z.chooseText = this.chooseText + '<br>' + this.chooseMove;
-      this.z.infoHeader = this.intl.t('write.chooseHeader'); // default header
+      this.z.infoHeader = this.intl.t('write.cle'); // default header
       this.z.buttonNumber = 0;
+      // this.z.buttonNumber is set with this.z.selectChoice
+      // to 1 or 2 when a DialogChoose button is clicked:
       await new Promise (z => setTimeout (z, 99)); // moveFunc 2
-      this.z.openDialog(dialogChooseId);
+      this.z.openModalDialog(dialogChooseId);
       while (!this.z.buttonNumber) {
         await new Promise (z => setTimeout (z, 99)); // moveFunc 3
         if (this.z.buttonNumber === 1) {
           this.z.chooseText = this.intl.t('button.moveFunc');
-          this.z.openDialog('chooseAlbum'); // 1 confirms
+          this.z.closeDialog(dialogChooseId);
+          this.z.openModalDialog('chooseAlbum'); // 1 confirms
         }
       } // if another button leave and close
     } else {
       // a single img needs no confirmation but we mark it
-      this.z.markBorders(this.z.picName);
       this.z.chooseText = this.intl.t('button.moveFunc');
-      this.z.toggleDialog('chooseAlbum');
+      this.z.markBorders(this.z.picName);
+      this.z.openModalDialog('chooseAlbum');
     }
-    this.z.countNumbers();
-    this.z.closeDialogs();
-    this.z.sortOrder = this.z.updateOrder();
+    this.z.countNumbers();//??
+    // this.z.closeDialogs();
+    // this.z.sortOrder = this.z.updateOrder();
     return;
   }
 
   eraseFunc = async () => {
-      this.z.loli(this.z.picName, 'color:red');
+      // this.z.loli(this.z.picName, 'color:red');
     let imgs = selMinImgs(this.z.picName);
     await new Promise (z => setTimeout (z, 99)); // eraseFunc 1
     this.z.toggleMenuImg(0); //close image menu
     if (imgs.length > 0 && document.getElementById('i' + this.z.picName).classList.contains('selected')) {
-
-      this.z.chooseText = this.chooseText + '<br>' + this.chooseErase;
-      this.z.infoHeader = this.intl.t('write.chooseHeader'); // default header
-      this.z.buttonNumber = 0;
-      await new Promise (z => setTimeout (z, 99)); // eraseFunc 2
-      this.z.openDialog(dialogChooseId);
-
-      while (!this.z.buttonNumber) {
-        await new Promise (z => setTimeout (z, 99)); // eraseFunc 3
-      }
-      if (this.z.buttonNumber === 1) {
-        this.z.closeDialog(dialogChooseId);
-        this.z.infoHeader = this.intl.t('write.confirm');
+        // From toggleDisplayNames in ButtonsLeft:
+        this.z.displayNames = 'block'; // Display image names
+        this.z.infoHeader = this.intl.t('write.chooseHeader');
         this.z.chooseText = '<span style="color:brown">'
+        this.z.chooseText += this.intl.t('write.eraseFunc') + '<br><br>';
         if (imgs.length > 1) {
           this.z.chooseText += this.intl.t('write.imageSeveral', {n: imgs.length});
         } else {
           this.z.chooseText += this.intl.t('write.imageSingle');
         }
-        this.z.chooseText += '<br>' + this.intl.t('write.eraseFunc');
         this.z.chooseText += ':</span><br><br>';
         this.z.chooseText += '<span style="font-weight:normal">';
+        let iflink = false;
         for (let pic of imgs) {
-          this.z.chooseText += pic.querySelector('.img_name').innerText.trim() + ', ';
+          if (pic.classList.contains('symlink')) {
+            this.z.chooseText += '<span style="color:#080">'
+            iflink = true;
+          }
+          else this.z.chooseText += '<span style="color:#000">'
+          this.z.chooseText += pic.querySelector('.img_name').innerText.trim() + '</span>, ';
         }
-        this.z.chooseText = this.z.chooseText.slice(0, -2);
+        this.z.chooseText = this.z.chooseText.slice(0, -2); // Remove last ', '
         this.z.chooseText += '</span>'
+        if (iflink) {
+          this.z.chooseText += '<br><br><span style="font-weight:normal;color:#080">';
+          this.z.chooseText += this.intl.t('write.originUntouch') + '</span>';
+        } else {
+          this.z.chooseText += '<br><br><span style="font-weight:normal;color:brown"><b>';
+          this.z.chooseText += this.intl.t('write.originTouch') + '</b></span>';
+        }
         this.z.buttonNumber = 0;
-        this.z.openDialog(dialogChooseId);
-
+        // this.z.buttonNumber is set with this.z.selectChoice
+        // to 1 or 2 when a DialogChoose button is clicked:
+        this.z.openModalDialog(dialogChooseId);
         while (!this.z.buttonNumber) {
           await new Promise (z => setTimeout (z, 99)); // eraseFunc 4
         }
         if (this.z.buttonNumber === 1) {
           this.z.closeDialog(dialogChooseId);
-          this.z.alertMess('LÖSCHEN/ERASE/RADERA', 3);
           document.querySelector('img.spinner').style.display = '';
+          let errNames = [];
+          for (let img of imgs) {
+            let imgName = img.id.slice(1);
+            let imgTitle = document.querySelector('#i' + this.z.escapeDots(imgName) + ' img.left-click').getAttribute('title');
+            let imgPath = this.z.userDir + '/' + imgTitle;
+            let path = imgPath.replace(/[^/]+$/, '');
+            if (img.classList.contains('symlink')) {
+              this.z.loli('symlink ' + imgTitle + ' deleted', 'color:lightgreen');
+            } else {
+              this.z.loli(imgTitle + ' deleted');
+            }
+              // this.z.loli(imgName, 'color:brown');
+              // this.z.loli(imgTitle, 'color:brown');
+              // this.z.loli(imgPath, 'color:brown');
+              // this.z.loli(path, 'color:brown');
+              // this.z.loli('rm ' + imgPath, 'color:red');
+              // this.z.loli('rm -f ' + path + '_mini_' + imgName + '.png', 'color:red');
+              // this.z.loli('rm -f ' + path + '_show_' + imgName + '.png', 'color:red');
+              // let err = '';
+            let err = await this.z.execute('rm ' + imgPath);
+            if (err) {
+              errNames.push(imgName)
+            } else {
+              img.remove();
+              await this.z.execute('rm -f ' + path + '_mini_' + imgName + '.png');
+              await this.z.execute('rm -f ' + path + '_show_' + imgName + '.png');
+            }
+          }
+          // Prepare summary message
+          let n = imgs.length - errNames.length;
+          let a = this.z.imdbDir;
+          a = a ? this.z.handsomize2sp(a.replace(/^.*\/([^/]+)$/, '$1')) : this.z.imdbRoot;
+          let mesTxt = this.z.intl.t('write.doErased', {n: n, a: a});
+          if (errNames.length) {
+            mesTxt += '<br><br>' + this.z.intl.t('write.noErased', {n: errNames.length, a: errNames.join(', ')});
+          }
+          this.z.alertMess(mesTxt);
           await new Promise (z => setTimeout (z, 2987)); // eraseFunc 5
           document.querySelector('img.spinner').style.display = 'none';
         } else {
           this.z.alertMess(this.intl.t('eraseCancelled'), 3);
         }
-      }
+      // }
     } else {
       this.z.alertMess(this.intl.t('write.chooseNone'));
     }
     this.z.countNumbers();
-    this.z.closeDialogs();
+    // this.z.closeDialogs();
     this.z.sortOrder = this.z.updateOrder();
     return;
   }
@@ -446,7 +496,8 @@ export class MenuImage extends Component {
 
       {{!-- Mark (check) only hidden images --}}
       <li><p {{on 'click' (fn this.markHidden)}}>
-        {{t 'markhidden'}}</p></li>
+        <span style="font-size:124%;line-height:50%">
+            ○</span>{{t 'markhidden'}}</p></li>
       {{/if}}
       <li><hr style="margin:0.25rem 0.5rem"></li>
 
@@ -473,26 +524,34 @@ export class MenuImage extends Component {
       {{/if}}
 
       {{!-- Download images to this album --}}
-      {{#if this.z.allow.imgUpload}}
+      {{#if this.z.allow.imgOriginal}}
         <li><p {{on 'click' (fn this.z.futureNotYet 'download')}}>
           {{t 'download'}}</p></li>
       {{/if}}
       <li><hr style="margin:0.25rem 0.5rem"></li>
 
       {{!-- Link image(s) to another album --}}
-      <li><p {{on 'click' (fn this.linkFunc)}}>
-        <span style="font-size:124%;line-height:50%">
-        ○</span>{{t 'linkto'}}</p></li>
+      {{#if this.z.allow.delCreLink}}
+      {{#if this.notSymlink}}
+        <li><p {{on 'click' (fn this.linkFunc)}}>
+          <span style="font-size:124%;line-height:50%">
+          ○</span>{{t 'linkto'}}</p></li>
+      {{/if}}
+      {{/if}}
 
       {{!-- Move image(s) to another album --}}
-      <li><p {{on 'click' (fn this.moveFunc)}}>
-        <span style="font-size:124%;line-height:50%">
-        ○</span>{{t 'moveto'}}</p></li>
+      {{#if this.z.allow.delCreLink}}
+        <li><p {{on 'click' (fn this.moveFunc)}}>
+          <span style="font-size:124%;line-height:50%">
+          ○</span>{{t 'moveto'}}</p></li>
+      {{/if}}
 
       {{!-- Erase image(s)  --}}
-      <li><p {{on 'click' (fn this.eraseFunc)}}>
-        <span style="font-size:124%;line-height:50%">
-        ○</span>{{t 'remove'}}</p></li>
+      {{#if this.z.allow.deleteImg}}
+        <li><p {{on 'click' (fn this.eraseFunc)}}>
+          <span style="font-size:124%;line-height:50%">
+          ○</span>{{t 'remove'}}</p></li>
+      {{/if}}
 
     </ul>
   </template>
@@ -509,7 +568,7 @@ export class ChooseAlbum extends Component {
   // Detect closing Esc (27) key
   detectEscClose = (e) => {
     e.stopPropagation();
-    if (e.keyCode === 27) this.closeChoose();
+    if (e.keyCode === 27) this.closeChooseAlbum();
   }
 
   whichAlbum = (e) => {
@@ -531,7 +590,7 @@ export class ChooseAlbum extends Component {
     return a ? this.z.handsomize2sp(a.replace(/^.*\/([^/]+)$/, '$1')) : this.z.imdbRoot;
   }
 
-  closeChoose = (doit) => {
+  closeChooseAlbum = (doit) => {
     document.querySelector('#chooseAlbum main button').disabled = true;
     document.getElementById('putWhere').style.display = 'none';
     this.z.closeDialog('chooseAlbum');
@@ -539,18 +598,22 @@ export class ChooseAlbum extends Component {
     else this.which = -1;
   }
 
+  // NOTE: This is doLink and doMove combined! Called when
+  // the chooseAlbum dialog is closed by closeChooseAlbum
   doLinkMove = async () => {
     let pics = selMinImgs(this.z.picName);
     let cmd = [];
     var picNames = [];
+    // chooseText starts with ”0” if ”doMove” (below)
+    // Else, here is ”doLink” (with non-zero):
     if (Number(this.z.chooseText.slice(0, 1))) {
-      this.z.alertMess('perform some linking');
+        // this.z.alertMess('perform some linking');
       let value = this.z.imdbDirs[this.which];
       this.z.loli('linking to ' + this.z.imdbRoot + value);
       let lpath = this.z.imdbPath + value;
-        this.z.loli(lpath, 'color:red');
+        // this.z.loli(lpath, 'color:red');
       for (let i=0;i<pics.length;i++) {
-          this.z.loli(pics[i].id.slice(1), 'color:red');
+          // this.z.loli(pics[i].id.slice(1), 'color:red');
         picNames.push(pics[i].id.slice(1));
       }
       for (let i=0;i<pics.length;i++) {
@@ -560,33 +623,29 @@ export class ChooseAlbum extends Component {
         linkto += linkfrom.match(/\.[^.]*$/);
         cmd.push('ln -sf ' + linkfrom + ' ' + linkto);
       }
-      this.z.loli(LF + cmd.join(LF), 'color:pink');
+        // this.z.loli(LF + cmd.join(LF), 'color:pink');
       for (let i=0;i<pics.length;i++) {
         let r = await this.z.execute(cmd[i]);
         if (r) this.z.loli('Not linked: ' + picNames[i]);
       }
-//var lpath = "";
-//if (this.selectedIndex === 0) return false;
-//lpath = $("#imdbPath").text() + this.value; // select option.value
-//console.log("Link to ." + this.value);
-//var picNames = $("#picNames").text().split("\\n");
-//var cmd=[];
-//for (var i=0;i<picNames.length;i++) {
-//  var linkfrom = document.getElementById("i" + picNames[i]).getElementsByTagName("img")[0].getAttribute ("title");
-//  linkfrom = "../".repeat(this.value.split("/").length - 1) + linkfrom.slice(1);
-//  var linkto = lpath + "/" + picNames[i];
-//  linkto += linkfrom.match(/\\.[^.]*$/);
-//  cmd.push("ln -sf "+linkfrom+" "+linkto);
-//}
-//$("#temporary").text(lpath);
-//$("#temporary_1").text (cmd.join("\\n"));
-//$("#checkNames").trigger("click");
-//$("#yesBut").text("Länka");
-
-    } else {
+      this.z.alertMess(this.intl.t('write.doLinked', {n: pics.length, a: this.chosenAlbum}));
+    } else { // ”doMove” here:
       this.z.alertMess('perform some moving');
+
+
+
+
+
+
+
+
+
     }
     this.which = -1;
+  }
+
+  get selectAlbum() {
+    return this.z.chooseText.slice(0, 1) === '0' ? this.intl.t('selectAlbumMove') : this.intl.t('selectAlbumLink');
   }
 
   drop1 = (txt) => txt.slice(1);
@@ -597,11 +656,11 @@ export class ChooseAlbum extends Component {
         <div style="width:99%">
           <p style="color:blue">{{t 'selectTarget'}}<span></span></p>
         </div><div>
-          <button class="close" type="button" {{on 'click' (fn this.closeChoose false)}}>×</button>
+          <button class="close" type="button" {{on 'click' (fn this.closeChooseAlbum false)}}>×</button>
         </div>
       </header>
       <main style="padding:0.5rem">
-        <b>{{t 'selectAlbum'}}</b>
+        <b>{{this.selectAlbum}}</b>
         <span>(”.” = ”{{this.z.imdbRoot}}”)</span><br>
         <div class="albumList">
 
@@ -628,7 +687,7 @@ export class ChooseAlbum extends Component {
         {{else}}
           {{{t 'write.chooseThis' a=this.chosenAlbum}}}<br>({{t 'placeWhere'}})<br>
         {{/if}}
-        <button type="button" {{on 'click' (fn this.closeChoose true)}} disabled>{{{this.drop1 this.z.chooseText}}}</button><br>
+        <button type="button" {{on 'click' (fn this.closeChooseAlbum true)}} disabled>{{{this.drop1 this.z.chooseText}}}</button><br>
 
         <span id="putWhere" class="glue" style="display:none">
           {{!-- BELOW: Perhaps a future option! --}}
@@ -644,7 +703,7 @@ export class ChooseAlbum extends Component {
 
       </main>
       <footer data-dialog-draggable>
-        <button type="button" {{on 'click' (fn this.closeChoose false)}}>{{t 'button.cancel'}}</button>&nbsp;
+        <button type="button" {{on 'click' (fn this.closeChooseAlbum false)}}>{{t 'button.cancel'}}</button>&nbsp;
       </footer>
     </dialog>
   </template>

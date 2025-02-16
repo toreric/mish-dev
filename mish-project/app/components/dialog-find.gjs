@@ -8,8 +8,6 @@ import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 import { Spinner } from './spinner';
 
-import RefreshThis from './refresh-this';
-
 // Note: Dialog-functions in Header needs dialogFindId:
 export const dialogFindId = 'dialogFind';
 
