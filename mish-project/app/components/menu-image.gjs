@@ -39,7 +39,7 @@ const selMinImgs = (picName) => {
     return document.querySelectorAll('.img_mini.selected');
   // If only this unselected image, get an array of a single element:
   // Don't forget escapeDots (see common-storage.js)
-  else return document.querySelectorAll('#i' + picName.replace(/\./g, "\\."));
+  else return document.querySelectorAll('#i' + picName.replace(/\./g, '\\.'));
 }
 
 export class MenuImage extends Component {
@@ -327,7 +327,7 @@ export class MenuImage extends Component {
     this.z.toggleMenuImg(0); //close image menu
     if (imgs.length > 1) {
       this.z.chooseText = this.chooseText + '<br>' + this.chooseMove;
-      this.z.infoHeader = this.intl.t('write.cle'); // default header
+      this.z.infoHeader = this.intl.t('write.chooseHeader');
       this.z.buttonNumber = 0;
       // this.z.buttonNumber is set with this.z.selectChoice
       // to 1 or 2 when a DialogChoose button is clicked:
@@ -531,7 +531,7 @@ export class MenuImage extends Component {
       <li><hr style="margin:0.25rem 0.5rem"></li>
 
       {{!-- Link image(s) to another album --}}
-      {{#if this.z.allow.delCreLink}}
+      {{#if this.z.allow.delcreLink}}
       {{#if this.notSymlink}}
         <li><p {{on 'click' (fn this.linkFunc)}}>
           <span style="font-size:124%;line-height:50%">
@@ -540,7 +540,7 @@ export class MenuImage extends Component {
       {{/if}}
 
       {{!-- Move image(s) to another album --}}
-      {{#if this.z.allow.delCreLink}}
+      {{#if this.z.allow.delcreLink}}
         <li><p {{on 'click' (fn this.moveFunc)}}>
           <span style="font-size:124%;line-height:50%">
           ○</span>{{t 'moveto'}}</p></li>
@@ -604,20 +604,21 @@ export class ChooseAlbum extends Component {
     let pics = selMinImgs(this.z.picName);
     let cmd = [];
     var picNames = [];
+
     // chooseText starts with ”0” if ”doMove” (below)
     // Else, here is ”doLink” (with non-zero):
     if (Number(this.z.chooseText.slice(0, 1))) {
         // this.z.alertMess('perform some linking');
       let value = this.z.imdbDirs[this.which];
       this.z.loli('linking to ' + this.z.imdbRoot + value);
-      let lpath = this.z.imdbPath + value;
+      var lpath = this.z.imdbPath + value;
         // this.z.loli(lpath, 'color:red');
       for (let i=0;i<pics.length;i++) {
           // this.z.loli(pics[i].id.slice(1), 'color:red');
         picNames.push(pics[i].id.slice(1));
       }
       for (let i=0;i<pics.length;i++) {
-        let linkfrom = document.getElementById('i' + picNames[i]).querySelector('img.left-click').getAttribute ('title').replace(/^[^/]+/, '');
+        let linkfrom = document.getElementById('i' + picNames[i]).querySelector('img.left-click').getAttribute('title').replace(/^[^/]+/, '');
         linkfrom = '../'.repeat(value.split('/').length - 1) + linkfrom.slice(1);
         let linkto = lpath + '/' + picNames[i];
         linkto += linkfrom.match(/\.[^.]*$/);
@@ -629,8 +630,59 @@ export class ChooseAlbum extends Component {
         if (r) this.z.loli('Not linked: ' + picNames[i]);
       }
       this.z.alertMess(this.intl.t('write.doLinked', {n: pics.length, a: this.chosenAlbum}));
+
+    // chooseText starts with ”0” if ”doMove”
     } else { // ”doMove” here:
-      this.z.alertMess('perform some moving');
+        this.z.alertMess('perform some moving');
+      let malbum = this.z.imdbDirs[this.which];
+      var lpp = malbum.split("/").length-1;
+      if (lpp > 0)lpp="../".repeat(lpp);
+      else lpp="./";
+      this.z.loli('moving to ' + this.z.imdbRoot + malbum);
+      let mpath = this.z.imdbPath + malbum;
+        this.z.loli(mpath, 'color:red');
+      for (let i=0;i<pics.length;i++) {
+          this.z.loli(pics[i].id.slice(1), 'color:red');
+        picNames.push(pics[i].id.slice(1));
+      }
+      for (let i=0;i<pics.length;i++){
+        let move = document.getElementById('i' + picNames[i]).querySelector('img.left-click').getAttribute('title');
+        let mini = move.replace(/([^/]+)(\.[^/.]+)$/,'_mini_$1.png');
+        let show = move.replace(/([^/]+)(\.[^/.]+)$/,'_show_$1.png');
+        let moveto = mpath + '/';
+        let picfound = this.z.picFound;
+
+        // Bash command string cmd (some is prepared above):
+        // The following code will move even links, where link sources are modified
+        // accordingly. Even random suffixes, from picture names of links moved from
+        // picfound = this.z.picFound, are deleted.
+
+        //   malbum = album selected to move pictures into
+        //    mpath = the corresponding actual path, moveto==mpath/
+        // picNames = the names of the pictures in the current album, to be moved
+        // move|mini|show = the path to the original|mini|show pictures to be moved
+        // picfound = the name of the temporary album where found pictures are kept
+
+        // If picfound appears in the path, a random suffix has to be removed from
+        // the picNames (commands with $picfound will else have no effect) NOTE: TROR JAG
+
+        // It is a Bash text string containing in the magnitude of 1000 characters,
+        // depending on actual file names, but well within the Bash line length limit.
+
+        cmd = 'picfound=' + picfound + ';move=' + move + ';mini=' + mini + ';show=' + show + ';orgmini=$mini;orgshow=$show;moveto=' + moveto + ';lpp=' + lpp + ';lnksave=$(readlink -n $move);';
+        cmd += 'if [ $lnksave ];then move=$(echo $move|sed -e "s/\\(.*$picfound.*\\)\\.[^.\\/]\\+\\(\\.[^.\\/]\\+$\\)/\\1\\2/");';
+        cmd += 'mini=$(echo $mini|sed -e "s/\\(.*$picfound.*\\)\\.[^.\\/]\\+\\(\\.[^.\\/]\\+$\\)/\\1\\2/");'
+        cmd += 'show=$(echo $show|sed -e "s/\\(.*$picfound.*\\)\\.[^.\\/]\\+\\(\\.[^.\\/]\\+$\\)/\\1\\2/");';
+        cmd += 'lnkfrom=$(echo $lnksave|sed -e "s/^\\(\\.\\{1,2\\}\\/\\)*//" -e "s,^,$lpp,");';
+        cmd += 'lnkmini=$(echo $lnkfrom|sed -e "s/\\([^/]\\+\\)\\(\\.[^/.]\\+\\)\\$/_mini_\\1\\.png/");';
+        cmd += 'lnkshow=$(echo $lnkfrom|sed -e "s/\\([^/]\\+\\)\\(\\.[^/.]\\+\\)\\$/_show_\\1\\.png/");';
+        cmd += 'ln -sfn $lnkfrom $move;fi;mv -n $move $moveto;';
+
+
+
+
+        this.z.loli(cmd.replace(/;/g, ';\n'), 'color:red');
+      }
 
 
 
@@ -644,7 +696,7 @@ export class ChooseAlbum extends Component {
     this.which = -1;
   }
 
-  get selectAlbum() {
+  get selectAlbum() { // chooseText[1]==”0” if ”doMove”, else ”doLink” in ”doLinkMove”
     return this.z.chooseText.slice(0, 1) === '0' ? this.intl.t('selectAlbumMove') : this.intl.t('selectAlbumLink');
   }
 

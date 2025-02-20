@@ -167,27 +167,27 @@ export default class CommonStorageService extends Service {
   ];}
 
   allowFunc = () => { // Called from Welcome and dialogLogin after login
-    var allow = this.allow;
-    var allowance = this.allowance;
-    var allowvalue = this.allowvalue;
-    for (var i=0; i<allowance.length; i++) {
+    let allow = this.allow;
+    let allowance = this.allowance;
+    let allowvalue = this.allowvalue;
+    for (let i=0; i<allowance.length; i++) {
       allow[allowance[i]] = Number(allowvalue[i]);
     }
     if (allow.adminAll) {
       allowvalue = "1".repeat(this.allowance.length);
-      for (var i=0; i<allowance.length; i++) {
+      for (let i=0; i<allowance.length; i++) {
         allow[allowance[i]] = 1;
       }
     }
     if (allow.deleteImg) {  // NOTE *  If ...
       allow.delcreLink = 1; // NOTE *  then set this too
-      i = allowance.indexOf("delcreLink");
+      let i = allowance.indexOf("delcreLink");
       // Also set the source value (in this way since allowvalue[i] = "1" isn't allowed: compiler error: "4 is read-only" if 4 = the index value)
       allowvalue = allowvalue.slice(0, i - allowvalue.length) + "1" + allowvalue.slice(i + 1 - allowvalue.length);
     }
     if (allow.notesEdit) { // NOTE *  If ...
       allow.notesView = 1; // NOTE *  then set this too
-      i = allowance.indexOf("notesView");
+      let i = allowance.indexOf("notesView");
       allowvalue = allowvalue.slice(0, i - allowvalue.length) + "1" + allowvalue.slice(i + 1 - allowvalue.length);
     }
     // Hide smallbuttons we don't need:
@@ -213,10 +213,10 @@ export default class CommonStorageService extends Service {
   // Check if an image file name can be accepted
   acceptedFileName = (name) => {
     // This function must equal the acceptedFileName server function
-    var acceptedName = 0 === name.replace(/[-_.a-zA-Z0-9]+/g, "").length
+    let acceptedName = 0 === name.replace(/[-_.a-zA-Z0-9]+/g, "").length
     // Allowed file types are also set at drop-zone in the template menu-buttons.hbs
-    var ftype = name.match(/\.(jpe?g|tif{1,2}|png|gif)$/i)
-    var imtype = name.slice(0, 6) // System file prefix
+    let ftype = name.match(/\.(jpe?g|tif{1,2}|png|gif)$/i)
+    let imtype = name.slice(0, 6) // System file prefix
     // Here more files may be filtered out depending on o/s needs etc.:
     return acceptedName && ftype && imtype !== '_mini_' && imtype !== '_show_' && imtype !== '_imdb_' && name.slice(0,1) !== "."
   }
@@ -549,6 +549,7 @@ export default class CommonStorageService extends Service {
       if (!p.slice(0, i)) this.loli('CommonStorageService error 1', 'color:red');
       let mini = document.getElementById('i' + p.slice(0, i));
       if (p[i + 1] === '1') {
+          this.loli(p[i + 1], 'color:pink'); //-------BUGGY-----------
         mini.classList.add('hidden');
         if (this.ifHideSet()) mini.classList.add('invisible');
       } else {
@@ -635,15 +636,15 @@ export default class CommonStorageService extends Service {
 
   //#region resetBorders
   resetBorders = () => { // Reset all mini-image borders and SRC attributes
-    var minObj = document.querySelectorAll('.img_mini img.left-click');
+    let minObj = document.querySelectorAll('.img_mini img.left-click');
     for (let min of minObj) {
       min.classList.remove('dotted');
     }
     // Resetting all minifile SRC attributes ascertains that any minipic is shown
     // (maybe created just now, e.g. at upload, any outside-click will show them)
     // NOTE: Is this outdated 2024? We'll test and see, perhaps 2025.
-    for (var i=0; i<minObj.length; i++) {
-      var minipic = minObj[i].src;
+    for (let i=0; i<minObj.length; i++) {
+      let minipic = minObj[i].src;
       minObj[i].removeAttribute('src');
       minObj[i].setAttribute('src', minipic);
     }
@@ -904,7 +905,7 @@ export default class CommonStorageService extends Service {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
     var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
+    for(let i = 0; i <ca.length; i++) {
       var c = ca[i];
       while (c.charAt(0) == ' ') {
         c = c.substring(1);
