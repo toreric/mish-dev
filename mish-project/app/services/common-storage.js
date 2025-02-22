@@ -547,23 +547,26 @@ export default class CommonStorageService extends Service {
     for (let p of order) {
       let i = p.indexOf(',');
       if (!p.slice(0, i)) this.loli('CommonStorageService error 1', 'color:red');
-      let mini = document.getElementById('i' + p.slice(0, i));
-      await new Promise (z => setTimeout (z, 25)); // paintHideFlags
-      if (p[i + 1] === '1') {
-          this.loli(p[i + 1], 'color:pink'); //-------BUGGY-----------??
-        mini.classList.add('hidden');
-        if (this.ifHideSet()) mini.classList.add('invisible');
-      } else {
-        mini.classList.remove('hidden');
-        mini.classList.remove('invisible');
+
+      var mini = document.getElementById('i' + p.slice(0, i));
+      if (mini) { // NOTE: There may be outdated rows in sortOrder!
+        if (p[i + 1] === '1') {
+            // this.loli('paintHideFlags (hidden) ' + p[i + 1], 'color:pink');
+          mini.classList.add('hidden');
+          if (this.ifHideSet()) mini.classList.add('invisible');
+        } else {
+          mini.classList.remove('hidden');
+          mini.classList.remove('invisible');
+        }
+          // this.loli('ifHideSet=' + this.ifHideSet(), 'color:red');
+          // console.log(document.getElementById('toggleHide').style.backgroundImage);
+        if (this.ifHideSet() && p[i + 1] === '1') {
+          mini.classList.add('invisible');
+        } else {
+          mini.classList.remove('invisible'); // there is some redundance here
+        }
       }
-        // this.loli('ifHideSet=' + this.ifHideSet(), 'color:red');
-        // console.log(document.getElementById('toggleHide').style.backgroundImage);
-      if (this.ifHideSet() && p[i + 1] === '1') {
-        mini.classList.add('invisible');
-      } else {
-        mini.classList.remove('invisible'); // there is some redundance here
-      }
+
     }
     this.countNumbers();
   }

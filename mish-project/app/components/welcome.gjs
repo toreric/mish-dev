@@ -259,31 +259,48 @@ export default class extends Welcome {
         </span>
       </div>
 
-      <div class="sameBackground" style="display:flex;justify-content:space-between;margin:0 3.25rem 0 4rem">
+      <div class="sameBackground" style="display:flex;justify-content:space-between;margin:0.1rem 3.25rem 0.4rem 4rem">
+
+
+          {{#if this.z.imdbRoot}}
+            {{#if this.z.imdbDir}}
+        <span style="" info="Also spacing!">
         <Language />
-        <span style="line-height:3rem" info="Also spacing!">
+              <a style="margin-left:3rem" {{on 'click' (fn this.z.openAlbum 0)}}>
+                <span style="font:small-caps bold 0.9rem sans-serif;text-decoration:underline">{{t 'home'}}</span>
+              </a>
+        </span>
+              <b>”{{this.z.imdbRoot}}”</b>
+            {{else}}
+        <Language />
+        <span style="" info="Also spacing!">
+              <b>”{{this.z.imdbRoot}}”</b>
+        </span>
+            {{/if}}
+          {{else}}
+        <Language />
+        <span style="" info="Also spacing!">
+            {{t 'noCollSelected'}}
+        </span>
+          {{/if}}
 
           {{!-- NOTE: This extra commented-out  link is for emergency only if the
           browser's back arrow fails due to problems in the initBrowser-goBack
           cooperation in the CommonStorage service:
           <a {{on 'click' (fn this.z.goBack)}}>&nbsp;&lt;- go back&nbsp;</a> --}}
 
-          {{#if this.z.imdbRoot}}
-            {{#if this.z.imdbDir}}
-              <a class="" {{on 'click' (fn this.z.openAlbum 0)}}>
-                <span style="font:small-caps 0.9rem sans-serif;text-decoration:underline">⌂&nbsp;{{t 'home'}}</span>&nbsp;
-              </a>
-            {{/if}}
-            <b>”{{this.z.imdbRoot}}”</b>
-          {{else}}
-            {{t 'noCollSelected'}}
-          {{/if}}
-
-        </span>
         <span>{{t 'time.text'}}
           <span><Clock @locale={{this.z.intlCodeCurr}} /></span>
         </span>
       </div>
+
+       <div class="sameBackground" style="display:flex;justify-content:space-between;margin:0 3.25rem 0 4rem">
+         {{!-- NOTE: This extra commented-out  link is for emergency only if the
+          browser's back arrow fails due to problems in the initBrowser-goBack
+          cooperation in the CommonStorage service:
+          <a {{on 'click' (fn this.z.goBack)}}>&nbsp;&lt;- go back&nbsp;</a> --}}
+      </div>
+
     </div>
 
     <ButtonsLeft />

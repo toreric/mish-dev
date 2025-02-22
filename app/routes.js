@@ -86,7 +86,7 @@ module.exports = function(app) { // Start module.exports
         // console.log(BYEL + cmd + RSET)
       }
     }
-    console.log(BGRE + decodeURIComponent(req.originalUrl) + RSET)
+    // console.log(BGRE + decodeURIComponent(req.originalUrl) + RSET)
       // console.log('  WWW_ROOT:', WWW_ROOT)
       // console.log(' IMDB_HOME:', IMDB_HOME)
       // console.log('      IMDB:', IMDB)
@@ -109,7 +109,7 @@ module.exports = function(app) { // Start module.exports
   //region execute
   app.get ('/execute', async (req, res) => {
     var cmd = decodeURIComponent(req.get('command'))
-      console.log(BYEL + cmd + RSET) // hide this to protect image paths
+      // console.log(BYEL + cmd + RSET) // hide this to protect image paths
     try {
       // NOTE: exec seems to use ``-ticks, not $()
       // Hence don't pass "`" without escape
@@ -141,7 +141,8 @@ module.exports = function(app) { // Start module.exports
       console.error('Illegal filestat call')
       return
     }
-      console.log('.' + file.slice(IMDB_HOME.length))
+      // NOTE: See with this log-print that /filestat is mostly 'doubly triggered'!
+      // console.log('.' + file.slice(IMDB_HOME.length))
     var LT = req.get('intlcode') // Language tag for dateTime
     if (!LT) LT = 'sv-se' // Swedish (ISO) date order
     if (LT === 'en-us') LT = 'en-uk' // European date order

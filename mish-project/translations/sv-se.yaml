@@ -71,7 +71,7 @@ guest: gäst
 has: har
 hidden: dolda
 hideshow: Göm eller visa
-home: till början av
+home: till huvudsidan
 images: bilder
 imageFind: Finn bilder
 imageSearch: Sök i bildtexter m.m.
@@ -329,6 +329,7 @@ write:
   chooseTool: Inget verktyg valt, välj ett!
   confirm: Används inte, rapportera!
   creator: "Ursprung: Foto upphov källa"
+  dbUpdated: Textsökningsdatabasen uppdaterad
   description: "Beskrivning: När var vad vilka"
   dialogDupResult: Dublettnamnsökning i <b>{a}</b>
   doErased: Tog bort {n} bild(er) från ”{a}”
@@ -369,7 +370,7 @@ write:
   maxWarning: <b>Fler än {n} bilder kan<br>inte visas tillsammans</b>
   noDupNamesFound: Fann inga dubletter av bildnamn i <b>{a}</b> med underalbum
   noErased: men {n} kunde inte tas bort:<br><br>{a}
-  noLinkLink: Länkade bilder kan inte länkas till andra album!
+  noLinkLink: Det finns minst en länk bland de valda bilderna.<br>Länkade bilder kan inte vidarelänkas!<br>Gå till originalbilden för att länka den.
   noneFound: Tyvärr, ingen bild funnen!
   notEmpty: Albumet måste först tömmas!
   notes: Anteckningar som ej visas med bilden

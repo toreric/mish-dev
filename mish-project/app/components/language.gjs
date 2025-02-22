@@ -43,7 +43,7 @@ export class Language extends Component {
   }
 
   <template>
-    <div>
+    <div style="display:inline-block">
     <div style="display:inline-block" title-2={{t 'select.language'}}>
       {{!-- Flags --}}
       {{#each this.selections as |tongue|}}

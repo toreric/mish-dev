@@ -71,7 +71,7 @@ guest: gast
 has: hat
 hidden: verbergte
 hideshow: Verstecken oder anzeigen
-home: zum anfang von
+home: zur hauptseite
 images: Bilder
 imageFind: Bilder finden
 imageSearch: In Bildunterschriften usw. suchen
@@ -330,6 +330,7 @@ write:
   confirm: Nicht verwendet, melden!
   creator: "Herkunft: Foto Ursprung Quelle"
   description: "Beschreibung: Wann wo was welche"
+  dbUpdated: Textsuchdatenbank aktualisiert
   dialogDupResult: Suche nach doppelten Namen in <b>{a}</b>
   doErased: "{n} Bild(er) aus ”{a}” entfernt"
   doLinked: "{n} Bild(er) zu ”{a}” verlinkt"
@@ -369,7 +370,7 @@ write:
   maxWarning: <b>Mehr als {n} Bilder können nicht<br>alle gleichzeitig angezeigt werden</b>
   noDupNamesFound: In <b>{a}</b> mit Unteralben wurden keine doppelten Bildnamen gefunden
   noErased: aber {n} konnte nicht entfernt werden:<br><br>{a}
-  noLinkLink: Verlinkte Bilder können nicht zu anderen Alben verlinkt werden!
+  noLinkLink: Unter den ausgewählten Bildern befindet sich mindestens ein Link.<br>Verlinkte Bilder können nicht weiterverlinkt werden!<br>Zum Originalbild gehen, um es zu verlinken.
   noneFound: Leider kein Bild gefunden!
   notEmpty: Das Album muss zuerst geleert werden!
   notes: Anmerkungen die nicht mit dem Bild erscheinen

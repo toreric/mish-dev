@@ -106,9 +106,9 @@ export class MenuImage extends Component {
 
     // begin local function ---------
     const perform = async () => {
-      await new Promise (z => setTimeout (z, 99)); // hideShow 1
       for (let pic of imgs) {
         if (pic.classList.contains('hidden')) {
+          await new Promise (z => setTimeout (z, 29)); // hideShow 1
           pic.classList.remove('hidden');
           pic.classList.remove('invisible');
         } else {

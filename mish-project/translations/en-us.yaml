@@ -71,7 +71,7 @@ guest: guest
 has: has
 hidden: hidden
 hideshow: Hide or show
-home: to the beginning of
+home: to the main page
 images: images
 imageFind: Find images
 imageSearch: Search in captions etc.
@@ -331,6 +331,7 @@ write:
   chooseTool: No tool chosen, choose one!
   confirm: Not used, report!
   creator: 'Origin: Photographer Source'
+  dbUpdated: Text search database updated
   description: 'Caption: When Where What Who'
   dialogDupResult: Duplicate name search in <b>{a}</b>
   doErased: Removed {n} image(s) from “{a}”
@@ -371,7 +372,7 @@ write:
   maxWarning: <b>More than {n} images cannot<br>be displayed together</b>
   noDupNamesFound: Found no duplicate image names in <b>{a}</b> with subalbums
   noErased: but {n} could not be removed:<br><br>{a}
-  noLinkLink: Linked images cannot be linked to other albums!
+  noLinkLink: There is at least one link among the selected images.<br>Linked images cannot be further linked!<br>Go to the original image to link it.
   noneFound: Sorry, no image found!
   notEmpty: The album must first be emptied!
   notes: Notes not shown with the image

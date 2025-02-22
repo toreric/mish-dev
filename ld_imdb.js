@@ -123,7 +123,7 @@ if (process.argv [2] == "-e") {
   console.log ("  from the images of the album tree after removing diacritic symbols")
   console.log ("Needs: node, xmpget")
   console.log ("Note: This program is assumed to run in the album collection (album")
-  console.log ("  root) catalog if ./_imdb_images.sqlite is assumed")
+  console.log ("  root) catalog if <absolute path to albumroot> is omitted")
 }
 function loadImageMetadata () {
   const sqlite = require ("better-sqlite3")

@@ -271,8 +271,13 @@ export class DialogUtil extends Component {
     this.z.futureNotYet('write.tool5');
   }
 
-  doDbUpdate = () => {
-    this.z.futureNotYet('write.tool6');
+  doDbUpdate = async () => {
+    document.querySelector('img.spinner').style.display = '';
+    let cmd = './ld_imdb.js -e ' + this.z.imdbPath;
+      this.z.loli(cmd, 'color:red');
+    await this.z.execute(cmd);
+    document.querySelector('img.spinner').style.display = 'none';
+    this.z.alertMess(this.intl.t('write.dbUpdated'));
   }
 
   <template>
