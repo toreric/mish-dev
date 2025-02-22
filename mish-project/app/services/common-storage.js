@@ -478,8 +478,8 @@ export default class CommonStorageService extends Service {
 
     // Set classes and different background on hidden images
     this.paintHideFlags();
-    // Count the number of shown, invisible, linked, unlinked, etc. images
-    this.countNumbers();
+    // // Count the number of shown, invisible, linked, unlinked, etc. images
+    // this.countNumbers();
   }
 
   //#region toggleBackg
@@ -540,7 +540,7 @@ export default class CommonStorageService extends Service {
 
   // Check each thumbnails' hide status and set classes
   //#region paintHideFlags
-  paintHideFlags = () => {
+  paintHideFlags = async () => {
     // let order = this.updateOrder(true); // array if true, else text
     let order = this.sortOrder.split(LF);
     if (order.length === 1 && !order[0]) order = [];
@@ -548,8 +548,9 @@ export default class CommonStorageService extends Service {
       let i = p.indexOf(',');
       if (!p.slice(0, i)) this.loli('CommonStorageService error 1', 'color:red');
       let mini = document.getElementById('i' + p.slice(0, i));
+      await new Promise (z => setTimeout (z, 25)); // paintHideFlags
       if (p[i + 1] === '1') {
-          this.loli(p[i + 1], 'color:pink'); //-------BUGGY-----------
+          this.loli(p[i + 1], 'color:pink'); //-------BUGGY-----------??
         mini.classList.add('hidden');
         if (this.ifHideSet()) mini.classList.add('invisible');
       } else {
@@ -564,12 +565,17 @@ export default class CommonStorageService extends Service {
         mini.classList.remove('invisible'); // there is some redundance here
       }
     }
+    this.countNumbers();
   }
 
   //#region countNumbers
-  countNumbers = () => {
+  // Will updare all image numbers in the current album and reloads it
+  // which allso corrects the total nuber of images in the album.
+  // So far, the albumTree in the menuMain is not updated!
+  countNumbers = async () => {
     this.numMarked = document.querySelectorAll('.img_mini.selected').length;
     this.numHidden = document.querySelectorAll('.img_mini.hidden').length;
+    await new Promise (z => setTimeout (z, 29)); //
     if (this.numHidden) document.getElementById('toggleHide').style.display = '';
     else {
       document.getElementById('toggleHide').style.display = 'none';
@@ -577,14 +583,16 @@ export default class CommonStorageService extends Service {
     }
     this.numInvisible = document.querySelectorAll('.img_mini.invisible').length;
     this.numLinked = document.querySelectorAll('.img_mini.symlink').length;
+    await new Promise (z => setTimeout (z, 29)); //
     this.numOrigin = this.numImages - this.numLinked;
     this.numShown = document.querySelectorAll('.img_mini').length - this.numInvisible;
+    await new Promise (z => setTimeout (z, 29)); //
     if (this.numImages !== this.numShown + this.numInvisible) {
       // If the total number of images in the open album (numImages) isn't correctly
       // updated at deletion/addition of images, one has to reload it, since the count
       // is made elsewhere only in openAlbum.It may be done by pressing the reload
       // button with "document.getElementById('reLd').click();" or directly like here:
-      this.openAlbum(this.imdbDirIndex);
+      this.openAlbum(this.imdbDirIndex); // Reloads current album
       this.alertMess(this.intl.t('numbererror'), 0.25);
       // To have this log printout correct some awaiting would probably be required:
       // this.loli('shown:' + this.numShown + ' + invisible:' + this.numInvisible + ' != sum:' + this.numImages, 'color:red');
@@ -1139,8 +1147,8 @@ export default class CommonStorageService extends Service {
               linkto: '',             // which is set when reorganized below
               albname: ''             // "    (short name for symlink's original album)
             };
-            if (f.txt1.toString() === "-") {f.txt1 = "";}
-            if (f.txt2.toString() === "-") {f.txt2 = "";}
+            if (f.txt1.toString() === '-') {f.txt1 = '';}
+            if (f.txt2.toString() === '-') {f.txt2 = '';}
 
             // From the server: f.symlink=& for ordinary files, else it is the linked-to
             // relative file path. This is reorganized as follows:
@@ -1170,15 +1178,15 @@ export default class CommonStorageService extends Service {
             allfiles.push(f);
           }
 
-          // ///document.querySelector(".showCount:first").style.display = '';
-          document.querySelector(".miniImgs").style.display = '';
+          // ///document.querySelector('.showCount:first').style.display = '';
+          document.querySelector('.miniImgs').style.display = '';
           if (n_files < 1) {
-            document.querySelector("#toggleName").style.display = 'none';
-            document.querySelector("#toggleHide").style.display = 'none';
+            document.getElementById('toggleName').style.display = 'none';
+            document.getElementById('toggleHide').style.display = 'none';
           }
           else {
-            document.querySelector("#toggleName").style.display = '';
-            if (allow.imgHidden) document.querySelector("#toggleHide").style.display = '';
+            document.getElementById('toggleName').style.display = '';
+            if (allow.imgHidden) document.getElementById('toggleHide').style.display = '';
           }
 
           //userLog ('INFO received');

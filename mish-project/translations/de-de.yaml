@@ -333,6 +333,7 @@ write:
   dialogDupResult: Suche nach doppelten Namen in <b>{a}</b>
   doErased: "{n} Bild(er) aus ”{a}” entfernt"
   doLinked: "{n} Bild(er) zu ”{a}” verlinkt"
+  doMoved:  "{n} Bild(er) zu ”{a}” verschiebt"
   eraseFunc: LÖSCHEN von Originalbildern kann nicht rückgängig gemacht werden, gelöschte verlinkte Bilder (Links) können jedoch neu erstellt werden
   find0: "Suchen in:"
   find1: Bildunterschrift (oberer Text)

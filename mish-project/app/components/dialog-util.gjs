@@ -66,6 +66,8 @@ export class DialogUtil extends Component {
     return text;
   }
 
+  // This button is inserted into alertMess when browser reload is required.
+  // Then alertMess cannot be closed by closeDialog (but with closeDialogs!).
   get restart() {
     return '<br><div style="text-align:center"><button class="unclosable" type="button" onclick="location.reload(true);return false">' + this.intl.t('button.restart') + '</button></div>'
   }

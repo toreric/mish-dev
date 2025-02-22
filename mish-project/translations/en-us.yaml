@@ -335,6 +335,7 @@ write:
   dialogDupResult: Duplicate name search in <b>{a}</b>
   doErased: Removed {n} image(s) from “{a}”
   doLinked: Linked {n} image(s) to ”{a}”
+  doMoved:  Moved {n} image(s) to ”{a}”
   eraseFunc: DELETING original images cannot be undone, but deleted linked images (links) can be recreated
   find0: "Search in:"
   find1: captions (upper texts)

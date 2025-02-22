@@ -333,6 +333,7 @@ write:
   dialogDupResult: Dublettnamnsökning i <b>{a}</b>
   doErased: Tog bort {n} bild(er) från ”{a}”
   doLinked: Länkade {n} bild(er) till ”{a}”
+  doMoved:  Flyttade {n} bild(er) till ”{a}”
   eraseFunc: RADERING av originalbilder kan inte ångras, men raderade länkade bilder (länkar) kan återskapas
   find0: "Sök i:"
   find1: bildtext (övre texten)

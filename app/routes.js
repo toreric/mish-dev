@@ -109,19 +109,19 @@ module.exports = function(app) { // Start module.exports
   //region execute
   app.get ('/execute', async (req, res) => {
     var cmd = decodeURIComponent(req.get('command'))
-      // console.log(BYEL + cmd + RSET) // hide this to protect image paths
+      console.log(BYEL + cmd + RSET) // hide this to protect image paths
     try {
       // NOTE: exec seems to use ``-ticks, not $()
-      // Hence don't pass "`" if you don't escape it
+      // Hence don't pass "`" without escape
       cmd = cmd.replace (/`/g, "\\`")
       var resdata = await execP (cmd)
       res.location ('/')
       res.send (resdata)
       //res.end ()
     } catch (err) {
-      /*console.error ("`" + cmd + "`")
-      console.error (err.message)
-      res.location ('/')*/
+        console.error ("`" + cmd + "`")
+        console.error (err.message)
+        res.location ('/')
       res.send (err.message)
     }
   })
@@ -969,7 +969,7 @@ module.exports = function(app) { // Start module.exports
   // Also, cf. 'acceptedFiles' in menu-buttons.hbs (for DropZone/drop-zone)
   //#region acceptedFileName
   function acceptedFileName(name) {
-    // This function must equal the acceptedFileName function in drop-zone.js
+    // This function must equal the acceptedFileName function in ...
     var acceptedName = 0 === name.replace(/[-_.a-zA-Z0-9]+/g, "").length
     // Allowed file types are also set at drop-zone in the template menu-buttons.hbs
     var ftype = name.match(/\.(jpe?g|tif{1,2}|png|gif)$/i)

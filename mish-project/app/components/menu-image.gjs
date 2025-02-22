@@ -281,7 +281,7 @@ export class MenuImage extends Component {
   // a single image, or a number of checked images.
   linkFunc = async () => {
     let imgs = selMinImgs(this.z.picName);
-    await new Promise (z => setTimeout (z, 99)); // linkFunc 1
+    await new Promise (z => setTimeout (z, 29)); // linkFunc 1
     let sym = false;
     for (let img of imgs) {
       if (img.classList.contains('symlink')) sym = true;
@@ -297,10 +297,10 @@ export class MenuImage extends Component {
       this.z.buttonNumber = 0;
       // this.z.buttonNumber is set with this.z.selectChoice
       // to 1 or 2 when a DialogChoose button is clicked:
-      await new Promise (z => setTimeout (z, 99)); // linkFunc 2
+      await new Promise (z => setTimeout (z, 29)); // linkFunc 2
       this.z.openModalDialog(dialogChooseId);
       while (!this.z.buttonNumber) {
-        await new Promise (z => setTimeout (z, 99)); // linkFunc 3
+        await new Promise (z => setTimeout (z, 29)); // linkFunc 3
         if (this.z.buttonNumber === 1) {
           this.z.closeDialog(dialogChooseId);
           this.z.chooseText = this.intl.t('button.linkFunc');
@@ -313,7 +313,7 @@ export class MenuImage extends Component {
       this.z.chooseText = this.intl.t('button.linkFunc');
       this.z.openModalDialog('chooseAlbum');
     }
-    this.z.countNumbers();//??
+    // this.z.countNumbers();//??
     // this.z.closeDialogs();
     // this.z.sortOrder = this.z.updateOrder();
     return;
@@ -323,7 +323,7 @@ export class MenuImage extends Component {
   // a single image, or a number of checked images.
   moveFunc = async () => {
     let imgs = selMinImgs(this.z.picName);
-    await new Promise (z => setTimeout (z, 99)); // moveFunc 1
+    await new Promise (z => setTimeout (z, 29)); // moveFunc 1
     this.z.toggleMenuImg(0); //close image menu
     if (imgs.length > 1) {
       this.z.chooseText = this.chooseText + '<br>' + this.chooseMove;
@@ -331,10 +331,10 @@ export class MenuImage extends Component {
       this.z.buttonNumber = 0;
       // this.z.buttonNumber is set with this.z.selectChoice
       // to 1 or 2 when a DialogChoose button is clicked:
-      await new Promise (z => setTimeout (z, 99)); // moveFunc 2
+      await new Promise (z => setTimeout (z, 29)); // moveFunc 2
       this.z.openModalDialog(dialogChooseId);
       while (!this.z.buttonNumber) {
-        await new Promise (z => setTimeout (z, 99)); // moveFunc 3
+        await new Promise (z => setTimeout (z, 29)); // moveFunc 3
         if (this.z.buttonNumber === 1) {
           this.z.chooseText = this.intl.t('button.moveFunc');
           this.z.closeDialog(dialogChooseId);
@@ -347,7 +347,7 @@ export class MenuImage extends Component {
       this.z.markBorders(this.z.picName);
       this.z.openModalDialog('chooseAlbum');
     }
-    this.z.countNumbers();//??
+    // this.z.countNumbers();//??
     // this.z.closeDialogs();
     // this.z.sortOrder = this.z.updateOrder();
     return;
@@ -356,7 +356,7 @@ export class MenuImage extends Component {
   eraseFunc = async () => {
       // this.z.loli(this.z.picName, 'color:red');
     let imgs = selMinImgs(this.z.picName);
-    await new Promise (z => setTimeout (z, 99)); // eraseFunc 1
+    await new Promise (z => setTimeout (z, 29)); // eraseFunc 1
     this.z.toggleMenuImg(0); //close image menu
     if (imgs.length > 0 && document.getElementById('i' + this.z.picName).classList.contains('selected')) {
         // From toggleDisplayNames in ButtonsLeft:
@@ -605,8 +605,8 @@ export class ChooseAlbum extends Component {
     let cmd = [];
     var picNames = [];
 
-    // chooseText starts with ”0” if ”doMove” (below)
-    // Else, here is ”doLink” (with non-zero):
+    // chooseText starts with ”0” (=>false) if ”doMove” (below)
+    // Else, here is with non-zero (=>true), ”doLink”:
     if (Number(this.z.chooseText.slice(0, 1))) {
         // this.z.alertMess('perform some linking');
       let value = this.z.imdbDirs[this.which];
@@ -633,7 +633,7 @@ export class ChooseAlbum extends Component {
 
     // chooseText starts with ”0” if ”doMove”
     } else { // ”doMove” here:
-        this.z.alertMess('perform some moving');
+        // this.z.alertMess('perform some moving');
       let malbum = this.z.imdbDirs[this.which];
       var lpp = malbum.split("/").length-1;
       if (lpp > 0)lpp="../".repeat(lpp);
@@ -646,16 +646,17 @@ export class ChooseAlbum extends Component {
         picNames.push(pics[i].id.slice(1));
       }
       for (let i=0;i<pics.length;i++){
-        let move = document.getElementById('i' + picNames[i]).querySelector('img.left-click').getAttribute('title');
+        let move = this.z.userDir + '/' + document.getElementById('i' + picNames[i]).querySelector('img.left-click').getAttribute('title');
         let mini = move.replace(/([^/]+)(\.[^/.]+)$/,'_mini_$1.png');
         let show = move.replace(/([^/]+)(\.[^/.]+)$/,'_show_$1.png');
         let moveto = mpath + '/';
         let picfound = this.z.picFound;
 
-        // Bash command string cmd (some is prepared above):
+        // Bash command string ”cmd” (some is prepared above):
+
         // The following code will move even links, where link sources are modified
-        // accordingly. Even random suffixes, from picture names of links moved from
-        // picfound = this.z.picFound, are deleted.
+        // accordingly. Even random suffixes are deleted from picture names of links
+        // moved from picfound (= this.z.picFound). Also move links!
 
         //   malbum = album selected to move pictures into
         //    mpath = the corresponding actual path, moveto==mpath/
@@ -669,31 +670,32 @@ export class ChooseAlbum extends Component {
         // It is a Bash text string containing in the magnitude of 1000 characters,
         // depending on actual file names, but well within the Bash line length limit.
 
-        cmd = 'picfound=' + picfound + ';move=' + move + ';mini=' + mini + ';show=' + show + ';orgmini=$mini;orgshow=$show;moveto=' + moveto + ';lpp=' + lpp + ';lnksave=$(readlink -n $move);';
+        cmd = 'picfound=' + picfound + ';move=' + move + ';mini=' + mini + ';show=' + show + ';orgmove=$move;orgmini=$mini;orgshow=$show;moveto=' + moveto + ';lpp=' + lpp + ';lnksave=$(readlink -n $move);';
         cmd += 'if [ $lnksave ];then move=$(echo $move|sed -e "s/\\(.*$picfound.*\\)\\.[^.\\/]\\+\\(\\.[^.\\/]\\+$\\)/\\1\\2/");';
-        cmd += 'mini=$(echo $mini|sed -e "s/\\(.*$picfound.*\\)\\.[^.\\/]\\+\\(\\.[^.\\/]\\+$\\)/\\1\\2/");'
+        cmd += 'mini=$(echo $mini|sed -e "s/\\(.*$picfound.*\\)\\.[^.\\/]\\+\\(\\.[^.\\/]\\+$\\)/\\1\\2/");';
         cmd += 'show=$(echo $show|sed -e "s/\\(.*$picfound.*\\)\\.[^.\\/]\\+\\(\\.[^.\\/]\\+$\\)/\\1\\2/");';
         cmd += 'lnkfrom=$(echo $lnksave|sed -e "s/^\\(\\.\\{1,2\\}\\/\\)*//" -e "s,^,$lpp,");';
         cmd += 'lnkmini=$(echo $lnkfrom|sed -e "s/\\([^/]\\+\\)\\(\\.[^/.]\\+\\)\\$/_mini_\\1\\.png/");';
         cmd += 'lnkshow=$(echo $lnkfrom|sed -e "s/\\([^/]\\+\\)\\(\\.[^/.]\\+\\)\\$/_show_\\1\\.png/");';
         cmd += 'ln -sfn $lnkfrom $move;fi;mv -n $move $moveto;';
+        cmd += 'if [ $? -ne 0 ];then if [ $move != $orgmove ];then rm $move;fi;exit;';
+        cmd += 'else if [ $lnksave ];then ln -sfn $lnkmini $mini;';
+        cmd += 'ln -sfn $lnkshow $show;';
+        cmd += 'fi;mv -n $mini $show $moveto;';
+        cmd += 'if [ $move != $orgmove ];then rm $orgmove;fi;';
+        cmd += 'if [ $mini != $orgmini ];then rm $orgmini;fi;';
+        cmd += 'if [ $show != $orgshow ];then rm $orgshow;fi;fi;';
 
-
-
-
-        this.z.loli(cmd.replace(/;/g, ';\n'), 'color:red');
+        this.z.loli(cmd.replace(/;/g, ';\n').replace(/\nthen /g, 'then\n').replace(/else /g, 'else\n'), 'color:red');
+        let r = await this.z.execute(cmd);
+        if (r) this.z.loli('Not moved: ' + picNames[i] + '\n' + r);
       }
 
-
-
-
-
-
-
-
-
+      this.z.alertMess(this.intl.t('write.doMoved', {n: pics.length, a: this.chosenAlbum}));
     }
     this.which = -1;
+    this.z.openAlbum(this.z.imdbDirIndex); // Reloads current album
+    this.z.countNumbers();
   }
 
   get selectAlbum() { // chooseText[1]==”0” if ”doMove”, else ”doLink” in ”doLinkMove”
