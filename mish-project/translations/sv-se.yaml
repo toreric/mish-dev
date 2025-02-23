@@ -389,5 +389,7 @@ write:
   tool42: Finn dubletter av bildnamn i hela albumsamlingen
   tool5: Ladda upp nya bilder
   tool6: Uppdatera sökdata för hela albumsamlingen
+  tool7: Försök finna likadana bilder i hela albumsamlingen
+  tool8: Gör textlista till bilder som visas
   tool99: Det finns tyvärr inget att välja
   utilHeader: Verktyg för

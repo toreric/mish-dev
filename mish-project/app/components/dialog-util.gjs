@@ -84,6 +84,16 @@ export class DialogUtil extends Component {
     }
   }
 
+  get okTexts() { // true if images shown
+    this.z.loli('numShown ' + this.z.numShown);
+    if (this.z.numShown > 0) {
+      this.noTools = false;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   get okSubalbum() { // true if subalbums allowed
     if (this.z.imdbDir.slice(1) !== this.z.picFound && this.z.allow.albumEdit) {
       this.noTools = false;
@@ -107,6 +117,16 @@ export class DialogUtil extends Component {
     // at any 'node' except picFound, if there is some reason:
     if (this.z.imdbDir.slice(1) === this.z.picFound) {
     // if (this.z.imdbDir) {
+      return false;
+    } else {
+      this.noTools = false;
+      return true;
+    }
+  }
+
+  get okDupImages() {
+    // true to search the collection if at root:
+    if (this.z.imdbDir) {
       return false;
     } else {
       this.noTools = false;
@@ -267,8 +287,12 @@ export class DialogUtil extends Component {
     document.querySelector('img.spinner').style.display = 'none';
   }
 
+  doDupImages = () => {
+    this.z.futureNotYet('write.tool7');
+  }
+
   doUpload = () => {
-    this.z.futureNotYet('write.tool5');
+    this.z. futureNotYet('write.tool5');
   }
 
   doDbUpdate = async () => {
@@ -279,6 +303,9 @@ export class DialogUtil extends Component {
     document.querySelector('img.spinner').style.display = 'none';
     this.z.alertMess(this.intl.t('write.dbUpdated'));
   }
+
+  // NOTE, within the <template></template>:
+  // *** The utility numbering is not always in sequence ***
 
   <template>
 
@@ -299,6 +326,12 @@ export class DialogUtil extends Component {
               <label for="util1"> &nbsp;{{t 'write.tool1'}}</label>
             </span>
           {{/if}}
+          {{#if this.okTexts}}
+            <span class="glue">
+              <input id="util8" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
+              <label for="util8"> &nbsp;{{{t 'write.tool8'}}}</label>
+            </span>
+          {{/if}}
           {{#if this.okSubalbum}}
             <span class="glue">
               <input id="util2" name="albumUtility" value="" type="radio" autofocus {{on 'click' this.detectRadio}}>
@@ -315,6 +348,12 @@ export class DialogUtil extends Component {
             <span class="glue">
               <input id="util4" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
               <label for="util4"> &nbsp;{{t 'write.tool4'}}</label>
+            </span>
+          {{/if}}
+          {{#if this.okDupImages}}
+            <span class="glue">
+              <input id="util7" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
+              <label for="util7"> &nbsp;{{{t 'write.tool7'}}}</label>
             </span>
           {{/if}}
           {{#if this.okUpload}}
@@ -347,6 +386,11 @@ export class DialogUtil extends Component {
               – {{t 'write.isEmpty'}}<br>
               <button type="button" {{on 'click' (fn this.doDelete)}}>{{{t 'button.delete' name=this.imdbDirName}}}</button>
             {{/if}}
+
+          {{!-- === Make text list === --}}
+          {{else if (eq this.tool 'util8')}}
+
+              <button type="button" {{on 'click' (fn this.doDupImages)}}>{{{t 'write.tool8' a=this.imdbDirName}}}</button>
 
           {{!-- === Make a new subalbum === --}}
           {{else if (eq this.tool 'util2')}}
@@ -382,6 +426,11 @@ export class DialogUtil extends Component {
             {{else}} {{!-- root --}}
               <button type="button" {{on 'click' (fn this.doDupNames)}}>{{t 'write.tool42'}}</button>
             {{/if}}
+
+          {{!-- === Find duplicate images === --}}
+          {{else if (eq this.tool 'util7')}}
+
+              <button type="button" {{on 'click' (fn this.doDupImages)}}>{{{t 'write.tool7' a=this.imdbDirName}}}</button>
 
           {{!-- === Upload images === --}}
           {{else if (eq this.tool 'util5')}}

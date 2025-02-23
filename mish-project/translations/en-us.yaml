@@ -388,8 +388,10 @@ write:
   tool32: in reverse order
   tool4: Find duplicate image names
   tool41: Find duplicate image names in <b>{a}</b> including all subalbums
-  tool42: Find duplicate image names in the whole album collection
-  tool99: Unfortunately there is nothing to choose
+  tool42: Find duplicate image names in the entire album collection
   tool5: Upload new images
   tool6: Update search data for the entire album collection
+  tool7: Try to find similar images in the entire album collection
+  tool8: Make text list for displayed images
+  tool99: Unfortunately there is nothing to choose
   utilHeader: Tools for
