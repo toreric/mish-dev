@@ -358,90 +358,92 @@ export class MenuImage extends Component {
     let imgs = selMinImgs(this.z.picName);
     await new Promise (z => setTimeout (z, 29)); // eraseFunc 1
     this.z.toggleMenuImg(0); //close image menu
-    if (imgs.length > 0 && document.getElementById('i' + this.z.picName).classList.contains('selected')) {
-        // From toggleDisplayNames in ButtonsLeft:
-        this.z.displayNames = 'block'; // Display image names
-        this.z.infoHeader = this.intl.t('write.chooseHeader');
-        this.z.chooseText = '<span style="color:brown">'
-        this.z.chooseText += this.intl.t('write.eraseFunc') + '<br><br>';
-        if (imgs.length > 1) {
-          this.z.chooseText += this.intl.t('write.imageSeveral', {n: imgs.length});
-        } else {
-          this.z.chooseText += this.intl.t('write.imageSingle');
+    if (document.getElementById('i' + this.z.picName).classList.contains('selected')) {
+      // From toggleDisplayNames in ButtonsLeft:
+      this.z.displayNames = 'block'; // Display image names
+      this.z.infoHeader = this.intl.t('write.chooseHeader');
+      this.z.chooseText = '<span style="color:brown">'
+      // Begin with this warning if it isn't only symlinks (it concerns all selected):
+      let test = document.querySelectorAll('.img_mini.selected.symlink');
+      if (test && imgs.length > test.length) this.z.chooseText += this.intl.t('write.eraseFunc') + '<br><br>';
+      // Else state the nuber to erase:
+      if (imgs.length > 1) {
+        this.z.chooseText += this.intl.t('write.imageSeveral', {n: imgs.length});
+      } else {
+        this.z.chooseText += this.intl.t('write.imageSingle');
+      }
+      this.z.chooseText += ':</span><br><br>';
+      this.z.chooseText += '<span style="font-weight:normal">';
+      let iflink = false; //is there some symlink?
+      for (let pic of imgs) {
+        if (pic.classList.contains('symlink')) {
+          this.z.chooseText += '<span style="color:#080">'; //green
+          iflink = true;
         }
-        this.z.chooseText += ':</span><br><br>';
-        this.z.chooseText += '<span style="font-weight:normal">';
-        let iflink = false;
-        for (let pic of imgs) {
-          if (pic.classList.contains('symlink')) {
-            this.z.chooseText += '<span style="color:#080">'
-            iflink = true;
+        else this.z.chooseText += '<span style="color:#000">'; //black
+        this.z.chooseText += pic.querySelector('.img_name').innerText.trim() + '</span>, ';
+      }
+      this.z.chooseText = this.z.chooseText.slice(0, -2); // Remove last ', '
+      this.z.chooseText += '</span>'
+      if (iflink) { // if some symlink: explain further
+        this.z.chooseText += '<br><br><span style="font-weight:normal;color:#080">';
+        this.z.chooseText += this.intl.t('write.originUntouch') + '</span>';
+      } else {
+        this.z.chooseText += '<br><br><span style="font-weight:normal;color:brown"><b>';
+        this.z.chooseText += this.intl.t('write.originTouch') + '</b></span>';
+      }
+      this.z.buttonNumber = 0;
+      // this.z.buttonNumber is set with this.z.selectChoice
+      // to 1 or 2 when a DialogChoose button is clicked:
+      this.z.openModalDialog(dialogChooseId);
+      while (!this.z.buttonNumber) {
+        await new Promise (z => setTimeout (z, 99)); // eraseFunc 4
+      }
+      if (this.z.buttonNumber === 1) {
+        this.z.closeDialog(dialogChooseId);
+        document.querySelector('img.spinner').style.display = '';
+        let errNames = [];
+        for (let img of imgs) {
+          let imgName = img.id.slice(1);
+          let imgTitle = document.querySelector('#i' + this.z.escapeDots(imgName) + ' img.left-click').getAttribute('title');
+          let imgPath = this.z.userDir + '/' + imgTitle;
+          let path = imgPath.replace(/[^/]+$/, '');
+          if (img.classList.contains('symlink')) {
+            this.z.loli('symlink ' + imgTitle + ' deleted', 'color:lightgreen');
+          } else {
+            this.z.loli(imgTitle + ' deleted');
           }
-          else this.z.chooseText += '<span style="color:#000">'
-          this.z.chooseText += pic.querySelector('.img_name').innerText.trim() + '</span>, ';
-        }
-        this.z.chooseText = this.z.chooseText.slice(0, -2); // Remove last ', '
-        this.z.chooseText += '</span>'
-        if (iflink) {
-          this.z.chooseText += '<br><br><span style="font-weight:normal;color:#080">';
-          this.z.chooseText += this.intl.t('write.originUntouch') + '</span>';
-        } else {
-          this.z.chooseText += '<br><br><span style="font-weight:normal;color:brown"><b>';
-          this.z.chooseText += this.intl.t('write.originTouch') + '</b></span>';
-        }
-        this.z.buttonNumber = 0;
-        // this.z.buttonNumber is set with this.z.selectChoice
-        // to 1 or 2 when a DialogChoose button is clicked:
-        this.z.openModalDialog(dialogChooseId);
-        while (!this.z.buttonNumber) {
-          await new Promise (z => setTimeout (z, 99)); // eraseFunc 4
-        }
-        if (this.z.buttonNumber === 1) {
-          this.z.closeDialog(dialogChooseId);
-          document.querySelector('img.spinner').style.display = '';
-          let errNames = [];
-          for (let img of imgs) {
-            let imgName = img.id.slice(1);
-            let imgTitle = document.querySelector('#i' + this.z.escapeDots(imgName) + ' img.left-click').getAttribute('title');
-            let imgPath = this.z.userDir + '/' + imgTitle;
-            let path = imgPath.replace(/[^/]+$/, '');
-            if (img.classList.contains('symlink')) {
-              this.z.loli('symlink ' + imgTitle + ' deleted', 'color:lightgreen');
-            } else {
-              this.z.loli(imgTitle + ' deleted');
-            }
-              // this.z.loli(imgName, 'color:brown');
-              // this.z.loli(imgTitle, 'color:brown');
-              // this.z.loli(imgPath, 'color:brown');
-              // this.z.loli(path, 'color:brown');
-              // this.z.loli('rm ' + imgPath, 'color:red');
-              // this.z.loli('rm -f ' + path + '_mini_' + imgName + '.png', 'color:red');
-              // this.z.loli('rm -f ' + path + '_show_' + imgName + '.png', 'color:red');
-              // let err = '';
-            let err = await this.z.execute('rm ' + imgPath);
-            if (err) {
-              errNames.push(imgName)
-            } else {
-              img.remove();
-              await this.z.execute('rm -f ' + path + '_mini_' + imgName + '.png');
-              await this.z.execute('rm -f ' + path + '_show_' + imgName + '.png');
-            }
+            // this.z.loli(imgName, 'color:brown');
+            // this.z.loli(imgTitle, 'color:brown');
+            // this.z.loli(imgPath, 'color:brown');
+            // this.z.loli(path, 'color:brown');
+            // this.z.loli('rm ' + imgPath, 'color:red');
+            // this.z.loli('rm -f ' + path + '_mini_' + imgName + '.png', 'color:red');
+            // this.z.loli('rm -f ' + path + '_show_' + imgName + '.png', 'color:red');
+            // let err = '';
+          let err = await this.z.execute('rm ' + imgPath);
+          if (err) {
+            errNames.push(imgName)
+          } else {
+            img.remove();
+            await this.z.execute('rm -f ' + path + '_mini_' + imgName + '.png');
+            await this.z.execute('rm -f ' + path + '_show_' + imgName + '.png');
           }
-          // Prepare summary message
-          let n = imgs.length - errNames.length;
-          let a = this.z.imdbDir;
-          a = a ? this.z.handsomize2sp(a.replace(/^.*\/([^/]+)$/, '$1')) : this.z.imdbRoot;
-          let mesTxt = this.z.intl.t('write.doErased', {n: n, a: a});
-          if (errNames.length) {
-            mesTxt += '<br><br>' + this.z.intl.t('write.noErased', {n: errNames.length, a: errNames.join(', ')});
-          }
-          this.z.alertMess(mesTxt);
-          await new Promise (z => setTimeout (z, 2987)); // eraseFunc 5
-          document.querySelector('img.spinner').style.display = 'none';
-        } else {
-          this.z.alertMess(this.intl.t('eraseCancelled'), 3);
         }
-      // }
+        // Prepare summary message
+        let n = imgs.length - errNames.length;
+        let a = this.z.imdbDir;
+        a = a ? this.z.handsomize2sp(a.replace(/^.*\/([^/]+)$/, '$1')) : this.z.imdbRoot;
+        let mesTxt = this.z.intl.t('write.doErased', {n: n, a: a});
+        if (errNames.length) {
+          mesTxt += '<br><br>' + this.z.intl.t('write.noErased', {n: errNames.length, a: errNames.join(', ')});
+        }
+        this.z.alertMess(mesTxt);
+        await new Promise (z => setTimeout (z, 2987)); // eraseFunc 5
+        document.querySelector('img.spinner').style.display = 'none';
+      } else {
+        this.z.alertMess(this.intl.t('eraseCancelled'), 3);
+      }
     } else {
       this.z.alertMess(this.intl.t('write.chooseNone'));
     }
@@ -604,7 +606,7 @@ export class ChooseAlbum extends Component {
     let pics = selMinImgs(this.z.picName);
     let cmd = [];
     var picNames = [];
-
+    // **************************************
     // chooseText starts with ”0” (=>false) if ”doMove” (below)
     // Else, here is with non-zero (=>true), ”doLink”:
     if (Number(this.z.chooseText.slice(0, 1))) {
@@ -630,7 +632,7 @@ export class ChooseAlbum extends Component {
         if (r) this.z.loli('Not linked: ' + picNames[i]);
       }
       this.z.alertMess(this.intl.t('write.doLinked', {n: pics.length, a: this.chosenAlbum}));
-
+    // **************************************
     // chooseText starts with ”0” if ”doMove”
     } else { // ”doMove” here:
         // this.z.alertMess('perform some moving');

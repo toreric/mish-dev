@@ -85,7 +85,7 @@ export class DialogUtil extends Component {
   }
 
   get okTexts() { // true if images shown
-    this.z.loli('numShown ' + this.z.numShown);
+      this.z.loli('numShown ' + this.z.numShown, 'color:red');
     if (this.z.numShown > 0) {
       this.noTools = false;
       return true;

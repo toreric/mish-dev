@@ -31,7 +31,7 @@ export class ButtonsRight extends Component {
       <a class="nav_ prev" draggable="false" ondragstart="return false" {{on 'click' (fn this.this.z.showNext false)}} title="{{t 'goprev'}}">&lt;</a> &nbsp;<br>
 
       {{!-- CLOSE AND GO BACK TO MINIPICS:  this.z.showImage '' closes! --}}
-      <a class="nav_" id="go_back" title="{{t 'gomini'}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage '')}} src="/images/grid.svg"> </a> &nbsp;<br>
+      <a class="nav_" id="go_back" title="{{t 'gomini'}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage '')}}> </a> &nbsp;<br>
 
       {{!-- HELP question mark --}}
       <a class="nav_ qnav_" draggable="false" {{on 'click' (fn this.toggleNavInfo)}}>?</a> &nbsp;<br>

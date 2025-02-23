@@ -374,7 +374,7 @@ write:
   noneFound: Tyvärr, ingen bild funnen!
   notEmpty: Albumet måste först tömmas!
   notes: Anteckningar som ej visas med bilden
-  origiTouch: "VARNING: Inga länkar..."
+  originTouch: "VARNING: Inga länkar..."
   originUntouch: "<b>OBSERVERA</b> att det är skillnad på bilder: Gröna bildnamn avser inte originalbilder utan <b>länkade bilder</b> (enklare: <b>länkar</b>). En bild med grön underkant är egentligen bara en länk till sin originalbild i ett annat album.<br><br>En <b>originalbild</b> förblir orörd även när länken till den tas bort."
   reloadRequired: <br><br>Ändrad albumstruktur kräver omstart<br>
   searchTerms: Skriv sökbegrepp åtskilda av blanktecken, små/stora bokstäver är oviktigt (välj nedan vilka texter du vill söka i)

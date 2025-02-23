@@ -1316,8 +1316,8 @@ img.mark {
   color: deeppink;
 }
 .nav_links .qnav_ {
-  padding: 0.1rem 0.45rem 0rem 0.4rem;
-  font-family: "Arial";
+  padding: 0 0.55rem;
+  font: 2.2rem Arial;
 }
 .nav_links a {
   font-size: 2em;
@@ -1372,7 +1372,7 @@ img.mark {
   background-image: url(/images/printer.svg);
 }
 #go_back {
-  background-image: url(/images/grid.svg);
+  background-image: url(/images/icons8-return-96.png);
 }
 input.threshold[type="number"] {
   width: 1.7em;
