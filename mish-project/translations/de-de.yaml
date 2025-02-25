@@ -48,7 +48,7 @@ chooseShow: Zum Anzeigen in <b>{f}</b> auswählen
 created: erstellt
 createfail: NICHT ERSTELLT
 deleted: gelöscht
-dark: Dunkel
+dark: dunkel
 Dimension: Dimension
 download: Herunterladen...
 dupImgNames: doppelte Bildnamen
@@ -118,6 +118,7 @@ Size: Größe
 status: Status
 subalbum:  Unteralbum
 subalbums: Unteralben
+toggtext: "Bildunterschriften\nzeigen/verbergen"
 txtGif: Gif-Bild! Kann nur temporären Text zugewiesen der nicht dauerhaft gesichert werden kann
 wait: warten
 with: mit
@@ -155,6 +156,7 @@ button:
   #the initial 0 means link==false, move==true
   moveFunc:  0Verschieben in das ausgewählte Album
   notes:     Anmerkungen
+  optchuser: Benutzer wechseln
   optlogin:  Anmeldung
   restart:   "Den Browser neuladen\n
              durch hier klicken!"
@@ -175,8 +177,8 @@ buttons:
     reload: "Album neuladen (ungespeicherte\n
             Änderungen zurücksetzen)"
 
-    name: Bildnamen Zeigen/verbergen
-    hide: Versteckte Bilder Zeigen/verbergen
+    name: Bildnamen zeigen/verbergen
+    hide: Versteckte Bilder zeigen/verbergen
     save: Änderungen speichern
     mail: "Bitte Frage(n) mailen, oder\n
           Nachricht mit weitere\n

@@ -482,6 +482,12 @@ export default class CommonStorageService extends Service {
     // this.countNumbers();
   }
 
+  //#region toggleText
+  toggleText = () => {
+    if (document.getElementById('link_texts').style.display === 'none') document.getElementById('link_texts').style.display ='';
+    else document.getElementById('link_texts').style.display ='none';
+  }
+
   //#region toggleBackg
   toggleBackg = () => {
     if (this.bkgrColor === '#cbcbcb') {
@@ -489,12 +495,14 @@ export default class CommonStorageService extends Service {
       this.textColor = '#fff';
       this.subColor = '#aef';
       this.setCookie('mish_bkgr', 'dark');
+      document.querySelector('#dark_light').classList.remove('darkbkg');
       this.loli('set dark background');
     } else {
       this.bkgrColor = '#cbcbcb';
       this.textColor = '#111';
       this.subColor = '#146';
       this.setCookie('mish_bkgr', 'light');
+      document.querySelector('#dark_light').classList.add('darkbkg');
       this.loli('set light background');
     }
     document.querySelector('body').style.background = this.bkgrColor;
@@ -769,6 +777,7 @@ export default class CommonStorageService extends Service {
       document.querySelector('#smallButtons').style.display = 'none';
       document.querySelector('#upperButtons').style.display = 'none';
       document.querySelector('.albumsHdr').style.display = 'none';
+      document.querySelector('p.footer').style.display = 'none';
       window.scrollTo(0,0);
     } else { //close
       this.edgeImage = '';
@@ -786,6 +795,7 @@ export default class CommonStorageService extends Service {
       document.querySelector('.albumsHdr').style.display = '';
       // Outline the closed image
       this.gotoMinipic(this.picName);
+      document.querySelector('p.footer').style.display = '';
     }
   }
 

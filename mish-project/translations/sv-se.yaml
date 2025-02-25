@@ -48,7 +48,7 @@ chooseShow: Välj att visa i <b>{f}</b>
 created: skapat
 createfail: INTE SKAPAT
 deleted: raderat
-dark: Mörk
+dark: mörk
 Dimension: Dimension
 download: Ladda ned...
 dupImgNames: dubletter av bildnamn
@@ -118,6 +118,7 @@ Size: Storlek
 status: Status
 subalbum:  underalbum
 subalbums: underalbum
+toggtext: "Visa/dölj\nbildtexter"
 wait: vänta
 with: med
 txtGif: Gif-bild! Kan bara ges tillfällig text som inte bevaras permanent
@@ -156,6 +157,7 @@ button:
   #the initial 0 means link==false, move==true
   moveFunc:  0Flytta till det valda albumet
   notes:     Anteckningar
+  optchuser: Byt användare
   optlogin:  Inloggning
   restart:   "Ladda om webbläsaren\n
              genom att klicka här!"

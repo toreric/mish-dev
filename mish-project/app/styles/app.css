@@ -1360,10 +1360,10 @@ img.mark {
 #do_print,
 #go_back {
   /* .nav_links */
-  height: 1.2em;
-  width: 0.8em;
+  height: 2.4rem;
+  width: 1.6rem;
   /* padding: 0 0.3em 0.1em 0.4em; */
-  background-size: 2.4rem 2.4rem !important;
+  background-size: 2.4rem !important;
   background-repeat: no-repeat !important;
   background-position: center !important;
   /*font-family: sans!important; /* quirk for Chrome */
@@ -1375,11 +1375,24 @@ img.mark {
 #go_back {
   background-image: url(/images/icons8-return-96.png);
 }
+#togg_text {
+  height: 2.4rem;
+  width: 1.6rem;
+  background-size: 1.6rem !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-image: url(/images/icons8-text-96.png);
+}
 #dark_light {
+  border: none;
   height:1rem;
   width:1rem;
+  background-size: 1rem 1rem;
   background-position: center;
   background-image: url(/images/icons8-sun-96.png);
+}
+#dark_light.darkbkg {
+  background-image: url(/images/icons8-moon-96.png);
 }
 input.threshold[type="number"] {
   width: 1.7em;

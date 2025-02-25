@@ -33,6 +33,9 @@ export class ButtonsRight extends Component {
       {{!-- CLOSE AND GO BACK TO MINIPICS:  this.z.showImage '' closes! --}}
       <a class="nav_" id="go_back" title="{{t 'gomini'}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage '')}}> </a> &nbsp;<br>
 
+      {{!-- HIDE or SHOW caption texts --}}
+      <a class="nav_" id="togg_text" title="{{t 'toggtext'}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.toggleText)}}> </a> &nbsp;<br>
+
       {{!-- HELP question mark --}}
       <a class="nav_ qnav_" draggable="false" {{on 'click' (fn this.toggleNavInfo)}}>?</a> &nbsp;<br>
 

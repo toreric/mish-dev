@@ -182,7 +182,7 @@ class Welcome extends Component {
       this.z.maxWarning = 50;       // Set recommended album size, about 100
       this.z.displayNames = 'none'; // Hide image names
       await new Promise (z => setTimeout (z, 99)); // Before awakening the system
-      document.querySelector('#toggleName').click(); // Initially hide (donowhy)
+      // document.querySelector('#toggleName').click(); // Initially hide (donowhy)
 
       // Read the build stamp files (nodestamp.txt may be initially missing) etc.
       this.z.aboutThis = 'Mish ' + await this.z.execute('cat buildstamp.txt') + ' ' + await this.z.execute('cat nodestamp.txt') + ' and Glimmer by Ember<br>' + await this.z.execute('head -n1 LICENSE.txt');
@@ -204,11 +204,13 @@ class Welcome extends Component {
         this.z.bkgrColor = '#111';
         this.z.textColor = '#fff';
         this.z.subColor = '#aef';
+        document.querySelector('#dark_light').classList.remove('darkbkg');
       }
       if (this.z.getCookie('mish_bkgr') === 'light') {
         this.z.bkgrColor = '#cbcbcb';
         this.z.textColor = '#111';
         this.z.subColor = '#146';
+        document.querySelector('#dark_light').classList.add('darkbkg');
       }
       document.querySelector('body').style.background = this.z.bkgrColor;
       document.querySelector('body').style.color = this.z.textColor;
@@ -243,26 +245,26 @@ export default class extends Welcome {
       <div {{executeOnInsert this}} class="sameBackground" style="display:flex;justify-content:space-between;margin:0 3.25rem 0 4rem">
 
         <span>
-          <h1 style="margin:0 0.25rem 0 0;display:inline">{{t "header"}}</h1>
+          <b style="font-size:106%;margin-top:0.35rem;display:inline-block">{{t "header"}}</b>
 
-          <button id="dark_light" type="button" title="{{t 'button.backgtitle'}} {{t 'dark'}}/{{t 'light'}}" {{on 'click' (fn this.z.toggleBackg)}}></button>
+          <button id="dark_light" type="button" title-2="{{t 'button.backgtitle'}}: {{t 'dark'}}/{{t 'light'}}" {{on 'click' (fn this.z.toggleBackg)}}>&nbsp;</button>
         </span>
 
         {{#if this.z.allow.deleteImg}}
           <span>
-            <button type="button" title="Xperimental" style="background:blueviolet" {{on 'click' (fn this.z.toggleDialog dialogXperId)}}>&nbsp;</button>
+            <button type="button" title="Xperimental" style="background:black;height:0.9rem" {{on 'click' (fn this.z.toggleDialog dialogXperId)}}>&nbsp;</button>
 
             {{!-- <button type="button" {{on 'click' (fn this.openRights)}}>{{t 'button.rightsinfo'}}</button> --}}
           </span>
         {{/if}}
 
         <span id="loggedInUser">
-          <button type="button" {{on 'click' (fn this.openLogIn)}}>{{t 'button.optlogin'}}</button>
+          <button type="button" title-2="{{t 'button.optchuser'}}" {{on 'click' (fn this.openLogIn)}}>{{t 'button.optlogin'}}</button>
           {{t 'loggedIn'}}: <b>{{this.z.userName}}</b> {{t 'with'}} [{{this.z.userStatus}}]-{{t 'rights'}}
         </span>
       </div>
 
-      <div class="sameBackground" style="display:flex;justify-content:space-between;margin:0.1rem 3.25rem 0.4rem 4rem">
+      <div class="sameBackground" style="display:flex;justify-content:space-between;margin:0.2rem 3.25rem 0.4rem 4rem">
 
 
           {{#if this.z.imdbRoot}}

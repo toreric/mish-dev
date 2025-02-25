@@ -48,7 +48,7 @@ chooseShow: Choose to view in <b>{f}</b>
 created: created
 createfail: NOT CREATED
 deleted: deleted
-dark: Dark
+dark: dark
 Dimension: Dimension
 download: Download...
 dupImgNames: duplicate image names
@@ -118,6 +118,7 @@ Size: Size
 status: Status
 subalbum:  subalbum
 subalbums: subalbums
+toggtext: "Show/hide\nimage captions"
 txtGif: Gif image! May only be given temporary text that cannot be kept permanently
 wait: wait
 with: with
@@ -156,6 +157,7 @@ button:
   #the initial 0 means link==false, move==true
   moveFunc:  0Transfer to the selected album
   notes:     Notes
+  optchuser: Change user
   optlogin:  Log in
   restart:   "Reload the browser\n
              by clicking here!"
