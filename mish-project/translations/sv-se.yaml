@@ -80,7 +80,7 @@ information: Information
 intlcode: sv-se
 invertsel: Invertera markeringar
 light: ljus
-linked: länkade
+linked: inlänkade
 Linkname: Länknamn
 linkto: Länka till...
 Mark: Markera
@@ -197,7 +197,7 @@ buttons:
 dialog:
   find:
     header: Finn bilder
-    nolinks: (ej länkade)
+    nolinks: (ej inlänkade)
   help:
     header: Användarhandledning
     header1: (främst för dator med tangentbord och mus eller pekplatta)
@@ -335,7 +335,7 @@ write:
   doErased: Tog bort {n} bild(er) från ”{a}”
   doLinked: Länkade {n} bild(er) till ”{a}”
   doMoved:  Flyttade {n} bild(er) till ”{a}”
-  eraseFunc: RADERING av originalbilder kan inte ångras, men raderade länkade bilder (länkar) kan återskapas
+  eraseFunc: RADERING av originalbilder kan inte ångras, men raderade inlänkade bilder (länkar) kan återskapas
   find0: "Sök i:"
   find1: bildtext (övre texten)
   find2: ursprung (nedre texten)
@@ -370,12 +370,13 @@ write:
   maxWarning: <b>Fler än {n} bilder kan<br>inte visas tillsammans</b>
   noDupNamesFound: Fann inga dubletter av bildnamn i <b>{a}</b> med underalbum
   noErased: men {n} kunde inte tas bort:<br><br>{a}
-  noLinkLink: Det finns minst en länk bland de valda bilderna.<br>Länkade bilder kan inte vidarelänkas!<br>Gå till originalbilden för att länka den.
+  noLinkLink: Det finns minst en länk bland de valda bilderna.<br>Inlänkade bilder kan inte vidarelänkas!<br>Gå till originalbilden för att länka den.
   noneFound: Tyvärr, ingen bild funnen!
   notEmpty: Albumet måste först tömmas!
   notes: Anteckningar som ej visas med bilden
-  originTouch: "VARNING: Inga länkar..."
-  originUntouch: "<b>OBSERVERA</b> att det är skillnad på bilder: Gröna bildnamn avser inte originalbilder utan <b>länkade bilder</b> (enklare: <b>länkar</b>). En bild med grön underkant är egentligen bara en länk till sin originalbild i ett annat album.<br><br>En <b>originalbild</b> förblir orörd även när länken till den tas bort."
+  originOnly: "VARNING: Inga länkar..."
+  originUntouch: "<b>OBSERVERA</b> att det är skillnad på bilder: Gröna bildnamn avser inte originalbilder utan <b>inlänkade bilder</b> (enklare: <b>länkar</b>). En bild med grön underkant är egentligen bara en länk till sin originalbild i ett annat album.<br><br>En <b>originalbild</b> förblir orörd även när länken till den tas bort."
+  origRemove: "Alternativ:"
   reloadRequired: <br><br>Ändrad albumstruktur kräver omstart<br>
   searchTerms: Skriv sökbegrepp åtskilda av blanktecken, små/stora bokstäver är oviktigt (välj nedan vilka texter du vill söka i)
   tool0: "Välj för <b>{album}</b>:"

@@ -1363,16 +1363,23 @@ img.mark {
   height: 1.2em;
   width: 0.8em;
   /* padding: 0 0.3em 0.1em 0.4em; */
-  background-size: 0.9em 0.9em !important;
+  background-size: 2.4rem 2.4rem !important;
   background-repeat: no-repeat !important;
   background-position: center !important;
   /*font-family: sans!important; /* quirk for Chrome */
 }
+
 #do_print {
   background-image: url(/images/printer.svg);
 }
 #go_back {
   background-image: url(/images/icons8-return-96.png);
+}
+#dark_light {
+  height:1rem;
+  width:1rem;
+  background-position: center;
+  background-image: url(/images/icons8-sun-96.png);
 }
 input.threshold[type="number"] {
   width: 1.7em;

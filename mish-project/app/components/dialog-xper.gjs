@@ -74,10 +74,10 @@ export class DialogXper extends Component {
           Ny sortOrder
         </button>
 
-        <br>
+        {{!-- <br>
         <button type="button" {{on 'click' (fn this.z.openModalDialog 'chooseAlbum')}}>
           chooseAlbum
-        </button>
+        </button> --}}
 
         <div style="display:flex;justify-content:center">
           <div title-2="Här visas CSS: title-2">

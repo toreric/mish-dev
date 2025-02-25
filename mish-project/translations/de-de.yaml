@@ -374,7 +374,7 @@ write:
   noneFound: Leider kein Bild gefunden!
   notEmpty: Das Album muss zuerst geleert werden!
   notes: Anmerkungen die nicht mit dem Bild erscheinen
-  originTouch: "ACHTUNG: Keine Links..."
+  originOnly: "ACHTUNG: Keine Links..."
   originUntouch: "<b>HINWEIS</b>, dass es einen Unterschied zwischen Bildern gibt: Grüne Bildnamen beziehen sich nicht auf Originalbilder, sondern auf <b>verlinkte Bilder</b> (einfacher: <b>Links</b>). Ein Bild mit einem grünen unteren Rand ist eigentlich nur ein Link zu seinem Originalbild in einem anderen Album.<br><br>Ein <b>Originalbild</b> bleibt unberührt, auch wenn der Link dazu entfernt wird."
   reloadRequired: <br><br>Geänderte Albumstruktur erfordert Neustart<br>
   searchTerms: Suchbegriffe eingeben, durch Leerzeichen getrennt, Groß-/Kleinschreibung spielt keine Rolle (unten auswählen, in welchen Texten gesucht werden soll)

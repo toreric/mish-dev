@@ -225,7 +225,7 @@ module.exports = function(app) { // Start module.exports
         res.send(password +LF+ status +LF+ allow +LF+ freeUsers)
 
       } else { // Send all recorded user statuses and their allowances, formatted
-        console.log('Get the table of user rights')
+        console.log('\n\nRELOADING MISH\nGet the table of user rights')
         let rows = setdb.prepare('SELECT * FROM class ORDER BY status').all()
         var allowances = ''
         for (let j=0;j<rows.length;j++) {
@@ -242,7 +242,7 @@ module.exports = function(app) { // Start module.exports
           allowances += '     \n'
         }
         allowances += '──────────────────────────────────────────────\n'
-        console.log(allowances.trim())
+          // console.log(allowances.trim())
         res.location('/')
         res.send(allowances.trim())
       }

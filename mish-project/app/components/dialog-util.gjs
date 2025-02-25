@@ -85,7 +85,7 @@ export class DialogUtil extends Component {
   }
 
   get okTexts() { // true if images shown
-      this.z.loli('numShown ' + this.z.numShown, 'color:red');
+      // this.z.loli('numShown ' + this.z.numShown, 'color:red');
     if (this.z.numShown > 0) {
       this.noTools = false;
       return true;
@@ -135,7 +135,7 @@ export class DialogUtil extends Component {
   }
 
   get okUpload() {
-    if (this.z.allow.deleteImg) {
+    if (this.z.imdbDir.slice(1) !== this.z.picFound && this.z.allow.deleteImg) {
       this.noTools = false;
       return true
     } else {
@@ -291,6 +291,10 @@ export class DialogUtil extends Component {
     this.z.futureNotYet('write.tool7');
   }
 
+  doTexts = () => {
+    this.z.futureNotYet('write.tool8');
+  }
+
   doUpload = () => {
     this.z. futureNotYet('write.tool5');
   }
@@ -298,9 +302,10 @@ export class DialogUtil extends Component {
   doDbUpdate = async () => {
     document.querySelector('img.spinner').style.display = '';
     let cmd = './ld_imdb.js -e ' + this.z.imdbPath;
-      this.z.loli(cmd, 'color:red');
+      // this.z.loli(cmd, 'color:red');
     await this.z.execute(cmd);
     document.querySelector('img.spinner').style.display = 'none';
+    this.z.loli('uppdated text database');
     this.z.alertMess(this.intl.t('write.dbUpdated'));
   }
 
@@ -390,7 +395,7 @@ export class DialogUtil extends Component {
           {{!-- === Make text list === --}}
           {{else if (eq this.tool 'util8')}}
 
-              <button type="button" {{on 'click' (fn this.doDupImages)}}>{{{t 'write.tool8' a=this.imdbDirName}}}</button>
+              <button type="button" {{on 'click' (fn this.doTexts)}}>{{{t 'write.tool8' a=this.imdbDirName}}}</button>
 
           {{!-- === Make a new subalbum === --}}
           {{else if (eq this.tool 'util2')}}

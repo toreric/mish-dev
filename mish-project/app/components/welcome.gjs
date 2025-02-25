@@ -241,20 +241,23 @@ export default class extends Welcome {
 
     <div id="upperButtons" style="position:relative;top:0;left:0;width:100%;padding-top:0.5rem">
       <div {{executeOnInsert this}} class="sameBackground" style="display:flex;justify-content:space-between;margin:0 3.25rem 0 4rem">
-        <h1 style="margin:0 4rem 0 0;display:inline">{{t "header"}}</h1>
+
         <span>
+          <h1 style="margin:0 0.25rem 0 0;display:inline">{{t "header"}}</h1>
 
-          <button type="button" title="Xperimental" style="background:blueviolet" {{on 'click' (fn this.z.toggleDialog dialogXperId)}}>&nbsp;</button>
+          <button id="dark_light" type="button" title="{{t 'button.backgtitle'}} {{t 'dark'}}/{{t 'light'}}" {{on 'click' (fn this.z.toggleBackg)}}></button>
+        </span>
 
-          <button type="button" title={{t 'button.backgtitle'}} {{on 'click' (fn this.z.toggleBackg)}}>{{t 'dark'}}/{{t 'light'}}</button>
+        {{#if this.z.allow.deleteImg}}
+          <span>
+            <button type="button" title="Xperimental" style="background:blueviolet" {{on 'click' (fn this.z.toggleDialog dialogXperId)}}>&nbsp;</button>
 
-          <button type="button" {{on 'click' (fn this.openRights)}}>{{t 'button.rightsinfo'}}</button>
-
-          <button type="button" {{on 'click' (fn this.openLogIn)}}>{{t 'button.optlogin'}}</button>
-
-        </span> &nbsp;
+            {{!-- <button type="button" {{on 'click' (fn this.openRights)}}>{{t 'button.rightsinfo'}}</button> --}}
+          </span>
+        {{/if}}
 
         <span id="loggedInUser">
+          <button type="button" {{on 'click' (fn this.openLogIn)}}>{{t 'button.optlogin'}}</button>
           {{t 'loggedIn'}}: <b>{{this.z.userName}}</b> {{t 'with'}} [{{this.z.userStatus}}]-{{t 'rights'}}
         </span>
       </div>

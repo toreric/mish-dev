@@ -376,7 +376,7 @@ write:
   noneFound: Sorry, no image found!
   notEmpty: The album must first be emptied!
   notes: Notes not shown with the image
-  originTouch: "WARNING: No links..."
+  originOnly: "WARNING: No links..."
   originUntouch: "<b>NOTE</b> that there is a difference between images: Green image names do not refer to original images but to <b>linked images</b> (more simply: <b>links</b>). An image with a green bottom border is actually just a link to its original image in another album.<br><br>An <b>original image</b> remains untouched even if the link to it is removed."
   reloadRequired: <br><br>Changed album structure requires restart<br>
   searchTerms: Enter search terms separated by spaces, lower/uppercase does not matter (choose below which texts to search in)

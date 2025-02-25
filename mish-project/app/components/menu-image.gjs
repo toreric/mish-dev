@@ -347,9 +347,6 @@ export class MenuImage extends Component {
       this.z.markBorders(this.z.picName);
       this.z.openModalDialog('chooseAlbum');
     }
-    // this.z.countNumbers();//??
-    // this.z.closeDialogs();
-    // this.z.sortOrder = this.z.updateOrder();
     return;
   }
 
@@ -390,14 +387,19 @@ export class MenuImage extends Component {
         this.z.chooseText += this.intl.t('write.originUntouch') + '</span>';
       } else {
         this.z.chooseText += '<br><br><span style="font-weight:normal;color:brown"><b>';
-        this.z.chooseText += this.intl.t('write.originTouch') + '</b></span>';
+        this.z.chooseText += this.intl.t('write.originOnly') + '</b></span>';
       }
+
+      if (imgs.length === test.length) {
+        // to do for choosing 'erase even originals'
+      }
+
       this.z.buttonNumber = 0;
       // this.z.buttonNumber is set with this.z.selectChoice
       // to 1 or 2 when a DialogChoose button is clicked:
       this.z.openModalDialog(dialogChooseId);
       while (!this.z.buttonNumber) {
-        await new Promise (z => setTimeout (z, 99)); // eraseFunc 4
+        await new Promise (z => setTimeout (z, 99)); // eraseFunc 2
       }
       if (this.z.buttonNumber === 1) {
         this.z.closeDialog(dialogChooseId);
@@ -411,7 +413,7 @@ export class MenuImage extends Component {
           if (img.classList.contains('symlink')) {
             this.z.loli('symlink ' + imgTitle + ' deleted', 'color:lightgreen');
           } else {
-            this.z.loli(imgTitle + ' deleted');
+            this.z.loli(imgTitle + ' deleted', 'color:pink');
           }
             // this.z.loli(imgName, 'color:brown');
             // this.z.loli(imgTitle, 'color:brown');
@@ -439,7 +441,7 @@ export class MenuImage extends Component {
           mesTxt += '<br><br>' + this.z.intl.t('write.noErased', {n: errNames.length, a: errNames.join(', ')});
         }
         this.z.alertMess(mesTxt);
-        await new Promise (z => setTimeout (z, 2987)); // eraseFunc 5
+        await new Promise (z => setTimeout (z, 2987)); // eraseFunc 3
         document.querySelector('img.spinner').style.display = 'none';
       } else {
         this.z.alertMess(this.intl.t('eraseCancelled'), 3);
@@ -525,7 +527,7 @@ export class MenuImage extends Component {
             ○</span>{{t 'placelast'}}</p></li>
       {{/if}}
 
-      {{!-- Download images to this album --}}
+      {{!-- Download images from this album --}}
       {{#if this.z.allow.imgOriginal}}
         <li><p {{on 'click' (fn this.z.futureNotYet 'download')}}>
           {{t 'download'}}</p></li>
@@ -606,7 +608,7 @@ export class ChooseAlbum extends Component {
     let pics = selMinImgs(this.z.picName);
     let cmd = [];
     var picNames = [];
-    // **************************************
+    // ******************************************************
     // chooseText starts with ”0” (=>false) if ”doMove” (below)
     // Else, here is with non-zero (=>true), ”doLink”:
     if (Number(this.z.chooseText.slice(0, 1))) {
@@ -632,9 +634,9 @@ export class ChooseAlbum extends Component {
         if (r) this.z.loli('Not linked: ' + picNames[i]);
       }
       this.z.alertMess(this.intl.t('write.doLinked', {n: pics.length, a: this.chosenAlbum}));
-    // **************************************
-    // chooseText starts with ”0” if ”doMove”
-    } else { // ”doMove” here:
+    // ******************************************************
+    // chooseText starts with ”0” if ”doMove”, ”doMove” here:
+    } else {
         // this.z.alertMess('perform some moving');
       let malbum = this.z.imdbDirs[this.which];
       var lpp = malbum.split("/").length-1;
@@ -688,7 +690,7 @@ export class ChooseAlbum extends Component {
         cmd += 'if [ $mini != $orgmini ];then rm $orgmini;fi;';
         cmd += 'if [ $show != $orgshow ];then rm $orgshow;fi;fi;';
 
-        this.z.loli(cmd.replace(/;/g, ';\n').replace(/\nthen /g, 'then\n').replace(/else /g, 'else\n'), 'color:red');
+          // this.z.loli(cmd.replace(/;/g, ';\n').replace(/\nthen /g, 'then\n').replace(/else /g, 'else\n'), 'color:red');
         let r = await this.z.execute(cmd);
         if (r) this.z.loli('Not moved: ' + picNames[i] + '\n' + r);
       }

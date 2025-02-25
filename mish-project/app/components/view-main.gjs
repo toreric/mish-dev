@@ -298,7 +298,7 @@ class AllImages extends Component {
 
   <template>
 
-    <div style="margin:0 2rem;width:auto;height:auto;text-align:center" {{on 'mousedown' this.z.resetBorders}} {{on 'keydown' this.detectEsc}}>
+    <div style="margin:0 7rem 0 2rem;width:auto;height:auto;text-align:center" {{on 'mousedown' this.z.resetBorders}} {{on 'keydown' this.detectEsc}}>
 
       {{#if this.z.imdbRoot}}
 
