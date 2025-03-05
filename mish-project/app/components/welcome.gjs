@@ -63,8 +63,8 @@ document.addEventListener('keydown', (event) => {
       }
       let allist = document.querySelectorAll('.menu_img_list');
       for (let list of allist) list.style.display = 'none';
-      if (!document.querySelector('#menuMain').style.display)
-        document.querySelector('#menuButton').click(); //close menu
+      if (!document.getElementById('menuMain').style.display)
+        document.getElementById('menuButton').click(); //close menu
       // The view image is displayed with its navigation buttons:
       if (!document.querySelector('div.nav_links').style.display)
         document.getElementById('go_back').click(); //close view image
@@ -173,11 +173,13 @@ class Welcome extends Component {
   }
 
   // To be executed only once before a user is defined with userStatus
+  // HERE INITIAL actions may be added like the openLogIn() in last line
   getCred = async () => {
     await new Promise (z => setTimeout (z, 99)); // Allow userStatus to settle
     if (!this.z.userStatus) { // only once
 
       // Various settings
+        this.z.loli('getCred 0', 'color:red')
       this.z.initBrowser();         // Manipulate browser back-arrow
       this.z.maxWarning = 50;       // Set recommended album size, about 100
       this.z.displayNames = 'none'; // Hide image names
@@ -185,14 +187,17 @@ class Welcome extends Component {
       // document.querySelector('#toggleName').click(); // Initially hide (donowhy)
 
       // Read the build stamp files (nodestamp.txt may be initially missing) etc.
+        this.z.loli('getCred 1', 'color:red')
       this.z.aboutThis = 'Mish ' + await this.z.execute('cat buildstamp.txt') + ' ' + await this.z.execute('cat nodestamp.txt') + ' and Glimmer by Ember<br>' + await this.z.execute('head -n1 LICENSE.txt');
 
       // Set a guest user and corresponding allowances
+        this.z.loli('getCred 2', 'color:red')
       let allowances = await this.z.getCredentials('Get allowances');
       console.log(allowances); // this is the text table of rights
       this.z.allowances = allowances;
 
       // Language cookie
+        this.z.loli('getCred 3', 'color:red')
       let lng = this.z.getCookie('mish_lang');
       if (lng) this.intl.setLocale([lng]);
       this.z.intlCodeCurr = lng;
@@ -201,12 +206,14 @@ class Welcome extends Component {
 
       // Background cookie
       if (this.z.getCookie('mish_bkgr') === 'dark') {
+          this.z.loli('getCred 4', 'color:red')
         this.z.bkgrColor = '#111';
         this.z.textColor = '#fff';
         this.z.subColor = '#aef';
         document.querySelector('#dark_light').classList.remove('darkbkg');
       }
       if (this.z.getCookie('mish_bkgr') === 'light') {
+          this.z.loli('getCred 5', 'color:red')
         this.z.bkgrColor = '#cbcbcb';
         this.z.textColor = '#111';
         this.z.subColor = '#146';
@@ -224,11 +231,13 @@ class Welcome extends Component {
       this.z.allowFunc(); // SET ALLOWANCES PATTERN important!
 
       // Get album-collection-qualified catalogs
+        this.z.loli('getCred 6', 'color:red')
       let roots = await this.z.getAlbumRoots();
       this.z.imdbRoots = roots.split(LF);
     }
     this.z.openMainMenu();
-    this.openLogIn();
+      this.z.loli('getCred 7', 'color:red')
+    // this.openLogIn();
   }
 }
 
@@ -252,7 +261,7 @@ export default class extends Welcome {
 
         {{#if this.z.allow.deleteImg}}
           <span>
-            <button type="button" title="Xperimental" style="background:black;height:0.9rem" {{on 'click' (fn this.z.toggleDialog dialogXperId)}}>&nbsp;</button>
+            <button type="button" title="Xperimental" style="background:transparent;height:1rem;border-radius:0.5rem" {{on 'click' (fn this.z.toggleDialog dialogXperId)}}>&nbsp;</button>
 
             {{!-- <button type="button" {{on 'click' (fn this.openRights)}}>{{t 'button.rightsinfo'}}</button> --}}
           </span>

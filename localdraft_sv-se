@@ -11,6 +11,7 @@ Tillverka en katalog (IMDB_ROOT) dit bildkataloger (IMDB) kan
 flyttas. Varje sådan katalog blir en bilddatabas (ett album).
 Så här till exempel:
 
+userDir
 IMDB_HOME  IMDB_ROOT IMDB = bilddatabas = album
 –––––––––– ––––––––– ––––––––––––––––––––––––––––––––
 /home/tore/Fotoarkiv

@@ -1,3 +1,6 @@
+//== Mish choose-alert message dialog with two choices
+//   Interacts with selectChoice and sets buttonNumber
+
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';

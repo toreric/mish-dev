@@ -1,5 +1,5 @@
 # http://www.robotstxt.org
 User-agent: *
 Disallow: /
-Allow: /public/start.html
-Allow: /start.html
+#Allow: /public/start.html
+#Allow: /start.html

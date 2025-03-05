@@ -4,10 +4,10 @@
 
 # Production catalog
 prodcat="../public/"
-messcat="../"
+#messcat="../"
 # Produce a build stamp message
 mestxt='build '`date +%y%m%d-%H%M`
-echo "${mestxt} during work with" > ${messcat}buildstamp.txt
+echo "${mestxt} during work with" > ${prodcat}buildstamp.txt
 ember b -prod --output-path=$prodcat --watch true
 
 # NOTE: If --watch true is set, the lines below don't
@@ -16,8 +16,6 @@ echo "Producing build timestamp ..."
 mestxt='build '`date +%y%m%d-%H%M`
 echo $mestxt
 hint=' · Not for MS IE · '
-echo $mestxt$hint > ${messcat}buildstamp.txt
-# cat ${prodcat}index.html | sed "s&\ *<body>\$&<body><div id=\"buildStamp\">$mestxt$hint</div>&" > /tmp/index.html
-# cp -v /tmp/index.html ${prodcat}index.html
+echo $mestxt$hint > ${prodcat}buildstamp.txt
 echo -n "Done. "
 date

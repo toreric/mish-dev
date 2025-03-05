@@ -910,7 +910,7 @@ export default class CommonStorageService extends Service {
     }
   }
 
-  //#region COCKIES
+  //#region COOKIES
   // Cookie names are mish_lang, mish_bkgr, ...
   setCookie = (cname, cvalue, exminutes) => {
     if (exminutes) {

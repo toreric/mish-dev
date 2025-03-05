@@ -16,7 +16,7 @@ let it be picIndex instead, i.e.
 
 
 
-Kom ihåg:
+Remember:
 
 .toString() .trim()
 
