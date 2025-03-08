@@ -253,8 +253,8 @@ export class DialogUtil extends Component {
       let paths = duplist.toString().trim().split('\n');
         // this.z.loli('"'+paths[0]+'"', 'color:red');
       if (paths.length === 1 && paths[0].length === 0) paths = [];
-        this.z.loli('paths:', 'color:deeppink');
-        console.log(paths);
+        // this.z.loli('paths:', 'color:deeppink');
+        // console.log(paths);
       this.countImgs = paths.length;
       let lpath = this.z.imdbPath + '/' + this.z.picFound; // The path to picFound
       // Clean up picFound

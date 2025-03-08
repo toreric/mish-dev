@@ -179,7 +179,7 @@ class Welcome extends Component {
     if (!this.z.userStatus) { // only once
 
       // Various settings
-        this.z.loli('getCred 0', 'color:red')
+        // this.z.loli('getCred 0', 'color:red')
       this.z.initBrowser();         // Manipulate browser back-arrow
       this.z.maxWarning = 50;       // Set recommended album size, about 100
       this.z.displayNames = 'none'; // Hide image names
@@ -187,17 +187,14 @@ class Welcome extends Component {
       // document.querySelector('#toggleName').click(); // Initially hide (donowhy)
 
       // Read the build stamp files (nodestamp.txt may be initially missing) etc.
-        this.z.loli('getCred 1', 'color:red')
       this.z.aboutThis = 'Mish ' + await this.z.execute('cat buildstamp.txt') + ' ' + await this.z.execute('cat nodestamp.txt') + ' and Glimmer by Ember<br>' + await this.z.execute('head -n1 LICENSE.txt');
 
       // Set a guest user and corresponding allowances
-        this.z.loli('getCred 2', 'color:red')
       let allowances = await this.z.getCredentials('Get allowances');
       console.log(allowances); // this is the text table of rights
       this.z.allowances = allowances;
 
       // Language cookie
-        this.z.loli('getCred 3', 'color:red')
       let lng = this.z.getCookie('mish_lang');
       if (lng) this.intl.setLocale([lng]);
       this.z.intlCodeCurr = lng;
@@ -206,14 +203,12 @@ class Welcome extends Component {
 
       // Background cookie
       if (this.z.getCookie('mish_bkgr') === 'dark') {
-          this.z.loli('getCred 4', 'color:red')
         this.z.bkgrColor = '#111';
         this.z.textColor = '#fff';
         this.z.subColor = '#aef';
         document.querySelector('#dark_light').classList.remove('darkbkg');
       }
       if (this.z.getCookie('mish_bkgr') === 'light') {
-          this.z.loli('getCred 5', 'color:red')
         this.z.bkgrColor = '#cbcbcb';
         this.z.textColor = '#111';
         this.z.subColor = '#146';
