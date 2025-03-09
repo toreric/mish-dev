@@ -14,4 +14,4 @@ A directory qualifies as an autodetectable album when it contains a file named '
 
 A main idea is to keep all information, such as picture legend etc., as metadata within the picture. Thus the pictures may be squashed around by some means and still be more easily reorganized than if their descriptions have been lost. Nevertheless, an embedded Sqlite database is maintained, where picture information is collected (automatically and on demand) for fast free-text search of/in such as file names, picture legends, etc.
 
-Please mail me for better information
+Please mail me for better information!

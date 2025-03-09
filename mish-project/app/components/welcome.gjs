@@ -191,7 +191,7 @@ class Welcome extends Component {
 
       // Set a guest user and corresponding allowances
       let allowances = await this.z.getCredentials('Get allowances');
-      console.log(allowances); // this is the text table of rights
+        // console.log(allowances); // this is the text table of rights
       this.z.allowances = allowances;
 
       // Language cookie
@@ -226,12 +226,10 @@ class Welcome extends Component {
       this.z.allowFunc(); // SET ALLOWANCES PATTERN important!
 
       // Get album-collection-qualified catalogs
-        this.z.loli('getCred 6', 'color:red')
       let roots = await this.z.getAlbumRoots();
       this.z.imdbRoots = roots.split(LF);
     }
     this.z.openMainMenu();
-      this.z.loli('getCred 7', 'color:red')
     // this.openLogIn();
   }
 }

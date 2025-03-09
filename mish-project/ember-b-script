@@ -4,7 +4,7 @@
 
 # Production catalog
 prodcat="../public/"
-#messcat="../"
+messcat="../"
 # Produce a build stamp message
 mestxt='build '`date +%y%m%d-%H%M`
 echo "${mestxt} during work with" > ${prodcat}buildstamp.txt
@@ -16,6 +16,6 @@ echo "Producing build timestamp ..."
 mestxt='build '`date +%y%m%d-%H%M`
 echo $mestxt
 hint=' · Not for MS IE · '
-echo $mestxt$hint > ${prodcat}buildstamp.txt
+echo $mestxt$hint > ${messcat}buildstamp.txt
 echo -n "Done. "
 date
