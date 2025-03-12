@@ -94,7 +94,18 @@ export class DialogText extends Component {
     return this.z.deNormalize2LF(this.z.allFiles[this.z.picIndex].txt2.toString());
   }
 
-  // Detect closing click outside a dialog-draggable modal dialog
+  texts = () => {
+    if (!this.z.picName) return;
+    let desc = document.getElementById('dialogTextDescription');
+      // this.z.loli('picName = ' + this.z.picName, 'color:red');
+      // this.z.loli('picIndex = ' + this.z.picIndex, 'color:red');
+      // console.log(desc);
+      // console.log(this.z.allFiles[this.z.picIndex].txt1.toString());
+    desc.value = this.z.deNormalize2LF(this.z.allFiles[this.z.picIndex].txt1.toString());
+    document.getElementById('dialogTextCreator').value = this.z.deNormalize2LF(this.z.allFiles[this.z.picIndex].txt2.toString());
+  }
+
+  // Detect closing click outside a dialog-draggable modal dialog (FF only)
   detectClickOutside = (e) => {
     e.stopPropagation();
     if (!navigator.userAgent.includes("Firefox")) return; // Only Firefox can do this
@@ -111,7 +122,7 @@ export class DialogText extends Component {
       <dialog id="dialogText" style="width:min(calc(100vw - 1rem),700px)">
         <header data-dialog-draggable >
           <p>&nbsp;</p>
-          <p><b>{{t 'dialog.text.header'}} <span>{{this.picName}}</span></b></p>
+          <p><b>{{t 'dialog.text.header'}} <span style="color:blue;cursor:pointer" type="button" {{on 'click' this.texts}} title="{{t 'dialog.text.reset'}}">{{this.picName}}</span></b></p>
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogTextId)}}>×</button>
         </header>
         <main>

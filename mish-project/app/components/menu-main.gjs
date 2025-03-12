@@ -32,6 +32,13 @@ export class MenuMain extends Component {
   // Finally indicate if this album tree has any hidden-without-allowance album.
   selectRoot = async (event) => { // Album root = collection
     this.z.imdbRoot = event.target.value;
+      // console.log(document.getElementById('rootSel'));
+      // this.z.loli(document.getElementById('rootSel').selectedIndex, 'color:red');
+    document.querySelector('.miniImgs.imgs').style.display = 'flex';
+    if (!this.z.imdbRoot)  {
+      document.querySelector('.miniImgs.imgs').style.display = 'none';
+      return;
+    }
     this.z.imdbDir = this.z.imdbRoot; // The root is assumed initially selected
     this.z.loli('IMDB_ROOT (imdbRoot) set to ' + this.z.imdbRoot, 'color:orange');
     const allow = this.z.allow; // permissions
@@ -40,6 +47,8 @@ export class MenuMain extends Component {
     // If the argment is false, _imdb_ignore.txt in the chosen
     // root album is read by the server, and mentioned albums
     // with subalbums are removed from the list:
+    await new Promise (z => setTimeout (z, 199)); // selectRoot, ensurance!?
+    // The await reason: Sometimes getAlbumDirs is unsuspectedly null
     let tmp = await this.z.getAlbumDirs(allow.textEdit);
     let arr = tmp.split(LF);
       // this.z.loli(arr[1]);
@@ -108,7 +117,7 @@ export class MenuMain extends Component {
         // this.z.loli(this.z.imdbTree);
         // this.z.loli(this.z.imdbDirs);
         // this.z.loli('imdbTree ' + n + LF + JSON.stringify(result, null, 2)); //human readable
-    await new Promise (z => setTimeout (z, 199)); // Wait for album tree to settle
+    await new Promise (z => setTimeout (z, 199)); // selectRoot Wait for album tree
     this.closeAll(); // fold all nodes except 0
 
     let anyHidden = () => { // flags any hidden-without-allowance album
@@ -202,7 +211,7 @@ export class MenuMain extends Component {
     }
     selected = document.querySelector('span.album.a' + index);
     selected.classList.add('blink');
-    await new Promise (z => setTimeout (z, 666)); // blink pause
+    await new Promise (z => setTimeout (z, 666)); // showSelected blink pause
     selected.classList.remove('blink');
   }
 
@@ -246,7 +255,7 @@ export class MenuMain extends Component {
         <a class="" style="color: white;cursor: default">
 
           <select id="rootSel" title-2={{t 'albumcollinfo'}} {{on 'change' this.selectRoot}} {{on 'mousedown' (fn this.z.closeDialog this.dialogAlertId)}}>
-            <option value="" selected disabled hidden>{{t 'selalbumcoll'}}</option>
+            <option value="" selected>{{t 'selalbumcoll'}}</option>
             {{#each this.z.imdbRoots as |rootChoice|}}
               <option value={{rootChoice}} selected={{eq this.z.imdbRoot rootChoice}}>{{rootChoice}}</option>
             {{/each}}

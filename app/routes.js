@@ -280,7 +280,7 @@ module.exports = function(app) { // Start module.exports
     let allowHidden = req.get('hidden')
     // Refresh picFound: the shell commands must execute in sequence
     let pif = IMDB + '/' + picFound
-    let cmd = 'rm -rf ' + pif + ' && mkdir ' + pif + ' && touch ' + pif + '/.imdb'
+    let cmd = 'rm -rf ' + pif + ' ; mkdir ' + pif + ' && touch ' + pif + '/.imdb'
     // await cmdasync(cmd) // better diagnosis
     await execP(cmd)
     // console.log(BYEL + cmd + RSET)

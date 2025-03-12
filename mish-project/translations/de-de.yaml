@@ -265,6 +265,7 @@ dialog:
     open:
       origpos: ... auf Originalplatz
       modal: Modales Textfenster öffnen
+    reset: Zurücksetzen
     toggle: Textfenster öffnen/schließen
 erase: löschen
 fav:
@@ -367,7 +368,7 @@ write:
   isEmpty: ist leer
   imageSeveral: Die Namen von {n} Bildern, die entfernt werden sollen
   imageSingle:  Der Name des Bildes, das entfernt werden soll
-  keywords: "<b>Information von geplante zukünftige Ergänzung:</b>
+  keywords: "<b>Information von geplante zukünftige Ergänzung:</b><br>
             Wörter als Metadaten gespeichert zur Verwendung als Suchbegriffe"
   maxWarning: <b>Mehr als {n} Bilder können nicht<br>alle gleichzeitig angezeigt werden</b>
   noDupNamesFound: In <b>{a}</b> mit Unteralben wurden keine doppelten Bildnamen gefunden

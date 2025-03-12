@@ -312,9 +312,9 @@ class AllImages extends Component {
       {{else}}
 
         {{!-- Remind of choosing a root collection/album --}}
-        <span style='border-radius:2.5px;outline:#87cfff double 4px'>
+        {{!-- <span style='border-radius:2.5px;outline:#87cfff double 4px'> --}}
             &nbsp;{{t 'albumcollselect'}}&nbsp;
-        </span>
+        {{!-- </span> --}}
 
       {{/if}}
 

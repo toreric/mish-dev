@@ -265,6 +265,7 @@ dialog:
     open:
       origpos: ... på originalplats
       modal: Öppna modalt textfönster
+    reset: Återställ
     toggle: Öppna/stäng textfönster
 erase: radera
 fav:
@@ -367,7 +368,7 @@ write:
   imageSeveral: Namnen på {n} bilder som ska tas bort
   imageSingle:  Namnet på bilden som ska tas bort
   isEmpty: är tomt
-  keywords: "<b>Information om planerat framtida tillägg:</b>
+  keywords: "<b>Information om planerat framtida tillägg:</b><br>
             Ord lagrade som metadata för användning som särskilda sökbegrepp"
   maxWarning: <b>Fler än {n} bilder kan<br>inte visas tillsammans</b>
   noDupNamesFound: Fann inga dubletter av bildnamn i <b>{a}</b> med underalbum

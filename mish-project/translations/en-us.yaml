@@ -267,6 +267,7 @@ dialog:
     open:
       origpos: ... in original position
       modal:   Open modal text dialog
+    reset: Reset
     toggle: Toggle text dialog
 erase: erase
 fav:
@@ -369,7 +370,7 @@ write:
   imageSeveral: The names of {n} images to be removed
   imageSingle:  The name of the image to be removed
   isEmpty: is empty
-  keywords: "<b>Information about planned future addition:</b>
+  keywords: "<b>Information about planned future addition:</b><br>
              Keywords to be stored as metadata for search key use"
   maxWarning: <b>More than {n} images cannot<br>be displayed together</b>
   noDupNamesFound: Found no duplicate image names in <b>{a}</b> with subalbums

@@ -1590,7 +1590,7 @@ export default class CommonStorageService extends Service {
     let diaObj = document.getElementById(dialogId);
     let what = 'closed ';
     await new Promise (z => setTimeout (z, 20)); // toggleDialog
-    if (diaObj.hasAttribute("open")) {
+    if (diaObj.hasAttribute('open')) {
       diaObj.close();
     } else {
       what = 'opened ';
@@ -1607,6 +1607,7 @@ export default class CommonStorageService extends Service {
     if (!diaObj.open) {
       if (origPos) diaObj.style = '';
       diaObj.showModal();
+      diaObj.style = 'top:-50vh';
       this.loli('opened ' + dialogId + ' (modal)');
     }
   }

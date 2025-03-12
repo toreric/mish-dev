@@ -59,6 +59,7 @@ export class DialogLogin extends Component {
         this.z.imdbRoot = '';
         this.z.imdbTree = null;
         this.z.openMainMenu();
+        document.getElementById('rootSel').selectedIndex = 0;
         // Add blinking to emphasize a new user
         let usr = document.getElementById('loggedInUser'); //see Welcome
         usr.classList.add('blink');
