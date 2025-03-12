@@ -797,6 +797,9 @@ export default class CommonStorageService extends Service {
       this.gotoMinipic(this.picName);
       document.querySelector('p.footer').style.display = '';
     }
+    await new Promise (z => setTimeout (z, 99)); // showImage
+    // If the dialogText is visible, it should focus
+    document.getElementById('dialogTextDescription').focus();
   }
 
   // Show the next or previous slideshow image
@@ -908,6 +911,10 @@ export default class CommonStorageService extends Service {
       else if (!actual.previousElementSibling) this.edgeImage = this.intl.t('imageFirst');
       // else this.edgeImage = this.intl.t('imageNumber', {n: ino})
     }
+      // this.loli('end of showNext', 'color:red');
+    await new Promise (z => setTimeout (z, 99)); // showNext
+    // If the dialogText is visible, it should focus
+    document.getElementById('dialogTextDescription').focus();
   }
 
   //#region COOKIES

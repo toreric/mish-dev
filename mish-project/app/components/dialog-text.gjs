@@ -103,6 +103,7 @@ export class DialogText extends Component {
       // console.log(this.z.allFiles[this.z.picIndex].txt1.toString());
     desc.value = this.z.deNormalize2LF(this.z.allFiles[this.z.picIndex].txt1.toString());
     document.getElementById('dialogTextCreator').value = this.z.deNormalize2LF(this.z.allFiles[this.z.picIndex].txt2.toString());
+    document.getElementById('dialogTextDescription').focus();
   }
 
   // Detect closing click outside a dialog-draggable modal dialog (FF only)
