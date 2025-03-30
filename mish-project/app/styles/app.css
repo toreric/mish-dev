@@ -1358,10 +1358,9 @@ img.mark {
   font-size: 1.5rem;
 }
 #do_print,
+#full_size,
 #go_back {
   /* .nav_links */
-  height: 2.4rem;
-  width: 1.6rem;
   /* padding: 0 0.3em 0.1em 0.4em; */
   background-size: 2.4rem !important;
   background-repeat: no-repeat !important;
@@ -1370,9 +1369,18 @@ img.mark {
 }
 
 #do_print {
-  background-image: url(/images/printer.svg);
+  height: 2.6rem;
+  width: 1.8rem;
+  background-image: url(/images/icons8-print-96.png);
+}
+#full_size {
+  height: 1.6rem;
+  width: 2.6rem;
+  background-image: url(/images/icons8-expand-96.png);
 }
 #go_back {
+  height: 2.4rem;
+  width: 1.6rem;
   background-image: url(/images/icons8-return-96.png);
 }
 #togg_text {

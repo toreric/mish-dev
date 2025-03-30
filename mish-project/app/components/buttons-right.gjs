@@ -48,14 +48,15 @@ export class ButtonsRight extends Component {
         <!-- CHOOSE AUTO-SHOW s/texline OR s/slide -->
         <a class="speedBase nav_" {{action 'speedBase'}} title="Välj per bild
     eller bildtextrad">&nbsp;per<br>&nbsp;text-&nbsp;<br>&nbsp;rad</a>
-      </span><br>
-      <!-- FULL SIZE -->
-      <a class="nav_" id="full_size" draggable="false" {{action 'fullSize'}} title="Full storlek
-    i nytt fönster" style="font-size:200%;line-height:80%;padding:0.3em 0.33em 0.25em 0.3em">&#9974;</a> &nbsp; <br>
-    <a class="nav_ pnav_" id="do_print" title="Skriv ut" {{action 'doPrint'}} src="/images/printer.svg"></a> &nbsp; --}}
+      </span><br> --}}
+
+      {{!-- FULL SIZE fullSize --}}
+      <a class="nav_" id="full_size" title="{{t 'fullSize'}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.futureNotYet 'fullSize')}}> </a> &nbsp;<br>
+
+      {{!-- PRINT doPrint  --}}
+      <a class="nav_ pnav_" id="do_print" title="{{t 'printOut'}}" {{on 'click' (fn this.z.futureNotYet 'printOut')}}> </a> &nbsp;
     </div>
 
   </template>
-
 
 }

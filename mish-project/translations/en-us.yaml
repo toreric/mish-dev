@@ -274,6 +274,7 @@ fav:
   images: Favorite images
   manage: Manage favorite images
 foundExplain: Found images
+fullSize: "Full size in\nnew window"
 gomini: "Return\n
         [Esc]"
 gonext: "Next\n
@@ -294,6 +295,7 @@ loggedIn: Logged in
 noCollSelected: No album collection selected
 picfound: §Found_images
 plusExplain: Subalbums also have subalbums!
+printOut: Prnt
 reloadApp: Reload the app!
 select:
   language: Select language

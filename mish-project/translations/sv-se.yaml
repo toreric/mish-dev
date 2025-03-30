@@ -272,6 +272,7 @@ fav:
   images: Favoritbilder
   manage: Favoritbildhantering
 foundExplain: Funna bilder
+fullSize: "Full storlek\ni nytt fönster"
 gomini: "Återgå\n
         [Esc]"
 gonext: "Nästa\n
@@ -292,6 +293,7 @@ loggedIn: Inloggad
 noCollSelected: Ingen albumsamling har valts
 picfound: §Funna_bilder
 plusExplain: Underalbum har också underalbum!
+printOut: Skriv ut
 reloadApp: Ladda om appen!
 select:
   language: Välj språk

@@ -378,7 +378,7 @@ export default class CommonStorageService extends Service {
     this.numMarked = 0;
 
     i = Number(i); // important!
-    if (i === 0) this.albumHistory = [0]; // Recover from possible "browser disorder"
+    //if (i === 0) this.albumHistory = [0]; // Recover from possible "browser disorder"
     this.imdbDir = this.imdbDirs[i];
     this.imdbDirIndex = i;
     let h = this.albumHistory;
@@ -459,7 +459,7 @@ export default class CommonStorageService extends Service {
     let preloadShowImg = [];
     for (let file of this.allFiles) {
       let img = new Image();
-      img.src = 'rln' + file.show;
+      img.src = 'rln' + file.show; // Does
       preloadShowImg.push(img);
     }
 
@@ -768,7 +768,7 @@ export default class CommonStorageService extends Service {
       document.querySelector('.img_show').style.display = 'table';
       // Hide the image menu button (here Ctrl+Click is used to open it)
       document.querySelector('.img_show button.menu_img').style.display = 'none';
-      // Hide the navigation overlay information
+      // Make the navigation overlay invisible
       document.querySelector('.toggleNavInfo').style.opacity = '0';
 
       // Show the right side buttons
