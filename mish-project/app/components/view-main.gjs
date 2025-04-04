@@ -136,8 +136,10 @@ class SubAlbums extends Component {
           {{#each this.z.subaIndex as |i|}}
             {{#if (this.keepDir i)}}
               <div class="subAlbum" title="" {{on 'click' (fn this.z.openAlbum i)}}>
-                <a class="imDir" style="background:transparent" title-2="Album ”{{this.dirName i}}”">
-                    <img src={{this.setLabel i}} alt="Album ”{{this.dirName i}}”"><br>
+                <a class="imDir" style="background:transparent">
+                  <div title-2="Album ”{{this.dirName i}}”">
+                    <img src={{this.setLabel i}} alt="Album ”{{this.dirName i}}”">
+                  </div><br>
                   <span style="font-size:85%;color:{{this.z.subColor}}">{{this.dirName i}}</span>
                 </a>
               </div>

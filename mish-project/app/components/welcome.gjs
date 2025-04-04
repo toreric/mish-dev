@@ -181,7 +181,7 @@ class Welcome extends Component {
       // Various settings
         // this.z.loli('getCred 0', 'color:red')
       this.z.initBrowser();         // Manipulate browser back-arrow
-      this.z.maxWarning = 50;       // Set recommended album size, about 100
+      this.z.maxWarning = 100;       // Set recommended album maxsize, about 100
       this.z.displayNames = 'none'; // Hide image names
       await new Promise (z => setTimeout (z, 99)); // Before awakening the system
       // document.querySelector('#toggleName').click(); // Initially hide (donowhy)

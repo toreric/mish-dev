@@ -858,9 +858,11 @@ button[disabled] {
   font-weight: bold;
   color: #aef;
 }
-.subAlbum:hover a span {
+/*.subAlbum:hover a span {
+  font-size: 85%!important;
+  font-weight: bold!important;
   color: #777!important;
-}
+}*/
 .img_show .imDir .albumName {
   padding-right: 50px;
 }
@@ -900,6 +902,7 @@ a.imDir img {
   height: 60px;
   width: 80px;
   border-radius: 4px;
+  border: 1.4px solid #777;
 }
 /*a.imDir * {
   color: #aef;
@@ -908,7 +911,7 @@ a.imDir img {
   border: 2px solid #aef;
 }*/
 a.imDir:hover img {
-  border: 1px solid #aef;
+  border: 1.4px solid #aef;
 }
 a.imDir:hover span {
   color: #fff;
