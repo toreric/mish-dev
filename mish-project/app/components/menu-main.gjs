@@ -170,13 +170,16 @@ export class MenuMain extends Component {
   // Close/open albumTree
   toggleAlbumTree = () => {
     if (this.missingRoot()) return;
+    let headDiv = document.getElementById('albumHead');
     let treeDiv = document.querySelector('div.albumTree');
     let what;
     if (treeDiv.style.display) {
       what = 'opened';
+      headDiv.style.display = 'flex';
       treeDiv.style.display = '';
     }else {
       what = 'closed';
+      headDiv.style.display = 'none';
       treeDiv.style.display = 'none';
     }
     this.z.loli(what + ' the album tree');
@@ -278,18 +281,18 @@ export class MenuMain extends Component {
       {{/if}}
 
       {{!-- <RefreshThis @for={{this.z.numShown}}> --}}
-      <div class="albumTree" style="display:none">
-        <span style="display:flex;justify-content:space-between">
-          <span style="margin:0.2rem;padding:0.1rem 0.2rem;float:right" title=""><em>{{t 'totalImgNumber'}}</em>:&nbsp;{{this.totalImgNumber}}</span>
+      <div id='albumHead' style="display:none;justify-content:space-between">
+        <span style="margin:0.2rem;padding:0.1rem 0.2rem;float:right" title=""><em>{{t 'totalImgNumber'}}</em>:&nbsp;{{this.totalImgNumber}}</span>
 
-          <span>
-            <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title-2={{t 'closeallalb'}} {{on "click" (fn this.closeAll)}}>{{t 'all'}} {{CL}}</a>
+        <span>
+          <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title-2={{t 'closeallalb'}} {{on "click" (fn this.closeAll)}}>{{t 'all'}} {{CL}}</a>
 
-            <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title-2={{t 'openallalb'}} {{on "click" (fn this.openAll)}}>{{t 'all'}} {{OP}}</a>
+          <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title-2={{t 'openallalb'}} {{on "click" (fn this.openAll)}}>{{t 'all'}} {{OP}}</a>
 
-            <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title-2={{t 'showselectedtext'}} {{on "click" (fn this.showSelected)}}>{{t 'showselected'}}</a>
-          </span>
+          <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title-2={{t 'showselectedtext'}} {{on "click" (fn this.showSelected)}}>{{t 'showselected'}}</a>
         </span>
+      </div>
+      <div class="albumTree" style="display:none">
         <Tree @tree={{this.tree}} />
         {{#if this.z.imdbRoot}}
           <p style="font-size:77%;vertical-align:top;line-height:1.1rem;margin:0 0.2rem 0 3rem">
@@ -344,6 +347,7 @@ class Tree extends Component {
 
   <template>
 
+    {{!-- This button is used! --}}
     <button style="display:none" {{on 'click' this.toggle}}>
       {{if this.isOpen 'Close' 'Open'}}
     </button>

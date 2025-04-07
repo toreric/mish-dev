@@ -401,7 +401,8 @@ export default class CommonStorageService extends Service {
       selected.style.display = '';
     }
 
-    // Retreive information for every image file from the server:
+    // Retreive information for every image file from the server
+    // and preload the _show_ images for faster show later:
     this.allFiles = await this.getImages();
         // this.loli(this.allFiles, 'color:lightgreen');
         // console.log(this.allFiles);
@@ -456,12 +457,12 @@ export default class CommonStorageService extends Service {
     }
 
     // Preload the show images
-    let preloadShowImg = [];
-    for (let file of this.allFiles) {
-      let img = new Image();
-      img.src = 'rln' + file.show; // Does
-      preloadShowImg.push(img);
-    }
+    // let preloadShowImg = [];
+    // for (let file of this.allFiles) {
+    //   let img = new Image();
+    //   img.src = 'rln' + file.show;
+    //   preloadShowImg.push(img);
+    // }
 
     // Reset the show/hide button since hidden images are not shown initially
     this.hideHidden();
@@ -746,7 +747,8 @@ export default class CommonStorageService extends Service {
       document.querySelector('.miniImgs.imgs').style.display = 'none'; //was 'flex'
       // Load the show image source path and set it's id="dname"
       let pic = document.querySelector('#link_show img');
-      pic.src = 'rln' + path;
+      // pic.src = 'rln' + path;
+      pic.src = path;
       // Copy the check mark class from the thumbnail
       if (!this.picName) this.loli('CommonStorageService error 4', 'color:red');
       let minipic = document.getElementById('i' + this.picName);
@@ -1131,7 +1133,7 @@ export default class CommonStorageService extends Service {
     // from each image file. It is reordered into 'newdata' in 'sortnames' order, as
     // far as possible; 'sortnames' is cleaned from non-existent (removed) files and
     // extended with new (added) files, in order as is. So far, the sort order is
-    // 'sortnames' with hideFlag (and ?)
+    // 'sortnames', hideFlag, and an unused 'zero'; comma separated
     var that = this;
     return new Promise((resolve, reject) => {
       var xhr = new XMLHttpRequest();

@@ -194,6 +194,7 @@ class AllImages extends Component {
     allFiles = async () => {
       this.items = [];
       for (let file of this.z.allFiles) {
+          // this.z.loli(file.show, 'color:red');
         this.items.push(file);
       }
     }
@@ -384,8 +385,8 @@ class AllImages extends Component {
                   <img src="/images/markericon.svg" draggable="false" ondragstart="return false" class="mark" title={{t 'Mark'}}>
                 </div>
 
-                {{!-- Here comes the thumbnail --}}
-                <img src="{{item.mini}}" class="left-click" title="{{this.z.imdbRoot}}{{item.linkto}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage item.name item.show)}}>
+                {{!-- Here comes the thumbnail, i.e. show-file in mini-size --}}
+                <img src="{{item.show}}" class="left-click" title="{{this.z.imdbRoot}}{{item.linkto}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage item.name item.show)}}>
 
               </div>
               <div {{on 'click' this.ediText}}>

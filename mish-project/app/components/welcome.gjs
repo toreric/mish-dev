@@ -301,11 +301,11 @@ export default class extends Welcome {
         </span>
       </div>
 
-       <div class="sameBackground" style="display:flex;justify-content:space-between;margin:0 3.25rem 0 4rem">
-         {{!-- NOTE: This extra commented-out  link is for emergency only if the
-          browser's back arrow fails due to problems in the initBrowser-goBack
-          cooperation in the CommonStorage service:
-          <a {{on 'click' (fn this.z.goBack)}}>&nbsp;&lt;- go back&nbsp;</a> --}}
+      <div class="sameBackground" style="display:flex;justify-content:space-between;margin:0 3.25rem 0 4rem">
+        {{!-- NOTE: This extra commented-out  link is for emergency only if the
+        browser's back arrow fails due to problems in the initBrowser-goBack
+        cooperation in the CommonStorage service:
+        <a {{on 'click' (fn this.z.goBack)}}>&nbsp;&lt;- go back&nbsp;</a> --}}
       </div>
 
     </div>
@@ -327,11 +327,11 @@ export default class extends Welcome {
       {{{this.z.aboutThis}}}
       <br>
 
-      <a id="do_mail" style="font-size:2rem;margin:0" class="smBu" title={{t 'buttons.left.mail'}} {{on 'click' (fn this.someFunction 'doMail')}} src="/images/mail.svg">
+      <a href id="do_mail" style="font-size:2rem;margin:0" class="smBu" title={{t 'buttons.left.mail'}} {{on 'click' (fn this.someFunction 'doMail')}} src="/images/mail.svg">
       </a>
 
       <a id="netMeeting" class="smBu" title={{t 'buttons.left.meet'}}
-      href="https://meet.jit.si/Minnenfr%C3%A5nS%C3%A4var%C3%A5dalenochHolm%C3%B6n" target="jitsi_window" draggable="false" ondragstart="return false" style="font-size:1.85rem;margin:0;padding:0 0.4rem 0.3rem 0.2rem" onclick="this.hide">▣</a>
+      href="https://meet.jit.si/Minnenfr%C3%A5nS%C3%A4var%C3%A5dalenochHolm%C3%B6n" target="jitsi_window" draggable="false" ondragstart="return false" style="font-size:1.85rem;margin:0;padding:0 0.4rem 0.3rem 0.2rem">▣</a>
 
     </p>
 
