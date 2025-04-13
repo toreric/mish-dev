@@ -1,7 +1,7 @@
 //== Mish main component Welcome
-//   NOTE: DialogSettings is coded at the end of this file!
-//   It is referenced in 'templates/applications.hbs'
+//   'Welcome' is referenced in 'templates/applications.hbs'
 
+//   NOTE: 'DialogSettings' ends his file
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
@@ -40,6 +40,8 @@ import { dialogInfoId } from './dialog-info';
 import { dialogLoginId } from './dialog-login';
 import { dialogRightsId } from './dialog-login';
 import { dialogXperId } from './dialog-xper';
+
+// The DialogSettings dialog is ihe last of this code
 
 const returnValue = cell(''); // Never used?
 const LF = '\n';
@@ -193,69 +195,6 @@ const toggleDialog = (dialogId, origPos) => { //copy from z
   console.log('-"-: ' + what + dialogId);
 }
 
-export class DialogSettings extends Component {
-  @service('common-storage') z;
-  @service intl;
-
-  @tracked boxId = ''; // checkbox id
-
-  // Detect closing Esc key
-  detectEscClose = (e) => {
-    e.stopPropagation();
-    if (e.keyCode === 27) { // Esc key
-      if (document.getElementById('dialogSettings').open) this.z.closeDialog('dialogSettings');
-    }
-  }
-
-  detectCheckbox = (e) => {
-    const elCheckbox = e.target.closest('input[type="checkbox"]');
-    if (!elCheckbox) return; // Not a checkbox element
-      // this.z.loli(`${elCheckbox.id} ${elCheckbox.checked}`, 'color:red');
-    this.boxId = elCheckbox.id;
-    // 1. ändra denna
-    // 2. gå igenom alla
-  }
-
-  <template>
-    <dialog id="dialogSettings" {{on 'keydown' this.detectEscClose}}>
-      <header data-dialog-draggable>
-        <div style="width:99%">
-          <p><b>{{t 'settingsGeneral'}}</b></p>
-        </div>
-        <div>
-          <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogSettings')}}>×</button>
-        </div>
-      </header>
-      {{!-- <main style="text-align:center" style="text-align:center;min-height:10rem"> --}}
-      <main style="padding:0 0.75rem;max-height:24rem" width="99%">
-
-        <div style="padding:0.5rem 0;line-height:1.4rem">
-          {{t 'write.set0'}}:<br>
-          <span class="glue">
-            <input id="setPoop" name="settings" value="" type="checkbox" {{on 'click' this.detectCheckbox}}>
-            <label for="setPoop"> &nbsp;{{t 'write.setPoop'}}</label>
-          </span>
-          <span class="glue">
-            <input id="setBeep" name="settings" value="" type="checkbox" {{on 'click' this.detectCheckbox}}>
-            <label for="setBeep"> &nbsp;{{t 'write.setBeep'}}</label>
-          </span>
-          {{!-- {{#if this.z.allow.deleteImg}}
-            <span class="glue">
-              <input id="setEraseOriginal" name="settings" value="" type="checkbox" {{on 'click' this.detectCheckbox}}>
-              <label for="setEraseOriginal"> &nbsp;{{t 'write.setEraseOriginal'}}</label>
-            </span>
-          {{/if}} --}}
-        </div>
-
-      </main>
-      <footer data-dialog-draggable>
-        <button type="button" {{on 'click' (fn this.z.closeDialog 'dialogSettings')}}>{{t 'button.close'}}</button>&nbsp;
-      </footer>
-    </dialog>
-  </template>
-
-}
-
 class Welcome extends Component {
   @service('common-storage') z;
   @service intl;
@@ -281,8 +220,6 @@ class Welcome extends Component {
         // this.z.loli('getCred 0', 'color:red');
 
       // Various settings
-      BEEP = 1; // Keydown beep on/off
-      POOP = 1; // Keydown poop on/off (visual)
       this.z.displayNames = 'none'; // Hide image names
       this.z.initBrowser();         // Manipulate browser back-arrow
       this.z.maxWarning = 100;      // Set recommended album maxsize, about 100
@@ -354,16 +291,14 @@ export default class extends Welcome {
       {{!-- <div {{this.getCred}} class="sameBackground" style="display:flex;justify-content:space-between;margin:0 3.25rem 0 4rem"> --}}
 
         <span>
-          <b style="font-size:106%;margin-top:0.35rem;display:inline-block">{{t "header"}}</b>
-
-          <button id="dark_light" type="button" title-2="{{t 'button.backgtitle'}}: {{t 'dark'}}/{{t 'light'}}" {{on 'click' (fn this.z.toggleBackg)}}>&nbsp;</button>
+          <b style="font-size:106%;margin-top:0.35rem;display:inline-block">{{t "header"}}</b>&nbsp;
 
           <button type="button" style="background:transparent;color:brown" {{on 'click' (fn this.z.toggleDialog 'dialogSettings')}}>{{t 'settings'}}</button>
         </span>
 
         <span>
           {{#if this.z.allow.deleteImg}}
-            <button type="button" title="Xperimental" style="background:transparent" {{on 'click' (fn this.z.toggleDialog dialogXperId)}}>&nbsp;&nbsp;</button>
+            <button type="button" title="Xperimental" style="background:transparent;height:60%;border-radius:50%" {{on 'click' (fn this.z.toggleDialog dialogXperId)}}>&nbsp;&nbsp;</button>
           {{/if}}
 
           <span id="loggedInUser">
@@ -455,4 +390,78 @@ export default class extends Welcome {
     <Spinner />
 
   </template>;
+}
+
+export class DialogSettings extends Component {
+  @service('common-storage') z;
+  @service intl;
+
+  // Detect closing Esc key
+  detectEscClose = (e) => {
+    e.stopPropagation();
+    if (e.keyCode === 27) { // Esc key
+      if (document.getElementById('dialogSettings').open) this.z.closeDialog('dialogSettings');
+    }
+  }
+
+  detectCheckbox = (e) => {
+    const elCheckbox = e.target.closest('input[type="checkbox"]');
+    if (!elCheckbox) return; // Not a checkbox element
+      // this.z.loli(`${elCheckbox.id} ${elCheckbox.checked}`, 'color:red');
+    let cboxes = document.querySelectorAll('#dialogSettings input[type="checkbox"]');
+    for (let cbs of cboxes) {
+      switch(cbs.id) {
+        case 'setPoop':
+          if (cbs.checked) POOP = 1; // Keydown poop on (visual)
+          else POOP = 0; break;
+        case 'setBeep':
+          if (cbs.checked) BEEP = 1; // Keydown beep on
+          else BEEP = 0; break;
+      }
+    }
+    // 1. ändra denna
+    // 2. gå igenom alla
+  }
+
+  <template>
+    <dialog id="dialogSettings" {{on 'keydown' this.detectEscClose}}>
+      <header data-dialog-draggable>
+        <div style="width:99%">
+          <p><b>{{t 'settingsGeneral'}}</b></p>
+        </div>
+        <div>
+          <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogSettings')}}>×</button>
+        </div>
+      </header>
+      {{!-- <main style="text-align:center" style="text-align:center;min-height:10rem"> --}}
+      <main style="padding:0 0.75rem;max-height:24rem" width="99%">
+
+        <div style="padding:0.5rem 0;line-height:1.4rem">
+
+          {{t 'write.set0'}}:<br>
+          <button id="dark_light" style="line-height:0.65rem;margin-right:-0.25rem;" type="button" {{on 'click' (fn this.z.toggleBackg)}}>&nbsp;</button>
+          <label for="dark_light">{{t 'button.backgtitle'}}: {{t 'dark'}}/{{t 'light'}}</label><br>
+          <span class="glue">
+            <input id="setPoop" name="settings" value="" type="checkbox" {{on 'click' this.detectCheckbox}}>
+            <label for="setPoop"> &nbsp;{{t 'write.setPoop'}}</label>
+          </span>
+          <span class="glue">
+            <input id="setBeep" name="settings" value="" type="checkbox" {{on 'click' this.detectCheckbox}}>
+            <label for="setBeep"> &nbsp;{{t 'write.setBeep'}}</label>
+          </span>
+          {{!-- {{#if this.z.allow.deleteImg}}
+            <span class="glue">
+              <input id="setEraseOriginal" name="settings" value="" type="checkbox" {{on 'click' this.detectCheckbox}}>
+              <label for="setEraseOriginal"> &nbsp;{{t 'write.setEraseOriginal'}}</label>
+            </span>
+          {{/if}} --}}
+        </div>
+
+      </main>
+      <footer data-dialog-draggable>
+        <button type="button" {{on 'click' (fn this.z.closeDialog 'dialogSettings')}}>{{t 'button.close'}}</button>&nbsp;
+      </footer>
+    </dialog>
+  </template>
+
 }
