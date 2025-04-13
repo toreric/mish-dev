@@ -1,4 +1,5 @@
 //== Mish main component Welcome
+//   NOTE: DialogSettings is coded at the end of this file!
 //   It is referenced in 'templates/applications.hbs'
 
 import Component from '@glimmer/component';
@@ -22,12 +23,13 @@ import { DialogLogin } from './dialog-login';
 import { DialogText } from './dialog-text';
 import { DialogUtil } from './dialog-util';
 import { DialogXper } from './dialog-xper';
-import { default as Header } from './header';
+import Header from './header';
 import { Language } from './language';
 import { MenuImage } from './menu-image';
 import { ChooseAlbum } from './menu-image';
 import { MenuMain } from './menu-main';
 import { ViewMain } from './view-main';
+import RefreshThis from './refresh-this';
 import { Spinner } from './spinner';
 
 import { dialogAlertId } from './dialog-alert';
@@ -41,6 +43,7 @@ import { dialogXperId } from './dialog-xper';
 const returnValue = cell(''); // Never used?
 const LF = '\n';
 const CRLF = '&#13;&#10;'; // May be used in 'title': the only mod.possible!
+let BEEP = 0, POOP = 0;    // Mousedown beep and poopup
 
 // NOTE: Here makeDialogDraggable() declares 'data-dialog-draggable'
 // so it may be further referenced in child elements of any <dialog>
@@ -48,6 +51,7 @@ makeDialogDraggable();
 
 // Detect various keys
 document.addEventListener('keydown', (event) => {
+
   event.stopPropagation();
   var key = event.keyCode;
       // console.log('Key ' + key + ' pressed');
@@ -89,6 +93,21 @@ document.addEventListener('keydown', (event) => {
       toggleDialog(dialogHelpId);
   }
 });
+
+var aud = new AudioContext();
+const beep  =  function(vol, freq, duration){
+  let v = aud.createOscillator();
+  let u = aud.createGain();
+  v.connect(u);
+  v.frequency.value = freq;
+  v.type = "square";
+  u.connect(aud.destination);
+  u.gain.value = vol*0.01;
+  v.start(aud.currentTime);
+  v.stop(aud.currentTime + duration*0.001);
+}
+
+
 
 // ALL bubbling mousedowns are caught, even programmatical clicks!
 document.addEventListener('mousedown', async (event) => {
@@ -136,6 +155,25 @@ document.addEventListener('mousedown', async (event) => {
   return;
 });
 
+// ALL bubbling mouseups should be caught
+document.addEventListener('mouseup', async (event) => {
+    // console.log('event:', event);
+    // console.log(event.target);
+  if (!BEEP && !POOP) return;
+  if (BEEP) beep(50, 550, 100);
+  if (POOP) { // About BEEP and POOP: see getCred below
+    let poop = document.getElementById('poop');
+    poop.style.zIndex = 12000;
+    poop.style.left = event.clientX - 50 + 'px';
+    poop.style.top = event.clientY - 50 + 'px';
+      // console.log('coordinates', event.clientX, event.clientY);
+    poop.style.display = '';
+    setTimeout(function() {
+      poop.style.display = 'none';
+    }, 250)
+  }
+});
+
 const resetBorders = () => { //copy from z
   var minObj = document.querySelectorAll('.img_mini img.left-click');
   for (let min of minObj) {
@@ -153,6 +191,47 @@ const toggleDialog = (dialogId, origPos) => { //copy from z
     diaObj.show();
   }
   console.log('-"-: ' + what + dialogId);
+}
+
+export class DialogSettings extends Component {
+  @service('common-storage') z;
+  @service intl;
+
+  // Detect closing Esc key
+  detectEscClose = (e) => {
+    e.stopPropagation();
+    if (e.keyCode === 27) { // Esc key
+      if (document.getElementById('dialogSettings').open) this.z.closeDialog('dialogSettings');
+    }
+  }
+
+  <template>
+    <dialog id="dialogSettings" {{on 'keydown' this.detectEscClose}}>
+      <header data-dialog-draggable>
+        <div style="width:99%">
+          <p>{{t 'settings'}}<span></span></p>
+        </div>
+        <div>
+          <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogSettings')}}>×</button>
+        </div>
+      </header>
+      <main style="text-align:center" style="text-align:center;min-height:10rem">
+
+        <div style="display:flex;justify-content:center">
+          i n s t ä l l n i n g a r
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+
+      </main>
+      <footer data-dialog-draggable>
+        <button type="button" {{on 'click' (fn this.z.closeDialog 'dialogSettings')}}>{{t 'button.close'}}</button>&nbsp;
+      </footer>
+    </dialog>
+  </template>
+
 }
 
 class Welcome extends Component {
@@ -177,12 +256,14 @@ class Welcome extends Component {
   getCred = async () => {
     await new Promise (z => setTimeout (z, 99)); // Allow userStatus to settle
     if (!this.z.userStatus) { // only once
+        // this.z.loli('getCred 0', 'color:red');
 
       // Various settings
-        // this.z.loli('getCred 0', 'color:red')
-      this.z.initBrowser();         // Manipulate browser back-arrow
-      this.z.maxWarning = 100;       // Set recommended album maxsize, about 100
+      BEEP = 1; // Keydown beep on/off
+      POOP = 1; // Keydown poop on/off (visual)
       this.z.displayNames = 'none'; // Hide image names
+      this.z.initBrowser();         // Manipulate browser back-arrow
+      this.z.maxWarning = 100;      // Set recommended album maxsize, about 100
       await new Promise (z => setTimeout (z, 99)); // Before awakening the system
       // document.querySelector('#toggleName').click(); // Initially hide (donowhy)
 
@@ -242,6 +323,9 @@ export default class extends Welcome {
   <template>
 
     <div id='highUp'></div>
+    <RefreshThis @for={{this.z.refreshTexts}}>
+      <div id="poop" style="position:fixed;display:none;left:0;top:0;width:100px;height:100px;background-image:url(/images/spinner.svg)"></div>
+    </RefreshThis>
 
     <div id="upperButtons" style="position:relative;top:0;left:0;width:100%;padding-top:0.5rem">
       <div {{executeOnInsert this}} class="sameBackground" style="display:flex;justify-content:space-between;margin:0 3.25rem 0 4rem">
@@ -252,17 +336,17 @@ export default class extends Welcome {
           <button id="dark_light" type="button" title-2="{{t 'button.backgtitle'}}: {{t 'dark'}}/{{t 'light'}}" {{on 'click' (fn this.z.toggleBackg)}}>&nbsp;</button>
         </span>
 
-        {{#if this.z.allow.deleteImg}}
-          <span>
-            <button type="button" title="Xperimental" style="background:transparent;height:1rem;border-radius:0.5rem" {{on 'click' (fn this.z.toggleDialog dialogXperId)}}>&nbsp;</button>
+        <span>
+          {{#if this.z.allow.deleteImg}}
+            <button type="button" title="Xperimental" style="background:transparent" {{on 'click' (fn this.z.toggleDialog dialogXperId)}}>&nbsp;&nbsp;</button>
 
-            {{!-- <button type="button" {{on 'click' (fn this.openRights)}}>{{t 'button.rightsinfo'}}</button> --}}
+            <button type="button" style="background:transparent;color:brown" {{on 'click' (fn this.z.toggleDialog 'dialogSettings')}}>{{t 'settings'}}</button>
+          {{/if}}
+
+          <span id="loggedInUser">
+            <button type="button" title-2="{{t 'button.optchuser'}}" {{on 'click' (fn this.openLogIn)}}>{{t 'button.optlogin'}}</button>
+            {{t 'loggedIn'}}: <b>{{this.z.userName}}</b> {{t 'with'}} [{{this.z.userStatus}}]-{{t 'rights'}}
           </span>
-        {{/if}}
-
-        <span id="loggedInUser">
-          <button type="button" title-2="{{t 'button.optchuser'}}" {{on 'click' (fn this.openLogIn)}}>{{t 'button.optlogin'}}</button>
-          {{t 'loggedIn'}}: <b>{{this.z.userName}}</b> {{t 'with'}} [{{this.z.userStatus}}]-{{t 'rights'}}
         </span>
       </div>
 
@@ -344,6 +428,7 @@ export default class extends Welcome {
     <DialogChoose />
     <DialogXper @content={{this.album}} />
     <DialogUtil />
+    <DialogSettings />
     <Spinner />
 
   </template>;

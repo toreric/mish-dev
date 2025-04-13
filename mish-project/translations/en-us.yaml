@@ -7,10 +7,8 @@ albumcare: Album tools for
 albumcareinfo: Delete, create new, image sorting, duplicate search, and more
 albumcoll: Album collection
 albumcollshow: Show/hide album list
-openallalb: Show all subalbums
-closeallalb: Hide all subalbums
-showselected: Selected
-showselectedtext: Show selected album
+openallalb: Show/hide subalbums
+showselected: Show selected album
 tmpalbum1: With
 tmpalbum2: "first: Temporary album for displaying found images"
 needaroot: First select album collection!
@@ -38,7 +36,7 @@ saveChanges:  save changes more than texts
 setSetting:   change settings
 textEdit:     edit/save image texts/captions, access hidden albums³
 
-all: All
+all: all
 allInAlbum: (to the album)
 and: and
 captionFor: Image caption for
@@ -112,6 +110,7 @@ saved: S A V E D
 searchedFor: Searched for
 searchHelp: Search help
 selectTreshold: Select threshold value
+settings: Settings
 shown: shown
 simiThres: with similarity threshold
 Size: Size
@@ -157,7 +156,7 @@ button:
   #the initial 0 means link==false, move==true
   moveFunc:  0Transfer to the selected album
   notes:     Notes
-  optchuser: Change user
+  optchuser: Change user About rights
   optlogin:  Log in
   restart:   "Reload the browser\n
              by clicking here!"

@@ -108,7 +108,6 @@ export default class CommonStorageService extends Service {
   // For the DialogChoose dialog component, where
   // generally 0=no, 1=ok, and 2=cancel button selected
   @tracked buttonNumber = 0;
-
   selectChoice = (nr) => {
     this.buttonNumber = nr;
   }
@@ -361,7 +360,12 @@ export default class CommonStorageService extends Service {
   //#region openAlbum
   openAlbum = async (i) => {
     this.picName = '';
-    // this.closeDialogs(); // close possibly open dialogs
+    // Close dialogs without reuse potential:
+    this.closeDialog('dialogAlert');
+    this.closeDialog('dialogChoose');
+    this.closeDialog('dialogInfo');
+    this.closeDialog('dialogText');
+    this.closeDialog('dialogUtil');
     // Close the show image view
     document.querySelector('.img_show').style.display = 'none'; //was 'table'
     // Open the thumbnail view

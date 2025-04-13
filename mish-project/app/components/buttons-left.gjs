@@ -43,7 +43,9 @@ export class ButtonsLeft extends Component {
 
   toggleNameView = (e) => {
     if (e) e.stopPropagation();
-    this.z.displayNames = this.z.displayNames ? '' : 'block';
+      // this.z.loli(this.z.displayNames, 'color:red');
+    if (this.z.displayNames == 'none') this.z.displayNames = 'block';
+    else this.z.displayNames = 'none';
   }
 
   <template>

@@ -7,10 +7,8 @@ albumcare: Albumwerkzeuge für
 albumcareinfo: Löschen, neu erstellen, Bilder sortieren, nach Duplikaten suchen, und mehr
 albumcoll: Albumsammlung
 albumcollshow: Albumliste ein-/ausblenden
-openallalb: Alle Unteralben zeigen
-closeallalb: Alle Unteralben verbergen
-showselected: Ausgewähltes
-showselectedtext: Ausgewähltes Album anzeigen
+openallalb: Unteralben zeigen/verbergen
+showselected: Gewähltes Album anzeigen
 tmpalbum1: Mit
 tmpalbum2: "zuerst: Temporäres Album zur Anzeige gefundener Bilder"
 needaroot: Zuerst Albumsammlung auswählen!
@@ -38,7 +36,7 @@ saveChanges:  Änderungen speichern zusätzlich zu Text
 setSetting:   Einstellungen ändern
 textEdit:     Untertiteln bearbeiten/speichern, ausgeblendete Alben anzeigen³
 
-all: Alle
+all: alle
 allInAlbum: (zum album)
 and: und
 captionFor: Bildunterschrift für
@@ -112,6 +110,7 @@ saved: GESPEICHERT
 searchedFor: Gesucht
 searchHelp: Suchhilfe
 selectTreshold: Schwellenwert auswählen
+settings: Einstellungen
 shown: gezeigte
 simiThres: mit Ähnlichkeitsschwelle
 Size: Größe
@@ -156,12 +155,12 @@ button:
   #the initial 0 means link==false, move==true
   moveFunc:  0Verschieben in das ausgewählte Album
   notes:     Anmerkungen
-  optchuser: Benutzer wechseln
+  optchuser: Benutzer wechseln Rechteinformation
   optlogin:  Anmeldung
   restart:   "Den Browser neuladen\n
              durch hier klicken!"
   rightsinfo: Rechteinformation
-  rights:    Über Rechte
+  rights:    Rechteinformation
   save:      Speichern
   saveclose: Speichern und schließen
   show:      Alle anzeigen in

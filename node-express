@@ -9,7 +9,13 @@ port=3000
 # Kill the process (if any) already listening to this port
 prid=`lsof -t -i:$port`
 if [ $prid ]; then
-  echo "Port $port occupied by pid $prid"
+  echo "Port $port is occupied by a process with pid=$prid;"
+  echo -n "Kill the process and continue? (y/N): "
+  read yN
+  if [[ $yN != 'y' && $yN != 'yes' ]]; then
+    echo "Cancelled"
+    exit
+  fi
   sudo kill $prid
 fi
 
@@ -17,13 +23,13 @@ fi
 cd $project
 
 #IMDB_HOME=/mnt/sda2
-IMDB_HOME=/mnt/koofrwebdav
+#IMDB_HOME=/mnt/koofrwebdav
 IMDB_HOME=/home/tore
 #IMDB_ROOT=MISH
-IMDB_ROOT=Framkallning_2019
+#IMDB_ROOT=Framkallning_2019
 IMDB_ROOT=Album-1
-IMDB_ROOT='""' # Empty argument (must be '""') to be passed
-################# correctly positioned into '.../node .../server.js'
+IMDB_ROOT='""' # NOTE: An 'empty' argument must be `'""'` in order to be
+################   passed correctly positioned into `node server.js ...`
 if [[ $1 ]]; then
   IMDB_HOME=$1
   if [[ $2 ]]; then
@@ -34,6 +40,6 @@ echo IMDB_HOME = $IMDB_HOME
 echo IMDB_ROOT = $IMDB_ROOT
 echo -n "##### Starting the Node server "`date`
 
-# Note that Node may be installed as either 'node', 'nodejs', or both
-# Start the Express server [server.js contains "... require ('express')"]
+# Note that Node JS may be installed as either 'node', 'nodejs', or both
+# Start the Express server. NOTE: server.js contains `... require ('express')`
 node server.js $IMDB_HOME $IMDB_ROOT $port

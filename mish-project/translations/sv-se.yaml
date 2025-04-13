@@ -7,13 +7,11 @@ albumcare: Albumverktyg för
 albumcareinfo: Ta bort, gör nytt, bildsortera, dublettsökning, med mera
 albumcoll: Albumsamling
 albumcollshow: Visa/dölj albumlistan
+openallalb: Visa/dölj underalbum
+showselected: Visa valt album
 tmpalbum1: Med
 tmpalbum2: "först: Tillfälligt album för visning av funna bilder"
-openallalb: Visa alla underalbum
-closeallalb: Dölj alla underalbum
-showselected: Visa valt
-showselectedtext: Visa det valda albumet
-needaroot:    Välj först albumsamling!
+needaroot: Välj först albumsamling!
 nimages: antal bilder
 nlinked: plus antal inlänkade bilder
 nsubalbums: antal underalbum
@@ -38,7 +36,7 @@ saveChanges:  spara ändringar utöver text
 setSetting:   ändra inställningar
 textEdit:     redigera/spara bildtexter, se dolda album³
 
-all: Alla
+all: alla
 allInAlbum: (till albumet)
 and: och
 captionFor: Bildtext för
@@ -112,6 +110,7 @@ saved: S P A R A T
 searchedFor: Sökte efter
 searchHelp: Sökhjälp
 selectTreshold: Välj tröskelvärde
+settings: Inställningar
 shown: visas
 simiThres: med likhetströskel
 Size: Storlek
@@ -157,7 +156,7 @@ button:
   #the initial 0 means link==false, move==true
   moveFunc:  0Flytta till det valda albumet
   notes:     Anteckningar
-  optchuser: Byt användare
+  optchuser: Byt användare Om rättigheter
   optlogin:  Inloggning
   restart:   "Ladda om webbläsaren\n
              genom att klicka här!"

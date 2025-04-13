@@ -26,6 +26,7 @@ export class MenuMain extends Component {
   @service('common-storage') z;
   @service intl;
   @tracked hasHidden = false;
+  @tracked opcl = OP;
 
   // Choose collection = album root directory and its album (sub)directories
   // and convert them into an object tree with an amended property set.
@@ -43,7 +44,10 @@ export class MenuMain extends Component {
     this.z.loli('IMDB_ROOT (imdbRoot) set to ' + this.z.imdbRoot, 'color:orange');
     const allow = this.z.allow; // permissions
 
-    // Retreive the albums list of this collection (root album).
+    // Display the spinner already (will be hidden somewhere else)
+    document.querySelector('img.spinner').style.display = '';
+
+// Retreive the albums list of this collection (root album).
     // If the argment is false, _imdb_ignore.txt in the chosen
     // root album is read by the server, and mentioned albums
     // with subalbums are removed from the list:
@@ -112,20 +116,24 @@ export class MenuMain extends Component {
     const result = Object.values(tree.root);
     //end https://stackoverflow.com/questions/72006110/convert-file-path-into-object
 
-        // console.log(result);
+      // console.log(result);
     this.z.imdbTree = result;
-        // this.z.loli(this.z.imdbTree);
-        // this.z.loli(this.z.imdbDirs);
-        // this.z.loli('imdbTree ' + n + LF + JSON.stringify(result, null, 2)); //human readable
-    await new Promise (z => setTimeout (z, 199)); // selectRoot Wait for album tree
-    this.closeAll(); // fold all nodes except 0
-
+      // this.z.loli(this.z.imdbTree);
+      // this.z.loli(this.z.imdbDirs);
+      // this.z.loli('imdbTree ' + n + LF + JSON.stringify(result, null, 2)); //human readable
+      // this.z.loli(this.z.imdbCoco.length, 'color:red');
+    // await new Promise (z => setTimeout (z, 33*this.z.imdbCoco.length)); // selectRoot Wait for album tree
+    await new Promise (z => setTimeout (z, 333)); // selectRoot Wait for album tree
+    this.openAll(CL); // fold all nodes except 0
     let anyHidden = () => { // flags any hidden-without-allowance album
-      let coco = this.z.imdbCoco;
-      for (let i=0;i<coco.length;i++) {
-        if (coco[i].includes('*')) return true;
+      let hidden = false;
+      for (let i=0;i<this.z.imdbCoco.length;i++) {
+        if (this.z.imdbCoco[i].includes('*')) {
+          document.querySelector('.album.a' + i).style.color = 'pink';
+          hidden = true;
+        } //else  document.querySelector('.album.a' + i).style.color = 'white';
       }
-      return false;
+      return hidden;
     }
     this.hasHidden = anyHidden(); // if there are any hidden-without-allowance albums
     this.z.openAlbum(0); // Select the root album
@@ -218,21 +226,25 @@ export class MenuMain extends Component {
     selected.classList.remove('blink');
   }
 
-  // Open all nodes of albumTree
-  openAll = () => {
+  // Open/close all nodes of albumTree
+  openAll = (opcl) => {
     let all = document.querySelector('div.albumTree').querySelectorAll('a.album');
-    for (let i=0;i<all.length;i++) {
-      if (all[i].innerHTML.includes(OP)) all[i].click();
+    let i0 = 1; // Don't close root
+    if (opcl === OP) i0 = 0;
+    for (let i=i0;i<all.length;i++) {
+      if (all[i].innerHTML.includes(opcl)) all[i].click();
     }
+    if (opcl === OP) this.opcl = CL;
+    else this.opcl = OP;
   }
 
-  // Close all nodes of albumTree except the root
-  closeAll = () => {
-    let all = document.querySelector('div.albumTree').querySelectorAll('a.album');
-    for (let i=1;i<all.length;i++) {
-      if (all[i].innerHTML.includes(CL)) all[i].click();
-    }
-  }
+  // // Close all nodes of albumTree except the root
+  // closeAll = () => {
+  //   let all = document.querySelector('div.albumTree').querySelectorAll('a.album');
+  //   for (let i=1;i<all.length;i++) {
+  //     if (all[i].innerHTML.includes(CL)) all[i].click();
+  //   }
+  // }
 
   // Count the number of images in this album
   totalImgNumber = () => {
@@ -282,14 +294,12 @@ export class MenuMain extends Component {
 
       {{!-- <RefreshThis @for={{this.z.numShown}}> --}}
       <div id='albumHead' style="display:none;justify-content:space-between">
-        <span style="margin:0.2rem;padding:0.1rem 0.2rem;float:right" title=""><em>{{t 'totalImgNumber'}}</em>:&nbsp;{{this.totalImgNumber}}</span>
+        <span style="margin:0.2rem;padding:0.1rem 0.2rem">
+          <em>{{t 'totalImgNumber'}}</em>:&nbsp;{{this.totalImgNumber}}
 
-        <span>
-          <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title-2={{t 'closeallalb'}} {{on "click" (fn this.closeAll)}}>{{t 'all'}} {{CL}}</a>
+          <a style="margin:0 0.2rem 0 0.5rem;padding:0.1rem 0.2rem;border:0.5px solid #d3d3d3;border-radius:4px" title-2={{t 'openallalb'}} {{on "click" (fn this.openAll this.opcl)}}>{{this.opcl}} {{t 'all'}}</a>
 
-          <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title-2={{t 'openallalb'}} {{on "click" (fn this.openAll)}}>{{t 'all'}} {{OP}}</a>
-
-          <a style="margin:0.4rem 0.2rem 0 0;padding:0.1rem 0.2rem;float:right;border:0.5px solid #d3d3d3;border-radius:4px" title-2={{t 'showselectedtext'}} {{on "click" (fn this.showSelected)}}>{{t 'showselected'}}</a>
+          <a style="margin:0;padding:0.1rem 0.2rem;border:0.5px solid #d3d3d3;border-radius:4px" {{on "click" (fn this.showSelected)}}>{{t 'showselected'}}</a>
         </span>
       </div>
       <div class="albumTree" style="display:none">
