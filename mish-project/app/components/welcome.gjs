@@ -3,6 +3,7 @@
 //   It is referenced in 'templates/applications.hbs'
 
 import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
@@ -159,7 +160,6 @@ document.addEventListener('mousedown', async (event) => {
 document.addEventListener('mouseup', async (event) => {
     // console.log('event:', event);
     // console.log(event.target);
-  if (!BEEP && !POOP) return;
   if (BEEP) beep(50, 550, 100);
   if (POOP) { // About BEEP and POOP: see getCred below
     let poop = document.getElementById('poop');
@@ -197,6 +197,8 @@ export class DialogSettings extends Component {
   @service('common-storage') z;
   @service intl;
 
+  @tracked boxId = ''; // checkbox id
+
   // Detect closing Esc key
   detectEscClose = (e) => {
     e.stopPropagation();
@@ -205,25 +207,45 @@ export class DialogSettings extends Component {
     }
   }
 
+  detectCheckbox = (e) => {
+    const elCheckbox = e.target.closest('input[type="checkbox"]');
+    if (!elCheckbox) return; // Not a checkbox element
+      // this.z.loli(`${elCheckbox.id} ${elCheckbox.checked}`, 'color:red');
+    this.boxId = elCheckbox.id;
+    // 1. ändra denna
+    // 2. gå igenom alla
+  }
+
   <template>
     <dialog id="dialogSettings" {{on 'keydown' this.detectEscClose}}>
       <header data-dialog-draggable>
         <div style="width:99%">
-          <p>{{t 'settings'}}<span></span></p>
+          <p><b>{{t 'settingsGeneral'}}</b></p>
         </div>
         <div>
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogSettings')}}>×</button>
         </div>
       </header>
-      <main style="text-align:center" style="text-align:center;min-height:10rem">
+      {{!-- <main style="text-align:center" style="text-align:center;min-height:10rem"> --}}
+      <main style="padding:0 0.75rem;max-height:24rem" width="99%">
 
-        <div style="display:flex;justify-content:center">
-          i n s t ä l l n i n g a r
+        <div style="padding:0.5rem 0;line-height:1.4rem">
+          {{t 'write.set0'}}:<br>
+          <span class="glue">
+            <input id="setPoop" name="settings" value="" type="checkbox" {{on 'click' this.detectCheckbox}}>
+            <label for="setPoop"> &nbsp;{{t 'write.setPoop'}}</label>
+          </span>
+          <span class="glue">
+            <input id="setBeep" name="settings" value="" type="checkbox" {{on 'click' this.detectCheckbox}}>
+            <label for="setBeep"> &nbsp;{{t 'write.setBeep'}}</label>
+          </span>
+          {{!-- {{#if this.z.allow.deleteImg}}
+            <span class="glue">
+              <input id="setEraseOriginal" name="settings" value="" type="checkbox" {{on 'click' this.detectCheckbox}}>
+              <label for="setEraseOriginal"> &nbsp;{{t 'write.setEraseOriginal'}}</label>
+            </span>
+          {{/if}} --}}
         </div>
-        <br>
-        <br>
-        <br>
-        <br>
 
       </main>
       <footer data-dialog-draggable>
@@ -329,18 +351,19 @@ export default class extends Welcome {
 
     <div id="upperButtons" style="position:relative;top:0;left:0;width:100%;padding-top:0.5rem">
       <div {{executeOnInsert this}} class="sameBackground" style="display:flex;justify-content:space-between;margin:0 3.25rem 0 4rem">
+      {{!-- <div {{this.getCred}} class="sameBackground" style="display:flex;justify-content:space-between;margin:0 3.25rem 0 4rem"> --}}
 
         <span>
           <b style="font-size:106%;margin-top:0.35rem;display:inline-block">{{t "header"}}</b>
 
           <button id="dark_light" type="button" title-2="{{t 'button.backgtitle'}}: {{t 'dark'}}/{{t 'light'}}" {{on 'click' (fn this.z.toggleBackg)}}>&nbsp;</button>
+
+          <button type="button" style="background:transparent;color:brown" {{on 'click' (fn this.z.toggleDialog 'dialogSettings')}}>{{t 'settings'}}</button>
         </span>
 
         <span>
           {{#if this.z.allow.deleteImg}}
             <button type="button" title="Xperimental" style="background:transparent" {{on 'click' (fn this.z.toggleDialog dialogXperId)}}>&nbsp;&nbsp;</button>
-
-            <button type="button" style="background:transparent;color:brown" {{on 'click' (fn this.z.toggleDialog 'dialogSettings')}}>{{t 'settings'}}</button>
           {{/if}}
 
           <span id="loggedInUser">
@@ -355,24 +378,24 @@ export default class extends Welcome {
 
           {{#if this.z.imdbRoot}}
             {{#if this.z.imdbDir}}
-        <span style="" info="Also spacing!">
-        <Language />
-              <a style="margin-left:3rem" {{on 'click' (fn this.z.openAlbum 0)}}>
-                <span style="font:small-caps bold 0.9rem sans-serif;text-decoration:underline">{{t 'home'}}</span>
-              </a>
-        </span>
+              <span style="" info="Also spacing!">
+                <Language />
+                <a style="margin-left:3rem" {{on 'click' (fn this.z.openAlbum 0)}}>
+                  <span style="font:small-caps bold 0.9rem sans-serif;text-decoration:underline">{{t 'home'}}</span>
+                </a>
+              </span>
               <b>”{{this.z.imdbRoot}}”</b>
             {{else}}
-        <Language />
-        <span style="" info="Also spacing!">
-              <b>”{{this.z.imdbRoot}}”</b>
-        </span>
+              <Language />
+              <span style="" info="Also spacing!">
+                <b>”{{this.z.imdbRoot}}”</b>
+              </span>
             {{/if}}
           {{else}}
-        <Language />
-        <span style="" info="Also spacing!">
-            {{t 'noCollSelected'}}
-        </span>
+            <Language />
+            <span style="" info="Also spacing!">
+              {{t 'noCollSelected'}}
+            </span>
           {{/if}}
 
           {{!-- NOTE: This extra commented-out  link is for emergency only if the

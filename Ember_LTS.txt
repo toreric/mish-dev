@@ -34,3 +34,16 @@ Windvis added:
   If you want to update ember-source / ember-cli, I would use ember-cli-update since that updates your whole blueprint
   I'm guessing Embroider requires manual changes, not sure if there is a migration guide.
   Maybe you can run this for the Embroider update: https://github.com/mainmatter/ember-vite-codemod
+
+THE UPDATE ENDED 2025-04-11 WITH:
+$ pnpm outdated
+┌─────────────────────────┬─────────┬────────┐
+│ Package                 │ Current │ Latest │
+├─────────────────────────┼─────────┼────────┤
+│ @embroider/compat (dev) │ 3.9.0   │ 4.0.1  │
+├─────────────────────────┼─────────┼────────┤
+│ @embroider/core (dev)   │ 3.5.6   │ 4.0.1  │
+├─────────────────────────┼─────────┼────────┤
+│ ember-primitives        │ 0.27.2  │ 0.30.0 │
+└─────────────────────────┴─────────┴────────┘
+Everything else is updated to latest, thus Ember 6.3 now!

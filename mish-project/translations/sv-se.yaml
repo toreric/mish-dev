@@ -111,6 +111,7 @@ searchedFor: Sökte efter
 searchHelp: Sökhjälp
 selectTreshold: Välj tröskelvärde
 settings: Inställningar
+settingsGeneral: Allmänna inställningar
 shown: visas
 simiThres: med likhetströskel
 Size: Storlek
@@ -383,6 +384,10 @@ write:
   origRemove: "Alternativ:"
   reloadRequired: <br><br>Ändrad albumstruktur kräver omstart<br>
   searchTerms: Skriv sökbegrepp åtskilda av blanktecken, små/stora bokstäver är oviktigt (välj nedan vilka texter du vill söka i)
+  set0: Välj inställningar
+  setBeep: Pip vid musklick
+  setPoop: Visualisera musklick
+  setEraseOriginal: Radera original med länk (VARNING!)
   tool0: "Välj för <b>{album}</b>:"
   tool1: Radera albumet (måste vara tomt)
   tool2: Gör ett underalbum
