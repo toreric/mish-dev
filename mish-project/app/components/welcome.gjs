@@ -298,7 +298,7 @@ export default class extends Welcome {
 
         <span>
           {{#if this.z.allow.deleteImg}}
-            <button type="button" title="Xperimental" style="background:transparent;height:60%;border-radius:50%" {{on 'click' (fn this.z.toggleDialog dialogXperId)}}>&nbsp;&nbsp;</button>
+            <button type="button" title="Xperimental" style="background:transparent;height:1.1rem;border-radius:50%" {{on 'click' (fn this.z.toggleDialog dialogXperId)}}>&nbsp;&nbsp;</button>
           {{/if}}
 
           <span id="loggedInUser">

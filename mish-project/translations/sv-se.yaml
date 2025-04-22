@@ -326,7 +326,7 @@ write:
   chooseLink: länkas till ett annat album?
   chooseMany: Ska alla {n} markerade bilderna
   chooseMove: flyttas till ett annat album?
-  chooseNone: Ingen bild vald!<br>
+  chosenNone: Ingen bild vald!<br>
               <br>Åtminstone den bild du klickar måste också markeras.
               <br>Det gäller för radering som en säkerhetsåtgärd.
   chooseOne:  Ska den här bilden

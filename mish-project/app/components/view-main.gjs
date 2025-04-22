@@ -89,10 +89,10 @@ class SubAlbums extends Component {
   hasImages = () => {
     let txt = '';
     if (this.z.hasImages) {
-      txt = ', ' + this.z.numOrigin + ' ' + this.intl.t('images');
+      txt = this.z.numOrigin + ' ' + this.intl.t('images');
       if (this.z.numLinked) txt += ' (' + this.intl.t('own') + ') + ' + this.z.numLinked + ' ' + this.intl.t('linked');
     } else {
-      txt = ', ' + this.intl.t('no') + ' ' + this.intl.t('images');
+      txt =  this.intl.t('no') + ' ' + this.intl.t('images');
     }
     return txt;
   }
@@ -124,12 +124,12 @@ class SubAlbums extends Component {
           {{#if this.z.imdbDir}}
             <span title-2="{{this.z.imdbRoot}}{{this.z.imdbDir}}">
               <b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
-              {{t 'has'}} {{this.nsub}} {{this.sual}}<span title-2={{t 'plusExplain'}}>{{{this.nadd}}}</span><span>{{this.hasImages}}</span>
+              {{t 'has'}} {{this.nsub}} {{this.sual}}<span title-2={{t 'plusExplain'}}>{{{this.nadd}}}, &nbsp;</span><span>{{this.hasImages}}</span>
             </span>
           {{else}} {{!-- root --}}
             <span>
               <b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
-              {{t 'has'}} {{this.nsubRoot}} <span title-2="”{{t 'foundExplain'}}”">(+1)</span> {{this.sualRoot}}<span title-2={{t 'plusExplain'}}>{{{this.nadd}}}</span><span>{{this.hasImages}}</span>
+              {{t 'has'}} {{this.nsubRoot}} <span title-2="”{{t 'foundExplain'}}”">(+1)</span> {{this.sualRoot}}<span title-2={{t 'plusExplain'}}>{{{this.nadd}}}, &nbsp;</span><span>{{this.hasImages}}</span>
             </span>
           {{/if}}
           <br>
@@ -325,8 +325,8 @@ class AllImages extends Component {
       {{!-- ================================================ --}}
       <div class="miniImgs imgs" style="display:flex;flex-wrap:wrap">
 
-      {{!-- The heading of the thumbnails' presentation --}}
-      {{#if this.z.hasImages}}
+        {{!-- The heading of the thumbnails' presentation --}}
+        {{#if this.z.hasImages}}
         <div style="width:100%">
 
           {{!-- If the album isn't the root album: --}}
@@ -334,26 +334,26 @@ class AllImages extends Component {
             <p><span title-2="{{this.z.imdbRoot}}{{this.z.imdbDir}}"><b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
 
             {{#if this.z.numHidden}}
-              — {{this.z.numShown}} {{t 'shown'}},
-              {{this.z.numInvisible}} {{t  'hidden'}}
+              — {{this.z.numShown}}&nbsp;{{t 'shown'}},
+              {{this.z.numInvisible}}&nbsp;{{t  'hidden'}}
             {{else}}
-              — {{this.z.numShown}} {{t 'shown'}}
+              — {{this.z.numShown}}&nbsp;{{t 'shown'}}
             {{/if}}
 
-            ({{this.z.numMarked}} {{t 'marked'}})</span></p>
+            ({{this.z.numMarked}}&nbsp;{{t 'marked'}})</span></p>
 
           {{!-- If the album is the root album: --}}
           {{else}} {{!-- root --}}
             <p><span><b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
 
             {{#if this.z.numHidden}}
-              — {{this.z.numShown}} {{t 'shown'}},
-              {{this.z.numInvisible}} {{t  'hidden'}}
+              — {{this.z.numShown}}&nbsp;{{t 'shown'}},
+              {{this.z.numInvisible}}&nbsp;{{t  'hidden'}}
             {{else}}
-              — {{this.z.numShown}} {{t 'shown'}}
+              — {{this.z.numShown}}&nbsp;{{t 'shown'}}
             {{/if}}
 
-            ({{this.z.numMarked}} {{t 'marked'}})</span></p>
+            ({{this.z.numMarked}}&nbsp;{{t 'marked'}})</span></p>
 
           {{/if}}
 
@@ -361,7 +361,7 @@ class AllImages extends Component {
                 Each #if/else-block needs it's own terminator! --}}
 
         </div>
-      {{/if}}
+        {{/if}}
 
         {{!-- The div of the thumnail images --}}
         <div id="imgWrapper" style="display:flex;flex-wrap:wrap;
@@ -385,8 +385,8 @@ class AllImages extends Component {
                   <img src="/images/markericon.svg" draggable="false" ondragstart="return false" class="mark" title={{t 'Mark'}}>
                 </div>
 
-                {{!-- Here comes the thumbnail, i.e. show-file in mini-size --}}
-                <img src="{{item.show}}" class="left-click" title="{{this.z.imdbRoot}}{{item.linkto}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage item.name item.show)}}>
+                {{!-- Here comes the thumbnail --}}
+                <img src="{{item.mini}}" class="left-click" title="{{this.z.imdbRoot}}{{item.linkto}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.showImage item.name item.show)}}>
 
               </div>
               <div {{on 'click' this.ediText}}>
@@ -412,8 +412,15 @@ class AllImages extends Component {
             </div>
           {{/each}}
           </RefreshThis>
-
         </div>
+
+        {{!-- Preload the show images --}}
+        <section style="display:none">
+          {{#each this.items as |item|}}
+            <img src="{{item.show}}" style="width:1px;heigh:1px;display:none">
+          {{/each}}
+        </section>
+
       </div>
 
     </div>

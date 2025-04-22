@@ -17,7 +17,8 @@ dialog {
   border: 1px solid white;
   border-radius: 4px;
   padding: 0.1rem;
-  max-width: 90%;
+/*max-width at least compatible with dialog-help ...*/
+  max-width:  min(38rem,90%);
   z-index: 14;
   top: 20%;
   position: fixed;

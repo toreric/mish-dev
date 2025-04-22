@@ -24,9 +24,7 @@ const SP = '&nbsp;'; // single space
 const SP2 = '&nbsp;&nbsp;'; // double space
 const SP3 = '&nbsp;&nbsp;&nbsp;'; // triple space
 const SP4 = '&nbsp;&nbsp;&nbsp;&nbsp;'; // four spaces
-
-// let albumsIndex = [];
-// let albums = [];
+let ERASE_ORIGINAL = 0;
 
 // Get the thumbnail-containing elements to be operated on,
 // either one unselected, or all co-selected elements:
@@ -46,10 +44,8 @@ export class MenuImage extends Component {
   @service('common-storage') z;
   @service intl;
 
-  // @tracked albums = [];
-  // @tracked albumsIndex = [];
   albums = new TrackedArray([]);
-  albumsIndex = new TrackedArray([]);
+//albumsIndex = new TrackedArray([]);
 
   // Detect closing Esc key
   detectClose = (e) => {
@@ -65,7 +61,7 @@ export class MenuImage extends Component {
   // A single image sometimes doesn't have this choice
   get chooseText() {
     // if (this.z.numMarked === 0) {
-    //   return this.intl.t('write.chooseNone');
+    //   return this.intl.t('write.chosenNone');
     // } else
     if (this.z.numMarked === 1) {
       return this.intl.t('write.chooseOne');
@@ -363,7 +359,7 @@ export class MenuImage extends Component {
       // Begin with this warning if it isn't only symlinks (it concerns all selected):
       let test = document.querySelectorAll('.img_mini.selected.symlink');
       if (test && imgs.length > test.length) this.z.chooseText += this.intl.t('write.eraseFunc') + '<br><br>';
-      // Else state the nuber to erase:
+      // Else state the number to erase:
       if (imgs.length > 1) {
         this.z.chooseText += this.intl.t('write.imageSeveral', {n: imgs.length});
       } else {
@@ -371,7 +367,9 @@ export class MenuImage extends Component {
       }
       this.z.chooseText += ':</span><br><br>';
       this.z.chooseText += '<span style="font-weight:normal">';
-      let iflink = false; //is there some symlink?
+
+      // From here must be redone if Choice_3...
+      let iflink = false; //is there any symlink?
       for (let pic of imgs) {
         if (pic.classList.contains('symlink')) {
           this.z.chooseText += '<span style="color:#080">'; //green
@@ -380,6 +378,7 @@ export class MenuImage extends Component {
         else this.z.chooseText += '<span style="color:#000">'; //black
         this.z.chooseText += pic.querySelector('.img_name').innerText.trim() + '</span>, ';
       }
+
       this.z.chooseText = this.z.chooseText.slice(0, -2); // Remove last ', '
       this.z.chooseText += '</span>'
       if (iflink) { // if some symlink: explain further
@@ -389,17 +388,35 @@ export class MenuImage extends Component {
         this.z.chooseText += '<br><br><span style="font-weight:normal;color:brown"><b>';
         this.z.chooseText += this.intl.t('write.originOnly') + '</b></span>';
       }
-
-      if (imgs.length === test.length) {
-        // to do for choosing 'erase even originals'
-      }
+      // ...redone until here
 
       this.z.buttonNumber = 0;
       // this.z.buttonNumber is set with this.z.selectChoice
-      // to 1 or 2 when a DialogChoose button is clicked:
+      // to 1, 2, or 3 when a DialogChoose button is clicked:
       this.z.openModalDialog(dialogChooseId);
+      if (imgs.length === test.length) {
+        // to do for choosing 'erase even originals'
+        // if (iflink)
+        document.querySelector('span.Choice_3').style.display = 'flex';
+        document.querySelector('span.Choice_3').style.color = 'brown';
+        document.querySelector('span.Choice_3 label').innerHTML = SP2 + ' <b>This is the checkbox label</b>';
+      }
+
+      // Wait until nonzero buttonNumber:
       while (!this.z.buttonNumber) {
-        await new Promise (z => setTimeout (z, 99)); // eraseFunc 2
+        await new Promise (z => setTimeout (z, 199)); // eraseFunc 2
+      }
+      while (this.z.buttonNumber === 3) {
+        // this.z.alertMess('Radera även original');
+        // this.z.closeDialog(dialogChooseId);
+        // Restart again:
+        // this.z.buttonNumber = 0;
+        // this.z.openModalDialog(dialogChooseId);
+        // document.querySelector('span.Choice_3').style.color = 'brown';
+        // document.querySelector('span.Choice_3 label').innerHTML = SP2 + ' <b>This is the checkbox label</b>';
+        // document.querySelector('span.Choice_3').style.display = 'flex';
+        // document.getElementById('Choice_3').checked = true;
+        await new Promise (z => setTimeout (z, 199)); // eraseFunc 3
       }
       if (this.z.buttonNumber === 1) {
         this.z.closeDialog(dialogChooseId);
@@ -411,26 +428,30 @@ export class MenuImage extends Component {
           let imgPath = this.z.userDir + '/' + imgTitle;
           let path = imgPath.replace(/[^/]+$/, '');
           if (img.classList.contains('symlink')) {
+          // let err = await this.z.execute('rm ' + imgPath);
+          // if (err) {
+          //   errNames.push(imgName)
+          // } else {
             this.z.loli('symlink ' + imgTitle + ' deleted', 'color:lightgreen');
+          //   img.remove();
+          //   await this.z.execute('rm -f ' + path + '_mini_' + imgName + '.png');
+          //   await this.z.execute('rm -f ' + path + '_show_' + imgName + '.png');
+          // }
+            if (document.getElementById('Choice_3').checked === true) {
+              let orig = await this.z.execute('readlink -nsq ' + imgPath)
+              this.z.loli('original to ' + imgTitle + ':', 'color:pink');
+              this.z.loli('  ' + orig + ' deleted', 'color:red');
+            }
           } else {
-            this.z.loli(imgTitle + ' deleted', 'color:pink');
+            this.z.loli(imgTitle + ' deleted', 'color:red');
           }
-            // this.z.loli(imgName, 'color:brown');
-            // this.z.loli(imgTitle, 'color:brown');
-            // this.z.loli(imgPath, 'color:brown');
-            // this.z.loli(path, 'color:brown');
-            // this.z.loli('rm ' + imgPath, 'color:red');
-            // this.z.loli('rm -f ' + path + '_mini_' + imgName + '.png', 'color:red');
-            // this.z.loli('rm -f ' + path + '_show_' + imgName + '.png', 'color:red');
-            // let err = '';
-          let err = await this.z.execute('rm ' + imgPath);
-          if (err) {
-            errNames.push(imgName)
-          } else {
-            img.remove();
-            await this.z.execute('rm -f ' + path + '_mini_' + imgName + '.png');
-            await this.z.execute('rm -f ' + path + '_show_' + imgName + '.png');
-          }
+            this.z.loli(imgName, 'color:brown');
+            this.z.loli(imgTitle, 'color:brown');
+            this.z.loli(imgPath, 'color:brown');
+            this.z.loli(path, 'color:brown');
+            this.z.loli('rm ' + imgPath, 'color:red');
+            this.z.loli('rm -f ' + path + '_mini_' + imgName + '.png', 'color:red');
+            this.z.loli('rm -f ' + path + '_show_' + imgName + '.png', 'color:red');
         }
         // Prepare summary message
         let n = imgs.length - errNames.length;
@@ -441,18 +462,23 @@ export class MenuImage extends Component {
           mesTxt += '<br><br>' + this.z.intl.t('write.noErased', {n: errNames.length, a: errNames.join(', ')});
         }
         this.z.alertMess(mesTxt);
-        await new Promise (z => setTimeout (z, 2987)); // eraseFunc 3
+        await new Promise (z => setTimeout (z, 2987)); // eraseFunc 4
         document.querySelector('img.spinner').style.display = 'none';
       } else {
         this.z.alertMess(this.intl.t('eraseCancelled'), 3);
       }
     } else {
-      this.z.alertMess(this.intl.t('write.chooseNone'));
+      this.z.alertMess(this.intl.t('write.chosenNone'));
     }
     this.z.countNumbers();
     // this.z.closeDialogs();
     this.z.sortOrder = this.z.updateOrder();
     return;
+  }
+
+  @tracked eraseOrig = false;
+  get toggleEraseOrig() {
+    eraseOrig = !eraseOrig;
   }
 
   <template>
@@ -718,11 +744,13 @@ export class ChooseAlbum extends Component {
         </div>
       </header>
       <main style="padding:0.5rem">
+
+{{!-- {{#if}} --}}
         <b>{{this.selectAlbum}}</b>
         <span>(”.” = ”{{this.z.imdbRoot}}”)</span><br>
         <div class="albumList">
 
-          {{#if (eq this.which this.which)}}
+          {{!-- {{#if (eq this.which this.which)}} --}}
 
           {{#each this.z.imdbDirs as |album index|}}
             {{#if (this.filterAlbum index)}}
@@ -737,9 +765,11 @@ export class ChooseAlbum extends Component {
             {{t 'write.foundNoAlbums'}}
           {{/each}}
 
-          {{/if}}
+          {{!-- {{/if}} --}}
 
         </div>
+{{!-- {{/if}} --}}
+
         {{#if (eq this.which -1)}}
           <b style="color:blue">{{t 'write.chooseAlbum'}}</b><br>
         {{else}}

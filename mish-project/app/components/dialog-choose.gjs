@@ -1,5 +1,6 @@
-//== Mish choose-alert message dialog with two choices
-//   Interacts with selectChoice and sets buttonNumber
+//== Mish choose-alert message dialog with two choices and an optional checkbox
+//   NOTE: Most be opened as MODAL with openModalDialog to be properly initiated
+//   INTERACTS with selectChoice setting buttonNumber
 
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
@@ -23,9 +24,10 @@ export class DialogChoose extends Component {
       if (document.getElementById(dialogChooseId).open) this.z.closeDialog(dialogChooseId);
     }
   }
+  // PLEASE READ THE HEADER
 
   <template>
-   <dialog id="dialogChoose" style="max-width:36rem;z-index:999" {{on 'keydown' this.detectEscClose}}>
+   <dialog id="dialogChoose" {{on 'keydown' this.detectEscClose}}>
       <header data-dialog-draggable>
         <div style="width:99%">
           <p style="color:blue">{{{this.z.infoHeader}}}<span></span></p>
@@ -34,7 +36,11 @@ export class DialogChoose extends Component {
         </div>
       </header>
       <main draggable="false" ondragstart="return false">
-        <p style="padding:1rem;font-weight:bold;color:blue">{{{this.z.chooseText}}}</p>
+        <p style="padding:0 1rem;font-weight:bold;color:blue">{{{this.z.chooseText}}}</p>
+        <span class="glueInline Choice_3" style="display:none">
+          <input id="Choice_3" type="checkbox" {{on 'click' (fn this.z.selectChoice 3)}}>
+          <label for="Choice_3" style="margin:0 0 1rem 1rem">Checkbox label</label>
+        </span>
       </main>
       <footer data-dialog-draggable>
         <button type="button" {{on 'click' (fn this.z.selectChoice 1)}}>{{t 'button.confirm'}}</button>&nbsp;

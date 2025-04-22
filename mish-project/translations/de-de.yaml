@@ -326,7 +326,7 @@ write:
   chooseLink: zu einem anderen Album verlinkt werden?
   chooseMany: Sollen alle {n} Ausgewählten Bilder
   chooseMove: zu einem anderen Album verschiebt werden?
-  chooseNone: Kein Bild ausgewählt!<br>
+  chosenNone: Kein Bild ausgewählt!<br>
               <br>Zumindest das angeklickte Bild muss auch markiert sein.
               <br>Es ist eine Sicherheitsmaßnahme beim Löschen.
   chooseOne:  Soll dieses Bild

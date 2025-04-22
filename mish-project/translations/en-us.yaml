@@ -328,7 +328,7 @@ write:
   chooseLink: be linked to another album?
   chooseMany: Should all {n} selected images
   chooseMove: be moved to another album?
-  chooseNone: No image chosen!<br>
+  chosenNone: No image chosen!<br>
               <br>At least the image you click must also be marked.
               <br>This applies to deletion as a security measure.
   chooseOne:  Should this image

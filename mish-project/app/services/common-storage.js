@@ -1615,7 +1615,13 @@ export default class CommonStorageService extends Service {
   }
 
   openModalDialog = (dialogId, origPos) => {
+    // Close all dialogs before login change:
     if (dialogId === 'dialogLogin') this.closeDialogs();
+    // Reset this dialogChoose before opening:
+    if (dialogId === 'dialogChoose') {
+      document.getElementById('Choice_3').checked = false;
+      document.querySelector('span.Choice_3').style.display = 'none';
+    }
     let diaObj = document.getElementById(dialogId);
     if (!diaObj.open) {
       if (origPos) diaObj.style = '';
