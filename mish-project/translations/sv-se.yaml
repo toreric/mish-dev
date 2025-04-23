@@ -340,7 +340,9 @@ write:
   doErased: Tog bort {n} bild(er) från ”{a}”
   doLinked: Länkade {n} bild(er) till ”{a}”
   doMoved:  Flyttade {n} bild(er) till ”{a}”
-  eraseFunc: RADERING av originalbilder kan inte ångras, men raderade inlänkade bilder (länkar) kan återskapas
+  eraseFunc: RADERING av originalbilder kan inte ångras
+  eraseFunc1: ", men raderade inlänkade bilder (länkar) kan återskapas"
+  eraseOption: "TILLVAL: Radera också originalbilder"
   find0: "Sök i:"
   find1: bildtext (övre texten)
   find2: ursprung (nedre texten)
@@ -352,8 +354,9 @@ write:
   find8: "&nbsp;alla&nbsp;ska&nbsp;hittas&nbsp;i&nbsp;en&nbsp;bild"
   find9: "&nbsp;minst&nbsp;ett&nbsp;av&nbsp;dem&nbsp;ska&nbsp;hittas&nbsp;i&nbsp;en&nbsp;bild"
   findHelpHeader: Hur man hittar bilder
+  findHelpHeader1: (ej länkar)
   findResultHeader: Sammanfattning av {n} bilder, funna i <b>{c}</b>
-  findHelp0: Sök i bildtexter
+  findHelp0: Sök i bildtexter m.m.
   findHelp1: <span>Sök i:</span>-raden används för att markera vilka textfält som tillsammans ska ingå i sökningen (röd = markerad).
   findHelp2: "<span>I nedersta</span> raden kan du välja ett av två alternativ:"
   findHelp3: "<span>1</span>. Du markerar att <span>alla ska hittas...</span> och skriver sedan i textrutan ovanför till exempel (blåmarkerat):
@@ -380,7 +383,7 @@ write:
   notEmpty: Albumet måste först tömmas!
   notes: Anteckningar som ej visas med bilden
   originOnly: "VARNING: Inga länkar..."
-  originUntouch: "<b>OBSERVERA</b> att det är skillnad på bilder: Gröna bildnamn avser inte originalbilder utan <b>inlänkade bilder</b> (enklare: <b>länkar</b>). En bild med grön underkant är egentligen bara en länk till sin originalbild i ett annat album.<br><br>En <b>originalbild</b> förblir orörd även när länken till den tas bort."
+  originUntouch: "<b>OBSERVERA</b> att det är skillnad på bilder: Gröna bildnamn avser inte <b>originalbilder</b> utan <b>inlänkade bilder</b> (enklare: <b>länkar</b>). En bild med grön underkant är egentligen bara en länk till sin originalbild i ett annat album. En originalbild förblir orörd även när länken till den tas bort."
   origRemove: "Alternativ:"
   reloadRequired: <br><br>Ändrad albumstruktur kräver omstart<br>
   searchTerms: Skriv sökbegrepp åtskilda av blanktecken, små/stora bokstäver är oviktigt (välj nedan vilka texter du vill söka i)

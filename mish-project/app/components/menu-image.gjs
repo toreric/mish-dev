@@ -358,35 +358,38 @@ export class MenuImage extends Component {
       this.z.chooseText = '<span style="color:brown">'
       // Begin with this warning if it isn't only symlinks (it concerns all selected):
       let test = document.querySelectorAll('.img_mini.selected.symlink');
-      if (test && imgs.length > test.length) this.z.chooseText += this.intl.t('write.eraseFunc') + '<br><br>';
-      // Else state the number to erase:
+      let iflink = test.length > 0; //are there any symlinks?
+      this.z.chooseText += this.intl.t('write.eraseFunc');
+      if (iflink) {
+        this.z.chooseText += this.intl.t('write.eraseFunc1');
+      }
+      this.z.chooseText += '<br><br>';
+      // State the number to erase:
       if (imgs.length > 1) {
         this.z.chooseText += this.intl.t('write.imageSeveral', {n: imgs.length});
       } else {
         this.z.chooseText += this.intl.t('write.imageSingle');
       }
       this.z.chooseText += ':</span><br><br>';
-      this.z.chooseText += '<span style="font-weight:normal">';
+      this.z.chooseText += '<span style="font-weight:bold">';
 
       // From here must be redone if Choice_3...
-      let iflink = false; //is there any symlink?
       for (let pic of imgs) {
         if (pic.classList.contains('symlink')) {
           this.z.chooseText += '<span style="color:#080">'; //green
-          iflink = true;
         }
         else this.z.chooseText += '<span style="color:#000">'; //black
         this.z.chooseText += pic.querySelector('.img_name').innerText.trim() + '</span>, ';
       }
-
       this.z.chooseText = this.z.chooseText.slice(0, -2); // Remove last ', '
       this.z.chooseText += '</span>'
+
       if (iflink) { // if some symlink: explain further
         this.z.chooseText += '<br><br><span style="font-weight:normal;color:#080">';
         this.z.chooseText += this.intl.t('write.originUntouch') + '</span>';
-      } else {
-        this.z.chooseText += '<br><br><span style="font-weight:normal;color:brown"><b>';
-        this.z.chooseText += this.intl.t('write.originOnly') + '</b></span>';
+      // } else {
+      //   this.z.chooseText += '<br><br><span style="font-weight:normal;color:brown"><b>';
+      //   this.z.chooseText += this.intl.t('write.originOnly') + '</b></span>';
       }
       // ...redone until here
 
@@ -395,11 +398,10 @@ export class MenuImage extends Component {
       // to 1, 2, or 3 when a DialogChoose button is clicked:
       this.z.openModalDialog(dialogChooseId);
       if (imgs.length === test.length) {
-        // to do for choosing 'erase even originals'
-        // if (iflink)
+        // For choosing 'erase even originals'
         document.querySelector('span.Choice_3').style.display = 'flex';
-        document.querySelector('span.Choice_3').style.color = 'brown';
-        document.querySelector('span.Choice_3 label').innerHTML = SP2 + ' <b>This is the checkbox label</b>';
+        document.querySelector('span.Choice_3').style.color = '#df1837';
+        document.querySelector('span.Choice_3 label').innerHTML = SP2 + ' <b>' + this.intl.t('write.eraseOption') + '</b>';
       }
 
       // Wait until nonzero buttonNumber:
@@ -407,15 +409,6 @@ export class MenuImage extends Component {
         await new Promise (z => setTimeout (z, 199)); // eraseFunc 2
       }
       while (this.z.buttonNumber === 3) {
-        // this.z.alertMess('Radera även original');
-        // this.z.closeDialog(dialogChooseId);
-        // Restart again:
-        // this.z.buttonNumber = 0;
-        // this.z.openModalDialog(dialogChooseId);
-        // document.querySelector('span.Choice_3').style.color = 'brown';
-        // document.querySelector('span.Choice_3 label').innerHTML = SP2 + ' <b>This is the checkbox label</b>';
-        // document.querySelector('span.Choice_3').style.display = 'flex';
-        // document.getElementById('Choice_3').checked = true;
         await new Promise (z => setTimeout (z, 199)); // eraseFunc 3
       }
       if (this.z.buttonNumber === 1) {
@@ -427,31 +420,49 @@ export class MenuImage extends Component {
           let imgTitle = document.querySelector('#i' + this.z.escapeDots(imgName) + ' img.left-click').getAttribute('title');
           let imgPath = this.z.userDir + '/' + imgTitle;
           let path = imgPath.replace(/[^/]+$/, '');
+
           if (img.classList.contains('symlink')) {
-          // let err = await this.z.execute('rm ' + imgPath);
-          // if (err) {
-          //   errNames.push(imgName)
-          // } else {
-            this.z.loli('symlink ' + imgTitle + ' deleted', 'color:lightgreen');
-          //   img.remove();
-          //   await this.z.execute('rm -f ' + path + '_mini_' + imgName + '.png');
-          //   await this.z.execute('rm -f ' + path + '_show_' + imgName + '.png');
-          // }
-            if (document.getElementById('Choice_3').checked === true) {
-              let orig = await this.z.execute('readlink -nsq ' + imgPath)
-              this.z.loli('original to ' + imgTitle + ':', 'color:pink');
-              this.z.loli('  ' + orig + ' deleted', 'color:red');
+            let err = await this.z.execute('rm ' + imgPath);
+              // this.z.loli('rm ' + imgPath, 'color:pink');
+            if (err) {
+              errNames.push(imgName)
+            } else {
+              this.z.loli('symlink ' + imgTitle + ' deleted', 'color:lightgreen');
+              img.remove();
+              await this.z.execute('rm -f ' + path + '_mini_' + imgName + '.png');
+              await this.z.execute('rm -f ' + path + '_show_' + imgName + '.png');
+                // this.z.loli('rm -f ' + path + '_mini_' + imgName + '.png', 'color:pink');
+                // this.z.loli('rm -f ' + path + '_show_' + imgName + '.png', 'color:pink');
             }
+            if (document.getElementById('Choice_3').checked === true) {
+              // If we work in the picFound album, remove the random appendix of imgName:
+              if (imgTitle.indexOf('/' + this.z.picFound) >-1) {
+                imgName = imgName.replace(/\.[^./]*$/, '');
+              }
+              let lnkdPath = await this.z.execute('readlink -nsq ' + imgPath);
+              lnkdPath = lnkdPath.replace(/^\.*(\/\.+)*/, ''); //remove leading '.' etc.
+              let origPath = lnkdPath.replace(/[^/]+$/, ''); //remove file name
+              let err = await this.z.execute('rm -f ' + this.z.userDir + '/' + this.z.imdbRoot + lnkdPath);
+                this.z.loli('rm -f ' + this.z.userDir + '/' + this.z.imdbRoot + lnkdPath, 'color:pink');
+              if (err) {
+                errNames.push(imgName)
+              } else {
+                this.z.loli('  NOTE: original ' + this.z.imdbRoot + lnkdPath + ' also deleted', 'color:red');
+                await this.z.execute('rm -f ' + this.z.userDir + '/' + this.z.imdbRoot + origPath + '_mini_' + imgName + '.png');
+                await this.z.execute('rm -f ' + this.z.userDir + '/' + this.z.imdbRoot + origPath + '_show_' + imgName + '.png');
+                  // this.z.loli('rm -f ' + this.z.userDir + '/' + this.z.imdbRoot + origPath + '_mini_' + imgName + '.png', 'color:pink');
+                  // this.z.loli('rm -f ' + this.z.userDir + '/' + this.z.imdbRoot + origPath + '_show_' + imgName + '.png', 'color:pink');
+              }
+            }
+
           } else {
             this.z.loli(imgTitle + ' deleted', 'color:red');
           }
-            this.z.loli(imgName, 'color:brown');
-            this.z.loli(imgTitle, 'color:brown');
-            this.z.loli(imgPath, 'color:brown');
-            this.z.loli(path, 'color:brown');
-            this.z.loli('rm ' + imgPath, 'color:red');
-            this.z.loli('rm -f ' + path + '_mini_' + imgName + '.png', 'color:red');
-            this.z.loli('rm -f ' + path + '_show_' + imgName + '.png', 'color:red');
+          // imgName is trunchated before original remove via picFound
+            // this.z.loli(imgName, 'color:brown');
+            // this.z.loli(imgTitle, 'color:brown');
+            // this.z.loli(imgPath, 'color:brown');
+            // this.z.loli(path, 'color:brown');
         }
         // Prepare summary message
         let n = imgs.length - errNames.length;

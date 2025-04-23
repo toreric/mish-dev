@@ -227,7 +227,7 @@ export class DialogFind extends Component {
         if (!okay0) n0 = '<span style="color:#d00">' + n0 + '</span>';
         let n1 = fname.replace (/\.[^./]*$/, '');
         if (!okay1) n1 = '<span style="color:#d00">' + n1 + '</span>';
-        let n2 = fname.replace(/(.+)(\.[^.]*$)/, '$2');
+        let n2 = fname.replace(/(.+)(\.[^./]*$)/, '$2');
         if (okay0 && okay1) { // ▻🢒
             // console.log('i paths[i]',i,paths[i],okay0,okay1);
           //The 🢒 construct makes long broken entries easier to read:
@@ -365,7 +365,7 @@ export class DialogFind extends Component {
       <dialog id="dialogFindHelp" style="width:min(calc(100vw - 2rem),450px)">
         <header data-dialog-draggable>
           <p>&nbsp;</p>
-          <p>{{t 'write.findHelpHeader'}} <span></span></p>
+          <p>{{t 'write.findHelpHeader'}} <span style="color:#080">{{t 'write.findHelpHeader1'}}</span></p>
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogFindHelp')}}>×</button>
         </header>
         <main style="padding:0 0.5rem 0 1rem;height:20rem" width="99%">

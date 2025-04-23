@@ -342,7 +342,9 @@ write:
   doErased: Removed {n} image(s) from “{a}”
   doLinked: Linked {n} image(s) to ”{a}”
   doMoved:  Moved {n} image(s) to ”{a}”
-  eraseFunc: DELETING original images cannot be undone, but deleted linked images (links) can be recreated
+  eraseFunc: DELETING original images cannot be undone
+  eraseFunc1: ", but deleted linked images (links) can be recreated"
+  eraseOption: "OPTIONAL: Also delete original images"
   find0: "Search in:"
   find1: captions (upper texts)
   find2: origins (bottom texts)
@@ -354,6 +356,7 @@ write:
   find8: "&nbsp;all&nbsp;to&nbsp;be&nbsp;found&nbsp;in&nbsp;one&nbsp;image"
   find9: "&nbsp;at&nbsp;least&nbsp;one&nbsp;of&nbsp;them&nbsp;must&nbsp;be&nbsp;found&nbsp;in&nbsp;an&nbsp;image"
   findHelpHeader: How to find images
+  findHelpHeader1: (no links)
   findResultHeader: Summary of {n} images, found in <b>{c}</b>
   findHelp0: Search in captions etc.
   findHelp1: Mark in the <span>Search in:</span> line, which text fields should be included in the search (red = marked).
@@ -382,7 +385,7 @@ write:
   notEmpty: The album must first be emptied!
   notes: Notes not shown with the image
   originOnly: "WARNING: No links..."
-  originUntouch: "<b>NOTE</b> that there is a difference between images: Green image names do not refer to original images but to <b>linked images</b> (more simply: <b>links</b>). An image with a green bottom border is actually just a link to its original image in another album.<br><br>An <b>original image</b> remains untouched even if the link to it is removed."
+  originUntouch: "<b>NOTE</b> that there is a difference between images: Green image names do not refer to <b>original images</b> but to <b>linked images</b> (more simply: <b>links</b>). An image with a green bottom border is actually just a link to its original image in another album. An original image remains untouched even when the link to it is removed."
   reloadRequired: <br><br>Changed album structure requires restart<br>
   searchTerms: Enter search terms separated by spaces, lower/uppercase does not matter (choose below which texts to search in)
   set0: Choose settings
