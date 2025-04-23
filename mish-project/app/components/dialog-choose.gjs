@@ -36,10 +36,10 @@ export class DialogChoose extends Component {
         </div>
       </header>
       <main draggable="false" ondragstart="return false">
-        <p style="padding:0 1rem;font-weight:bold;color:blue">{{{this.z.chooseText}}}</p>
+        <p style="padding:0 1rem">{{{this.z.chooseText}}}</p>
         <span class="glueInline Choice_3" style="display:none">
           <input id="Choice_3" type="checkbox" {{on 'click' (fn this.z.selectChoice 3)}}>
-          <label for="Choice_3" style="margin:0 0 1rem 1rem">Checkbox label</label>
+          <label for="Choice_3" style="white-space:wrap;margin:0 0 1rem 1rem">Checkbox label</label>
         </span>
       </main>
       <footer data-dialog-draggable>

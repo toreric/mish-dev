@@ -342,7 +342,9 @@ write:
   doMoved:  Flyttade {n} bild(er) till ”{a}”
   eraseFunc: RADERING av originalbilder kan inte ångras
   eraseFunc1: ", men raderade inlänkade bilder (länkar) kan återskapas"
-  eraseOption: "TILLVAL: Radera också originalbilder"
+  eraseOption: "TILLVAL och UNDANTAG: Radera originalbild"
+  eraseOption1: VARNING! Länkars ORIGINALBILDER kommer nu också att raderas!
+  eraseOption2: Bra till att ta bort dubletter, använd varsamt!
   find0: "Sök i:"
   find1: bildtext (övre texten)
   find2: ursprung (nedre texten)
@@ -382,7 +384,6 @@ write:
   noneFound: Tyvärr, ingen bild funnen!
   notEmpty: Albumet måste först tömmas!
   notes: Anteckningar som ej visas med bilden
-  originOnly: "VARNING: Inga länkar..."
   originUntouch: "<b>OBSERVERA</b> att det är skillnad på bilder: Gröna bildnamn avser inte <b>originalbilder</b> utan <b>inlänkade bilder</b> (enklare: <b>länkar</b>). En bild med grön underkant är egentligen bara en länk till sin originalbild i ett annat album. En originalbild förblir orörd även när länken till den tas bort."
   origRemove: "Alternativ:"
   reloadRequired: <br><br>Ändrad albumstruktur kräver omstart<br>

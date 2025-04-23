@@ -22,7 +22,6 @@ const LF = '\n';   // Line Feed == New Line
 const BR = '<br>'; // HTML line break
 const SP = '&nbsp;'; // single space
 const SP2 = '&nbsp;&nbsp;'; // double space
-const SP3 = '&nbsp;&nbsp;&nbsp;'; // triple space
 const SP4 = '&nbsp;&nbsp;&nbsp;&nbsp;'; // four spaces
 let ERASE_ORIGINAL = 0;
 
@@ -355,11 +354,12 @@ export class MenuImage extends Component {
       // From toggleDisplayNames in ButtonsLeft:
       this.z.displayNames = 'block'; // Display image names
       this.z.infoHeader = this.intl.t('write.chooseHeader');
-      this.z.chooseText = '<span style="color:brown">'
-      // Begin with this warning if it isn't only symlinks (it concerns all selected):
+      // this.z.chooseText = '<span style="color:#df1837">'
+      this.z.chooseText = '<span style="color:black">'
       let test = document.querySelectorAll('.img_mini.selected.symlink');
       let iflink = test.length > 0; //are there any symlinks?
-      this.z.chooseText += this.intl.t('write.eraseFunc');
+      // Begin with this warning (it concerns all selected):
+      this.z.chooseText += '<b>' + this.intl.t('write.eraseFunc') + '</b>';
       if (iflink) {
         this.z.chooseText += this.intl.t('write.eraseFunc1');
       }
@@ -373,7 +373,6 @@ export class MenuImage extends Component {
       this.z.chooseText += ':</span><br><br>';
       this.z.chooseText += '<span style="font-weight:bold">';
 
-      // From here must be redone if Choice_3...
       for (let pic of imgs) {
         if (pic.classList.contains('symlink')) {
           this.z.chooseText += '<span style="color:#080">'; //green
@@ -387,29 +386,35 @@ export class MenuImage extends Component {
       if (iflink) { // if some symlink: explain further
         this.z.chooseText += '<br><br><span style="font-weight:normal;color:#080">';
         this.z.chooseText += this.intl.t('write.originUntouch') + '</span>';
-      // } else {
-      //   this.z.chooseText += '<br><br><span style="font-weight:normal;color:brown"><b>';
-      //   this.z.chooseText += this.intl.t('write.originOnly') + '</b></span>';
+        document.querySelector('span.Choice_3 label').innerHTML = SP2 + ' ' + this.intl.t('write.eraseOption');
       }
-      // ...redone until here
 
-      this.z.buttonNumber = 0;
-      // this.z.buttonNumber is set with this.z.selectChoice
-      // to 1, 2, or 3 when a DialogChoose button is clicked:
       this.z.openModalDialog(dialogChooseId);
+      // Prepare the dialogChoose appearance:
       if (imgs.length === test.length) {
         // For choosing 'erase even originals'
         document.querySelector('span.Choice_3').style.display = 'flex';
-        document.querySelector('span.Choice_3').style.color = '#df1837';
-        document.querySelector('span.Choice_3 label').innerHTML = SP2 + ' <b>' + this.intl.t('write.eraseOption') + '</b>';
+        // document.querySelector('span.Choice_3').style.color = '#df1837';
       }
 
+      // this.z.buttonNumber is set with this.z.selectChoice
+      // to 1, 2, or 3 when a DialogChoose button is clicked:
+      this.z.buttonNumber = 0;
       // Wait until nonzero buttonNumber:
       while (!this.z.buttonNumber) {
         await new Promise (z => setTimeout (z, 199)); // eraseFunc 2
       }
+      // document.querySelector('input[type="checkbox"] + label::before').style.width = '.65rem';
+      // document.querySelector('input[type="checkbox"] + label::before').style.height = '.65rem';
+
       while (this.z.buttonNumber === 3) {
-        await new Promise (z => setTimeout (z, 199)); // eraseFunc 3
+        if (document.getElementById('Choice_3').checked === true) {
+          document.querySelector('span.Choice_3 label').innerHTML = SP + ' ' + this.intl.t('write.eraseOption') + '. <b style="color:#df1837">' + this.intl.t('write.eraseOption1') + '</b> ' + this.intl.t('write.eraseOption2');
+          await new Promise (z => setTimeout (z, 199)); // eraseFunc 3
+        } else {
+          document.querySelector('span.Choice_3 label').innerHTML = SP + ' ' + this.intl.t('write.eraseOption');
+          await new Promise (z => setTimeout (z, 199)); // eraseFunc 4
+        }
       }
       if (this.z.buttonNumber === 1) {
         this.z.closeDialog(dialogChooseId);
@@ -473,7 +478,7 @@ export class MenuImage extends Component {
           mesTxt += '<br><br>' + this.z.intl.t('write.noErased', {n: errNames.length, a: errNames.join(', ')});
         }
         this.z.alertMess(mesTxt);
-        await new Promise (z => setTimeout (z, 2987)); // eraseFunc 4
+        await new Promise (z => setTimeout (z, 2987)); // eraseFunc 5
         document.querySelector('img.spinner').style.display = 'none';
       } else {
         this.z.alertMess(this.intl.t('eraseCancelled'), 3);

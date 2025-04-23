@@ -344,7 +344,9 @@ write:
   doMoved:  Moved {n} image(s) to ”{a}”
   eraseFunc: DELETING original images cannot be undone
   eraseFunc1: ", but deleted linked images (links) can be recreated"
-  eraseOption: "OPTIONAL: Also delete original images"
+  eraseOption: "OPTION and EXCEPTION: Delete original images"
+  eraseOption1: WARNING! Links’ ORIGINAL IMAGES will now also be deleted!
+  eraseOption2: Good for removing duplicates, use with care!
   find0: "Search in:"
   find1: captions (upper texts)
   find2: origins (bottom texts)

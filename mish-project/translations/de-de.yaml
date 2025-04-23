@@ -342,7 +342,9 @@ write:
   doMoved:  "{n} Bild(er) zu ”{a}” verschiebt"
   eraseFunc: LÖSCHEN von Originalbildern kann nicht rückgängig gemacht werden
   eraseFunc1: ", gelöschte verlinkte Bilder (Links) können jedoch neu erstellt werden"
-  eraseOption: "HINZUFÜGEN: Originalbilder ebenfalls löschen"
+  eraseOption: "OPTION und AUSNAHME: Originalbilder löschen"
+  eraseOption1: WARNUNG! Die ORIGINALBILDER der Links werden nun ebenfalls gelöscht!
+  eraseOption2: Gut zum Entfernen von Duplikaten, mit Vorsicht verwenden!
   find0: "Suchen in:"
   find1: Bildunterschrift (oberer Text)
   find2: Herkunft (unterer Text)
