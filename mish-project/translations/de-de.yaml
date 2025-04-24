@@ -400,7 +400,7 @@ write:
   tool32: in umgekehrter Reihenfolge
   tool4: Doppelte Bildnamen finden
   tool41: Doppelte Bildnamen in <b>{a}</b> inklusive aller Unteralben finden
-  tool42: Doppelte Bildnamen in der gesamten Albumsammlung finden
+  tool42: Doppelte Bildnamen in der gesamten<br>Albumsammlung finden
   tool5: Neue Bilder hochladen
   tool6: Suchdaten für die gesamte Albumsammlung aktualisieren
   tool7: Ähnliche Bilder in der gesamten Albumsammlung<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zu finden versuchen

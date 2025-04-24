@@ -427,6 +427,12 @@ export class MenuImage extends Component {
           let path = imgPath.replace(/[^/]+$/, '');
 
           if (img.classList.contains('symlink')) {
+            // Save the linked-to-path for safety
+            let lnkdPath = await this.z.execute('readlink -nsq ' + imgPath);
+              this.z.loli(lnkdPath, 'color:yellow');
+            if (lnkdPath.slice(0, 1) !== '.') {
+              this.z.loli('Bad symlink: ' + linkpath, 'color:yellow');
+            }
             let err = await this.z.execute('rm ' + imgPath);
               // this.z.loli('rm ' + imgPath, 'color:pink');
             if (err) {
@@ -444,7 +450,6 @@ export class MenuImage extends Component {
               if (imgTitle.indexOf('/' + this.z.picFound) >-1) {
                 imgName = imgName.replace(/\.[^./]*$/, '');
               }
-              let lnkdPath = await this.z.execute('readlink -nsq ' + imgPath);
               lnkdPath = lnkdPath.replace(/^\.*(\/\.+)*/, ''); //remove leading '.' etc.
               let origPath = lnkdPath.replace(/[^/]+$/, ''); //remove file name
               let err = await this.z.execute('rm -f ' + this.z.userDir + '/' + this.z.imdbRoot + lnkdPath);
@@ -463,10 +468,10 @@ export class MenuImage extends Component {
           } else {
             this.z.loli(imgTitle + ' deleted', 'color:red');
           }
-          // imgName is trunchated before original remove via picFound
+          // If at picFound: imgName is trunchated, preparied for remove of the original
             // this.z.loli(imgName, 'color:brown');
             // this.z.loli(imgTitle, 'color:brown');
-            // this.z.loli(imgPath, 'color:brown');
+            this.z.loli(imgPath, 'color:brown');
             // this.z.loli(path, 'color:brown');
         }
         // Prepare summary message

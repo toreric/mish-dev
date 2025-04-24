@@ -431,7 +431,7 @@ export class DialogUtil extends Component {
             {{#if this.z.imdbDir}} {{!-- subtree --}}
               <button type="button" {{on 'click' (fn this.doDupNames)}}>{{{t 'write.tool41' a=this.imdbDirName}}}</button>
             {{else}} {{!-- root --}}
-              <button type="button" {{on 'click' (fn this.doDupNames)}}>{{t 'write.tool42'}}</button>
+              <button type="button" {{on 'click' (fn this.doDupNames)}}>{{{t 'write.tool42'}}}</button>
             {{/if}}
 
           {{!-- === Find duplicate images === --}}
