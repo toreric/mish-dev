@@ -115,8 +115,10 @@ export class DialogUtil extends Component {
   get okDupNames() {
     // true to search the collection if at root, alternatively
     // at any 'node' except picFound, if there is some reason:
-    if (this.z.imdbDir.slice(1) === this.z.picFound) {
-    // if (this.z.imdbDir) {
+    // if (this.z.imdbDir.slice(1) === this.z.picFound) { //malfunction!
+
+    // search only the entire collection from root:
+    if (this.z.imdbDir) {
       return false;
     } else {
       this.noTools = false;

@@ -1,37 +1,9 @@
 
-
-ixAllFiles = the index of picName in allFiles, see menu-image.gjs
-
-ixAlFi = dito, used in dialog-info.gjs
-
-Proposal
-
-let it be picIndex instead, i.e.
-
-  this.z.picIndex = the index of this.z.picName in this.z.allFiles, getter:
-
-        get picIndex() { //the index of picName's file information object in allFiles
-              return this.allFiles.findIndex(a => {return a.name === this.picName;});
-            }
-
-
-
-Remember:
-
-.toString() .trim()
-
-<span>
-
-
-2024-10-16: Ubuntu on 24.04.1 LTS.
-Den här versionen slutar ta emot uppdateringar och säkerhetskorrigeringar om 183 dagar.
-I början av april 2025?
-
-
-
 evo@discord 2024-10-17 16:51
 a very basic example here of the browser behaviour
 
 if you type into the textarea it will stop updating from the setInterval, but if you reset it where the dom is replaced it will begin updating again.
 
 https://codepen.io/evoactivity/pen/qBejBxX
+
+

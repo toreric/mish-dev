@@ -13,6 +13,10 @@ import he from 'he';
 
 const LF = '\n'   // Line Feed == New Line
 const BR = '<br>' // HTML line break
+const BGRE = '\x1b[1;32m' // Bright green
+const BYEL = '\x1b[1;33m' // Bright yellow
+const RED  = '\x1b[31m'   // Red
+const RSET = '\x1b[0m'    // Reset
 
 export default class CommonStorageService extends Service {
   @service intl;
@@ -405,18 +409,16 @@ export default class CommonStorageService extends Service {
       selected.style.display = '';
     }
 
-    // Retreive information for every image file from the server
-    // and preload the _show_ images for faster show later:
+    // Retreive information for every image file from the server:
+    this.allFiles = [];
     this.allFiles = await this.getImages();
-        // this.loli(this.allFiles, 'color:lightgreen');
-        // console.log(this.allFiles);
+      // console.log(this.allFiles); // LOG WITH
 
     // Get the image order information from the server:
     this.sortOrder = await this.requestOrder();
-        // this.loli('sortOrder:\n' + this.sortOrder, 'color:yellow');
 
     // Now arrange allFiles according to sortOrder before populating DOM
-    let allFiles = this.allFiles;
+    let allFiles = [...this.allFiles]; // clone-copy
     let newFiles = [];
     let order = this.sortOrder.split(LF);
     let name, k;
@@ -424,7 +426,7 @@ export default class CommonStorageService extends Service {
     for (let ord of order) {
       name = ord.split(',')[0]
       k = allFiles.findIndex(all => {return all.name === name;});
-          // this.loli(k + ' ' + name, 'color:brown')
+          // this.loli(k + ' ' + name, 'color:red')
       if (k > -1) {
         newFiles.push(allFiles[k]);
         allFiles[k] = '';
@@ -435,6 +437,7 @@ export default class CommonStorageService extends Service {
       if (file) newFiles.push(file);
     }
     this.hasImages = newFiles.length > 0;
+      // this.loli('hasImages = ' + this.hasImages, 'color:red'); // LOG WITH
     this.numImages = newFiles.length;
     this.allFiles = newFiles;
 
@@ -460,14 +463,6 @@ export default class CommonStorageService extends Service {
       this.alertMess(this.intl.t('sizewarning') + ' ' + this.maxWarning + ' ' + this.intl.t('images') + '!', 6);
     }
 
-    // Preload the show images
-    // let preloadShowImg = [];
-    // for (let file of this.allFiles) {
-    //   let img = new Image();
-    //   img.src = 'rln' + file.show;
-    //   preloadShowImg.push(img);
-    // }
-
     // Reset the show/hide button since hidden images are not shown initially
     this.hideHidden();
 
@@ -478,6 +473,7 @@ export default class CommonStorageService extends Service {
     } else this.picName = '';
 
     // Allow for the rendering of mini images and preload of view images
+    this.refreshTexts ++ // retrigger rendering, extra for some occasions
     let size = this.albumAllImg(i);
     await new Promise (z => setTimeout (z, size*2)); // album load
 
@@ -1193,7 +1189,7 @@ export default class CommonStorageService extends Service {
             // // Explanations among printouts below, the namings may seem weird - be careful!
             // let tmp = f.symlink ? f.symlink : 'ordinary';
             // that.loli(tmp, 'color:white');
-            // // The real file reference, if symlink: it's resolution (from here):
+            // // The real file reference, if symlink: its resolution (from here):
             // that.loli('  reference (orig): ' + f.orig, 'color:brown');
             // // The real file path (root to be added),same as f.orig if ordinary:
             // that.loli(' formally (linkto): ' + f.linkto, 'color:orange');
@@ -1366,8 +1362,8 @@ export default class CommonStorageService extends Service {
 
   //#region sqlupdate/
   // Update the sqlite text database (symlinked pictures auto-omitted)
-  // ***CHECK if it ever will be used
-  sqlUpdate = (picPaths) => { // Must be complete server paths
+  // Called from (at least) eraseFunc() in menu-image.gjs
+  sqlUpdate = (picPaths) => { // Must be complete server paths (LF-joined)
     if (!picPaths) return;
     let data = new FormData ();
     data.append ("filepaths", picPaths);

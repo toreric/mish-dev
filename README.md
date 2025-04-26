@@ -4,7 +4,7 @@ This is a development project of the Mish one-page gallery app run in a standard
 
 # Mish outline
 
-The core project is 'mish-project' containing the application core. It may be run primitively with the Ember development server only, but is wrapped within the 'mish' project and locally run by an Express Node JS server. Currently it is run on the web by an Apache server.
+The core project is 'mish-project' containing the application core. It may be run primitively with the Ember development server only, but is wrapped within the 'mish' project and locally run by an Express Node JS server. Currently it is run on the web by Apache2 served by PM2 and Node Express.
 
 I have decided not to use the Ember data model in order to try making the system better self-contained and movable. The aim is to make possible to show an unlimited number of albums or photo directories/folders/galleries (naming conventions differ, here 'album').
 

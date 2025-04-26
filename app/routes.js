@@ -464,6 +464,7 @@ module.exports = function(app) { // Start module.exports
         res.location('/')
         res.send(allfiles)
         //res.end()
+        console.log('   ' + BGRE + IMDB_ROOT + IMDB_DIR + RSET)
         console.log('...file information sent from server') // Remaining message
       }).catch(function(error) {
         res.location('/')

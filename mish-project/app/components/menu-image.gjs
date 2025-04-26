@@ -452,11 +452,13 @@ export class MenuImage extends Component {
               }
               lnkdPath = lnkdPath.replace(/^\.*(\/\.+)*/, ''); //remove leading '.' etc.
               let origPath = lnkdPath.replace(/[^/]+$/, ''); //remove file name
-              let err = await this.z.execute('rm -f ' + this.z.userDir + '/' + this.z.imdbRoot + lnkdPath);
-                this.z.loli('rm -f ' + this.z.userDir + '/' + this.z.imdbRoot + lnkdPath, 'color:pink');
+              let CSP = this.z.userDir + '/' + this.z.imdbRoot + lnkdPath; // C.s.p
+              let err = await this.z.execute('rm -f ' + CSP); // Complete server path
+                // this.z.loli('rm -f ' + CSP, 'color:pink');
               if (err) {
                 errNames.push(imgName)
               } else {
+                await this.z.sqlUpdate(CSP); // Complete server path
                 this.z.loli('  NOTE: original ' + this.z.imdbRoot + lnkdPath + ' also deleted', 'color:red');
                 await this.z.execute('rm -f ' + this.z.userDir + '/' + this.z.imdbRoot + origPath + '_mini_' + imgName + '.png');
                 await this.z.execute('rm -f ' + this.z.userDir + '/' + this.z.imdbRoot + origPath + '_show_' + imgName + '.png');
@@ -471,7 +473,7 @@ export class MenuImage extends Component {
           // If at picFound: imgName is trunchated, preparied for remove of the original
             // this.z.loli(imgName, 'color:brown');
             // this.z.loli(imgTitle, 'color:brown');
-            this.z.loli(imgPath, 'color:brown');
+            // this.z.loli(imgPath, 'color:brown');
             // this.z.loli(path, 'color:brown');
         }
         // Prepare summary message
@@ -691,9 +693,9 @@ export class ChooseAlbum extends Component {
       else lpp="./";
       this.z.loli('moving to ' + this.z.imdbRoot + malbum);
       let mpath = this.z.imdbPath + malbum;
-        this.z.loli(mpath, 'color:red');
+        // this.z.loli(mpath, 'color:red');
       for (let i=0;i<pics.length;i++) {
-          this.z.loli(pics[i].id.slice(1), 'color:red');
+          // this.z.loli(pics[i].id.slice(1), 'color:red');
         picNames.push(pics[i].id.slice(1));
       }
       for (let i=0;i<pics.length;i++){
@@ -716,7 +718,7 @@ export class ChooseAlbum extends Component {
         // picfound = the name of the temporary album where found pictures are kept
 
         // If picfound appears in the path, a random suffix has to be removed from
-        // the picNames (commands with $picfound will else have no effect) NOTE: TROR JAG
+        // the picNames (commands with $picfound will else have no effect) NOTE: I think
 
         // It is a Bash text string containing in the magnitude of 1000 characters,
         // depending on actual file names, but well within the Bash line length limit.
@@ -736,6 +738,9 @@ export class ChooseAlbum extends Component {
         cmd += 'if [ $move != $orgmove ];then rm $orgmove;fi;';
         cmd += 'if [ $mini != $orgmini ];then rm $orgmini;fi;';
         cmd += 'if [ $show != $orgshow ];then rm $orgshow;fi;fi;';
+
+          console.log('>>>move', move);
+        // await this.z.sqlUpdate(move); // Complete server path
 
           // this.z.loli(cmd.replace(/;/g, ';\n').replace(/\nthen /g, 'then\n').replace(/else /g, 'else\n'), 'color:red');
         let r = await this.z.execute(cmd);

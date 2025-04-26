@@ -1120,7 +1120,7 @@ img[alt] {
 }
 .img_mini .img_name:hover, .img_mini:hover {
   z-index: 6;
-  color: #ff4;
+  color: #ff8;
 }
 .js-draggableObject.show-inline.ember-view:hover {
   position: relative;

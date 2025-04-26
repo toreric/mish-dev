@@ -11,23 +11,21 @@ Tillverka en katalog (IMDB_ROOT) dit bildkataloger (IMDB) kan
 flyttas. Varje sådan katalog blir en bilddatabas (ett album).
 Så här till exempel:
 
-userDir
-IMDB_HOME  IMDB_ROOT IMDB = bilddatabas = album
-–––––––––– ––––––––– ––––––––––––––––––––––––––––––––
-/home/tore/Fotoarkiv
-/home/tore/Fotoarkiv/Alplandskap
-/home/tore/Fotoarkiv/Alplandskap/Italien
-/home/tore/Fotoarkiv/Alplandskap/Schweiz
-/home/tore/Fotoarkiv/Bilutflykter
-/home/tore/Fotoarkiv/Bilutflykter/Dalarna
-/home/tore/Fotoarkiv/Bilutflykter/Skåne
-/home/tore/Fotoarkiv/Bilutflykter/Västkusten
-/home/tore/Fotoarkiv/Bilutflykter/Västkusten/Göteborg
-/home/tore/Fotoarkiv/Bilutflykter/Västkusten/Halland
-/home/tore/Fotoarkiv/Midsommar
-/home/tore/Fotoarkiv/Midsommar/2013
-/home/tore/Fotoarkiv/Midsommar/2018
-–––––––––– ––––––––– ––––––––––––––––––––––––––––––––
+IMDB_HOME  IMDB = image database = albums
+–––––––––– ––––––––––––––––––––––––––––––––––––––––––––––
+/home/tore/Photo_gallery                     <= IMDB_ROOT
+/home/tore/Photo_gallery/Forests
+/home/tore/Photo_gallery/Forests/Sweden
+/home/tore/Photo_gallery/Forests/Nicaragua
+/home/tore/Photo_gallery/Car_excursions
+/home/tore/Photo_gallery/Car_excursions/Denmark
+/home/tore/Photo_gallery/Car_excursions/Sweden
+/home/tore/Photo_gallery/Car_excursions/Sweden/Stockholm
+/home/tore/Photo_gallery/Car_excursions/Sweden/Countryside
+/home/tore/Photo_gallery/Midsummer
+/home/tore/Photo_gallery/Midsummer/2013
+/home/tore/Photo_gallery/Midsummer/2018
+–––––––––– ––––––––– ––––––––––––––––––––––––––––––––––––––
 
 Var och en av kataloger och underkataloger (IMDB) är en egen
 'bilddatabas' eller ett 'album' -- hyfsat överblickbart
