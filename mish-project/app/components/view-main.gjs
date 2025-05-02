@@ -124,12 +124,12 @@ class SubAlbums extends Component {
           {{#if this.z.imdbDir}}
             <span title-2="{{this.z.imdbRoot}}{{this.z.imdbDir}}">
               <b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
-              {{t 'has'}} {{this.nsub}} {{this.sual}}<span title-2={{t 'plusExplain'}}>{{{this.nadd}}}, &nbsp;</span><span>{{this.hasImages}}</span>
+              {{t 'has'}} {{this.nsub}} {{this.sual}}<span title-2={{t 'plusExplain'}}>{{{this.nadd}}}</span>, &nbsp;<span>{{this.hasImages}}</span>
             </span>
           {{else}} {{!-- root --}}
             <span>
               <b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
-              {{t 'has'}} {{this.nsubRoot}} <span title-2="”{{t 'foundExplain'}}”">(+1)</span> {{this.sualRoot}}<span title-2={{t 'plusExplain'}}>{{{this.nadd}}}, &nbsp;</span><span>{{this.hasImages}}</span>
+              {{t 'has'}} {{this.nsubRoot}} <span title-2="”{{t 'foundExplain'}}”">(+1)</span> {{this.sualRoot}}<span title-2={{t 'plusExplain'}}>{{{this.nadd}}}</span>, &nbsp;<span>{{this.hasImages}}</span>
             </span>
           {{/if}}
           <br>

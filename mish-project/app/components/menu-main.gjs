@@ -47,7 +47,7 @@ export class MenuMain extends Component {
     // Display the spinner already (will be hidden somewhere else)
     document.querySelector('img.spinner').style.display = '';
 
-// Retreive the albums list of this collection (root album).
+    // Retreive the albums list of this collection (root album).
     // If the argment is false, _imdb_ignore.txt in the chosen
     // root album is read by the server, and mentioned albums
     // with subalbums are removed from the list:
@@ -57,17 +57,17 @@ export class MenuMain extends Component {
     let arr = tmp.split(LF);
       // this.z.loli(arr[1]);
 
-    // ***************************************************************************
+    // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
     // The two first lines (to be shifted off) have other content
     // First, we get some system information from the server:
     await this.z.execute('echo "' + arr.shift() + '" > nodestamp.txt');
-    // ***************************************************************************
+    // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
     // Secondly, here 'IMDB_HOME' is (finally!) delivered from the server to be
     // stored in 'userDir', which is our corresponding 'common-storage' variable.
     // IMDB_HOME is given as an 'Express' server parameter at startup:
     this.z.userDir = arr.shift();
       // this.z.loli('userDir and imdbPath:  ' + this.z.userDir + '  ' + this.z.imdbPath, 'color:red');
-    // ***************************************************************************
+    // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
     let n = arr.length/3;
     this.z.imdbDirs = arr.splice(0, n); // album paths (without root)
@@ -125,11 +125,10 @@ export class MenuMain extends Component {
     // await new Promise (z => setTimeout (z, 33*this.z.imdbCoco.length)); // selectRoot Wait for album tree
     await new Promise (z => setTimeout (z, 333)); // selectRoot Wait for album tree
     this.openAll(CL); // fold all nodes except 0
-    let anyHidden = () => { // flags any hidden-without-allowance album
+    let anyHidden = async () => { // flags any hidden-without-allowance album
       let hidden = false;
       for (let i=0;i<this.z.imdbCoco.length;i++) {
-        if (this.z.imdbCoco[i].includes('*')) {
-          document.querySelector('.album.a' + i).style.color = 'pink';
+        if (this.z.imdbCoco[i].includes('*')) { // contains() is deprecated!
           hidden = true;
         } //else  document.querySelector('.album.a' + i).style.color = 'white';
       }
@@ -310,7 +309,7 @@ export class MenuMain extends Component {
             (⋅) {{t 'nimages'}}, (⋅+⋅) {{t 'nlinked'}}<br>
             {{SA}} {{t 'nsubalbums'}}
             {{#if this.hasHidden}}
-              <br>* {{t 'anyhidden'}}
+              <br>* <span style="color:pink;font-size:inherit">{{t 'anyhidden'}}</span>
             {{/if}}
           </p>
         {{/if}}

@@ -397,17 +397,6 @@ export default class CommonStorageService extends Service {
     for (let tmp of document.querySelectorAll('span.album')) {
       tmp.style.color = '';
     }
-    // Set color mark on the selected album name and make it visible
-    // NOTE: This is about the selected albun in the ALBUM tree.
-    document.querySelector('span.album.a' + i).style.color = '#f46aff';
-    let selected = document.querySelector('div.album.a' + i);
-    selected.style.display = '';
-    // Check that all parents are visible too
-    while (selected.parentElement.classList.contains('album')) {
-      selected = selected.parentElement;
-      if (selected.nodeName !== 'DIV') break;
-      selected.style.display = '';
-    }
 
     // Retreive information for every image file from the server:
     this.allFiles = [];
@@ -479,8 +468,25 @@ export default class CommonStorageService extends Service {
 
     // Set classes and different background on hidden images
     this.paintHideFlags();
-    // // Count the number of shown, invisible, linked, unlinked, etc. images
-    // this.countNumbers();
+
+    // Make 'secret albums' pink in the ALBUM tree of the main menu:
+    for (let i=0;i<this.imdbCoco.length;i++) {
+      if (this.imdbCoco[i].includes('*')) { // contains() is deprecated!
+        await new Promise (z => setTimeout (z, 13)); //is necessary!!
+        document.querySelector('span.album.a' + i).style.color = 'pink';
+      }
+    }
+    // Set color mark on the selected album name and make it visible
+    // NOTE: This is about the selected album in the ALBUM tree.
+    document.querySelector('span.album.a' + i).style.color = '#f46aff';
+    let selected = document.querySelector('div.album.a' + i);
+    selected.style.display = '';
+    // Check that all parents are visible too
+    while (selected.parentElement.classList.contains('album')) {
+      selected = selected.parentElement;
+      if (selected.nodeName !== 'DIV') break;
+      selected.style.display = '';
+    }
   }
 
   //#region toggleText
@@ -575,8 +581,8 @@ export default class CommonStorageService extends Service {
           mini.classList.remove('invisible'); // there is some redundance here
         }
       }
-
     }
+    // Count the number of shown, invisible, linked, unlinked, etc. images
     this.countNumbers();
   }
 

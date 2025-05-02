@@ -23,7 +23,6 @@ const BR = '<br>'; // HTML line break
 const SP = '&nbsp;'; // single space
 const SP2 = '&nbsp;&nbsp;'; // double space
 const SP4 = '&nbsp;&nbsp;&nbsp;&nbsp;'; // four spaces
-let ERASE_ORIGINAL = 0;
 
 // Get the thumbnail-containing elements to be operated on,
 // either one unselected, or all co-selected elements:
@@ -386,13 +385,14 @@ export class MenuImage extends Component {
       if (iflink) { // if some symlink: explain further
         this.z.chooseText += '<br><br><span style="font-weight:normal;color:#080">';
         this.z.chooseText += this.intl.t('write.originUntouch') + '</span>';
+        // Prepare the dialogChoose Choice_3 appearance:
         document.querySelector('span.Choice_3 label').innerHTML = SP2 + ' ' + this.intl.t('write.eraseOption');
       }
 
       this.z.openModalDialog(dialogChooseId);
-      // Prepare the dialogChoose appearance:
+      // When all images are symlinks, Choice_3 is displayed: (*)
       if (imgs.length === test.length) {
-        // For choosing 'erase even originals'
+        // Here Choice_3 means the OPTION 'erase even originals':
         document.querySelector('span.Choice_3').style.display = 'flex';
         // document.querySelector('span.Choice_3').style.color = '#df1837';
       }
@@ -404,9 +404,12 @@ export class MenuImage extends Component {
       while (!this.z.buttonNumber) {
         await new Promise (z => setTimeout (z, 199)); // eraseFunc 2
       }
-      // document.querySelector('input[type="checkbox"] + label::before').style.width = '.65rem';
-      // document.querySelector('input[type="checkbox"] + label::before').style.height = '.65rem';
 
+      // (*) Concerning the use of dialogChoose here:
+      // IF BUTTON 3 (ACTUALLY A CHECKBOX) IS VISIBLE, ALL IMAGES ARE SYMLINKS.
+      // Then, if checked, EVEN THE ORIGINALS, which are linked
+      // to, WILL BE ERASED, when the confirm BUTTON 1 is clicked.
+      // When checked, a clear explanation and warning is displayed, else not:
       while (this.z.buttonNumber === 3) {
         if (document.getElementById('Choice_3').checked === true) {
           document.querySelector('span.Choice_3 label').innerHTML = SP + ' ' + this.intl.t('write.eraseOption') + '. <b style="color:#df1837">' + this.intl.t('write.eraseOption1') + '</b> ' + this.intl.t('write.eraseOption2');
@@ -424,7 +427,7 @@ export class MenuImage extends Component {
           let imgName = img.id.slice(1);
           let imgTitle = document.querySelector('#i' + this.z.escapeDots(imgName) + ' img.left-click').getAttribute('title');
           let imgPath = this.z.userDir + '/' + imgTitle;
-          let path = imgPath.replace(/[^/]+$/, '');
+          let path = imgPath.replace(/[^/]+$/, ''); //remove file name
 
           if (img.classList.contains('symlink')) {
             // Save the linked-to-path for safety
@@ -458,6 +461,7 @@ export class MenuImage extends Component {
               if (err) {
                 errNames.push(imgName)
               } else {
+                  console.log('>>>erased:', CSP);
                 await this.z.sqlUpdate(CSP); // Complete server path
                 this.z.loli('  NOTE: original ' + this.z.imdbRoot + lnkdPath + ' also deleted', 'color:red');
                 await this.z.execute('rm -f ' + this.z.userDir + '/' + this.z.imdbRoot + origPath + '_mini_' + imgName + '.png');
@@ -468,13 +472,27 @@ export class MenuImage extends Component {
             }
 
           } else {
-            this.z.loli(imgTitle + ' deleted', 'color:red');
+            let CSP = imgPath; // C.s.p
+            let err = await this.z.execute('rm -f ' + imgPath); // Complete server path
+              this.z.loli('rm -f ' + imgPath, 'color:pink');
+            if (err) {
+              errNames.push(imgName)
+            } else {
+                console.log('>>>erased:', imgPath);
+              await this.z.sqlUpdate(imgPath); // Complete server path
+              this.z.loli(imgTitle + ' deleted', 'color:red');
+              img.remove();
+              await this.z.execute('rm -f ' + this.z.userDir + '/' + this.z.imdbRoot + path + '_mini_' + imgName + '.png');
+              await this.z.execute('rm -f ' + this.z.userDir + '/' + this.z.imdbRoot + path + '_show_' + imgName + '.png');
+                this.z.loli('rm -f ' + this.z.userDir + '/' + this.z.imdbRoot + path + '_mini_' + imgName + '.png', 'color:pink');
+                this.z.loli('rm -f ' + this.z.userDir + '/' + this.z.imdbRoot + path + '_show_' + imgName + '.png', 'color:pink');
+            }
           }
           // If at picFound: imgName is trunchated, preparied for remove of the original
-            // this.z.loli(imgName, 'color:brown');
-            // this.z.loli(imgTitle, 'color:brown');
-            // this.z.loli(imgPath, 'color:brown');
-            // this.z.loli(path, 'color:brown');
+            this.z.loli(imgName, 'color:brown');
+            this.z.loli(imgTitle, 'color:brown');
+            this.z.loli(imgPath, 'color:brown');
+            this.z.loli(path, 'color:brown');
         }
         // Prepare summary message
         let n = imgs.length - errNames.length;
@@ -739,8 +757,9 @@ export class ChooseAlbum extends Component {
         cmd += 'if [ $mini != $orgmini ];then rm $orgmini;fi;';
         cmd += 'if [ $show != $orgshow ];then rm $orgshow;fi;fi;';
 
-          console.log('>>>move', move);
-        // await this.z.sqlUpdate(move); // Complete server path
+          console.log('>>>moved from:', move);
+          console.log('  >>>moved to:', moveto);
+        await this.z.sqlUpdate(move + LF + moveto); // Complete server paths
 
           // this.z.loli(cmd.replace(/;/g, ';\n').replace(/\nthen /g, 'then\n').replace(/else /g, 'else\n'), 'color:red');
         let r = await this.z.execute(cmd);
