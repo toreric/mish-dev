@@ -472,7 +472,7 @@ export default class CommonStorageService extends Service {
     // Make 'secret albums' pink in the ALBUM tree of the main menu:
     for (let i=0;i<this.imdbCoco.length;i++) {
       if (this.imdbCoco[i].includes('*')) { // contains() is deprecated!
-        await new Promise (z => setTimeout (z, 13)); //is necessary!!
+        // await new Promise (z => setTimeout (z, 13)); //is necessary!!??TESTIT
         document.querySelector('span.album.a' + i).style.color = 'pink';
       }
     }

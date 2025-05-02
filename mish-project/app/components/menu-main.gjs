@@ -125,16 +125,17 @@ export class MenuMain extends Component {
     // await new Promise (z => setTimeout (z, 33*this.z.imdbCoco.length)); // selectRoot Wait for album tree
     await new Promise (z => setTimeout (z, 333)); // selectRoot Wait for album tree
     this.openAll(CL); // fold all nodes except 0
-    let anyHidden = async () => { // flags any hidden-without-allowance album
+    let anyHidden = () => { // flags any hidden-without-allowance album
       let hidden = false;
       for (let i=0;i<this.z.imdbCoco.length;i++) {
+          this.z.loli(this.z.imdbCoco[i] + hidden, 'color:red');
         if (this.z.imdbCoco[i].includes('*')) { // contains() is deprecated!
           hidden = true;
         } //else  document.querySelector('.album.a' + i).style.color = 'white';
       }
       return hidden;
     }
-    this.hasHidden = anyHidden(); // if there are any hidden-without-allowance albums
+    this.hasHidden = anyHidden(); // if there are any hidden-but-allowed albums
     this.z.openAlbum(0); // Select the root album
     this.z.closeMainMenu('after opening root album'); // Close the main menu
         // this.z.loli(this.z.imdbDirs);
