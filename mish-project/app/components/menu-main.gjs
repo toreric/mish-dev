@@ -26,7 +26,7 @@ export class MenuMain extends Component {
   @service('common-storage') z;
   @service intl;
   @tracked hasHidden = false;
-  @tracked opcl = OP;
+  @tracked opcl = CL;
 
   // Choose collection = album root directory and its album (sub)directories
   // and convert them into an object tree with an amended property set.
@@ -55,7 +55,7 @@ export class MenuMain extends Component {
     // The await reason: Sometimes getAlbumDirs is unsuspectedly null
     let tmp = await this.z.getAlbumDirs(allow.textEdit);
     let arr = tmp.split(LF);
-      // this.z.loli(arr[1]);
+      // this.z.loli(arr[1], 'color:red');
 
     // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
     // The two first lines (to be shifted off) have other content
@@ -124,11 +124,10 @@ export class MenuMain extends Component {
       // this.z.loli(this.z.imdbCoco.length, 'color:red');
     // await new Promise (z => setTimeout (z, 33*this.z.imdbCoco.length)); // selectRoot Wait for album tree
     await new Promise (z => setTimeout (z, 333)); // selectRoot Wait for album tree
-    this.openAll(CL); // fold all nodes except 0
+    this.toggleTree(CL); // fold all nodes except 0
     let anyHidden = () => { // flags any hidden-without-allowance album
       let hidden = false;
       for (let i=0;i<this.z.imdbCoco.length;i++) {
-          this.z.loli(this.z.imdbCoco[i] + hidden, 'color:red');
         if (this.z.imdbCoco[i].includes('*')) { // contains() is deprecated!
           hidden = true;
         } //else  document.querySelector('.album.a' + i).style.color = 'white';
@@ -226,8 +225,8 @@ export class MenuMain extends Component {
     selected.classList.remove('blink');
   }
 
-  // Open/close all nodes of albumTree
-  openAll = (opcl) => {
+  // Open all or close all (except root) nodes of albumTree
+  toggleTree = (opcl) => {
     let all = document.querySelector('div.albumTree').querySelectorAll('a.album');
     let i0 = 1; // Don't close root
     if (opcl === OP) i0 = 0;
@@ -254,6 +253,7 @@ export class MenuMain extends Component {
 
   <template>
 
+    {{!-- <RefreshThis @for={{this.z.refreshTexts}}> --}}
     <div id="menuMain" class="mainMenu" onclick="return false" draggable="false" ondragstart="return false" style="display:none">
 
       <p onclick="return false" draggable="false" ondragstart="return false" title-2="{{t 'imageSearch'}}">
@@ -267,7 +267,7 @@ export class MenuMain extends Component {
       </p><br>
 
       <p onclick="return false" draggable="false" ondragstart="return false">
-        <a class="" style="color: white;cursor: default">
+        <a class="" style="color:white;cursor:default">
 
           <select id="rootSel" title-2={{t 'albumcollinfo'}} {{on 'change' this.selectRoot}} {{on 'mousedown' (fn this.z.closeDialog this.dialogAlertId)}}>
             <option value="" selected>{{t 'selalbumcoll'}}</option>
@@ -297,7 +297,7 @@ export class MenuMain extends Component {
         <span style="margin:0.2rem;padding:0.1rem 0.2rem">
           <em>{{t 'totalImgNumber'}}</em>:&nbsp;{{this.totalImgNumber}}
 
-          <a style="margin:0 0.2rem 0 0.5rem;padding:0.1rem 0.2rem;border:0.5px solid #d3d3d3;border-radius:4px" title-2={{t 'openallalb'}} {{on "click" (fn this.openAll this.opcl)}}>{{this.opcl}} {{t 'all'}}</a>
+          <a style="margin:0 0.2rem 0 0.5rem;padding:0.1rem 0.2rem;border:0.5px solid #d3d3d3;border-radius:4px" title-2={{t 'openallalb'}} {{on "click" (fn this.toggleTree this.opcl)}}>{{this.opcl}} {{t 'all'}}</a>
 
           <a style="margin:0;padding:0.1rem 0.2rem;border:0.5px solid #d3d3d3;border-radius:4px" {{on "click" (fn this.showSelected)}}>{{t 'showselected'}}</a>
         </span>
@@ -318,6 +318,7 @@ export class MenuMain extends Component {
       {{!-- </RefreshThis> --}}
 
     </div>
+    {{!-- </RefreshThis> --}}
 
   </template>
 }
@@ -331,7 +332,8 @@ class Tree extends Component {
   @tracked isOpen = true;
   @tracked display = '';
 
-  toggle = () => {
+  // Open(show) or close(hide) a node in the album tree
+  toggleThis = () => {
     this.isOpen = !this.isOpen;
     if (this.isOpen) {
       this.display = '';
@@ -358,7 +360,7 @@ class Tree extends Component {
   <template>
 
     {{!-- This button is used! --}}
-    <button style="display:none" {{on 'click' this.toggle}}>
+    <button style="display:none" {{on 'click' this.toggleThis}}>
       {{if this.isOpen 'Close' 'Open'}}
     </button>
     {{#each @tree as |node|}}

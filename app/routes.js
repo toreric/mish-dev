@@ -25,8 +25,9 @@ module.exports = function(app) { // Start module.exports
   let mailsender = 'savarhembygd@telia.com' // mailSender/host/provider/smtpRelay
   let WWW_ROOT = path.resolve('.') // Present work directory
   let IMDB_HOME = imdbHome() // Root directory where IMDB_ROOTs are found
-  let IMDB_ROOT = '' // Image database root directory
-  let IMDB_DIR = ''  // Actual image database(sub)directory
+  //  IMDB_ROOT = image database root directory:
+  let IMDB_ROOT = execSync('echo $IMDB_ROOT').toString().trim()
+  let IMDB_DIR = ''  // Actual image database subdirectory
   let IMDB = ''
   let picFound = '' // Name of special(temporary) search result album
   let show_imagedir = false // For debug data(base) directories
@@ -86,11 +87,11 @@ module.exports = function(app) { // Start module.exports
         // console.log(BYEL + cmd + RSET)
       }
     }
-    // console.log(BGRE + decodeURIComponent(req.originalUrl) + RSET)
+    console.log(BGRE + decodeURIComponent(req.originalUrl) + RSET)
       // console.log('  WWW_ROOT:', WWW_ROOT)
       // console.log(' IMDB_HOME:', IMDB_HOME)
       // console.log('      IMDB:', IMDB)
-      // console.log(' IMDB_ROOT:', IMDB_ROOT)
+      console.log(' IMDB_ROOT:', IMDB_ROOT)
       // console.log('  IMDB_DIR:', IMDB_DIR)
       // console.log('  picFound:', picFound)
     if (show_imagedir) {
@@ -222,7 +223,7 @@ module.exports = function(app) { // Start module.exports
 
         res.location('/')
         // console.log(password +LF+ status +LF+ allow +LF+ freeUsers)
-        res.send(password +LF+ status +LF+ allow +LF+ freeUsers)
+        res.send(password +LF+ status +LF+ allow +LF+ freeUsers +LF+ IMDB_ROOT)
 
       } else { // Send all recorded user statuses and their allowances, formatted
         console.log('\n\nRELOADING MISH\nGet the table of user rights')

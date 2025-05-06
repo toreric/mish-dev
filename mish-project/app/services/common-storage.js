@@ -335,31 +335,31 @@ export default class CommonStorageService extends Service {
 
   //#region homeAlbum
   homeAlbum = async (path, picName) => { // was parAlb
-    // this.loli('path:' + path + ':');
-    // this.loli('picName: ' + picName, 'color:red');
-  // Convert the relative path of the linked-file target,
-  // to conform with z.imdbDirs server list, rooted at album root
-  if (this.imdbDir.slice(1,2) === '§') picName = (picName.trim()).replace(/\.[0-9a-z]{4}$/, '');
-    // this.loli('imdbDir: ' + this.imdbDir, 'color:orange');
-    // this.loli('picName: ' + picName, 'color:orange');
-  let dir = path.replace(/^([.]*\/)*/, '/').replace(/\/[^/]+$/, '');
-  let name = path.replace(/^([^/]*\/)*([^/]+)\/[^/]+$/, "$2")
-  // dir is the home album (with index i) for path
-  let i = this.imdbDirs.indexOf(dir);
-  if (i < 0) {
-    if (document.getElementById('dialogAlert').open) {
-      this.closeDialog('dialogAlert');
+      // this.loli('path:' + path + ':');
+      // this.loli('picName: ' + picName, 'color:red');
+    // Convert the relative path of the linked-file target,
+    // to conform with z.imdbDirs server list, rooted at album root
+    if (this.imdbDir.slice(1,2) === '§') picName = (picName.trim()).replace(/\.[0-9a-z]{4}$/, '');
+      // this.loli('imdbDir: ' + this.imdbDir, 'color:orange');
+      // this.loli('picName: ' + picName, 'color:orange');
+    let dir = path.replace(/^([.]*\/)*/, '/').replace(/\/[^/]+$/, '');
+    let name = path.replace(/^([^/]*\/)*([^/]+)\/[^/]+$/, "$2")
+    // dir is the home album (with index i) for path
+    let i = this.imdbDirs.indexOf(dir);
+    if (i < 0) {
+      if (document.getElementById('dialogAlert').open) {
+        this.closeDialog('dialogAlert');
+      } else {
+        this.alertMess(this.intl.t('albumMissing') + ':<br><br><p style="width:100%;text-align:center;margin:0">”' + this.removeUnderscore(name) + '”</p>', 0);
+      }
     } else {
-      this.alertMess(this.intl.t('albumMissing') + ':<br><br><p style="width:100%;text-align:center;margin:0">”' + this.removeUnderscore(name) + '”</p>', 0);
+      this.openAlbum(i);
+      // Allow for the rendering of mini images and preload of view images
+      let size = this.albumAllImg(i);
+      await new Promise (z => setTimeout (z, size*60 + 100)); // album load
+      this.gotoMinipic(picName);
     }
-  } else {
-    this.openAlbum(i);
-    // Allow for the rendering of mini images and preload of view images
-    let size = this.albumAllImg(i);
-    await new Promise (z => setTimeout (z, size*60 + 100)); // album load
-    this.gotoMinipic(picName);
   }
-}
 
   //#region openAlbum
   openAlbum = async (i) => {
@@ -469,14 +469,12 @@ export default class CommonStorageService extends Service {
     // Set classes and different background on hidden images
     this.paintHideFlags();
 
-    // Make 'secret albums' pink in the ALBUM tree of the main menu:
+    // FIRST: Make 'secret albums' pink in the ALBUM tree of the main menu:
     for (let i=0;i<this.imdbCoco.length;i++) {
       if (this.imdbCoco[i].includes('*')) { // contains() is deprecated!
-        // await new Promise (z => setTimeout (z, 13)); //is necessary!!??TESTIT
         document.querySelector('span.album.a' + i).style.color = 'pink';
       }
-    }
-    // Set color mark on the selected album name and make it visible
+    } // THEN: Set color mark on the selected album name and make it visible
     // NOTE: This is about the selected album in the ALBUM tree.
     document.querySelector('span.album.a' + i).style.color = '#f46aff';
     let selected = document.querySelector('div.album.a' + i);
@@ -1044,7 +1042,7 @@ export default class CommonStorageService extends Service {
     // this.loli(this.userName);
     if (username === 'Get user name') { // Welcome, initiation
       username = this.userName; // Default log in
-      this.imdbRoot = ''; // Empty it
+      // this.imdbRoot = ''; // Empty it
     }
     if (username === 'Get allowances') username = ''; // For all users
     return new Promise((resolve, reject) => {

@@ -223,8 +223,7 @@ class Welcome extends Component {
       this.z.displayNames = 'none'; // Hide image names
       this.z.initBrowser();         // Manipulate browser back-arrow
       this.z.maxWarning = 100;      // Set recommended album maxsize, about 100
-      await new Promise (z => setTimeout (z, 99)); // Before awakening the system
-      // document.querySelector('#toggleName').click(); // Initially hide (donowhy)
+      await new Promise (z => setTimeout (z, 99)); // getCred before awakening the system
 
       // Read the build stamp files (nodestamp.txt may be initially missing) etc.
       this.z.aboutThis = 'Mish ' + await this.z.execute('cat buildstamp.txt') + ' ' + await this.z.execute('cat nodestamp.txt') + ' and Glimmer by Ember<br>' + await this.z.execute('head -n1 LICENSE.txt');
@@ -247,8 +246,8 @@ class Welcome extends Component {
         this.z.textColor = '#fff';
         this.z.subColor = '#aef';
         document.querySelector('#dark_light').classList.remove('darkbkg');
-      }
-      if (this.z.getCookie('mish_bkgr') === 'light') {
+      } else {
+      // if (this.z.getCookie('mish_bkgr') === 'light') {
         this.z.bkgrColor = '#cbcbcb';
         this.z.textColor = '#111';
         this.z.subColor = '#146';
@@ -263,13 +262,27 @@ class Welcome extends Component {
       this.z.userStatus = cred[1];
       this.z.allowvalue = cred[2];
       this.z.freeUsers = cred[3];
+      this.z.imdbRoot = cred[4]; // Non-empty if defined at server startup
+        this.z.loli('imdbRoot = ' + this.z.imdbRoot, 'color:red');
       this.z.allowFunc(); // SET ALLOWANCES PATTERN important!
 
       // Get album-collection-qualified catalogs
       let roots = await this.z.getAlbumRoots();
       this.z.imdbRoots = roots.split(LF);
     }
+    // Now check if the album root is already chosen and if so,
+    // ensure it belongs to the options in its select statement:
     this.z.openMainMenu();
+    if (this.z.imdbRoot && this.z.imdbRoots.indexOf(this.z.imdbRoot) > -1) {
+      let selEl = document.getElementById('rootSel');
+      // await new Promise (z => setTimeout (z, 199));
+      selEl.value = this.z.imdbRoot;
+      await new Promise (z => setTimeout (z, 88));
+      selEl.dispatchEvent(new Event('change'));
+      await new Promise (z => setTimeout (z, 888));
+      // Open the root of the selected album
+      // this.z.openAlbum(0);
+    }
     // this.openLogIn();
   }
 }
@@ -419,8 +432,6 @@ export class DialogSettings extends Component {
           else BEEP = 0; break;
       }
     }
-    // 1. ändra denna
-    // 2. gå igenom alla
   }
 
   <template>
@@ -449,12 +460,6 @@ export class DialogSettings extends Component {
             <input id="setBeep" name="settings" value="" type="checkbox" {{on 'click' this.detectCheckbox}}>
             <label for="setBeep"> &nbsp;{{t 'write.setBeep'}}</label>
           </span>
-          {{!-- {{#if this.z.allow.deleteImg}}
-            <span class="glue">
-              <input id="setEraseOriginal" name="settings" value="" type="checkbox" {{on 'click' this.detectCheckbox}}>
-              <label for="setEraseOriginal"> &nbsp;{{t 'write.setEraseOriginal'}}</label>
-            </span>
-          {{/if}} --}}
         </div>
 
       </main>

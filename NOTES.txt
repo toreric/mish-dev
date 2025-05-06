@@ -1,4 +1,5 @@
 
+EMBER/GLIMMER browser input:
 evo@discord 2024-10-17 16:51
 a very basic example here of the browser behaviour
 
@@ -7,3 +8,28 @@ if you type into the textarea it will stop updating from the setInterval, but if
 https://codepen.io/evoactivity/pen/qBejBxX
 
 
+TAR ARCHIVE search and extraction
+
+SEARCH with zfind for files:
+tore@nejlika:/media/tore/SAMSUNG
+$ zfind 'name like "abook%"' nejlika-250327-1855VM.tgz
+nejlika-250327-1855VM.tgz//home/tore/.thunderbird/tr5gf51h.default-release/abook-1.sqlite-wal
+nejlika-250327-1855VM.tgz//home/tore/.thunderbird/tr5gf51h.default-release/abook.sqlite
+nejlika-250327-1855VM.tgz//home/tore/.thunderbird/tr5gf51h.default-release/abook.sqlite-wal
+nejlika-250327-1855VM.tgz//usr/share/bash-completion/completions/abook
+
+NOTE, about EXTRACTION, that leading slash, like here, will cause:
+$ tar -xvzf nejlika-250327-1855VM.tgz --wildcards '/home/tore/.thunderbird/tr5gf51h.default-release/abook*'
+tar: /home/tore/.thunderbird/tr5gf51h.default-release/abook*: Fanns inte i arkivet
+
+EXTRACT mainly the same files into directory /media/tore/SAMSUNG/nejlika-250327-1855VM/:
+tore@nejlika:/media/tore/SAMSUNG
+$ tar -xvzf nejlika-250327-1855VM.tgz --wildcards 'home/tore/.thunderbird/tr5gf51h.default-release/abook*' --one-top-level
+home/tore/.thunderbird/tr5gf51h.default-release/abook-1.sqlite-wal
+home/tore/.thunderbird/tr5gf51h.default-release/abook.sqlite
+home/tore/.thunderbird/tr5gf51h.default-release/abook.sqlite-wal
+
+EXTRACTED automatically, including directory creation, into:
+...
+/media/tore/SAMSUNG/nejlika-250327-1855VM/home/tore/.thunderbird/tr5gf51h.default-release/abook.sqlite
+...

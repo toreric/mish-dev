@@ -629,6 +629,8 @@ export class MenuImage extends Component {
 
 }
 
+// NOTE: The chooseAlbum dialog is designed for chosing destination
+// album before moving images between albums via the image menus
 export class ChooseAlbum extends Component {
   @service('common-storage') z;
   @service intl;
@@ -647,7 +649,7 @@ export class ChooseAlbum extends Component {
       // this.z.loli(`${elRadio.id} ${elRadio.checked}`, 'color:red');
     this.which = Number(elRadio.id.slice(5));
     document.querySelector('#chooseAlbum main button').disabled = false;
-    document.getElementById('putWhere').style.display = '';
+    document.getElementById('putWhere').style.display = ''; // putWhere, planned
   }
 
   // Filter away this and the temporary
@@ -661,9 +663,10 @@ export class ChooseAlbum extends Component {
     return a ? this.z.handsomize2sp(a.replace(/^.*\/([^/]+)$/, '$1')) : this.z.imdbRoot;
   }
 
+  // NOTE: See next note!
   closeChooseAlbum = (doit) => {
     document.querySelector('#chooseAlbum main button').disabled = true;
-    document.getElementById('putWhere').style.display = 'none';
+    document.getElementById('putWhere').style.display = 'none'; // putWhere, planned
     this.z.closeDialog('chooseAlbum');
     if (doit) this.doLinkMove();
     else this.which = -1;
@@ -790,12 +793,9 @@ export class ChooseAlbum extends Component {
       </header>
       <main style="padding:0.5rem">
 
-{{!-- {{#if}} --}}
         <b>{{this.selectAlbum}}</b>
         <span>(”.” = ”{{this.z.imdbRoot}}”)</span><br>
         <div class="albumList">
-
-          {{!-- {{#if (eq this.which this.which)}} --}}
 
           {{#each this.z.imdbDirs as |album index|}}
             {{#if (this.filterAlbum index)}}
@@ -810,10 +810,7 @@ export class ChooseAlbum extends Component {
             {{t 'write.foundNoAlbums'}}
           {{/each}}
 
-          {{!-- {{/if}} --}}
-
         </div>
-{{!-- {{/if}} --}}
 
         {{#if (eq this.which -1)}}
           <b style="color:blue">{{t 'write.chooseAlbum'}}</b><br>
