@@ -68,6 +68,14 @@ export class DialogLogin extends Component {
       }
       this.z.closeDialog(dialogLoginId);
       document.querySelector('.mainMenu select').focus();
+        this.z.loli('imdbRoot = ' + this.z.imdbRoot, 'color:deeppink');
+      if (this.z.imdbRoot) {
+        let selEl = document.getElementById('rootSel');
+        selEl.value = this.z.imdbRoot;
+        await new Promise (z => setTimeout (z, 88));
+        selEl.dispatchEvent(new Event('change'));
+        await new Promise (z => setTimeout (z, 888));
+      }
 
     } else {
       document.getElementById('logInError').style.display = '';

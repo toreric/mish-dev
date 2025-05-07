@@ -275,13 +275,10 @@ class Welcome extends Component {
     this.z.openMainMenu();
     if (this.z.imdbRoot && this.z.imdbRoots.indexOf(this.z.imdbRoot) > -1) {
       let selEl = document.getElementById('rootSel');
-      // await new Promise (z => setTimeout (z, 199));
       selEl.value = this.z.imdbRoot;
       await new Promise (z => setTimeout (z, 88));
       selEl.dispatchEvent(new Event('change'));
       await new Promise (z => setTimeout (z, 888));
-      // Open the root of the selected album
-      // this.z.openAlbum(0);
     }
     // this.openLogIn();
   }

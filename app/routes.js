@@ -25,10 +25,11 @@ module.exports = function(app) { // Start module.exports
   let mailsender = 'savarhembygd@telia.com' // mailSender/host/provider/smtpRelay
   let WWW_ROOT = path.resolve('.') // Present work directory
   let IMDB_HOME = imdbHome() // Root directory where IMDB_ROOTs are found
-  //  IMDB_ROOT = image database root directory:
+  //  IMDB_ROOT is the image database root directory:
   let IMDB_ROOT = execSync('echo $IMDB_ROOT').toString().trim()
   let IMDB_DIR = ''  // Actual image database subdirectory
   let IMDB = ''
+  let USER = ''
   let picFound = '' // Name of special(temporary) search result album
   let show_imagedir = false // For debug data(base) directories
   let allfiles = [] // For /imagelist use
@@ -64,6 +65,7 @@ module.exports = function(app) { // Start module.exports
         IMDB_ROOT = decodeURIComponent(tmp)
         IMDB_DIR = decodeURIComponent( req.get('imdbdir') )
         IMDB = IMDB_HOME + '/' + IMDB_ROOT
+        USER = req.get('username')
         picFound = req.get('picfound')
         // If picFound is already defined it must be preserved even if it
         // isn't touched since long ago. We should 'touch' that directory, or
@@ -465,7 +467,7 @@ module.exports = function(app) { // Start module.exports
         res.location('/')
         res.send(allfiles)
         //res.end()
-        console.log('   ' + BGRE + IMDB_ROOT + IMDB_DIR + RSET)
+        console.log('   ' + BGRE + USER + ': ' + IMDB_ROOT + IMDB_DIR + RSET)
         console.log('...file information sent from server') // Remaining message
       }).catch(function(error) {
         res.location('/')
