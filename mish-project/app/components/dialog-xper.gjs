@@ -40,10 +40,10 @@ export class DialogXper extends Component {
 
   updateOrder = (n) => {
     if (n === 1) {
-      this.z.loli(LF + 'ORIGINALLY LOADED' + LF + this.z.sortOrder, 'color:pink');
+      this.z.loli(LF + 'OLD, LOADED' + LF + this.z.sortOrder, 'color:pink');
     } else if (n === 2) {
       let tmp = this.z.updateOrder();
-      this.z.loli(LF + 'ACTUAL IF SAVED' + LF + tmp, 'color:lightcoral');
+      this.z.loli(LF + 'ACTUAL, IF SAVED' + LF + tmp, 'color:lightcoral');
     }
   }
 
@@ -57,22 +57,23 @@ export class DialogXper extends Component {
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogXperId)}}>×</button>
         </div>
       </header>
-      <main style="text-align:center" style="text-align:center;min-height:10rem">
+      <main style="text-align:center;min-height:10rem">
 
       <div id="_this_is_no_image" style="position:relative">
         <br>
           {{@content}}
         <br>  <br>
         <button type="button" {{on 'click' this.toggleTmpHeader}}>
-          Dölj/visa testkomponenten ”&lt;Header /&gt;”
+          Hide/show the test component ”&lt;Header /&gt;”
         </button>
         <br>
         <button type="button" {{on 'click' (fn this.updateOrder 1)}}>
-          sortOrder
+          sortOrder *
         </button>
         <button type="button" {{on 'click' (fn this.updateOrder 2)}}>
-          Ny sortOrder
+          New sortOrder *
         </button>
+        <br>* shown in the browser console
 
         {{!-- <br>
         <button type="button" {{on 'click' (fn this.z.openModalDialog 'chooseAlbum')}}>
@@ -80,9 +81,9 @@ export class DialogXper extends Component {
         </button> --}}
 
         <div style="display:flex;justify-content:center">
-          <div title-2="Här visas CSS: title-2">
+          <div title-2="The CSS-generated ”title-2” is shown here">
           <br>&nbsp; <br>
-            För visning av<br>CSS: title-2
+            For display of<br>CSS: title-2
           </div>
         </div>
         <br>

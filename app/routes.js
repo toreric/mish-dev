@@ -27,6 +27,7 @@ module.exports = function(app) { // Start module.exports
   let IMDB_HOME = imdbHome() // Root directory where IMDB_ROOTs are found
   //  IMDB_ROOT is the image database root directory:
   let IMDB_ROOT = execSync('echo $IMDB_ROOT').toString().trim()
+  if (IMDB_ROOT === '""') IMDB_ROOT = ''
   let IMDB_DIR = ''  // Actual image database subdirectory
   let IMDB = ''
   let USER = ''

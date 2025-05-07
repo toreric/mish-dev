@@ -31,10 +31,14 @@ cd $project
 #IMDB_HOME=/mnt/koofrwebdav
 IMDB_HOME=/home/tore
 #IMDB_ROOT=MISH
-#IMDB_ROOT=Framkallning_2019
-IMDB_ROOT=Album-1
-#IMDB_ROOT='""' # NOTE: An 'empty' argument must be `'""'` in order to be
-################   passed correctly positioned into `node server.js ...`
+#IMDB_ROOT=Album-1
+IMDB_ROOT='""'
+### NOTE: IMDB_ROOT may be empty in order to force the user to choose
+### among album collections. Such an 'empty' string argument must be '""'
+### in order to be passed correctly positioned into `node server.js ...`
+### ('' or "" will cause errors). The '""' parameter will be taken care
+### of and is eventually converted into an empty string.
+
 if [[ $1 ]]; then
   IMDB_HOME=$1
   if [[ $2 ]]; then
