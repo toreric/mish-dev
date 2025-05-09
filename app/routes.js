@@ -94,7 +94,7 @@ module.exports = function(app) { // Start module.exports
       // console.log('  WWW_ROOT:', WWW_ROOT)
       // console.log(' IMDB_HOME:', IMDB_HOME)
       // console.log('      IMDB:', IMDB)
-      console.log(' IMDB_ROOT:', IMDB_ROOT)
+      // console.log(' IMDB_ROOT:', IMDB_ROOT)
       // console.log('  IMDB_DIR:', IMDB_DIR)
       // console.log('  picFound:', picFound)
     if (show_imagedir) {
@@ -134,15 +134,13 @@ module.exports = function(app) { // Start module.exports
   //#region filestat
   app.get ('/filestat', async (req, res) => {
     var file = decodeURIComponent(req.get('path'))
-    // file = 'rln' + IMDB + file // 3 + IMDB.length
     file = IMDB + file
-
     // This is an emergency solution, which was necessary since the 'filstat'
     // server address seems to be excessively triggered by the reactive behaviour
     // started by the 'DialogInfo' component. It is used by the 'MenuImage' component
-    // when the menu's 'Information' entry is clicked.
+    // when the menu's 'Information' entry is clicked:
     if (await notFile(file)) {
-      console.error('Illegal filestat call')
+        // console.error('Illegal filestat call, file =', file)
       return
     }
       // NOTE: See with this log-print that /filestat is mostly 'doubly triggered'!
@@ -167,7 +165,6 @@ module.exports = function(app) { // Start module.exports
     // Exclude IMDB from `file`, feb 2022, in order to difficultize
     // direct access to the original pictures on the server.
     var errimg = "not available"
-    // var filex = '.' + file.slice (3 + IMDB.length) // 3 for 'rln'
     var filex = '.' + file.slice (IMDB.length)
     var fileStat = ''
 
@@ -229,7 +226,7 @@ module.exports = function(app) { // Start module.exports
         res.send(password +LF+ status +LF+ allow +LF+ freeUsers +LF+ IMDB_ROOT)
 
       } else { // Send all recorded user statuses and their allowances, formatted
-        console.log('\n\nRELOADING MISH\nGet the table of user rights')
+        console.log(BYEL + '\n\nRELOADING MISH' + RSET + '\nGet the table of user rights')
         let rows = setdb.prepare('SELECT * FROM class ORDER BY status').all()
         var allowances = ''
         for (let j=0;j<rows.length;j++) {
@@ -708,17 +705,14 @@ module.exports = function(app) { // Start module.exports
   // ===== Read the dir's content of album sub-dirs(not recursively)
   //#region readSubdir
   readSubdir = async (dir, files = []) => {
-    // let items = await fs.readdirAsync('rln' + dir) // items are file || dir names
     let items = await fs.readdirAsync(dir) // items are file || dir names
     return Promise.map(items, async (name) => { // Cannot use mapSeries here(why?)
       //let apitem = path.resolve(dir, name) // Absolute path
       let item = path.join(dir, name) // Relative path
       if (acceptedDirName(name) && !brokenLink(item)) {
-        // let stat = await fs.statAsync('rln' + item)
         let stat = await fs.statAsync(item)
         if (stat.isDirectory()) {
           let flagFile = path.join(item, '.imdb')
-          // let fd = await fs.openAsync('rln' + flagFile, 'r')
           let fd = await fs.openAsync(flagFile, 'r')
           if (fd > -1) {
             await fs.closeAsync(fd)
@@ -774,7 +768,6 @@ module.exports = function(app) { // Start module.exports
     let fd, albums = []
     return Promise.mapSeries(dirlist, async(album) => { //(*) CAN use mapSeries here but don't understand why!?
       try {
-        // fd = await fs.openAsync('rln' + IMDB + album + '/.imdb', 'r')
         fd = await fs.openAsync(IMDB + album + '/.imdb', 'r')
         await fs.closeAsync(fd)
         // Exclude dotted, and not actual picFound files
@@ -809,7 +802,6 @@ module.exports = function(app) { // Start module.exports
       return ''
     }
 
-    // return fs.readdirAsync('rln' + IMDB + dirName).map(function(fileName) { // Cannot use mapSeries here(why?)
     return fs.readdirAsync(IMDB + dirName).map(function(fileName) { // Cannot use mapSeries here(why?)
         var filepath = path.join(IMDB + dirName, fileName)
 
@@ -820,7 +812,6 @@ module.exports = function(app) { // Start module.exports
         rmPic(filepath) // may hopefully also work for removing any single file ...
         return path.join(path.dirname(filepath), '.ignore') // fake dotted file
       }
-      // return fs.statAsync('rln' + filepath).then(function(stat) {
       return fs.statAsync(filepath).then(function(stat) {
         if (stat.mode & 0o100000) {
           // See 'man 2 stat': S_IFREG bitmask for 'Regular file', and google more!

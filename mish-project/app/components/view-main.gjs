@@ -45,13 +45,13 @@ class SubAlbums extends Component {
 
   get nsub() { // No of subalbums of this album
     let res =  this.z.subaIndex.length;
-    if (res < 1) res = this.intl.t('no'); // 'inget'
+    if (res < 1) res = this.intl.t('no');
     return res;
   }
 
   get nsubRoot() { // No of subalbums of the root album
     let res =  this.z.subaIndex.length - 1; // for the picFound album
-    if (res < 1) res = this.intl.t('no'); // 'inget'
+    if (res < 1) res = this.intl.t('no');
     return res;
   }
 

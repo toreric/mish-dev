@@ -47,12 +47,13 @@ export class MenuMain extends Component {
     // Display the spinner already (will be hidden somewhere else)
     document.querySelector('img.spinner').style.display = '';
 
+    await new Promise (z => setTimeout (z, 199)); // selectRoot, ensurance!?
+    // The await reason: Sometimes getAlbumDirs is unsuspectedly null
+
     // Retreive the albums list of this collection (root album).
     // If the argment is false, _imdb_ignore.txt in the chosen
     // root album is read by the server, and mentioned albums
     // with subalbums are removed from the list:
-    await new Promise (z => setTimeout (z, 199)); // selectRoot, ensurance!?
-    // The await reason: Sometimes getAlbumDirs is unsuspectedly null
     let tmp = await this.z.getAlbumDirs(allow.textEdit);
     let arr = tmp.split(LF);
       // this.z.loli(arr[1], 'color:red');
@@ -237,14 +238,6 @@ export class MenuMain extends Component {
     else this.opcl = OP;
   }
 
-  // // Close all nodes of albumTree except the root
-  // closeAll = () => {
-  //   let all = document.querySelector('div.albumTree').querySelectorAll('a.album');
-  //   for (let i=1;i<all.length;i++) {
-  //     if (all[i].innerHTML.includes(CL)) all[i].click();
-  //   }
-  // }
-
   // Count the number of images in this album
   totalImgNumber = () => {
     let a = this.z.totalOrigImg();
@@ -300,6 +293,8 @@ export class MenuMain extends Component {
           <a style="margin:0;padding:0.1rem 0.2rem;border:0.5px solid #d3d3d3;border-radius:4px" {{on "click" (fn this.showSelected)}}>{{t 'showselected'}}</a>
         </span>
       </div>
+
+      <RefreshThis @for={{this.z.refreshTree}}>
       <div class="albumTree" style="display:none">
         <Tree @tree={{this.tree}} />
         {{#if this.z.imdbRoot}}
@@ -313,6 +308,7 @@ export class MenuMain extends Component {
           </p>
         {{/if}}
       </div>
+      </RefreshThis>
 
     </div>
 

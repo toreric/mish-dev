@@ -789,13 +789,16 @@ export class ChooseAlbum extends Component {
       }
 
       this.z.alertMess(this.intl.t('write.doMoved', {n: pics.length, a: this.chosenAlbum}));
+
       // Refresh the album tree:
       let selEl = document.getElementById('rootSel');
       selEl.value = this.z.imdbRoot;
       await new Promise (z => setTimeout (z, 88));
-      selEl.dispatchEvent(new Event('change')); // Go to root album (auto)
-      await new Promise (z => setTimeout (z, 1888));
-      // Go to the album we came from
+      this.z.updateTree();
+      // selEl.dispatchEvent(new Event('change')); // Go to root album (auto)
+      // await new Promise (z => setTimeout (z, 5888)); // Increased 5s ...
+
+      // Go back to the album we came from after root load
       this.z.openAlbum(fromIndex);
       // Go to the destination album
       // this.z.openAlbum(this.which);

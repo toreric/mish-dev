@@ -5,8 +5,8 @@ import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { htmlSafe } from '@ember/template';
 
-import { replace } from 'tar';
-import { query } from 'express';
+// import { replace } from 'tar';
+// import { query } from 'express';
 import he from 'he';
 // USE: <div title={{he.decode 'text'}}></div> ['he' = HTML entities]
 // or  txt = he.decode('text')  or  txt = he.encode('text')
@@ -108,6 +108,7 @@ export default class CommonStorageService extends Service {
   @tracked  numShown = 0;   // Not further explained
 
   @tracked  refreshTexts = 0; // Refresh trigger for RefreshThis
+  @tracked  refreshTree = 0; // Refresh trigger for RefreshThis
 
   // For the DialogChoose dialog component, where
   // generally 0=no, 1=ok, and 2=cancel button selected
@@ -265,10 +266,10 @@ export default class CommonStorageService extends Service {
     return str.replace(/\n +/g, LF).replace(/\n/g, ' <br>').replace(/ +/g, ' ');
   }
 
-  // Remove HTML tags from text
+  // Remove HTML tags from text and decode HTML entities
   noTags = (txt) => {
     let tmp = txt.toString().replace(/<(?:.|\n)*?>/gm, ""); // Remove <tags>
-    tmp = he.decode(tmp); // for attributes
+    tmp = he.decode(tmp); // for HTML entities
     tmp = tmp ? tmp : ' ';
     return tmp;
   }
@@ -485,6 +486,91 @@ export default class CommonStorageService extends Service {
       if (selected.nodeName !== 'DIV') break;
       selected.style.display = '';
     }
+  }
+
+  //#region updateTree
+  updateTree = async () => { // Album root = collection
+    this.imdbDir = this.imdbRoot; // The root is assumed initially selected
+    const allow = this.allow; // permissions
+
+    // Display the spinner already (will be hidden somewhere else)
+    document.querySelector('img.spinner').style.display = '';
+
+    await new Promise (z => setTimeout (z, 199)); // selectRoot, ensurance!?
+    // The await reason: Sometimes getAlbumDirs is unsuspectedly null
+
+    // Retreive the albums list of this collection (root album).
+    // If the argment is false, _imdb_ignore.txt in the chosen
+    // root album is read by the server, and mentioned albums
+    // with subalbums are removed from the list:
+    let tmp = await this.getAlbumDirs(allow.textEdit);
+    let arr = tmp.split(LF);
+      // this.loli(arr[1], 'color:red');
+
+    // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+    // The two first lines (to be shifted off) have other content
+    arr.shift();
+    arr.shift();
+    // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+    let n = arr.length/3;
+    this.imdbDirs = arr.splice(0, n); // album paths (without root)
+    this.imdbCoco = arr.splice(0, n); // album content counts
+    this.imdbLabels = arr.splice(0, n); // album labels (thumbnail paths)
+        // this.loli('imdbCoco ' + n + LF + this.imdbCoco.join(LF), 'color:yellow');
+        // this.loli('imdbDirs ' + n + LF + this.imdbDirs.join(LF), 'color:yellow');
+        // this.loli('imdbLabels ' + n + LF + this.imdbLabels.join(LF));
+        // this.loli(this.imdbDirs, 'color:green');
+
+    // let data = structuredClone(this.imdbDirs); // alt. clone-copy
+    let data = [...this.imdbDirs]; // clone-copy albums
+    let root = this.imdbRoot;
+    for (let i=0;i<data.length;i++) {
+      data[i] = root + data[i]; // amend the root catalog name
+    }
+        // this.loli('imdbRoot/imdbDirs ' + n + LF + data.join(LF));
+        // this.loli(data);
+        // this.loli(this.imdbDirs, 'color:red');
+
+    //begin https://stackoverflow.com/questions/72006110/convert-file-path-into-object
+    // Convert the album directory list 'data' to a JS tree. Modifications are:
+    // m1. For directories only, file code is commented out.
+    // m2. Properties added: index, coco, path, and label (coco = content count)
+    // m3. Store the index of the directory 'picFound' in 'picFoundIndex'
+    let i = 0;
+    const tree = { root: {} }
+    for (const path of data) {
+      const parts = path.split('/');
+      // const file = parts.pop(); // m1.
+      let branch = tree, partPath = '';
+      for (const part of parts) {
+        partPath += `${part}/`;
+        if (partPath === `${part}/`) {
+          tree.root[partPath] = (tree[partPath] ??= { name: part, index: i++, coco: this.imdbCoco[i-1], path: partPath, label: this.imdbLabels[i-1], children: [] }); // m2.
+        } else if (tree[partPath] === undefined) {
+          tree[partPath] = { name: part, index: i++, coco: this.imdbCoco[i-1], path: partPath, label: this.imdbLabels[i-1], children: [] }; // m2.
+          branch.children.push(tree[partPath]);
+            // this.loli(part + ' ' + i, 'color:deeppink');
+          if (part === this.picFound) this.picFoundIndex = i - 1; // m3.
+        }
+        branch = tree[partPath];
+      }
+      // branch.children.push({ name: file, id: path }); // m1.
+    }
+    const result = Object.values(tree.root);
+    //end https://stackoverflow.com/questions/72006110/convert-file-path-into-object
+
+      // console.log(result);
+    this.imdbTree = result;
+      // this.loli(this.imdbTree);
+      // this.loli(this.imdbDirs);
+      // this.loli('imdbTree ' + n + LF + JSON.stringify(result, null, 2)); //human readable
+      // this.loli(this.imdbCoco.length, 'color:red');
+    // await new Promise (z => setTimeout (z, 33*this.imdbCoco.length)); // selectRoot Wait for album tree
+    this.refreshTree ++;
+    await new Promise (z => setTimeout (z, 333)); // selectRoot Wait for album tree
+
+    // this.loli(this.imdbDirs);
   }
 
   //#region toggleText
