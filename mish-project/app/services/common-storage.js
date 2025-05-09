@@ -469,13 +469,19 @@ export default class CommonStorageService extends Service {
 
     // Set classes and different background on hidden images
     this.paintHideFlags();
+    // Set colors in the album tree
+    this.paintTree(i);
+  }
 
+  // Set colors in the album tree (i = imdbDirIndex)
+  //#region paintTree
+  paintTree = (i) => {
     // FIRST: Make 'secret albums' pink in the ALBUM tree of the main menu:
     for (let i=0;i<this.imdbCoco.length;i++) {
       if (this.imdbCoco[i].includes('*')) { // contains() is deprecated!
         document.querySelector('span.album.a' + i).style.color = 'pink';
       }
-    } // THEN: Set color mark on the selected album name and make it visible
+    }// THEN: Set color mark on the selected album name and make it visible
     // NOTE: This is about the selected album in the ALBUM tree.
     document.querySelector('span.album.a' + i).style.color = '#f46aff';
     let selected = document.querySelector('div.album.a' + i);
@@ -570,6 +576,8 @@ export default class CommonStorageService extends Service {
     this.refreshTree ++;
     await new Promise (z => setTimeout (z, 333)); // selectRoot Wait for album tree
 
+    // Set colors in the album tree
+    this.paintTree(this.imdbDirIndex);
     // this.loli(this.imdbDirs);
   }
 
