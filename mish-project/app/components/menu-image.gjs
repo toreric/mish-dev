@@ -503,6 +503,12 @@ export class MenuImage extends Component {
           mesTxt += '<br><br>' + this.z.intl.t('write.noErased', {n: errNames.length, a: errNames.join(', ')});
         }
         this.z.alertMess(mesTxt);
+        // Refresh the album tree:
+        let selEl = document.getElementById('rootSel');
+        selEl.value = this.z.imdbRoot;
+        await new Promise (z => setTimeout (z, 88));
+        selEl.dispatchEvent(new Event('change'));
+        // await new Promise (z => setTimeout (z, 888));
         await new Promise (z => setTimeout (z, 2987)); // eraseFunc 5
         document.querySelector('img.spinner').style.display = 'none';
       } else {
@@ -644,6 +650,7 @@ export class ChooseAlbum extends Component {
     if (e.keyCode === 27) this.closeChooseAlbum();
   }
 
+  // Which album was selected?
   whichAlbum = (e) => {
     var elRadio = e.target;
       // this.z.loli(`${elRadio.id} ${elRadio.checked}`, 'color:red');
@@ -652,7 +659,7 @@ export class ChooseAlbum extends Component {
     document.getElementById('putWhere').style.display = ''; // putWhere, planned
   }
 
-  // Filter away this and the temporary
+  // Filter away the actual and the temporary albums:
   filterAlbum = (index) => {
     return this.z.imdbDirs[index] === this.z.imdbDir || this.z.imdbDirs[index].slice(1) === this.z.picFound ? false : true;
   }
@@ -675,6 +682,7 @@ export class ChooseAlbum extends Component {
   // NOTE: This is doLink and doMove combined! Called when
   // the chooseAlbum dialog is closed by closeChooseAlbum
   doLinkMove = async () => {
+    let fromIndex = this.z.imdbDirIndex;
     let pics = selMinImgs(this.z.picName);
     let cmd = [];
     var picNames = [];
@@ -704,6 +712,14 @@ export class ChooseAlbum extends Component {
         if (r) this.z.loli('Not linked: ' + picNames[i]);
       }
       this.z.alertMess(this.intl.t('write.doLinked', {n: pics.length, a: this.chosenAlbum}));
+      // Refresh the album tree:
+      let selEl = document.getElementById('rootSel');
+      selEl.value = this.z.imdbRoot;
+      await new Promise (z => setTimeout (z, 88));
+      selEl.dispatchEvent(new Event('change'));
+      await new Promise (z => setTimeout (z, 888));
+      // Back to the album we came from
+      this.z.openAlbum(this.which);
     // ******************************************************
     // chooseText starts with ”0” if ”doMove”, ”doMove” here:
     } else {
@@ -725,6 +741,9 @@ export class ChooseAlbum extends Component {
         let show = move.replace(/([^/]+)(\.[^/.]+)$/,'_show_$1.png');
         let moveto = mpath + '/';
         let picfound = this.z.picFound;
+
+        // Display the spinner
+        document.querySelector('img.spinner').style.display = '';
 
         // Bash command string ”cmd” (some is prepared above):
 
@@ -770,9 +789,19 @@ export class ChooseAlbum extends Component {
       }
 
       this.z.alertMess(this.intl.t('write.doMoved', {n: pics.length, a: this.chosenAlbum}));
+      // Refresh the album tree:
+      let selEl = document.getElementById('rootSel');
+      selEl.value = this.z.imdbRoot;
+      await new Promise (z => setTimeout (z, 88));
+      selEl.dispatchEvent(new Event('change')); // Go to root album (auto)
+      await new Promise (z => setTimeout (z, 1888));
+      // Go to the album we came from
+      this.z.openAlbum(fromIndex);
+      // Go to the destination album
+      // this.z.openAlbum(this.which);
     }
     this.which = -1;
-    this.z.openAlbum(this.z.imdbDirIndex); // Reloads current album
+    // this.z.openAlbum(this.z.imdbDirIndex); // Reloads current album
     this.z.countNumbers();
   }
 

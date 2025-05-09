@@ -1698,9 +1698,9 @@ export default class CommonStorageService extends Service {
     this.closeDialog(dialogId);
   }
 
-  closeDialogs  = () => { // Close ALL <dialog>s!
+  closeDialogs  = () => { // Close ALL <dialog>s except alerts
     for (let diaObj of document.getElementsByTagName('dialog')) {
-      if (diaObj.open) {
+      if (diaObj.open && diaObj.id !== 'dialogAlert') {
         diaObj.close();
         this.loli('closed ' + diaObj.id);
       }

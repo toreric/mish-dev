@@ -40,7 +40,7 @@ export class DialogXper extends Component {
 
   updateOrder = (n) => {
     if (n === 1) {
-      this.z.loli(LF + 'OLD, LOADED' + LF + this.z.sortOrder, 'color:pink');
+      this.z.loli(LF + 'LOADED OR MODIFIED' + LF + this.z.sortOrder, 'color:pink');
     } else if (n === 2) {
       let tmp = this.z.updateOrder();
       this.z.loli(LF + 'ACTUAL, IF SAVED' + LF + tmp, 'color:lightcoral');

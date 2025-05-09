@@ -253,7 +253,6 @@ export class MenuMain extends Component {
 
   <template>
 
-    {{!-- <RefreshThis @for={{this.z.refreshTexts}}> --}}
     <div id="menuMain" class="mainMenu" onclick="return false" draggable="false" ondragstart="return false" style="display:none">
 
       <p onclick="return false" draggable="false" ondragstart="return false" title-2="{{t 'imageSearch'}}">
@@ -292,7 +291,6 @@ export class MenuMain extends Component {
 
       {{/if}}
 
-      {{!-- <RefreshThis @for={{this.z.numShown}}> --}}
       <div id='albumHead' style="display:none;justify-content:space-between">
         <span style="margin:0.2rem;padding:0.1rem 0.2rem">
           <em>{{t 'totalImgNumber'}}</em>:&nbsp;{{this.totalImgNumber}}
@@ -315,10 +313,8 @@ export class MenuMain extends Component {
           </p>
         {{/if}}
       </div>
-      {{!-- </RefreshThis> --}}
 
     </div>
-    {{!-- </RefreshThis> --}}
 
   </template>
 }
