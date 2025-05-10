@@ -70,6 +70,7 @@ has: has
 hidden: hidden
 hideshow: Hide or show
 home: to the main page
+homemain: main page
 images: images
 imageFind: Find images
 imageSearch: Search in captions etc.
@@ -308,7 +309,7 @@ spinwait: W A I T — or stop with a click if it spins too long
 time:
   text: The time is
   buildstamp: Ember development server
-totalImgNumber: Total number of images in the collection
+totalImgNumber: Number of images in the collection
 write:
   afterSort: Drag-and-drop moving of images<br>
              is not possible hereafter, but is<br>

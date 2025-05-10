@@ -206,7 +206,7 @@ export default class CommonStorageService extends Service {
   }
 
   //   #region TEXT UTILS
-  //== Text functions
+  //== Text utility functions
 
   // Check if an album/directory name can be accepted
   acceptedDirName = (name) => { // Note that – (&ndash;) and Üü are accepted:
@@ -287,7 +287,7 @@ export default class CommonStorageService extends Service {
 
 
   //   #region UTILITIES
-  //== Other service functions
+  //== Other utilities and service functions
 
 
 
@@ -502,8 +502,9 @@ export default class CommonStorageService extends Service {
     // Display the spinner already (will be hidden somewhere else)
     document.querySelector('img.spinner').style.display = '';
 
-    await new Promise (z => setTimeout (z, 199)); // selectRoot, ensurance!?
+    await new Promise (z => setTimeout (z,399)); // selectRoot, ensurance!?
     // The await reason: Sometimes getAlbumDirs is unsuspectedly null
+    // The await values history: 199, 399,
 
     // Retreive the albums list of this collection (root album).
     // If the argment is false, _imdb_ignore.txt in the chosen
@@ -685,7 +686,7 @@ export default class CommonStorageService extends Service {
   countNumbers = async () => {
     this.numMarked = document.querySelectorAll('.img_mini.selected').length;
     this.numHidden = document.querySelectorAll('.img_mini.hidden').length;
-    await new Promise (z => setTimeout (z, 29)); //
+    await new Promise (z => setTimeout (z, 29)); // countNumbers
     if (this.numHidden) document.getElementById('toggleHide').style.display = '';
     else {
       document.getElementById('toggleHide').style.display = 'none';
@@ -693,19 +694,19 @@ export default class CommonStorageService extends Service {
     }
     this.numInvisible = document.querySelectorAll('.img_mini.invisible').length;
     this.numLinked = document.querySelectorAll('.img_mini.symlink').length;
-    await new Promise (z => setTimeout (z, 29)); //
+    await new Promise (z => setTimeout (z, 29)); // countNumbers
     this.numOrigin = this.numImages - this.numLinked;
     this.numShown = document.querySelectorAll('.img_mini').length - this.numInvisible;
-    await new Promise (z => setTimeout (z, 29)); //
+    await new Promise (z => setTimeout (z, 229)); // countNumbers
     if (this.numImages !== this.numShown + this.numInvisible) {
       // If the total number of images in the open album (numImages) isn't correctly
       // updated at deletion/addition of images, one has to reload it, since the count
       // is made elsewhere only in openAlbum.It may be done by pressing the reload
       // button with "document.getElementById('reLd').click();" or directly like here:
-      this.openAlbum(this.imdbDirIndex); // Reloads current album
       this.alertMess(this.intl.t('numbererror'), 0.25);
+      // this.openAlbum(this.imdbDirIndex); // Reloads current album
       // To have this log printout correct some awaiting would probably be required:
-      // this.loli('shown:' + this.numShown + ' + invisible:' + this.numInvisible + ' != sum:' + this.numImages, 'color:red');
+      this.loli('shown:' + this.numShown + ' + invisible:' + this.numInvisible + ' != sum:' + this.numImages, 'color:red');
     }
   }
 
@@ -726,10 +727,10 @@ export default class CommonStorageService extends Service {
     this.infoHeader = this.intl.t('infoHeader'); // default header
     this.infoMessage = mess.replace(/\n/g, '<br>');
     this.openModalDialog('dialogAlert');
-    if (sec) { // means close after sec seconds
-      await new Promise (z => setTimeout (z, sec*1000)); // alertMess
-      this.closeDialog('dialogAlert');
-    }
+    // if (sec) { // means close after sec seconds
+    //   await new Promise (z => setTimeout (z, sec*1000)); // alertMess
+    //   this.closeDialog('dialogAlert');
+    // }
   }
 
   //#region albumAllImg
@@ -1018,7 +1019,7 @@ export default class CommonStorageService extends Service {
   }
 
   //#region COOKIES
-  // Cookie names are mish_lang, mish_bkgr, ...
+  //== Cookie names are mish_lang, mish_bkgr, ...
   setCookie = (cname, cvalue, exminutes) => {
     if (exminutes) {
       var d = new Date();
@@ -1460,7 +1461,7 @@ export default class CommonStorageService extends Service {
 
   //#region sqlupdate/
   // Update the sqlite text database (symlinked pictures auto-omitted)
-  // Called from (at least) eraseFunc() in menu-image.gjs
+  // Called from eraseFunc(),  in menu-image.gjs
   sqlUpdate = (picPaths) => { // Must be complete server paths (LF-joined)
     if (!picPaths) return;
     let data = new FormData ();
@@ -1720,7 +1721,7 @@ export default class CommonStorageService extends Service {
     if (!diaObj.open) {
       if (origPos) diaObj.style = '';
       diaObj.showModal();
-      diaObj.style = 'top:-50vh';
+      diaObj.style = 'top:-40vh';
       this.loli('opened ' + dialogId + ' (modal)');
     }
   }

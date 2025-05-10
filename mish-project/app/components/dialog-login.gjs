@@ -50,6 +50,7 @@ export class DialogLogin extends Component {
         this.z.loli('logged in');
         // Manage the main menu and reset everything
         document.getElementById('rootSel').selectedIndex = -1;
+        document.getElementById('albumHead').style.display = 'none';
         document.querySelector('div.albumTree').style.display = 'none';
         this.z.imdbCoco = '';
         this.z.imdbDir = '';
@@ -68,7 +69,7 @@ export class DialogLogin extends Component {
       }
       this.z.closeDialog(dialogLoginId);
       document.querySelector('.mainMenu select').focus();
-        this.z.loli('imdbRoot = ' + this.z.imdbRoot, 'color:deeppink');
+        // this.z.loli('imdbRoot = ' + this.z.imdbRoot, 'color:deeppink');
       if (this.z.imdbRoot) {
         let selEl = document.getElementById('rootSel');
         selEl.value = this.z.imdbRoot;

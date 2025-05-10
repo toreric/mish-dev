@@ -263,7 +263,7 @@ class Welcome extends Component {
       this.z.allowvalue = cred[2];
       this.z.freeUsers = cred[3];
       this.z.imdbRoot = cred[4]; // Non-empty if defined at server startup
-        this.z.loli('imdbRoot = ' + this.z.imdbRoot, 'color:red');
+        // this.z.loli('imdbRoot = ' + this.z.imdbRoot, 'color:red');
       this.z.allowFunc(); // SET ALLOWANCES PATTERN important!
 
       // Get album-collection-qualified catalogs
@@ -323,17 +323,16 @@ export default class extends Welcome {
 
           {{#if this.z.imdbRoot}}
             {{#if this.z.imdbDir}}
+              <Language />
               <span style="" info="Also spacing!">
-                <Language />
                 <a style="margin-left:3rem" {{on 'click' (fn this.z.openAlbum 0)}}>
-                  <span style="font:small-caps bold 0.9rem sans-serif;text-decoration:underline">{{t 'home'}}</span>
-                </a>
+                  <span style="font:small-caps bold 0.9rem sans-serif;text-decoration:underline">{{t 'home'}}</span>:
+                </a> &nbsp; <b>”{{this.z.imdbRoot}}”</b>
               </span>
-              <b>”{{this.z.imdbRoot}}”</b>
             {{else}}
               <Language />
               <span style="" info="Also spacing!">
-                <b>”{{this.z.imdbRoot}}”</b>
+                <b>”{{this.z.imdbRoot}}” &nbsp; <span style="font:small-caps bold 0.9rem sans-serif">{{t 'homemain'}}</span></b>
               </span>
             {{/if}}
           {{else}}

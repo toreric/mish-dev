@@ -302,14 +302,12 @@ export class MenuImage extends Component {
         }
       } // if another button: leave and close
     } else {
-      // a single img needs no confirmation but we mark it
+      // a single img needs no confirmation but we border-mark it
       this.z.markBorders(this.z.picName);
       this.z.chooseText = this.intl.t('button.linkFunc');
       this.z.openModalDialog('chooseAlbum');
+      // The outcome is processed in chooseAlbum, see closeChooseAlbum
     }
-    // this.z.countNumbers();//??
-    // this.z.closeDialogs();
-    // this.z.sortOrder = this.z.updateOrder();
     return;
   }
 
@@ -336,15 +334,17 @@ export class MenuImage extends Component {
         }
       } // if another button leave and close
     } else {
-      // a single img needs no confirmation but we mark it
+      // a single img needs no confirmation but we border-mark it
       this.z.chooseText = this.intl.t('button.moveFunc');
       this.z.markBorders(this.z.picName);
       this.z.openModalDialog('chooseAlbum');
+      // The outcome is processed in chooseAlbum, see closeChooseAlbum
     }
     return;
   }
 
   eraseFunc = async () => {
+    let fromIndex = this.z.imdbDirIndex;
       // this.z.loli(this.z.picName, 'color:red');
     let imgs = selMinImgs(this.z.picName);
     await new Promise (z => setTimeout (z, 29)); // eraseFunc 1
@@ -432,7 +432,7 @@ export class MenuImage extends Component {
           if (img.classList.contains('symlink')) {
             // Save the linked-to-path for safety
             let lnkdPath = await this.z.execute('readlink -nsq ' + imgPath);
-              this.z.loli(lnkdPath, 'color:yellow');
+              // this.z.loli(lnkdPath, 'color:yellow');
             if (lnkdPath.slice(0, 1) !== '.') {
               this.z.loli('Bad symlink: ' + linkpath, 'color:yellow');
             }
@@ -461,7 +461,7 @@ export class MenuImage extends Component {
               if (err) {
                 errNames.push(imgName)
               } else {
-                  console.log('>>>erased:', CSP);
+                  // console.log('>>>erased:', CSP);
                 await this.z.sqlUpdate(CSP); // Complete server path
                 this.z.loli('  NOTE: original ' + this.z.imdbRoot + lnkdPath + ' also deleted', 'color:red');
                 await this.z.execute('rm -f ' + this.z.userDir + '/' + this.z.imdbRoot + origPath + '_mini_' + imgName + '.png');
@@ -478,7 +478,7 @@ export class MenuImage extends Component {
             if (err) {
               errNames.push(imgName)
             } else {
-                console.log('>>>erased:', imgPath);
+                // console.log('>>>erased:', imgPath);
               await this.z.sqlUpdate(imgPath); // Complete server path
               this.z.loli(imgTitle + ' deleted', 'color:red');
               img.remove();
@@ -489,10 +489,10 @@ export class MenuImage extends Component {
             }
           }
           // If at picFound: imgName is trunchated, preparied for remove of the original
-            this.z.loli(imgName, 'color:brown');
-            this.z.loli(imgTitle, 'color:brown');
-            this.z.loli(imgPath, 'color:brown');
-            this.z.loli(path, 'color:brown');
+            // this.z.loli(imgName, 'color:brown');
+            // this.z.loli(imgTitle, 'color:brown');
+            // this.z.loli(imgPath, 'color:brown');
+            // this.z.loli(path, 'color:brown');
         }
         // Prepare summary message
         let n = imgs.length - errNames.length;
@@ -506,10 +506,10 @@ export class MenuImage extends Component {
         // Refresh the album tree:
         let selEl = document.getElementById('rootSel');
         selEl.value = this.z.imdbRoot;
+        this.z.updateTree();
         await new Promise (z => setTimeout (z, 88));
-        selEl.dispatchEvent(new Event('change'));
-        // await new Promise (z => setTimeout (z, 888));
-        await new Promise (z => setTimeout (z, 2987)); // eraseFunc 5
+        // Go back to the album we came from after root load
+        this.z.openAlbum(fromIndex);
         document.querySelector('img.spinner').style.display = 'none';
       } else {
         this.z.alertMess(this.intl.t('eraseCancelled'), 3);
@@ -636,7 +636,7 @@ export class MenuImage extends Component {
 }
 
 // NOTE: The chooseAlbum dialog is designed for chosing destination
-// album before moving images between albums via the image menus
+// album before moving/linking images via the image menus
 export class ChooseAlbum extends Component {
   @service('common-storage') z;
   @service intl;
@@ -713,13 +713,14 @@ export class ChooseAlbum extends Component {
       }
       this.z.alertMess(this.intl.t('write.doLinked', {n: pics.length, a: this.chosenAlbum}));
       // Refresh the album tree:
-      let selEl = document.getElementById('rootSel');
-      selEl.value = this.z.imdbRoot;
+      // let selEl = document.getElementById('rootSel');
+      // selEl.value = this.z.imdbRoot;
+      this.z.updateTree();
       await new Promise (z => setTimeout (z, 88));
-      selEl.dispatchEvent(new Event('change'));
-      await new Promise (z => setTimeout (z, 888));
+      // selEl.dispatchEvent(new Event('change'));
+      // await new Promise (z => setTimeout (z, 888));
       // Back to the album we came from
-      this.z.openAlbum(this.which);
+      this.z.openAlbum(fromIndex);
     // ******************************************************
     // chooseText starts with ”0” if ”doMove”, ”doMove” here:
     } else {
@@ -779,6 +780,11 @@ export class ChooseAlbum extends Component {
         cmd += 'if [ $mini != $orgmini ];then rm $orgmini;fi;';
         cmd += 'if [ $show != $orgshow ];then rm $orgshow;fi;fi;';
 
+        moveto += move.replace(/^.*\/([^/]+)$/, '$1'); //path + basename
+        // If 'move' contains 'picFound' the file name's random (4 ch) suffix must
+        // be removed, since normally its files are symlinks with such suffixes.
+        if (move.indexOf(this.z.picFound) > -1)
+            moveto = moveto.replace(/^(.+\.)([^.]{4}\.)([^.]+)$/, '$1'+'$3');
           console.log('>>>moved from:', move);
           console.log('  >>>moved to:', moveto);
         await this.z.sqlUpdate(move + LF + moveto); // Complete server paths
@@ -791,10 +797,10 @@ export class ChooseAlbum extends Component {
       this.z.alertMess(this.intl.t('write.doMoved', {n: pics.length, a: this.chosenAlbum}));
 
       // Refresh the album tree:
-      let selEl = document.getElementById('rootSel');
-      selEl.value = this.z.imdbRoot;
-      await new Promise (z => setTimeout (z, 88));
+      // let selEl = document.getElementById('rootSel');
+      // selEl.value = this.z.imdbRoot;
       this.z.updateTree();
+      await new Promise (z => setTimeout (z, 88));
       // selEl.dispatchEvent(new Event('change')); // Go to root album (auto)
       // await new Promise (z => setTimeout (z, 5888)); // Increased 5s ...
 

@@ -90,7 +90,8 @@ module.exports = function(app) { // Start module.exports
         // console.log(BYEL + cmd + RSET)
       }
     }
-    console.log(BGRE + decodeURIComponent(req.originalUrl) + RSET)
+    tmp = decodeURIComponent(req.originalUrl)
+    if (tmp !== '/execute/' && tmp !== '/filestat/') console.log(BGRE + tmp + RSET)
       // console.log('  WWW_ROOT:', WWW_ROOT)
       // console.log(' IMDB_HOME:', IMDB_HOME)
       // console.log('      IMDB:', IMDB)
@@ -465,7 +466,7 @@ module.exports = function(app) { // Start module.exports
         res.location('/')
         res.send(allfiles)
         //res.end()
-        console.log('   ' + BGRE + USER + ': ' + IMDB_ROOT + IMDB_DIR + RSET)
+        console.log('   ' + BYEL + USER + ': ' + IMDB_ROOT + IMDB_DIR + RSET)
         console.log('...file information sent from server') // Remaining message
       }).catch(function(error) {
         res.location('/')

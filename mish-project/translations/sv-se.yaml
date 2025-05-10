@@ -70,6 +70,7 @@ has: har
 hidden: dolda
 hideshow: Göm eller visa
 home: till huvudsidan
+homemain: huvudsida
 images: bilder
 imageFind: Finn bilder
 imageSearch: Sök i bildtexter m.m.
@@ -306,7 +307,7 @@ spinwait: V Ä N T A — eller stoppa med klick om det snurrar för länge
 time:
   text: Klockan är
   buildstamp: Ember development server
-totalImgNumber: Totalt antal bilder i samlingen
+totalImgNumber: Antal bilder i samlingen
 write:
   afterSort: Dra-och-släpp-flyttning av bilder är<br>
              inte möjlig efter detta, men återställs<br>
