@@ -19,8 +19,9 @@ dialog {
   padding: 0.1rem;
 /*max-width at least compatible with dialog-help ...*/
   max-width:  min(38rem,90%);
+  max-height: min(40rem,95%);
   z-index: 14;
-  top: 20%;
+  top: max(1rem,10%)!important;
   position: fixed;
 }
 dialog > div {
@@ -1553,6 +1554,7 @@ div.albumTree > div:first-of-type {
 span.album:hover {
   color: #7df!important;
 }
+#headDiv {display:none}
 
 @-webkit-keyframes borderBlink {
   from,

@@ -434,7 +434,7 @@ export class MenuImage extends Component {
             let lnkdPath = await this.z.execute('readlink -nsq ' + imgPath);
               // this.z.loli(lnkdPath, 'color:yellow');
             if (lnkdPath.slice(0, 1) !== '.') {
-              this.z.loli('Bad symlink: ' + linkpath, 'color:yellow');
+              this.z.loli('Bad symlink: ' + lnkdPath, 'color:yellow');
             }
             let err = await this.z.execute('rm ' + imgPath);
               // this.z.loli('rm ' + imgPath, 'color:pink');
@@ -511,13 +511,14 @@ export class MenuImage extends Component {
         // Go back to the album we came from after root load
         this.z.openAlbum(fromIndex);
         document.querySelector('img.spinner').style.display = 'none';
+        await new Promise (z => setTimeout (z, 666*n));
+        this.z.countNumbers();
       } else {
         this.z.alertMess(this.intl.t('eraseCancelled'), 3);
       }
     } else {
       this.z.alertMess(this.intl.t('write.chosenNone'));
     }
-    this.z.countNumbers();
     // this.z.closeDialogs();
     this.z.sortOrder = this.z.updateOrder();
     return;
@@ -785,13 +786,13 @@ export class ChooseAlbum extends Component {
         // be removed, since normally its files are symlinks with such suffixes.
         if (move.indexOf(this.z.picFound) > -1)
             moveto = moveto.replace(/^(.+\.)([^.]{4}\.)([^.]+)$/, '$1'+'$3');
-          console.log('>>>moved from:', move);
-          console.log('  >>>moved to:', moveto);
-        await this.z.sqlUpdate(move + LF + moveto); // Complete server paths
 
           // this.z.loli(cmd.replace(/;/g, ';\n').replace(/\nthen /g, 'then\n').replace(/else /g, 'else\n'), 'color:red');
         let r = await this.z.execute(cmd);
         if (r) this.z.loli('Not moved: ' + picNames[i] + '\n' + r);
+          console.log('>>>moved from:', move);
+          console.log('  >>>moved to:', moveto);
+        await this.z.sqlUpdate(move + LF + moveto); // Complete server paths
       }
 
       this.z.alertMess(this.intl.t('write.doMoved', {n: pics.length, a: this.chosenAlbum}));

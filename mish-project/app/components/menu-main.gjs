@@ -47,7 +47,7 @@ export class MenuMain extends Component {
     // Display the spinner already (will be hidden somewhere else)
     document.querySelector('img.spinner').style.display = '';
 
-    await new Promise (z => setTimeout (z, 199)); // selectRoot, ensurance!?
+    await new Promise (z => setTimeout (z, 399)); // selectRoot, ensurance!?
     // The await reason: Sometimes getAlbumDirs is unsuspectedly null
 
     // Retreive the albums list of this collection (root album).
@@ -181,7 +181,7 @@ export class MenuMain extends Component {
     let headDiv = document.getElementById('albumHead');
     let treeDiv = document.querySelector('div.albumTree');
     let what;
-    if (treeDiv.style.display) {
+    if (treeDiv.style.display === 'none') {
       what = 'opened';
       headDiv.style.display = 'flex';
       treeDiv.style.display = '';

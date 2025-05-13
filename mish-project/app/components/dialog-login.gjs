@@ -26,11 +26,19 @@ export class DialogLogin extends Component {
 
   logIn = async () => {
     let user = document.querySelector('input.user_').value.trim();
-    if (!user) user = this.z.userName;
+    if (!user) user = this.z.userName; // There is always a default user name
     // Get the credentials for user, cred = [password, userStatus, allowvalue, freeUsers]
     let cred = (await this.z.getCredentials(user)).split(LF);
-
     let pwrd = document.querySelector('input.password_').value.trim();
+
+    if (cred[1] && ((cred[3].split(', ')).indexOf(user) < 0) && !cred[0]) {
+      // TODO: Make an Admin facility to add new user/status entries into
+      // _imdb_settings.sqlite; then, any user with no password though having a
+      // status, thus newly entered into the _imdb_settings.sqlite user table,
+      // shold be prompted to enter a new password.
+        this.z.loli('user, status: ' + user + ', ' + cred[1] + ' (has no password)', 'color:red');
+    }
+
     if (cred[1] && pwrd === cred[0]) { // No status for illegal users
       var oldUser = this.z.userName;
       document.getElementById('logInError').style.display = 'none';

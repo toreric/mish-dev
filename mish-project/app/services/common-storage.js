@@ -684,6 +684,7 @@ export default class CommonStorageService extends Service {
   // which allso corrects the total nuber of images in the album.
   // So far, the albumTree in the menuMain is not updated!
   countNumbers = async () => {
+    await new Promise (z => setTimeout (z, 129)); // countNumbers
     this.numMarked = document.querySelectorAll('.img_mini.selected').length;
     this.numHidden = document.querySelectorAll('.img_mini.hidden').length;
     await new Promise (z => setTimeout (z, 29)); // countNumbers

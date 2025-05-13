@@ -280,13 +280,15 @@ module.exports = function(app) { // Start module.exports
   app.get('/imdbdirs', async function(req, res) {
     await new Promise(z => setTimeout(z, 200))
     let allowHidden = req.get('hidden')
-    // Refresh picFound: the shell commands must execute in sequence
-    let pif = IMDB + '/' + picFound
-    let cmd = 'rm -rf ' + pif + ' ; mkdir ' + pif + ' && touch ' + pif + '/.imdb'
-    // await cmdasync(cmd) // better diagnosis
-    await execP(cmd)
-    // console.log(BYEL + cmd + RSET)
-    console.log('Refreshed the picFound tmp album')
+    if (IMDB_DIR.indexOf(picFound) === -1) {
+      // Refresh picFound: the shell commands must execute in sequence
+      let pif = IMDB + '/' + picFound
+      let cmd = 'rm -rf ' + pif + ' ; mkdir ' + pif + ' && touch ' + pif + '/.imdb'
+      // await cmdasync(cmd) // better diagnosis
+      await execP(cmd)
+      // console.log(BYEL + cmd + RSET)
+      console.log('Refreshed the picFound tmp album')
+    }
     setTimeout(function() {
       allDirs().then(dirlist => { // dirlist entries start with the root album
         areAlbums(dirlist).then(async dirlist => {

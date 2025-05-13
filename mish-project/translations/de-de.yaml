@@ -232,7 +232,7 @@ dialog:
     hilo: erhöht oder verringert die Bildskalierung
     zero: (null) setzt es zurück (⌘ mit Mac-Tastatur)
     F11:  Vollbildanzeige wird gestartet bzw. gestoppt
-    right: <b>Rechtspfeil</b>- oder <b>Linksfeiltaste</b> schaltet das Bild vorwärts oder rückwärts
+    right: <b>Rechtspfeil</b>- oder <b>Linkspfeiltaste</b> schaltet das Bild vorwärts oder rückwärts
     A:    Die <b>A</b>-Taste startet den automatischen Bildwechsel &ndash; die Esc-Taste bricht ab
     F:    Die <b>F</b>-Taste öffnet „Bilder finden“ (das Suchfenster) &ndash; die Esc-Taste schließt es
     Esc:  <b>Esc</b> ist die End- und Abbruchtaste zum Wechseln von Bildern, Schließen von Fenstern usw.
