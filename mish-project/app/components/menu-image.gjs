@@ -790,8 +790,8 @@ export class ChooseAlbum extends Component {
           // this.z.loli(cmd.replace(/;/g, ';\n').replace(/\nthen /g, 'then\n').replace(/else /g, 'else\n'), 'color:red');
         let r = await this.z.execute(cmd);
         if (r) this.z.loli('Not moved: ' + picNames[i] + '\n' + r);
-          console.log('>>>moved from:', move);
-          console.log('  >>>moved to:', moveto);
+          // console.log('>>>moved from:', move);
+          // console.log('  >>>moved to:', moveto);
         await this.z.sqlUpdate(move + LF + moveto); // Complete server paths
       }
 

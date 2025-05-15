@@ -18,8 +18,8 @@ dialog {
   border-radius: 4px;
   padding: 0.1rem;
 /*max-width at least compatible with dialog-help ...*/
-  max-width:  min(38rem,90%);
-  max-height: min(40rem,95%);
+  max-width:  min(38rem,90vw);
+  max-height: min(40rem,95vh);
   z-index: 14;
   top: max(1rem,10%)!important;
   position: fixed;

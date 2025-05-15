@@ -65,9 +65,8 @@ export class DialogLogin extends Component {
         this.z.imdbDirIndex = 0;
         this.z.imdbDirs = [''];
         this.z.imdbLabels = [''];
-        // this.z.imdbRoot = ''; // removed since it's maybe already given
         this.z.imdbTree = null;
-        this.z.openMainMenu();
+        if (!this.z.imdbRoot) this.z.openMainMenu();
         document.getElementById('rootSel').selectedIndex = 0;
         // Add blinking to emphasize a new user
         let usr = document.getElementById('loggedInUser'); //see Welcome

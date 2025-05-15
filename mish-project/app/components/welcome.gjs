@@ -272,13 +272,14 @@ class Welcome extends Component {
     }
     // Now check if the album root is already chosen and if so,
     // ensure it belongs to the options in its select statement:
-    this.z.openMainMenu();
     if (this.z.imdbRoot && this.z.imdbRoots.indexOf(this.z.imdbRoot) > -1) {
       let selEl = document.getElementById('rootSel');
       selEl.value = this.z.imdbRoot;
       await new Promise (z => setTimeout (z, 88));
       selEl.dispatchEvent(new Event('change'));
       await new Promise (z => setTimeout (z, 888));
+    } else {
+    this.z.openMainMenu();
     }
     // this.openLogIn();
   }
@@ -324,14 +325,14 @@ export default class extends Welcome {
           {{#if this.z.imdbRoot}}
             {{#if this.z.imdbDir}}
               <Language />
-              <span style="" info="Also spacing!">
+              <span style="" info="Also spacing!" style="margin-top:-1rem;opacity:0.7">
                 <a style="margin-left:3rem" {{on 'click' (fn this.z.openAlbum 0)}}>
                   <span style="font:small-caps bold 0.9rem sans-serif;text-decoration:underline">{{t 'home'}}</span>:
                 </a> &nbsp; <b>”{{this.z.imdbRoot}}”</b>
               </span>
             {{else}}
               <Language />
-              <span style="" info="Also spacing!">
+              <span style="" info="Also spacing!" style="margin-top:-1rem">
                 <b>”{{this.z.imdbRoot}}” &nbsp; <span style="font:small-caps bold 0.9rem sans-serif">{{t 'homemain'}}</span></b>
               </span>
             {{/if}}
