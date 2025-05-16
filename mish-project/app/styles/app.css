@@ -21,7 +21,7 @@ dialog {
   max-width:  min(38rem,90vw);
   max-height: min(40rem,95vh);
   z-index: 14;
-  top: max(1rem,10%)!important;
+  top: max(3rem,30%);
   position: fixed;
 }
 dialog > div {

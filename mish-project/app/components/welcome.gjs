@@ -325,14 +325,14 @@ export default class extends Welcome {
           {{#if this.z.imdbRoot}}
             {{#if this.z.imdbDir}}
               <Language />
-              <span style="" info="Also spacing!" style="margin-top:-1rem;opacity:0.7">
+              <span style="" info="Also spacing!" style="margin-top:-0.9rem;opacity:0.7">
                 <a style="margin-left:3rem" {{on 'click' (fn this.z.openAlbum 0)}}>
                   <span style="font:small-caps bold 0.9rem sans-serif;text-decoration:underline">{{t 'home'}}</span>:
                 </a> &nbsp; <b>”{{this.z.imdbRoot}}”</b>
               </span>
             {{else}}
               <Language />
-              <span style="" info="Also spacing!" style="margin-top:-1rem">
+              <span style="" info="Also spacing!" style="margin-top:-0.9rem">
                 <b>”{{this.z.imdbRoot}}” &nbsp; <span style="font:small-caps bold 0.9rem sans-serif">{{t 'homemain'}}</span></b>
               </span>
             {{/if}}

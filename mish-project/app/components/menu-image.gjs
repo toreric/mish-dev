@@ -43,7 +43,6 @@ export class MenuImage extends Component {
   @service intl;
 
   albums = new TrackedArray([]);
-//albumsIndex = new TrackedArray([]);
 
   // Detect closing Esc key
   detectClose = (e) => {
@@ -308,6 +307,7 @@ export class MenuImage extends Component {
       this.z.openModalDialog('chooseAlbum');
       // The outcome is processed in chooseAlbum, see closeChooseAlbum
     }
+    this.z.closeDialog(dialogChooseId);
     return;
   }
 
@@ -340,6 +340,7 @@ export class MenuImage extends Component {
       this.z.openModalDialog('chooseAlbum');
       // The outcome is processed in chooseAlbum, see closeChooseAlbum
     }
+    this.z.closeDialog(dialogChooseId);
     return;
   }
 

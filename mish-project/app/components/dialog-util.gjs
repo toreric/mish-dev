@@ -117,6 +117,9 @@ export class DialogUtil extends Component {
     // at any 'node' except picFound, if there is some reason:
     // if (this.z.imdbDir.slice(1) === this.z.picFound) { //malfunction!
 
+    this.noTools = false; //OVERRIDE! Search the entire
+    return true;          //OVERRIDE! collection from anywhere!
+
     // search only the entire collection from root:
     if (this.z.imdbDir) {
       return false;
@@ -178,24 +181,31 @@ export class DialogUtil extends Component {
     document.querySelector('img.spinner').style.display = '';
     let minis = document.querySelectorAll('div.miniImgs.imgs div.img_mini');
     let names = [];
-    for (let i=0; i<minis.length; i++) {
-      names.push(minis[i].id.slice(1));
+    for (let minisi of minis) {
+      names.push(minisi.id.slice(1));
     }
+      // this.z.loli('\n' + names.join('\n'), 'color:yellow');
     // Sort example: a.sort((a,b) => {return a.value - b.value});
-    // Applied to text (though exact conformity should also consider equality
-    // using a more accurate function that correspondingly returns 1, 0, or -1):
-    names.sort((a, b) => {return a.toLowerCase() > b.toLowerCase()});
+    // Applied to text, exact conformity should also consider equality
+    // using a more accurate function that correspondingly returns 1, 0, or -1:
+    names.sort((a, b) => {
+      let x = a.toLowerCase();
+      let y = b.toLowerCase();
+      if (x < y) return -1;
+      if (x > y) return 1;
+      return 0;
+    })
     // The id for reverse sort radio button is 'util32' (see template)
     if (document.getElementById('util32').checked) names.reverse();
-      // console.log(names);
+      // this.z.loli('\n' + names.join('\n'), 'color:orange');
 
     // When you add an element that is already in the DOM,
     // this element will be moved, not copied.
     let wrap = document.getElementById('imgWrapper');
     for (let i=0; i<minis.length; i++) {
-      wrap.appendChild(document.getElementById('i' + names[i]))
+      wrap.appendChild(document.getElementById('i' + names[i]));
     }
-    this.z.closeDialogs();
+    this.z.closeDialogs(); // Why this?
     await new Promise (z => setTimeout (z, 399)); // doSort
     document.querySelector('img.spinner').style.display = 'none';
     this.z.alertMess(this.z.intl.t('write.afterSort')); // TEMPORARY
@@ -248,7 +258,8 @@ export class DialogUtil extends Component {
       // return new Promise (async function (resolve, reject) {
     document.querySelector('img.spinner').style.display = '';
     this.z.closeDialog('dialogUtil');
-    let path = this.z.imdbPath + this.z.imdbDir;
+    // let path = this.z.imdbPath + this.z.imdbDir;
+    let path = this.z.imdbPath; //OVERRIDE!
     try { // Start try
       let duplist = await this.z.execute('finddupnames 2 ' + path);
         // this.z.loli('\n' + duplist, 'color:brown');
@@ -430,11 +441,11 @@ export class DialogUtil extends Component {
           {{!-- === Find duplicate image names === --}}
           {{else if (eq this.tool 'util4')}}
 
-            {{#if this.z.imdbDir}} {{!-- subtree --}}
+            {{!-- {{#if this.z.imdbDir}} subtree OVERRIDE!
               <button type="button" {{on 'click' (fn this.doDupNames)}}>{{{t 'write.tool41' a=this.imdbDirName}}}</button>
-            {{else}} {{!-- root --}}
+            {{else}} root --}}
               <button type="button" {{on 'click' (fn this.doDupNames)}}>{{{t 'write.tool42'}}}</button>
-            {{/if}}
+            {{!-- {{/if}} --}}
 
           {{!-- === Find duplicate images === --}}
           {{else if (eq this.tool 'util7')}}
