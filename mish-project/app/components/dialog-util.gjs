@@ -17,7 +17,6 @@ export class DialogUtil extends Component {
   @service intl;
 
   @tracked tool = ''; // utility tool id
-  @tracked noTools = true; // no tool flag
   @tracked countImgs = 0; // duplicate image name counter
 
   // Detect closing Esc key
@@ -33,6 +32,7 @@ export class DialogUtil extends Component {
     if (!elRadio) return; // Not a radio element
       // this.z.loli(`${elRadio.id} ${elRadio.checked}`, 'color:red');
     this.tool = elRadio.id;
+      this.z.loli('tool: ' + this.tool, 'color:red');
   }
 
   clearInput = () => {
@@ -44,10 +44,9 @@ export class DialogUtil extends Component {
 
   // Reset all at album change. Called from okDelete, which is the first
   // of 'ok...' checks called from the template. 'imdbDir' is used for
-  // resetting before the simple return of the sliced imdbDir value:
+  // resetting before the simple return of the 1-sliced-off imdbDir value:
   get imdbDir() { // this.imdbDir
     this.tool = '';
-    this.noTools = true;
     let elRadio = document.querySelectorAll('#dialogUtil input[type="radio"]');
     for (let i=0; i<elRadio.length; i++) {
       elRadio[i].checked = false;
@@ -57,13 +56,10 @@ export class DialogUtil extends Component {
   }
 
   get imdbDirName() {
-    return this.z.handsomize2sp(this.z.imdbDirName);
-  }
-
-  get label() {
-    let text = document.querySelector('#dialogUtil label[for=' + this.tool + ']').innerTHTML;
-      this.z.loli(this.tool + ': ' + text, 'color:red');
-    return text;
+  // imdbDirName = () => { // Conversion to => function was a disaster!
+    let tmp = this.z.imdbDirName;
+    // await new Promise (z => setTimeout (z, 19));
+    return this.z.handsomize2sp(tmp);
   }
 
   // This button is inserted into alertMess when browser reload is required.
@@ -74,11 +70,13 @@ export class DialogUtil extends Component {
 
   // Should be the first called from the template
   // The first and ONLY use of this.imdbDir is here:
-  get okDelete() { // true if delete allowed
+  get okDelete() { // true if delete album is allowed
+    if (!this.z.imdbDir) return; // Avoid misuse
     let found = this.imdbDir === this.z.picFound;
+      this.z.loli('imdbDir: ' +  this.imdbDir, 'color:yellow');
+      this.z.loli('picFound: ' +  this.z.picFound, 'color:yellow');
     if (!found && this.z.imdbDir && this.z.allow.albumEdit) { // root == ''
-      this.noTools = false;
-      return true;
+      return true
     } else {
       return false;
     }
@@ -87,8 +85,7 @@ export class DialogUtil extends Component {
   get okTexts() { // true if images shown
       // this.z.loli('numShown ' + this.z.numShown, 'color:red');
     if (this.z.numShown > 0) {
-      this.noTools = false;
-      return true;
+      return true
     } else {
       return false;
     }
@@ -96,8 +93,7 @@ export class DialogUtil extends Component {
 
   get okSubalbum() { // true if subalbums allowed
     if (this.z.imdbDir.slice(1) !== this.z.picFound && this.z.allow.albumEdit) {
-      this.noTools = false;
-      return true;
+      return true
     } else {
       return false;
     }
@@ -105,8 +101,7 @@ export class DialogUtil extends Component {
 
   get okSort() { // true if sorting by name is allowed
     if (this.z.numImages > 1) {
-      this.noTools = false;
-      return true;
+      return true
     } else {
       return false;
     }
@@ -117,31 +112,30 @@ export class DialogUtil extends Component {
     // at any 'node' except picFound, if there is some reason:
     // if (this.z.imdbDir.slice(1) === this.z.picFound) { //malfunction!
 
-    this.noTools = false; //OVERRIDE! Search the entire
     return true;          //OVERRIDE! collection from anywhere!
 
     // search only the entire collection from root:
     if (this.z.imdbDir) {
       return false;
     } else {
-      this.noTools = false;
       return true;
     }
   }
 
   get okDupImages() {
     // true to search the collection if at root:
+
+    return true;          //OVERRIDE! from anywhere!
+
     if (this.z.imdbDir) {
       return false;
     } else {
-      this.noTools = false;
       return true;
     }
   }
 
   get okUpload() {
     if (this.z.imdbDir.slice(1) !== this.z.picFound && this.z.allow.deleteImg) {
-      this.noTools = false;
       return true
     } else {
       return false;
@@ -150,16 +144,18 @@ export class DialogUtil extends Component {
 
   get okDbUpdate() {
     //only at collection root
+
+    return true;          //OVERRIDE! from anywhere!
+
     if (this.z.imdbDir) {
       return false;
     }
     if (this.z.allow.albumEdit) {
-      this.noTools = false;
       return true
     }
   }
 
-  get notEmpty() { // true if the album is empty
+  get notEmpty() { // true if the album is not empty
     return this.z.subaIndex.length > 0 || this.z.numImages > 0;
   }
 
@@ -197,7 +193,7 @@ export class DialogUtil extends Component {
     })
     // The id for reverse sort radio button is 'util32' (see template)
     if (document.getElementById('util32').checked) names.reverse();
-      // this.z.loli('\n' + names.join('\n'), 'color:orange');
+      // this.z.loli('\n' + names.join('\n'), 'color:yellow');
 
     // When you add an element that is already in the DOM,
     // this element will be moved, not copied.
@@ -338,8 +334,8 @@ export class DialogUtil extends Component {
       <main style="padding:0 0.75rem;max-height:24rem" width="99%">
 
         <div style="padding:0.5rem 0;line-height:1.4rem">
-          {{{t 'write.tool0' album=this.imdbDirName}}}<br>
-          {{!-- This only reference to okDelete resets radio buttons, noTools, etc. --}}
+          {{{t 'write.tool0' a=this.imdbDirName}}}<br>
+          {{!-- This only reference to okDelete resets radio buttons etc. --}}
           {{#if this.okDelete}}
             <span class="glue">
               <input id="util1" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
@@ -391,10 +387,10 @@ export class DialogUtil extends Component {
         </div>
 
         <div style="padding:0.5rem 0">
-          {{#if this.noTools}}
-            <span style="color:blue">{{t 'write.tool99'}}</span>
+          {{!-- {{ this.noTools}}
+            <span style="color:blue">{{t 'write.tool99'}}</span> --}}
 
-          {{else if (eq this.tool '')}}
+          {{#if (eq this.tool '')}}
             {{t 'write.chooseTool'}}
 
           {{!-- === Delete the album === --}}

@@ -10,12 +10,12 @@
   "author": "toreric <tore.ericsson@tores.se>",
   "license": "MIT",
   "dependencies": {
-    "@glimmer/runtime": "^0.92.4",
-    "better-sqlite3": "^11.8.1",
+    "@glimmer/runtime": "^0.94.10",
+    "better-sqlite3": "^11.10.0",
     "bluebird": "^3.7.2",
-    "body-parser": "^1.20.3",
+    "body-parser": "^2.2.0",
     "express": "^4.21.2",
-    "multer": "1.4.5-lts.1",
+    "multer": "1.4.5-lts.2",
     "tar": "^7.4.3"
   },
   "scripts": {

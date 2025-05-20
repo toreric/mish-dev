@@ -340,9 +340,14 @@ write:
   dbUpdated: Text search database updated
   description: 'Caption: When Where What Who'
   dialogDupResult: Duplicate name search in <b>{a}</b>
-  doErased: Removed {n} image(s) from “{a}”
-  doLinked: Linked {n} image(s) to ”{a}”
-  doMoved:  Moved {n} image(s) to ”{a}”
+  doEraOri:  "NOTE: Including the original images!"
+  doEraOri1: "NOTE: Including the original image!"
+  doErased:  Removed {n} images from “{a}”
+  doErased1: Removed an image from ”{a}”
+  doLinked:  Linked {n} images to ”{a}”
+  doLinked1: Linked an image to ”{a}”
+  doMoved:   Moved {n} images to ”{a}”
+  doMoved1:  Moved an image to ”{a}”
   eraseFunc: DELETING original images cannot be undone
   eraseFunc1: ", but deleted linked images (links) can be recreated"
   eraseOption: "OPTION and EXCEPTION: Delete original images"
@@ -388,14 +393,16 @@ write:
   notEmpty: The album must first be emptied!
   notes: Notes not shown with the image
   originOnly: "WARNING: No links..."
-  originUntouch: "<b>NOTE</b> that there is a difference between images: Green image names do not refer to <b>original images</b> but to <b>linked images</b> (more simply: <b>links</b>). An image with a green bottom border is actually just a link to its original image in another album. An original image remains untouched even when the link to it is removed."
+  originUntouch: "<b>NOTE</b> that there is a difference between images: Green image names do not refer to own <b>original images</b> but to <b>linked images</b> (more simply: <b>links</b>). An image with a green bottom border is actually just a link to its original image in another album. An original image remains untouched even when the link to it is removed."
   reloadRequired: <br><br>Changed album structure requires restart<br>
   searchTerms: Enter search terms separated by spaces, lower/uppercase does not matter (choose below which texts to search in)
   set0: Choose settings
   setBeep: Beep at mouse clicks
   setPoop: Visualize mouse clicks
   setEraseOriginal: Erase original with link (WARNING!)
-  tool0: "Choose for <b>{album}</b>:"
+  # To use 'a' instead of 'album' as parameter did HANG
+  # both FF and Chromium (UNBELIEVABLE!):
+  tool0: "Choose for <b>{a}</b>:"
   tool1: Delete the album (must be empty)
   tool2: Make a subalbum
   tool3: Sort the images by names

@@ -366,7 +366,7 @@ export default class CommonStorageService extends Service {
   openAlbum = async (i) => {
     this.picName = '';
     // Close dialogs without reuse potential:
-    this.closeDialog('dialogAlert');
+    // this.closeDialog('dialogAlert');
     this.closeDialog('dialogChoose');
     this.closeDialog('dialogInfo');
     this.closeDialog('dialogText');
@@ -496,7 +496,7 @@ export default class CommonStorageService extends Service {
 
   //#region updateTree
   updateTree = async () => { // Album root = collection
-    this.imdbDir = this.imdbRoot; // The root is assumed initially selected
+    this.imdbDir = ''; // The root is assumed initially selected
     const allow = this.allow; // permissions
 
     // Display the spinner already (will be hidden somewhere else)
@@ -685,6 +685,7 @@ export default class CommonStorageService extends Service {
   // So far, the albumTree in the menuMain is not updated!
   countNumbers = async () => {
     await new Promise (z => setTimeout (z, 129)); // countNumbers
+    this.numImages = document.querySelectorAll('.img_mini').length;
     this.numMarked = document.querySelectorAll('.img_mini.selected').length;
     this.numHidden = document.querySelectorAll('.img_mini.hidden').length;
     await new Promise (z => setTimeout (z, 29)); // countNumbers
@@ -702,11 +703,10 @@ export default class CommonStorageService extends Service {
     if (this.numImages !== this.numShown + this.numInvisible) {
       // If the total number of images in the open album (numImages) isn't correctly
       // updated at deletion/addition of images, one has to reload it, since the count
-      // is made elsewhere only in openAlbum.It may be done by pressing the reload
-      // button with "document.getElementById('reLd').click();" or directly like here:
-      this.alertMess(this.intl.t('numbererror'), 0.25);
+      // is made elsewhere in openAlbum.It may be done by pressing the reload button
+      // with "document.getElementById('reLd').click();" or directly like here:
       // this.openAlbum(this.imdbDirIndex); // Reloads current album
-      // To have this log printout correct some awaiting would probably be required:
+      this.alertMess(this.intl.t('numbererror'), 0.25);
       this.loli('shown:' + this.numShown + ' + invisible:' + this.numInvisible + ' != sum:' + this.numImages, 'color:red');
     }
   }
@@ -728,10 +728,10 @@ export default class CommonStorageService extends Service {
     this.infoHeader = this.intl.t('infoHeader'); // default header
     this.infoMessage = mess.replace(/\n/g, '<br>');
     this.openModalDialog('dialogAlert');
-    // if (sec) { // means close after sec seconds
-    //   await new Promise (z => setTimeout (z, sec*1000)); // alertMess
-    //   this.closeDialog('dialogAlert');
-    // }
+    if (sec) { // means close after sec seconds
+      await new Promise (z => setTimeout (z, sec*1000)); // alertMess
+      this.closeDialog('dialogAlert');
+    }
   }
 
   //#region albumAllImg

@@ -344,6 +344,9 @@ export class MenuImage extends Component {
     return;
   }
 
+  // Deletes a single checked, or a number of checked images. If ALL are symlinks
+  // and a certain checkbox is checked, the files LINKED FROM are ALSO DELETED,
+  // which may be convenient for caefully cleaning out duplicates.
   eraseFunc = async () => {
     let fromIndex = this.z.imdbDirIndex;
       // this.z.loli(this.z.picName, 'color:red');
@@ -499,11 +502,19 @@ export class MenuImage extends Component {
         let n = imgs.length - errNames.length;
         let a = this.z.imdbDir;
         a = a ? this.z.handsomize2sp(a.replace(/^.*\/([^/]+)$/, '$1')) : this.z.imdbRoot;
-        let mesTxt = this.z.intl.t('write.doErased', {n: n, a: a});
-        if (errNames.length) {
-          mesTxt += '<br><br>' + this.z.intl.t('write.noErased', {n: errNames.length, a: errNames.join(', ')});
+        let tmp = '';
+        if (n === 1) {
+          tmp = this.intl.t('write.doErased1', {a: a});
+          if (document.getElementById('Choice_3').checked === true) tmp += '<br><span style="color:#df1837">' + this.intl.t('write.doEraOri1') + '</span>';
         }
-        this.z.alertMess(mesTxt);
+        else {
+          tmp = this.intl.t('write.doErased', {n: n, a: a});
+          if (document.getElementById('Choice_3').checked === true) tmp += '<br><span style="color:#df1837">' + this.intl.t('write.doEraOri') + '</span>';
+        }
+        if (errNames.length) {
+          tmp += BR + BR + this.z.intl.t('write.noErased', {n: errNames.length, a: errNames.join(', ')});
+        }
+        this.z.alertMess(tmp);
         // Refresh the album tree:
         let selEl = document.getElementById('rootSel');
         selEl.value = this.z.imdbRoot;

@@ -304,7 +304,7 @@ export default class extends Welcome {
         <span>
           <b style="font-size:106%;margin-top:0.35rem;display:inline-block">{{t "header"}}</b>&nbsp;
 
-          <button type="button" style="background:transparent;color:brown" {{on 'click' (fn this.z.toggleDialog 'dialogSettings')}}>{{t 'settings'}}</button>
+          <button type="button" style="background:transparent;color:#df1837" {{on 'click' (fn this.z.toggleDialog 'dialogSettings')}}>{{t 'settings'}}</button>
         </span>
 
         <span>

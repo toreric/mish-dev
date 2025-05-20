@@ -40,7 +40,7 @@ export class MenuMain extends Component {
       document.querySelector('.miniImgs.imgs').style.display = 'none';
       return;
     }
-    this.z.imdbDir = this.z.imdbRoot; // The root is assumed initially selected
+    this.z.imdbDir = ''; // The root is assumed initially selected
     this.z.loli('IMDB_ROOT (imdbRoot) set to ' + this.z.imdbRoot, 'color:orange');
     const allow = this.z.allow; // permissions
 

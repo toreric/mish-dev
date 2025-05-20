@@ -338,9 +338,14 @@ write:
   dbUpdated: Textsökningsdatabasen uppdaterad
   description: "Beskrivning: När var vad vilka"
   dialogDupResult: Dublettnamnsökning i <b>{a}</b>
-  doErased: Tog bort {n} bild(er) från ”{a}”
-  doLinked: Länkade {n} bild(er) till ”{a}”
-  doMoved:  Flyttade {n} bild(er) till ”{a}”
+  doEraOri:  "OBS: Inklusive originalbilderna!"
+  doEraOri1: "OBS: Inklusive originalbilden!"
+  doErased:  Tog bort {n} bilder från ”{a}”
+  doErased1: Tog bort en bild från ”{a}”
+  doLinked:  Länkade {n} bilder till ”{a}”
+  doLinked1: Länkade en bild till ”{a}”
+  doMoved:   Flyttade {n} bilder till ”{a}”
+  doMoved1:  Flyttade en bild till ”{a}”
   eraseFunc: RADERING av originalbilder kan inte ångras
   eraseFunc1: ", men raderade inlänkade bilder (länkar) kan återskapas"
   eraseOption: "TILLVAL och UNDANTAG: Radera originalbild"
@@ -385,7 +390,7 @@ write:
   noneFound: Tyvärr, ingen bild funnen!
   notEmpty: Albumet måste först tömmas!
   notes: Anteckningar som ej visas med bilden
-  originUntouch: "<b>OBSERVERA</b> att det är skillnad på bilder: Gröna bildnamn avser inte <b>originalbilder</b> utan <b>inlänkade bilder</b> (enklare: <b>länkar</b>). En bild med grön underkant är egentligen bara en länk till sin originalbild i ett annat album. En originalbild förblir orörd även när länken till den tas bort."
+  originUntouch: "<b>OBSERVERA</b> att det är skillnad på bilder: Gröna bildnamn avser inte egna <b>originalbilder</b> utan <b>inlänkade bilder</b> (enklare: <b>länkar</b>). En bild med grön underkant är egentligen bara en länk till sin originalbild i ett annat album. En originalbild förblir orörd även när länken till den tas bort."
   origRemove: "Alternativ:"
   reloadRequired: <br><br>Ändrad albumstruktur kräver omstart<br>
   searchTerms: Skriv sökbegrepp åtskilda av blanktecken, små/stora bokstäver är oviktigt (välj nedan vilka texter du vill söka i)
@@ -393,7 +398,7 @@ write:
   setBeep: Pip vid musklick
   setPoop: Visualisera musklick
   setEraseOriginal: Radera original med länk (VARNING!)
-  tool0: "Välj för <b>{album}</b>:"
+  tool0: "Välj för <b>{a}</b>:"
   tool1: Radera albumet (måste vara tomt)
   tool2: Gör ett underalbum
   tool3: Sortera bilderna efter namn

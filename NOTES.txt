@@ -8,7 +8,7 @@ if you type into the textarea it will stop updating from the setInterval, but if
 https://codepen.io/evoactivity/pen/qBejBxX
 
 
-TAR ARCHIVE search and extraction
+TAR ARCHIVE (backup) search and extraction
 
 SEARCH with zfind for files:
 tore@nejlika:/media/tore/SAMSUNG
@@ -34,7 +34,15 @@ EXTRACTED automatically, including directory creation, into:
 /media/tore/SAMSUNG/nejlika-250327-1855VM/home/tore/.thunderbird/tr5gf51h.default-release/abook.sqlite
 ...  -- but contained no information from the old addressbook!
 
-TEMPORARY for dialog-util:
+
+   SIMPLE PROJECT-COPY EXAMPLE for recovery or testing purposes:
+1. Copy PROJECT (mish-dev) to PROJECT-X (mish-dev-extra)
+2. Change into this project catalog in the (new) "node-express" script
+3. Open PROJECT-X (mish-dev-extra) in the VS Code editor
+   Ready to test in a Console instance with correspondingly located tabs!
+
+
+TEMPORARY for dialog-util et al.:
 diff --git a/buildstamp.txt b/buildstamp.txt
 index 2e4f6cc..731c4a9 100644
 --- a/buildstamp.txt
