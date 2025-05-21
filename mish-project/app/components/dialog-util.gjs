@@ -55,8 +55,8 @@ export class DialogUtil extends Component {
     return this.z.imdbDir.slice(1);
   }
 
-  get imdbDirName() {
-  // imdbDirName = () => { // Conversion to => function was a disaster!
+  // get imdbDirName() {
+  imdbDirName = () => {
     let tmp = this.z.imdbDirName;
     // await new Promise (z => setTimeout (z, 19));
     return this.z.handsomize2sp(tmp);
@@ -334,7 +334,7 @@ export class DialogUtil extends Component {
       <main style="padding:0 0.75rem;max-height:24rem" width="99%">
 
         <div style="padding:0.5rem 0;line-height:1.4rem">
-          {{{t 'write.tool0' a=this.imdbDirName}}}<br>
+          {{{t 'write.tool0' a=(this.imdbDirName)}}}<br>
           {{!-- This only reference to okDelete resets radio buttons etc. --}}
           {{#if this.okDelete}}
             <span class="glue">
