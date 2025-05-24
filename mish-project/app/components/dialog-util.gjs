@@ -32,7 +32,7 @@ export class DialogUtil extends Component {
     if (!elRadio) return; // Not a radio element
       // this.z.loli(`${elRadio.id} ${elRadio.checked}`, 'color:red');
     this.tool = elRadio.id;
-      this.z.loli('tool: ' + this.tool, 'color:red');
+      // this.z.loli('tool: ' + this.tool, 'color:red');
   }
 
   clearInput = () => {
@@ -73,8 +73,8 @@ export class DialogUtil extends Component {
   get okDelete() { // true if delete album is allowed
     if (!this.z.imdbDir) return; // Avoid misuse
     let found = this.imdbDir === this.z.picFound;
-      this.z.loli('imdbDir: ' +  this.imdbDir, 'color:yellow');
-      this.z.loli('picFound: ' +  this.z.picFound, 'color:yellow');
+      // this.z.loli('imdbDir: ' +  this.imdbDir, 'color:yellow');
+      // this.z.loli('picFound: ' +  this.z.picFound, 'color:yellow');
     if (!found && this.z.imdbDir && this.z.allow.albumEdit) { // root == ''
       return true
     } else {
@@ -482,7 +482,7 @@ export class DialogUtil extends Component {
     <dialog id="dialogDupResult" style="max-width:calc(100vw - 2rem);z-index:15;max-width:480px"{{on 'keydown' this.detectEscClose}}>
       <header data-dialog-draggable>
         <p>&nbsp;</p>
-        <p>{{{t 'write.dialogDupResult' a=this.imdbDirName}}}</p>
+        <p>{{{t 'write.dialogDupResult' a=(this.imdbDirName)}}}</p>
         <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogDupResult')}}>×</button>
       </header>
       <main style="padding:0 0.5rem 0 1rem;height:auto;line-height:150%;overflow:auto" width="99%">

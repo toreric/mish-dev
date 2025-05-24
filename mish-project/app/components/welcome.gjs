@@ -41,6 +41,10 @@ import { dialogLoginId } from './dialog-login';
 import { dialogRightsId } from './dialog-login';
 import { dialogXperId } from './dialog-xper';
 
+import he from 'he';
+// USE: <div title={{he.decode 'text'}}></div> ['he' = HTML entities]
+// or  txt = he.decode('text')  or  txt = he.encode('text')
+
 // The DialogSettings dialog is ihe last of this code
 
 const returnValue = cell(''); // Never used?
@@ -283,6 +287,13 @@ class Welcome extends Component {
     }
     // this.openLogIn();
   }
+
+  get goHome() {
+    return he.decode(this.intl.t('home'));
+  }
+  get mainHome() {
+    return he.decode(this.intl.t('homemain'));
+  }
 }
 
 const executeOnInsert = modifier((element, [component]) => {
@@ -298,66 +309,73 @@ export default class extends Welcome {
     </RefreshThis>
 
     <div id="upperButtons" style="position:relative;top:0;left:0;width:100%;padding-top:0.5rem">
-      <div {{executeOnInsert this}} class="sameBackground" style="display:flex;justify-content:space-between;margin:0 3.25rem 0 4rem">
-      {{!-- <div {{this.getCred}} class="sameBackground" style="display:flex;justify-content:space-between;margin:0 3.25rem 0 4rem"> --}}
+
+      <div {{executeOnInsert this}} class="" style="display:flex;justify-content:space-between;margin:0 3.25rem 0 4rem">
 
         <span>
-          <b style="font-size:106%;margin-top:0.35rem;display:inline-block">{{t "header"}}</b>&nbsp;
+          <b style="font-size:106%;margin-top:0.35rem;display:inline-block">
+            {{t "header"}}
+          </b>
+          <Language />
+        </span>&nbsp;
 
-          <button type="button" style="background:transparent;color:#df1837" {{on 'click' (fn this.z.toggleDialog 'dialogSettings')}}>{{t 'settings'}}</button>
-        </span>
 
-        <span>
+        <span style="margin-top:0.25rem">
+
           {{#if this.z.allow.deleteImg}}
-            <button type="button" title="Xperimental" style="background:transparent;height:1.1rem;border-radius:50%" {{on 'click' (fn this.z.toggleDialog dialogXperId)}}>&nbsp;&nbsp;</button>
+            {{!-- Open an experimental/test dialog --}}
+            <button type="button" title="Xperimental" style="background:transparent;height:1.1rem;border:0.5px solid #909;border-radius:50%" {{on 'click' (fn this.z.toggleDialog dialogXperId)}}>&nbsp;&nbsp;</button>
           {{/if}}
 
           <span id="loggedInUser">
-            <button type="button" title-2="{{t 'button.optchuser'}}" {{on 'click' (fn this.openLogIn)}}>{{t 'button.optlogin'}}</button>
-            {{t 'loggedIn'}}: <b>{{this.z.userName}}</b> {{t 'with'}} [{{this.z.userStatus}}]-{{t 'rights'}}
+            {{!-- Open the Settings dialog --}}
+            <button type="button" style="border:0.5px solid #909;background:transparent;color:#909" {{on 'click' (fn this.z.toggleDialog 'dialogSettings')}}>{{t 'settings'}}</button>&nbsp;
+
+            {{!-- Open the Tools dialog --}}
+            <button type="button" style="border:0.5px solid #909;background:transparent;color:#909" {{on 'click' (fn this.z.openModalDialog 'dialogChoose')}}>{{t 'tools'}}</button>&nbsp;
+
+            {{!-- Open the Login and Rights dialog --}}
+            <button type="button" style="border:0.5px solid #909;background:transparent;color:#909" title-2="{{t 'button.optchuser'}}" {{on 'click' (fn this.openLogIn)}}>{{t 'button.optlogin'}}</button>
+            {{!-- Present who's logged in with rights, and also the Clock --}}
+            {{t 'loggedIn'}}: <b>{{this.z.userName}}</b>
+            {{t 'with'}} [{{this.z.userStatus}}]-{{t 'rights'}}. {{t 'time.text'}}
+            <div style="display:inline-block"><Clock @locale={{this.z.intlCodeCurr}} /></div>
           </span>
+
         </span>
+
       </div>
 
-      <div class="sameBackground" style="display:flex;justify-content:space-between;margin:0.2rem 3.25rem 0.4rem 4rem">
+      <div class="" style="display:flex;justify-content:space-between;margin:0.2rem 3.25rem 0.4rem 4rem">
 
-
-          {{#if this.z.imdbRoot}}
-            {{#if this.z.imdbDir}}
-              <Language />
-              <span style="" info="Also spacing!" style="margin-top:-0.9rem;opacity:0.7">
-                <a style="margin-left:3rem" {{on 'click' (fn this.z.openAlbum 0)}}>
-                  <span style="font:small-caps bold 0.9rem sans-serif;text-decoration:underline">{{t 'home'}}</span>:
-                </a> &nbsp; <b>”{{this.z.imdbRoot}}”</b>
-              </span>
-            {{else}}
-              <Language />
-              <span style="" info="Also spacing!" style="margin-top:-0.9rem">
-                <b>”{{this.z.imdbRoot}}” &nbsp; <span style="font:small-caps bold 0.9rem sans-serif">{{t 'homemain'}}</span></b>
-              </span>
-            {{/if}}
+        {{#if this.z.imdbRoot}}
+          {{#if this.z.imdbDir}}
+            {{!-- Link to the “home“ location = album root = collection --}}
+            <span style="opacity:0.6">
+              <a style="text-decoration:underline" {{on 'click' (fn this.z.openAlbum 0)}}>
+                <span style="font:small-caps bold 0.9rem sans-serif">{{this.goHome}}</span>
+                <b>{{this.z.imdbRoot}}</b>
+              </a>
+            </span>
           {{else}}
-            <Language />
-            <span style="" info="Also spacing!">
-              {{t 'noCollSelected'}}
+            {{!-- State that this is the “home“ location --}}
+            <span style="opacity:0.6">
+              <b>{{this.z.imdbRoot}} <span style="font:small-caps bold 0.9rem sans-serif">{{this.mainHome}}</span></b>
             </span>
           {{/if}}
+        {{else}}
+          {{!-- State that no collection yet selected --}}
+          <span>
+            {{t 'noCollSelected'}}
+          </span>
+        {{/if}}
+        <span>&nbsp;</span>
 
-          {{!-- NOTE: This extra commented-out  link is for emergency only if the
-          browser's back arrow fails due to problems in the initBrowser-goBack
-          cooperation in the CommonStorage service:
-          <a {{on 'click' (fn this.z.goBack)}}>&nbsp;&lt;- go back&nbsp;</a> --}}
-
-        <span>{{t 'time.text'}}
-          <span><Clock @locale={{this.z.intlCodeCurr}} /></span>
-        </span>
-      </div>
-
-      <div class="sameBackground" style="display:flex;justify-content:space-between;margin:0 3.25rem 0 4rem">
         {{!-- NOTE: This extra commented-out  link is for emergency only if the
         browser's back arrow fails due to problems in the initBrowser-goBack
         cooperation in the CommonStorage service:
         <a {{on 'click' (fn this.z.goBack)}}>&nbsp;&lt;- go back&nbsp;</a> --}}
+
       </div>
 
     </div>

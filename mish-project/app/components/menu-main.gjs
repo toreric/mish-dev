@@ -22,6 +22,18 @@ const OP = '⊕';   // OPENS
 const CL = '⊖';   // CLOSES
 const SA = '‡';    // SUBALBUM indicator, NOTE! set in server (routes.js)
 
+// Set the maximum height of the album tree displayed
+var setMax = () => {
+  let atree = document.querySelector('div.albumTree');
+    // console.log('setMax scrollY', window.scrollY);
+    // console.log('setMax innerHeight', window.innerHeight);
+    // console.log('setMax top', atree.getBoundingClientRect().top);
+  let max = window.innerHeight - atree.getBoundingClientRect().top  ;
+  if (max < 16) max =16;
+    // console.log('setMax max', max);
+  atree.style.maxHeight = max + 'px';
+}
+
 export class MenuMain extends Component {
   @service('common-storage') z;
   @service intl;
@@ -126,15 +138,17 @@ export class MenuMain extends Component {
     // await new Promise (z => setTimeout (z, 33*this.z.imdbCoco.length)); // selectRoot Wait for album tree
     await new Promise (z => setTimeout (z, 333)); // selectRoot Wait for album tree
     this.toggleTree(CL); // fold all nodes except 0
+
     let anyHidden = () => { // flags any hidden-without-allowance album
       let hidden = false;
       for (let i=0;i<this.z.imdbCoco.length;i++) {
         if (this.z.imdbCoco[i].includes('*')) { // contains() is deprecated!
           hidden = true;
-        } //else  document.querySelector('.album.a' + i).style.color = 'white';
+        }
       }
       return hidden;
     }
+
     this.hasHidden = anyHidden(); // if there are any hidden-but-allowed albums
     this.z.openAlbum(0); // Select the root album
     this.z.closeMainMenu('after opening root album'); // Close the main menu
@@ -176,7 +190,7 @@ export class MenuMain extends Component {
   }
 
   // Close/open albumTree
-  toggleAlbumTree = () => {
+  toggleAlbumTree = async () => {
     if (this.missingRoot()) return;
     let headDiv = document.getElementById('albumHead');
     let treeDiv = document.querySelector('div.albumTree');
@@ -185,6 +199,8 @@ export class MenuMain extends Component {
       what = 'opened';
       headDiv.style.display = 'flex';
       treeDiv.style.display = '';
+      await new Promise (z => setTimeout (z, 22));
+      setMax();
     }else {
       what = 'closed';
       headDiv.style.display = 'none';
@@ -314,8 +330,6 @@ export class MenuMain extends Component {
 
   </template>
 }
-
-
 
 class Tree extends Component {
   @service('common-storage') z;

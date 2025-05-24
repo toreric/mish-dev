@@ -69,7 +69,7 @@ guest: gast
 has: hat
 hidden: verbergte
 hideshow: Verstecken oder anzeigen
-home: zur hauptseite
+home: zur&nbsp;hauptseite&nbsp;von
 homemain: hauptseite
 images: Bilder
 imageFind: Bilder finden
@@ -95,7 +95,7 @@ no: keine
 notAvailable: Nicht verfügbar
 numbererror: W A R N U N G<br><br>Nicht übereinstimmende Bildanzahl!
 Original: Original
-own: eigene
+own: eigene Originale
 Phototime: Fotozeit
 placeFirst: Am Anfang des Albums platzieren
 placefirst: Zum Anfang bewegen
@@ -307,6 +307,7 @@ spinwait: W A R T E N — oder mit einem Klick abbrechen, wenn es zuuu lange dre
 time:
   text: "Zeitangabe:"
   buildstamp: Ember development server
+tools: Werkzeuge
 totalImgNumber: Anzahl der Bilder in der Sammlung
 write:
   afterSort: Das Verschieben von Bildern per Drag-and-Drop<br>

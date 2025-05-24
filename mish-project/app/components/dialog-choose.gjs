@@ -27,7 +27,7 @@ export class DialogChoose extends Component {
   // PLEASE READ THE HEADER
 
   <template>
-   <dialog id="dialogChoose" {{on 'keydown' this.detectEscClose}}>
+   <dialog id="dialogChoose" style="max-width:min(38rem, 90vh);top:-40vh;" {{on 'keydown' this.detectEscClose}}>
       <header data-dialog-draggable>
         <div style="width:99%">
           <p style="color:blue">{{{this.z.infoHeader}}}<span></span></p>

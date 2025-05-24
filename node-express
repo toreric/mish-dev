@@ -12,7 +12,7 @@ port=3000
 
 prid=`lsof -t -i:$port`
 # If in autostart, this port shouldn't be occupied
-if [ $prid ]; then
+if [[ $prid ]]; then
   echo "Port $port is occupied by a process with pid=$prid;"
 # Else, maybe kill the process listening to this port
   echo -n "Kill the process and continue? (y/N): "

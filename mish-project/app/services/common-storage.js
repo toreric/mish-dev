@@ -92,7 +92,7 @@ export default class CommonStorageService extends Service {
   //   #region VIEW VARS
   //== Miniature and show images etc. information
 
-  @tracked  chooseText = '0Choose what?'; // Choice text
+  @tracked  chooseText = ' Choose what?'; // Choice text
   @tracked  displayNames = 'none'; // Image name display switch
   @tracked  edgeImage = '';  // Text indicating first/last image
   @tracked  hasImages = false; // true if 'imdbDir' has at least one image
@@ -1714,15 +1714,15 @@ export default class CommonStorageService extends Service {
     // Close all dialogs before login change:
     if (dialogId === 'dialogLogin') this.closeDialogs();
     // Reset this dialogChoose before opening:
+    let diaObj = document.getElementById(dialogId);
     if (dialogId === 'dialogChoose') {
       document.getElementById('Choice_3').checked = false;
       document.querySelector('span.Choice_3').style.display = 'none';
     }
-    let diaObj = document.getElementById(dialogId);
     if (!diaObj.open) {
       if (origPos) diaObj.style = '';
+      if (!diaObj.style.top) diaObj.style.top = '-40vh';
       diaObj.showModal();
-      diaObj.style = 'top:-40vh';
       this.loli('opened ' + dialogId + ' (modal)');
     }
   }
