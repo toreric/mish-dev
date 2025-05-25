@@ -16,12 +16,14 @@ export class ButtonsLeft extends Component {
 
   // someFunction = (param) => {this.z.loli(param, 'color:red');}
 
-  toggleMainMenu = (e) => {
+  toggleMainMenu = async (e) => {
     if (e) e.stopPropagation();
     if (document.getElementById("menuMain").style.display === "") {
       this.z.closeMainMenu('');
     } else {
       this.z.openMainMenu();
+      await new Promise (z => setTimeout (z, 22));
+      this.z.setTreeMax();
     }
   }
 

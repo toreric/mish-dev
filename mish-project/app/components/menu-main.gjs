@@ -22,18 +22,6 @@ const OP = '⊕';   // OPENS
 const CL = '⊖';   // CLOSES
 const SA = '‡';    // SUBALBUM indicator, NOTE! set in server (routes.js)
 
-// Set the maximum height of the album tree displayed
-var setMax = () => {
-  let atree = document.querySelector('div.albumTree');
-    // console.log('setMax scrollY', window.scrollY);
-    // console.log('setMax innerHeight', window.innerHeight);
-    // console.log('setMax top', atree.getBoundingClientRect().top);
-  let max = window.innerHeight - atree.getBoundingClientRect().top  ;
-  if (max < 16) max =16;
-    // console.log('setMax max', max);
-  atree.style.maxHeight = max + 'px';
-}
-
 export class MenuMain extends Component {
   @service('common-storage') z;
   @service intl;
@@ -200,7 +188,7 @@ export class MenuMain extends Component {
       headDiv.style.display = 'flex';
       treeDiv.style.display = '';
       await new Promise (z => setTimeout (z, 22));
-      setMax();
+      this.z.setTreeMax();
     }else {
       what = 'closed';
       headDiv.style.display = 'none';
@@ -237,6 +225,7 @@ export class MenuMain extends Component {
       selected.style.display = '';
     }
     selected = document.querySelector('span.album.a' + index);
+    selected.scrollIntoView(); // If invisible, show off!
     selected.classList.add('blink');
     await new Promise (z => setTimeout (z, 666)); // showSelected blink pause
     selected.classList.remove('blink');

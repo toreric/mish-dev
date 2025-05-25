@@ -494,7 +494,20 @@ export default class CommonStorageService extends Service {
     }
   }
 
-  //#region updateTree
+  //#region setTreeMax
+  // Set the maximum display height of the album tree
+  setTreeMax = () => {
+    let atree = document.querySelector('div.albumTree');
+      // console.log('setTreeMax scrollY', window.scrollY);
+      // console.log('setTreeMax innerHeight', window.innerHeight);
+      // console.log('setTreeMax top', atree.getBoundingClientRect().top);
+    let max = window.innerHeight - atree.getBoundingClientRect().top  ;
+    if (max < 16) max =16;
+      // console.log('setTreeMax max', max);
+    atree.style.maxHeight = max + 'px';
+  }
+
+ //#region updateTree
   updateTree = async () => { // Album root = collection
     this.imdbDir = ''; // The root is assumed initially selected
     const allow = this.allow; // permissions
