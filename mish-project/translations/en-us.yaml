@@ -404,6 +404,7 @@ write:
   # To use 'a' instead of 'album' as parameter did HANG
   # both FF and Chromium (UNBELIEVABLE!):
   tool0: "Choose for <b>{a}</b>:"
+  tool01: "For <b>all albums</b> in the collection:"
   tool1: Delete the album (must be empty)
   tool2: Make a subalbum
   tool3: Sort the images by names
@@ -411,10 +412,10 @@ write:
   tool32: in reverse order
   tool4: Find duplicate image names
   tool41: Find duplicate image names in <b>{a}</b> including all subalbums
-  tool42: Find duplicate image names in the entire album collection
+  tool42: Find duplicate image names
   tool5: Upload new images
-  tool6: Update search data for the entire album collection
-  tool7: Try to find similar images in the entire album collection
+  tool6: Update search data
+  tool7: Try to find similar images
   tool8: Make text list for displayed images
   tool99: Unfortunately there is nothing to choose
   utilHeader: Tools for

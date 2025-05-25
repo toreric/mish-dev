@@ -313,11 +313,11 @@ export default class extends Welcome {
       <div {{executeOnInsert this}} class="" style="display:flex;justify-content:space-between;margin:0 3.25rem 0 4rem">
 
         <span>
+          <Language />&nbsp;
           <b style="font-size:106%;margin-top:0.35rem;display:inline-block">
             {{t "header"}}
-          </b>
-          <Language />
-        </span>&nbsp;
+          </b>&nbsp;&nbsp;
+        </span>
 
 
         <span style="margin-top:0.25rem">
@@ -331,15 +331,13 @@ export default class extends Welcome {
             {{!-- Open the Settings dialog --}}
             <button type="button" style="border:0.5px solid #909;background:transparent;color:#909" {{on 'click' (fn this.z.toggleDialog 'dialogSettings')}}>{{t 'settings'}}</button>&nbsp;
 
-            {{!-- Open the Tools dialog --}}
-            <button type="button" style="border:0.5px solid #909;background:transparent;color:#909" {{on 'click' (fn this.z.openModalDialog 'dialogChoose')}}>{{t 'tools'}}</button>&nbsp;
-
             {{!-- Open the Login and Rights dialog --}}
             <button type="button" style="border:0.5px solid #909;background:transparent;color:#909" title-2="{{t 'button.optchuser'}}" {{on 'click' (fn this.openLogIn)}}>{{t 'button.optlogin'}}</button>
-            {{!-- Present who's logged in with rights, and also the Clock --}}
+            {{!-- Present who's logged in with rights --}}
             {{t 'loggedIn'}}: <b>{{this.z.userName}}</b>
-            {{t 'with'}} [{{this.z.userStatus}}]-{{t 'rights'}}. {{t 'time.text'}}
-            <div style="display:inline-block"><Clock @locale={{this.z.intlCodeCurr}} /></div>
+            {{t 'with'}} [{{this.z.userStatus}}]-{{t 'rights'}}.&nbsp;&nbsp;
+            {{!-- Display the current time --}}
+            <div style="display:inline-block">{{t 'time.text'}}<span style="font:80% monospace"><Clock @locale={{this.z.intlCodeCurr}} /></span></div>
           </span>
 
         </span>

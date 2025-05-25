@@ -257,7 +257,6 @@ export class MenuMain extends Component {
         <a id="searchText" {{on "click" (fn this.findText)}}>{{t 'imageFind'}}<span style="font:normal 1em monospace!important">[F]</span></a>
       </p><br>
 
-      {{!-- <p onclick="return false" draggable="false" ondragstart="return false" title-2="Favoritskötsel"> --}}
       <p onclick="return false" draggable="false" ondragstart="return false" title-2={{t 'fav.manage'}}>
         {{!-- <a id ="favorites" {{on "click" (fn this.seeFavorites)}}>Favoritbilder</a> --}}
         <a id ="favorites" {{on "click" (fn this.seeFavorites)}}>{{t 'fav.images'}}</a>
@@ -279,9 +278,9 @@ export class MenuMain extends Component {
 
       {{#if this.z.imdbRoot}}
 
-      <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title-2="{{t 'albumcareinfo'}} {{t 'for'}} {{this.z.imdbRoot}}{{this.z.imdbDir}}">
+      {{!-- <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title-2="{{t 'albumcareinfo'}} {{t 'for'}} {{this.z.imdbRoot}}{{this.z.imdbDir}}">
         <a {{on "click" (fn this.albumEdit)}}>{{t 'albumcare'}} <span title="">”{{{fn this.z.handsomize2sp this.z.imdbDirName}}}”</span></a>
-      </p><br>
+      </p><br> --}}
 
       <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title-2={{t 'albumcollshow'}}>
         <a {{on "click" (fn this.toggleAlbumTree)}}><pre style="margin:0">{{t 'albumcoll'}} ”{{this.z.imdbRoot}}”     ⌵  </pre></a>

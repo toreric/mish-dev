@@ -400,17 +400,18 @@ write:
   setPoop: Visualisera musklick
   setEraseOriginal: Radera original med länk (VARNING!)
   tool0: "Välj för <b>{a}</b>:"
+  tool01: "För <b>alla album</b> i samlingen:"
   tool1: Radera albumet (måste vara tomt)
   tool2: Gör ett underalbum
   tool3: Sortera bilderna efter namn
   tool31: i stigande ordning
   tool32: i fallande ordning
   tool4: Finn dubletter av bildnamn
-  tool41: Finn dubletter av bildnamn i <b>{a}</b> inklusive alla underalbum
-  tool42: Finn dubletter av bildnamn i hela albumsamlingen
+  tool41: Finn dubletter av bildnamn i <b>{a}</b> inklusive eventuella underalbum
+  tool42: Finn dubletter av bildnamn
   tool5: Ladda upp nya bilder
-  tool6: Uppdatera sökdata för hela albumsamlingen
-  tool7: Försök finna likadana bilder i hela albumsamlingen
+  tool6: Uppdatera sökdata
+  tool7: Försök finna likadana bilder
   tool8: Gör textlista till bilder som visas
   tool99: Det finns tyvärr inget att välja
   utilHeader: Verktyg för

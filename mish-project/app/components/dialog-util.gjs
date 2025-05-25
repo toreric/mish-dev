@@ -65,7 +65,7 @@ export class DialogUtil extends Component {
   // This button is inserted into alertMess when browser reload is required.
   // Then alertMess cannot be closed by closeDialog (but with closeDialogs!).
   get restart() {
-    return '<br><div style="text-align:center"><button class="unclosable" type="button" onclick="location.reload(true);return false">' + this.intl.t('button.restart') + '</button></div>'
+    return '<br><div style="text-align:center"><button class="unclosable" type="button" onclick="location.reload(true);return false">' + this.intl.t('button.restart') + '</utton></div>'
   }
 
   // Should be the first called from the template
@@ -108,30 +108,11 @@ export class DialogUtil extends Component {
   }
 
   get okDupNames() {
-    // true to search the collection if at root, alternatively
-    // at any 'node' except picFound, if there is some reason:
-    // if (this.z.imdbDir.slice(1) === this.z.picFound) { //malfunction!
-
-    return true;          //OVERRIDE! collection from anywhere!
-
-    // search only the entire collection from root:
-    if (this.z.imdbDir) {
-      return false;
-    } else {
-      return true;
-    }
+    return true;
   }
 
   get okDupImages() {
-    // true to search the collection if at root:
-
-    return true;          //OVERRIDE! from anywhere!
-
-    if (this.z.imdbDir) {
-      return false;
-    } else {
-      return true;
-    }
+    return true;
   }
 
   get okUpload() {
@@ -143,16 +124,7 @@ export class DialogUtil extends Component {
   }
 
   get okDbUpdate() {
-    //only at collection root
-
-    return true;          //OVERRIDE! from anywhere!
-
-    if (this.z.imdbDir) {
-      return false;
-    }
-    if (this.z.allow.albumEdit) {
-      return true
-    }
+    return true;
   }
 
   get notEmpty() { // true if the album is not empty
@@ -360,6 +332,13 @@ export class DialogUtil extends Component {
               <label for="util3"> &nbsp;{{t 'write.tool3'}}</label>
             </span>
           {{/if}}
+          {{#if this.okUpload}}
+            <span class="glue">
+              <input id="util5" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
+              <label for="util5"> &nbsp;{{t 'write.tool5'}}</label>
+            </span>
+          {{/if}}
+          <div style="margin:0.5rem 0 0 0">{{{t 'write.tool01'}}}</div>
           {{#if this.okDupNames}}
             <span class="glue">
               <input id="util4" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
@@ -370,12 +349,6 @@ export class DialogUtil extends Component {
             <span class="glue">
               <input id="util7" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
               <label for="util7"> &nbsp;{{{t 'write.tool7'}}}</label>
-            </span>
-          {{/if}}
-          {{#if this.okUpload}}
-            <span class="glue">
-              <input id="util5" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
-              <label for="util5"> &nbsp;{{t 'write.tool5'}}</label>
             </span>
           {{/if}}
           {{#if this.okDbUpdate}}

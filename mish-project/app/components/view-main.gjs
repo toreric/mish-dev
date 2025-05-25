@@ -121,6 +121,10 @@ class SubAlbums extends Component {
     <p class='albumsHdr' draggable="false" ondragstart="return false">
       <div class="miniImgs albs">
         {{#if this.z.imdbRoot}}
+
+            {{!-- Open the Tools dialog --}}
+            <button type="button" style="border:0.5px solid #909;background:transparent;color:#909" {{on 'click' (fn this.z.openDialog 'dialogUtil')}}>{{t 'tools'}}</button>
+
           {{#if this.z.imdbDir}}
             <span title-2="{{this.z.imdbRoot}}{{this.z.imdbDir}}">
               <b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
@@ -331,7 +335,8 @@ class AllImages extends Component {
 
           {{!-- If the album isn't the root album: --}}
           {{#if this.z.imdbDir}}
-            <p><span title-2="{{this.z.imdbRoot}}{{this.z.imdbDir}}"><b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
+
+            <p><b title-2="{{this.z.imdbRoot}}{{this.z.imdbDir}}">”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
 
             {{#if this.z.numHidden}}
               — {{this.z.numShown}}&nbsp;{{t 'shown'}},
@@ -340,11 +345,12 @@ class AllImages extends Component {
               — {{this.z.numShown}}&nbsp;{{t 'shown'}}
             {{/if}}
 
-            ({{this.z.numMarked}}&nbsp;{{t 'marked'}})</span></p>
+            ({{this.z.numMarked}}&nbsp;{{t 'marked'}})</p>
 
           {{!-- If the album is the root album: --}}
           {{else}} {{!-- root --}}
-            <p><span><b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
+
+            <p><b>”{{{this.z.handsomize2sp this.z.imdbDirName}}}”</b>
 
             {{#if this.z.numHidden}}
               — {{this.z.numShown}}&nbsp;{{t 'shown'}},
@@ -353,7 +359,7 @@ class AllImages extends Component {
               — {{this.z.numShown}}&nbsp;{{t 'shown'}}
             {{/if}}
 
-            ({{this.z.numMarked}}&nbsp;{{t 'marked'}})</span></p>
+            ({{this.z.numMarked}}&nbsp;{{t 'marked'}})</p>
 
           {{/if}}
 

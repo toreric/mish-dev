@@ -400,6 +400,7 @@ write:
   setPoop: Mausklicks visualisieren
   setEraseOriginal: Original mit Link löschen (WARNUNG!)
   tool0: "Für <b>{a}</b> wählen:"
+  tool01: "Für <b>alle Alben</b> der Sammlung:"
   tool1: Das Album löschen (muss leer sein)
   tool2: Ein Unteralbum erstellen
   tool3: Die Bilder nach Namen sortieren
@@ -407,10 +408,10 @@ write:
   tool32: in umgekehrter Reihenfolge
   tool4: Doppelte Bildnamen finden
   tool41: Doppelte Bildnamen in <b>{a}</b> inklusive aller Unteralben finden
-  tool42: Doppelte Bildnamen in der gesamten<br>Albumsammlung finden
+  tool42: Doppelte Bildnamen finden
   tool5: Neue Bilder hochladen
-  tool6: Suchdaten für die gesamte Albumsammlung aktualisieren
-  tool7: Ähnliche Bilder in der gesamten Albumsammlung<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;zu finden versuchen
+  tool6: Suchdaten aktualisieren
+  tool7: Ähnliche Bilder finden versuchen
   tool8: Textliste für angezeigte Bilder erstellen
   tool99: Leider gibt es nichts zu wählen
   utilHeader: Werkzeuge für
