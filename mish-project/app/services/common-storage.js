@@ -358,7 +358,7 @@ export default class CommonStorageService extends Service {
       this.openAlbum(i);
       // Allow for the rendering of mini images and preload of view images
       let size = this.albumAllImg(i);
-      await new Promise (z => setTimeout (z, size*60 + 100)); // album load
+      await new Promise (z => setTimeout (z, size*120 + 100)); // album load
       this.gotoMinipic(picName);
     }
   }
@@ -807,9 +807,9 @@ export default class CommonStorageService extends Service {
     if (!namepic) this.loli('CommonStorageService error 2', 'color:red');
     // NOTE: No escapeDots for getElementById:
     let p = document.getElementById('i' + namepic);
-    // this.loli('p=' + p, 'color:red');
+      // this.loli('p=' + p, 'color:red');
     let y = p.offsetTop ? p.offsetTop : 0;
-    // this.loli('y=' + y, 'color:red');
+      // this.loli('y=' + y, 'color:red');
     y = p.offsetHeight ? y + p.offsetHeight/2 : y;
     // this.loli('y=' + y, 'color:red');
     let t = document.getElementById('highUp').offsetTop;
