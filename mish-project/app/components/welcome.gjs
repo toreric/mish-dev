@@ -241,8 +241,10 @@ class Welcome extends Component {
       let lng = this.z.getCookie('mish_lang');
       if (lng) this.intl.setLocale([lng]);
       this.z.intlCodeCurr = lng;
-      this.z.picFound = this.z.picFoundBaseName +"."+ Math.random().toString(36)
-        .slice(2,6); // Each language must update it's found pics name
+      // Each language must define it's found pics name, initially.
+      // At a subsequent lnguage change, the picFound name will not change.
+      this.z.RID = Math.random().toString(36).slice(2,6);
+      this.z.picFound = this.z.picFoundBaseName + '.' + this.z.RID;
 
       // Background cookie
       if (this.z.getCookie('mish_bkgr') === 'dark') {

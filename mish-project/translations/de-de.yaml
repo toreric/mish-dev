@@ -204,6 +204,11 @@ dialog:
   help:
     header: Benutzeranweisung
     header1: (vor allem für Computers mit Tastatur und Maus oder Touchpad)
+    imgdef0: Ein Bild
+    imgdef1: in einem Album ist entweder ein
+    imgdef2: Originalbild
+    imgdef3: oder ein verlinktes Bild aus einem anderen Album in der Albumsammlung
+    imgdef4: ein “Link“
     login0: Wer als Gast-Benutzer⋅in (gast) angemeldet ist
     login1: hat nur beschränkte Rechte (Vorschaubilder verstecken, markieren und mit drag & drop bewegen; zum Originalbild gehen). Nach persönlichem Login (Anmeldung) erfolgen weitere Rechte (z.B. Bildunterschriften ändern und speichern). Nur Systemadministrierende können ein persönliches Login bereitstellen
     ihrcm0: Jedes Bild hat ein Menü
@@ -333,7 +338,7 @@ write:
               <br>Es ist eine Sicherheitsmaßnahme beim Löschen.
   chooseOne:  Soll dieses Bild
   chooseThis: "Ausgewähltes Album: <b>{a}</b>"
-  chooseTool: Ein Werkzeug wählen, keines ausgewählt!
+  chooseTool: Keines ausgewählt, ein Werkzeug wählen!
   confirm: Nicht verwendet, melden!
   creator: "Herkunft: Foto Ursprung Quelle"
   description: "Beschreibung: Wann wo was welche"
@@ -376,7 +381,7 @@ write:
             <br>
             &nbsp;&nbsp;&nbsp;&nbsp; <span>nils jacobss</span> (zwei Suchbegriffe) findet alle Bilder mit dem Text „Nils Jacobsson“ und auch alle Bilder mit irgendein von „Nils“ oder „Jacobss“ im Text, zum Beispiel „Fredrik Nilson“ und/oder „Filip Jacobsson“ (aber nicht „Nisse Jacobson“).<br>
             &nbsp;&nbsp;&nbsp;&nbsp; <span>nils%jacobs</span> (ein Suchbegriff) findet Bilder mit zum Beispiel „Nils Jacobsson“ oder „Nils Jacobsen“ (wie in <span>1</span>, weil nur ein Suchbegriff)."
-  findHelp5: Schreiben in das Feld oben, wonach gesucht werden soll, dann die Suche starten. Das Ergebnis wird in einem temporären Album mit dem Namen <b>Gefundene Bilder</b> präsentiert. Es gibt einem Link zum Original im Menü jedes Miniaturbildes. <span style="color:#0b0;text-decoration:underline">Ein grüner Rand unter der Bildunterschrift</span> bedeutet ein verlinktes Bild.
+  findHelp5: Schreiben in das Feld oben, wonach gesucht werden soll, dann die Suche starten. Das Ergebnis wird in einem temporären Album mit dem Namen <b>Gefundene Bilder</b> präsentiert. Es gibt einem Link zum Original im Menü jedes Miniaturbildes. <span style="color:#0a0;text-decoration:underline">Ein grüner Rand unter der Bildunterschrift</span> bedeutet ein verlinktes Bild.
   findHelp6: "Tipp: Die Gesamtzahl der Bilder in der Albumsammlung wird durch die Suche (in Albumnamen) nach einem „/“ angezeigt!"
   foundNoAlbums: Keine Alben gefunden!
   isEmpty: ist leer
@@ -413,6 +418,6 @@ write:
   tool6: Suchdaten aktualisieren
   tool7: Ähnliche Bilder finden versuchen
   tool8: Textliste für angezeigte Bilder erstellen
-  tool99: Leider gibt es nichts zu wählen
+  tool99: Hier gibt es nichts zu wählen!
   utilHeader: Werkzeuge für
 

@@ -34,6 +34,7 @@ module.exports = function(app) { // Start module.exports
   let picFound = '' // Name of special(temporary) search result album
   let show_imagedir = false // For debug data(base) directories
   let allfiles = [] // For /imagelist use
+  let RID = '----'  // Random (user) identity (take from picFound)
 
   // ===== Make a synchronous shell command formally 'asynchronous'(cf. asynchronous execP)
   let cmdasync = async (cmd) => {return execSync(cmd)}
@@ -66,8 +67,11 @@ module.exports = function(app) { // Start module.exports
         IMDB_ROOT = decodeURIComponent(tmp)
         IMDB_DIR = decodeURIComponent( req.get('imdbdir') )
         IMDB = IMDB_HOME + '/' + IMDB_ROOT
-        USER = req.get('username')
+        USER = decodeURIComponent(req.get('username'))
         picFound = req.get('picfound')
+        // Borrow the random identity RID from picFound!
+        RID = picFound.replace(/^.*\.([^.]{4})$/, '$1')
+        if (RID.length !== 4) RID = '----'
         // If picFound is already defined it must be preserved even if it
         // isn't touched since long ago. We should 'touch' that directory, or
         // possibly recreate it, since it may even be erased by another user:
@@ -198,14 +202,15 @@ module.exports = function(app) { // Start module.exports
   //       all available user statuses and their allowances
   //#region login
   app.get('/login', (req, res) => {
-    var name = decodeURIComponent(req.get('username'))
-    var password = ''
+    USER = decodeURIComponent(req.get('username'))
+        var password = ''
     var status = ''
     var allow = ''
     try {
-      if (name) {
-        console.log('  userName: "' + name + '"')
-        let row = setdb.prepare('SELECT pass, status FROM user WHERE name = $name').get({name: name})
+      if (USER) {
+        console.log(BYEL + RID + '@' + USER + ': logged in' + RSET)
+        // console.log('  userName: "' + USER + '"')
+        let row = setdb.prepare('SELECT pass, status FROM user WHERE name = $name').get({name: USER})
         if (row) {
           password = row.pass
           status = row.status
@@ -228,6 +233,7 @@ module.exports = function(app) { // Start module.exports
 
       } else { // Send all recorded user statuses and their allowances, formatted
         console.log(BYEL + '\n\nRELOADING MISH' + RSET + '\nGet the table of user rights')
+        RID = '----'
         let rows = setdb.prepare('SELECT * FROM class ORDER BY status').all()
         var allowances = ''
         for (let j=0;j<rows.length;j++) {
@@ -468,7 +474,7 @@ module.exports = function(app) { // Start module.exports
         res.location('/')
         res.send(allfiles)
         //res.end()
-        console.log('   ' + BYEL + USER + ': ' + IMDB_ROOT + IMDB_DIR + RSET)
+        console.log(BYEL + RID + '@' + USER + ': ' + IMDB_ROOT + IMDB_DIR + RSET)
         console.log('...file information sent from server') // Remaining message
       }).catch(function(error) {
         res.location('/')

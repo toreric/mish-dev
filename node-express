@@ -6,7 +6,7 @@ project=/home/tore/Arbeten/mish-dev
 echo pwd is $project
 
 # If in autostart, wait a little
-sleep 3
+sleep 1
 
 port=3000
 

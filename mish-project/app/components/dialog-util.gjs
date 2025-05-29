@@ -18,6 +18,7 @@ export class DialogUtil extends Component {
 
   @tracked tool = ''; // utility tool id
   @tracked countImgs = 0; // duplicate image name counter
+  @tracked tools = false;
 
   // Detect closing Esc key
   detectEscClose = (e) => {
@@ -27,18 +28,18 @@ export class DialogUtil extends Component {
     }
   }
 
-  detectRadio = (e) => {
-    const elRadio = e.target.closest('input[type="radio"]');
-    if (!elRadio) return; // Not a radio element
-      // this.z.loli(`${elRadio.id} ${elRadio.checked}`, 'color:red');
+  // Which tool was selected?
+  detectRadio = async (e) => {
+    // if (!e) return;
+    var elRadio = e.target;
+      this.z.loli(`${elRadio.id} ${elRadio.checked}`, 'color:red');
     this.tool = elRadio.id;
-      // this.z.loli('tool: ' + this.tool, 'color:red');
   }
 
   clearInput = () => {
     let elem = document.querySelector('#newAlbNam');
     elem.value = '';
-    elem.style.background = '#f0f0b0';
+    elem.style.background = '#f0f0a0';
     elem.focus();
   }
 
@@ -46,6 +47,7 @@ export class DialogUtil extends Component {
   // of 'ok...' checks called from the template. 'imdbDir' is used for
   // resetting before the simple return of the 1-sliced-off imdbDir value:
   get imdbDir() { // this.imdbDir
+    this.tools = false;
     this.tool = '';
     let elRadio = document.querySelectorAll('#dialogUtil input[type="radio"]');
     for (let i=0; i<elRadio.length; i++) {
@@ -71,11 +73,13 @@ export class DialogUtil extends Component {
   // Should be the first called from the template
   // The first and ONLY use of this.imdbDir is here:
   get okDelete() { // true if delete album is allowed
+    this.tools = false;
     if (!this.z.imdbDir) return; // Avoid misuse
     let found = this.imdbDir === this.z.picFound;
       // this.z.loli('imdbDir: ' +  this.imdbDir, 'color:yellow');
       // this.z.loli('picFound: ' +  this.z.picFound, 'color:yellow');
     if (!found && this.z.imdbDir && this.z.allow.albumEdit) { // root == ''
+      this.tools = true;
       return true
     } else {
       return false;
@@ -85,7 +89,8 @@ export class DialogUtil extends Component {
   get okTexts() { // true if images shown
       // this.z.loli('numShown ' + this.z.numShown, 'color:red');
     if (this.z.numShown > 0) {
-      return true
+      this.tools = true;
+      return true;
     } else {
       return false;
     }
@@ -93,7 +98,8 @@ export class DialogUtil extends Component {
 
   get okSubalbum() { // true if subalbums allowed
     if (this.z.imdbDir.slice(1) !== this.z.picFound && this.z.allow.albumEdit) {
-      return true
+      this.tools = true;
+      return true;
     } else {
       return false;
     }
@@ -101,7 +107,8 @@ export class DialogUtil extends Component {
 
   get okSort() { // true if sorting by name is allowed
     if (this.z.numImages > 1) {
-      return true
+      this.tools = true;
+      return true;
     } else {
       return false;
     }
@@ -117,7 +124,8 @@ export class DialogUtil extends Component {
 
   get okUpload() {
     if (this.z.imdbDir.slice(1) !== this.z.picFound && this.z.allow.deleteImg) {
-      return true
+      this.tools = true;
+      return true;
     } else {
       return false;
     }
@@ -202,7 +210,7 @@ export class DialogUtil extends Component {
     if (n > 1) { // reset
       bucont.removeAttribute('disabled');
       bumake.setAttribute('disabled', true);
-      elem.style.background = '#f0f0b0'; // yellow
+      elem.style.background = '#f0f0a0'; // yellow
       if (n === 3) { // make
         let pathNew = this.z.imdbPath + this.z.imdbDir;
         let nameNew = '/' + document.getElementById('newAlbNam').value;
@@ -310,50 +318,55 @@ export class DialogUtil extends Component {
           {{!-- This only reference to okDelete resets radio buttons etc. --}}
           {{#if this.okDelete}}
             <span class="glue">
-              <input id="util1" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
+              <input id="util1" name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
               <label for="util1"> &nbsp;{{t 'write.tool1'}}</label>
             </span>
           {{/if}}
           {{#if this.okTexts}}
             <span class="glue">
-              <input id="util8" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
+              <input id="util8" name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
               <label for="util8"> &nbsp;{{{t 'write.tool8'}}}</label>
             </span>
           {{/if}}
           {{#if this.okSubalbum}}
             <span class="glue">
-              <input id="util2" name="albumUtility" value="" type="radio" autofocus {{on 'click' this.detectRadio}}>
+              <input id="util2" name="albumUtility" type="radio" autofocus {{on 'click' (fn this.detectRadio)}}>
               <label for="util2"> &nbsp;{{t 'write.tool2'}}</label>
             </span>
           {{/if}}
           {{#if this.okSort}}
             <span class="glue">
-              <input id="util3" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
+              <input id="util3" name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
               <label for="util3"> &nbsp;{{t 'write.tool3'}}</label>
             </span>
           {{/if}}
           {{#if this.okUpload}}
             <span class="glue">
-              <input id="util5" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
+              <input id="util5" name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
               <label for="util5"> &nbsp;{{t 'write.tool5'}}</label>
             </span>
+          {{/if}}
+          {{#if this.tools}}
+            {{!-- Tools will come --}}
+          {{else}}
+            <span>{{t 'write.tool99'}}</span>
           {{/if}}
           <div style="margin:0.5rem 0 0 0">{{{t 'write.tool01'}}}</div>
           {{#if this.okDupNames}}
             <span class="glue">
-              <input id="util4" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
+              <input id="util4" name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
               <label for="util4"> &nbsp;{{t 'write.tool4'}}</label>
             </span>
           {{/if}}
           {{#if this.okDupImages}}
             <span class="glue">
-              <input id="util7" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
+              <input id="util7" name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
               <label for="util7"> &nbsp;{{{t 'write.tool7'}}}</label>
             </span>
           {{/if}}
           {{#if this.okDbUpdate}}
             <span class="glue">
-              <input id="util6" name="albumUtility" value="" type="radio" {{on 'click' this.detectRadio}}>
+              <input id="util6" name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
               <label for="util6"> &nbsp;{{t 'write.tool6'}}</label>
             </span>
           {{/if}}
@@ -398,11 +411,11 @@ export class DialogUtil extends Component {
 
             <form style="line-height:1.35rem">
               <span class="glue">
-                <input id="util31" name="albumUtility" value="" type="radio" checked>
+                <input id="util31" name="albumUtility" type="radio" checked>
                 <label for="util31"> &nbsp;{{t 'write.tool31'}}</label>
               </span>
               <span class="glue">
-                <input id="util32" name="albumUtility" value="" type="radio">
+                <input id="util32" name="albumUtility" type="radio">
                 <label for="util32"> &nbsp;{{t 'write.tool32'}}</label>
               </span>
             </form>
@@ -428,11 +441,11 @@ export class DialogUtil extends Component {
 
             <form style="line-height:1.35rem">
               <span class="glue">
-                <input id="util51" name="albumUtility" value="" type="radio" checked>
+                <input id="util51" name="albumUtility" type="radio" checked>
                 <label for="util51"> &nbsp;{{t 'placeFirst'}}</label>
               </span>
               <span class="glue">
-                <input id="util52" name="albumUtility" value="" type="radio">
+                <input id="util52" name="albumUtility" type="radio">
                 <label for="util52"> &nbsp;{{t 'placeLast'}}</label>
               </span>
             </form>

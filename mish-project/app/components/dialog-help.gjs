@@ -33,15 +33,19 @@ export class DialogHelp extends Component {
     </div>
   </header>
   <main style="height:30rem">
+
       <p style="text-align:left;margin:0.5rem 0.3rem 0 1.5rem;line-height:1.4rem" draggable="false" ondragstart="return false">
         <p><b>{{t 'dialog.help.login0'}}</b> {{t 'dialog.help.login1'}}</p>
+
+        <p><b>{{t 'dialog.help.imgdef0'}}</b> {{t 'dialog.help.imgdef1'}} <b>{{t 'dialog.help.imgdef2'}}</b> {{t 'dialog.help.imgdef3'}} (<b style="color:#0a0">{{t 'dialog.help.imgdef4'}}</b>).
+        </p>
 
         <p><b>{{t 'dialog.help.ihrcm0'}}</b> {{{t 'dialog.help.ihrcm1'}}}<br><b>{{t 'dialog.help.ctrlclick'}}</b> {{t 'dialog.help.ihrcm2'}}</p>
 
         <p>{{{t 'dialog.help.mark0'}}}<br>
           <b>{{t 'dialog.help.shift0'}}</b> {{t 'dialog.help.shift1'}}</p>
 
-        <p><b style="color:#0b0;text-decoration:underline">{{t 'dialog.help.green0'}}</b> {{t 'dialog.help.green1'}}</p>
+        <p><b style="color:#0a0;text-decoration:underline">{{t 'dialog.help.green0'}}</b> {{t 'dialog.help.green1'}}</p>
       </p>
       <p style="text-align:left;margin:0.5rem 0.3rem 0 1.5rem;line-height:1.7rem" draggable="false" ondragstart="return false">
         <b>{{t 'dialog.help.flebu'}}</b> ({{t 'dialog.help.wviva'}}):<br>

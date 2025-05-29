@@ -206,6 +206,11 @@ dialog:
   help:
     header: User guide
     header1: (mainly for computers with keyboard and mouse or touchpad)
+    imgdef0: An image
+    imgdef1: in an album is either an
+    imgdef2: original image
+    imgdef3: or a linked-in image from elsewhere in the album collection
+    imgdef4: a “link“
     login0: When logged in as guest
     login1: you will have limited rights (hide, select, and move thumbnails by drag'n-drop; go to original image). You can get more rights with a personal login (for example, make and save caption changes). A personal login can only be obtained from a system administrator
     ihrcm0: Each image has a menu
@@ -378,7 +383,7 @@ write:
             <br>
             &nbsp;&nbsp;&nbsp;&nbsp; <span>nils jacobss</span> (two search terms) finds all images with the text ’Nils Jacobsson’ and also all images with any of ’Nils’ or ’Jacobss’ in the text, for example ’Fredrik Nilson’ and/or ’Filip Jacobsson’ (but not ’Nisse Jacobson’).<br>
             &nbsp;&nbsp;&nbsp;&nbsp; <span>nils%jacobs</span> (one search term) finds images with, for example ’Nils Jacobsson’ or ’Nils Jacobsen’ (same as <span>1</span>, since only one search term)."
-  findHelp5: Write what you want to search for in the box at the top and start the search. The result is presented in an album for temporary use called <b>Found images</b> with a link to the original in each thumbnail's menu. <span style="color:#0b0;text-decoration:underline">Green border below the caption</span> means linked image.
+  findHelp5: Write what you want to search for in the box at the top and start the search. The result is presented in an album for temporary use called <b>Found images</b> with a link to the original in each thumbnail's menu. <span style="color:#0a0;text-decoration:underline">Green border below the caption</span> means linked image.
   findHelp6: "Tip: Find out how many photos are in the album collection by searching for a ’/’ (in album names)!"
   foundNoAlbums: No albums found!
   imageSeveral: The names of {n} images to be removed
@@ -417,5 +422,5 @@ write:
   tool6: Update search data
   tool7: Try to find similar images
   tool8: Make text list for displayed images
-  tool99: Unfortunately there is nothing to choose
+  tool99: Here is nothing to choose!
   utilHeader: Tools for

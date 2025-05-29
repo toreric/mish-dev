@@ -21,6 +21,17 @@ export class DialogXper extends Component {
   @service('common-storage') z;
   @service intl;
 
+  @tracked tool = ''; // utility tool id
+
+  // Which tool was selected?
+  detectRadio = async (e) => {
+    console.log(e);
+    // if (!e) return;
+    var elRadio = e.target;
+      this.z.loli(`${elRadio.id} ${elRadio.checked}`, 'color:red');
+    this.tool = elRadio.id;
+  }
+
   // Detect closing Esc key
   detectEscClose = (e) => {
     e.stopPropagation();
@@ -57,10 +68,9 @@ export class DialogXper extends Component {
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogXperId)}}>×</button>
         </div>
       </header>
-      <main style="text-align:center;min-height:10rem">
+      <main style="text-align:center;min-height:10rem;padding:1rem">
 
       <div id="_this_is_no_image" style="position:relative">
-        <br>
           {{@content}}
         <br>  <br>
         <button type="button" {{on 'click' this.toggleTmpHeader}}>
@@ -80,16 +90,36 @@ export class DialogXper extends Component {
           chooseAlbum
         </button> --}}
 
-        <div style="display:flex;justify-content:center">
+        <div>
           <div title-2="The CSS-generated ”title-2” is shown here">
           <br>&nbsp; <br>
             For display of<br>CSS: title-2
           </div>
         </div>
         <br>
-        <br>
-        <br>
-        <br>
+        <div style="text-align:left">
+          <h1>Radio buttons</h1>
+          <span class="glue">
+            <input id="rtest1" name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
+            <label for="rtest1"> &nbsp;{{t 'write.tool1'}}</label>
+          </span>
+          <span class="glue">
+            <input id="rtest2" name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
+            <label for="rtest2"> &nbsp;{{t 'write.tool2'}}</label>
+          </span>
+          <span class="glue">
+            <input id="rtest3" name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
+            <label for="rtest3"> &nbsp;{{t 'write.tool3'}}</label>
+          </span>
+          <span class="glue">
+            <input id="rtest4" name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
+            <label for="rtest4"> &nbsp;{{t 'write.tool4'}}</label>
+          </span>
+          <span class="glue">
+            <input id="rtest5" name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
+            <label for="rtest5"> &nbsp;{{t 'write.tool5'}}</label>
+          </span>
+        </div>
       </div>
 
       </main>

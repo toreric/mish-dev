@@ -333,7 +333,7 @@ textarea.favorites {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1.6em;
   font-weight: bold;
-  color: #0b0;
+  color: #0a0;
   top: 25%;
   left: 5%;
   width: 90%;
@@ -517,7 +517,7 @@ label .checkMark:after {
 }
 span.usrlg {
   font: bold 1.6em monospace !important;
-  color: #0b0 !important;
+  color: #0a0 !important;
   position: fixed;
   display: block;
   top: 0;
@@ -556,7 +556,7 @@ div.settings a:hover {
   width: 26em;
 }
 .nameNew {
-  background: #f0f0b0;
+  background: #f0f0a0;
 }
 img.spinner {
   position: fixed !important;
@@ -1055,7 +1055,7 @@ img[alt] {
   background-color: #003264;
 }
 #link_texts.symlink {
-  border-bottom: 1.5px solid #0b0;
+  border-bottom: 1.5px solid #0a0;
 }
 .img_mini {
   background: #3b3b3b;
@@ -1070,7 +1070,7 @@ img[alt] {
   z-index: 5;
 }
 .img_mini.symlink {
-  border-bottom: 1.5px solid #0b0;
+  border-bottom: 1.5px solid #0a0;
 }
 .img_mini.hidden {
   background: #003264;

@@ -55,8 +55,9 @@ export default class CommonStorageService extends Service {
         get intlCode() { return `${this.intl.t('intlcode')}`; }
   @tracked  intlCodeCurr = this.intlCode;     // language code
         get picFoundBaseName() { return `${this.intl.t('picfound')}`; }
-  // The found pics temporary catalog name is amended with a random .4-code:
-  @tracked  picFound = this.picFoundBaseName + Math.random().toString(36).slice(1,6);
+  // The found pics temporary catalog name is amended with a random 4-code at login:
+  @tracked  RID = '----';
+  @tracked  picFound = this.picFoundBaseName + '.' + this.RID;
   @tracked  picFoundIndex = -1; //set in MenuMain, the index may vary by language
   @tracked  picName = ''; //actual/current image name
         get picIndex() { //the index of picName's file information object in allFiles
@@ -624,7 +625,7 @@ export default class CommonStorageService extends Service {
 
   //#region loli
   loli = (text, style) => { // loli = log list with user name
-    console.log(this.userName + ': %c' + text, style);
+    console.log(this.RID + '@' + this.userName + ': %c' + text, style);
   }
 
 
