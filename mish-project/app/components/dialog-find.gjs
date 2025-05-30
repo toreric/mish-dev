@@ -314,6 +314,10 @@ export class DialogFind extends Component {
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogFindId)}}>×</button>
         </header>
         <main>
+          <div class="diaMess">
+            <b style="display:block;max-width:660px;text-align:center;color:brown"></b>
+            <VirtualKeys />
+          </div>
 
           <textarea name="searchtext" placeholder="{{t 'write.searchTerms'}}" autofocus="true" style="width:calc(100% - 8px)" rows="4"></textarea>
 
@@ -434,4 +438,85 @@ export class DialogFind extends Component {
     </div>
 
   </template>
+}
+
+//== Virtual keys for some missing characters on common keyboards
+// (some are due to the included languages)
+
+const VirtualKeys = <template>
+  <div class="" style="text-align:left;padding:0.1em">
+    <b class='insertChar' {{on 'click' insert}}>×</b>
+    <b class='insertChar' {{on 'click' insert}}>°</b>
+    &nbsp;
+    &nbsp;
+    <b class='insertChar' {{on 'click' insert}}>–</b>
+    <b class='insertChar' {{on 'click' insert}}>—</b>
+    &nbsp;
+    &nbsp;
+    <b class='insertChar' {{on 'click' insert}}>„</b>
+    <b class='insertChar' {{on 'click' insert}}>“</b>
+    <b class='insertChar' {{on 'click' insert}}>”</b>
+    &nbsp;
+    &nbsp;
+    <b class='insertChar' {{on 'click' insert}}>‚</b>
+    <b class='insertChar' {{on 'click' insert}}>‘</b>
+    <b class='insertChar' {{on 'click' insert}}>’</b>
+    &nbsp;
+    &nbsp;
+    <b class='insertChar' {{on 'click' insert}}>»</b>
+    <b class='insertChar' {{on 'click' insert}}>«</b>
+    &nbsp;
+    &nbsp;
+    <b class='insertChar' {{on 'click' insert}}>›</b>
+    <b class='insertChar' {{on 'click' insert}}>‹</b>
+  </div>
+</template>
+
+var textArea = '';
+var insertInto = '';
+
+// Detect last active textarea
+// Used when a VirtualKeys key is clicked
+
+function onMouseLeaveTextarea(/*e*/) {
+  //textArea = e.target;
+  textArea = document.activeElement;
+  insertInto = textArea.id;
+}
+
+// Insert from VirtualKeys, non-replacing(!)
+
+export function insert(e) {
+  if (!insertInto) return;
+
+  textArea = document.getElementById(insertInto);
+
+  let textValue = textArea.value;
+
+  if (textValue === undefined) return;
+
+  let beforeInsert = textValue.substring(
+    0, textArea.selectionStart);
+  let afterInsert = textValue.substring(
+    textArea.selectionStart, textArea.length);
+  // Avoid 'delete selected', cannot undo!
+  // let afterInsert = textValue.substring(
+  //   textArea.selectionEnd, textArea.length);
+  // selectedText = textValue.substring(
+  //   textArea.selectionStart, textArea.selectionEnd);
+
+  beforeInsert += e.target.innerHTML;
+  textValue = beforeInsert + afterInsert;
+  document.getElementById(insertInto).value = textValue;
+  document.getElementById(insertInto).focus();
+
+  let i = beforeInsert.length;
+
+  if (textArea.setSelectionRange) { // avoid error in some special cases
+    textArea.setSelectionRange(i, i);
+    beforeInsert = textValue.substring(
+      0, textArea.selectionStart);
+    afterInsert = textValue.substring(
+      textArea.selectionEnd, textArea.length);
+  }
 }

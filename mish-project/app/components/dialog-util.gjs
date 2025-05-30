@@ -30,7 +30,6 @@ export class DialogUtil extends Component {
 
   // Which tool was selected?
   detectRadio = async (e) => {
-    // if (!e) return;
     var elRadio = e.target;
       // this.z.loli(`${elRadio.id} ${elRadio.checked}`, 'color:red');
     this.tool = elRadio.id;
