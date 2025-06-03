@@ -30,13 +30,13 @@
     "beeper": "^3.0.0",
     "body-parser": "^2.2.0",
     "dialog-draggable": "^0.1.6",
-    "ember-primitives": "^0.27.2",
+    "ember-primitives": "^0.32.0",
     "ember-resources": "^7.0.4",
     "he": "^1.2.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.27.1",
-    "@babel/eslint-parser": "^7.27.1",
+    "@babel/core": "^7.27.4",
+    "@babel/eslint-parser": "^7.27.5",
     "@babel/plugin-proposal-decorators": "^7.27.1",
     "@ember/optional-features": "^2.2.0",
     "@ember/render-modifiers": "^3.0.0",
@@ -78,24 +78,24 @@
     "ember-source": "^6.4.0",
     "ember-template-imports": "^4.3.0",
     "ember-truth-helpers": "^4.0.3",
-    "eslint": "^9.27.0",
+    "eslint": "^9.28.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-ember": "^12.5.0",
-    "eslint-plugin-n": "^17.18.0",
-    "eslint-plugin-prettier": "^5.4.0",
+    "eslint-plugin-n": "^17.19.0",
+    "eslint-plugin-prettier": "^5.4.1",
     "eslint-plugin-qunit": "^8.1.2",
     "loader.js": "^4.7.0",
     "prettier": "^3.5.3",
     "prettier-plugin-ember-template-tag": "^2.0.5",
     "qunit": "^2.24.1",
     "qunit-dom": "^3.4.0",
-    "stylelint": "^16.19.1",
+    "stylelint": "^16.20.0",
     "stylelint-config-standard": "^38.0.0",
     "stylelint-prettier": "^5.0.3",
     "tracked-built-ins": "^4.0.0",
-    "webpack": "^5.99.8"
+    "webpack": "^5.99.9"
   },
-  "packageManager": "pnpm@10.11.0",
+  "packageManager": "pnpm@10.11.1",
   "pnpm": {
     "overrides": {
       "ember-cli-babel": "^8.2.0",
@@ -105,7 +105,10 @@
       "ignoreMissing": [
         "@babel/core"
       ]
-    }
+    },
+    "ignoredBuiltDependencies": [
+      "unrs-resolver"
+    ]
   },
   "engines": {
     "node": "16.* || >= 18"
