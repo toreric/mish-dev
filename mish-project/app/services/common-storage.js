@@ -474,18 +474,21 @@ export default class CommonStorageService extends Service {
     this.paintTree(i);
   }
 
-  // Set colors in the album tree (i = imdbDirIndex)
+  // Set colors in the album tree (isel = imdbDirIndex)
   //#region paintTree
-  paintTree = (i) => {
+  paintTree = (isel) => {
     // FIRST: Make 'secret albums' pink in the ALBUM tree of the main menu:
     for (let i=0;i<this.imdbCoco.length;i++) {
       if (this.imdbCoco[i].includes('*')) { // contains() is deprecated!
         document.querySelector('span.album.a' + i).style.color = 'pink';
       }
-    }// THEN: Set color mark on the selected album name and make it visible
-    // NOTE: This is about the selected album in the ALBUM tree.
-    document.querySelector('span.album.a' + i).style.color = '#f46aff';
-    let selected = document.querySelector('div.album.a' + i);
+    }
+    // THEN: Set color mark on picFound
+    document.querySelector('span.album.a' + this.picFoundIndex).style.color = '#909';
+    // THEN: Set color mark on the selected album name and make it visible
+    // NOTE: This is the selected album in the ALBUM tree.
+    document.querySelector('span.album.a' + isel).style.color = '#fd0';
+    let selected = document.querySelector('div.album.a' + isel);
     selected.style.display = '';
     // Check that all parents are visible too
     while (selected.parentElement.classList.contains('album')) {

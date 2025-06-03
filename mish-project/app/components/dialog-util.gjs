@@ -138,7 +138,7 @@ export class DialogUtil extends Component {
     return this.z.subaIndex.length > 0 || this.z.numImages > 0;
   }
 
-  doDelete = async () => {
+  doDelete = async () => { // Delete an empty album
     // this.z.alertMess(this.intl.t('futureFacility'))
     let cmd = 'rm -rf ' + this.z.imdbPath + this.z.imdbDir;
       // this.z.loli(cmd, 'color:red');
