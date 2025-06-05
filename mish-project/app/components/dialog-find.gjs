@@ -90,7 +90,7 @@ export class DialogFind extends Component {
   }
 
   get albumFound() {
-    return '<b>' + this.z.handsomize2sp(this.z.picFound) + '</b>';
+    return this.z.handsomize2sp(this.z.picFound);
   }
 
   // openFound(-1) opens 'picFound' with all found images, while
@@ -406,10 +406,10 @@ export class DialogFind extends Component {
           <p>{{{t 'write.findResultHeader' n=this.nchk c=this.z.imdbRoot}}}</p>
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogFindResult')}}>×</button>
         </header>
-        <main style="padding:0.5rem 0.5rem 0.5rem 1rem;height:auto;line-height:150%;overflow:auto" width="99%">
-
-          {{{t 'chooseShow' f=this.albumFound}}}:<br>
-
+        <main style="line-height:180%;border-bottom:1px solid black;padding-left:1rem">
+          <span>{{{t 'chooseShow' f=this.albumFound}}}:<br></span>
+        </main>
+        <main style="padding:0 0.5rem 0.5rem 1rem;height:auto;line-height:150%;overflow:auto" width="99%">
           {{#each this.keepIndex as |i|}}
 
             <a class="hoverDark" style="text-decoration:none"
@@ -426,7 +426,7 @@ export class DialogFind extends Component {
 
           {{!-- <br>{{{this.countAlbs}}}<br><br> --}}
           <button class="show" type="button" {{on 'click' (fn this.openFound -1)}}>
-            {{t 'button.show'}} {{{this.albumFound}}}</button>
+            {{t 'button.show'}} <b>{{{this.albumFound}}}</b></button>
 
         </main>
         <footer data-dialog-draggable>

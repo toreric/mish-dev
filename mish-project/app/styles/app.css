@@ -43,7 +43,7 @@ dialog header, dialog nav {
 dialog main {
   width: auto;
   height: auto;
-  max-height: calc(min(60rem,95vh) - 7rem);
+  max-height: calc(min(60rem,95vh) - 8rem);
   overflow-y: auto;
   background: #ccc;
 }
