@@ -402,7 +402,7 @@ write:
   searchTerms: Suchbegriffe eingeben, durch Leerzeichen getrennt, Groß-/Kleinschreibung spielt keine Rolle (unten auswählen, in welchen Texten gesucht werden soll)
   set0: Einstellungen wählen
   setBeep: Piepton bei Mausklicks
-  setPoop: Mausklicks visualisieren
+  setPoop: Mausklicks anzeigen
   setEraseOriginal: Original mit Link löschen (WARNUNG!)
   tool0: "Für <b>{a}</b> wählen:"
   tool01: "Für <b>alle Alben</b> der Sammlung:"

@@ -115,8 +115,8 @@ export class DialogFind extends Component {
       // NO! WE WON'T! WHY DON'T WE FIND DUPLICATE NAMES???
       // The function 'z.searchText' code is in '#region search/' of z.
       let data = await this.z.searchText(this.inames[i], false, sWhr, -1);
-      // Hide the spinner
-      document.querySelector('img.spinner').style.display = 'none';
+      // Don't! Hide the spinner
+      // document.querySelector('img.spinner').style.display = 'none';
       let paths = data.trim ().split ('\n');
       // for (let i=0; i<paths.length; i++) { // forwards
       for (let i=paths.length; i>0; i--) { // work backwards

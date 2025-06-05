@@ -864,7 +864,6 @@ export default class CommonStorageService extends Service {
       document.querySelector('.miniImgs.imgs').style.display = 'none'; //was 'flex'
       // Load the show image source path and set it's id="dname"
       let pic = document.querySelector('#link_show img');
-      // pic.src = 'rln' + path;
       pic.src = path;
       // Copy the check mark class from the thumbnail
       if (!this.picName) this.loli('CommonStorageService error 4', 'color:red');

@@ -402,7 +402,7 @@ write:
   searchTerms: Skriv sökbegrepp åtskilda av blanktecken, små/stora bokstäver är oviktigt (välj nedan vilka texter du vill söka i)
   set0: Välj inställningar
   setBeep: Pip vid musklick
-  setPoop: Visualisera musklick
+  setPoop: Visa musklick
   setEraseOriginal: Radera original med länk (VARNING!)
   tool0: "Välj för <b>{a}</b>:"
   tool01: "För <b>alla album</b> i samlingen:"

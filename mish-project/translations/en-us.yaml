@@ -404,7 +404,7 @@ write:
   searchTerms: Enter search terms separated by spaces, lower/uppercase does not matter (choose below which texts to search in)
   set0: Choose settings
   setBeep: Beep at mouse clicks
-  setPoop: Visualize mouse clicks
+  setPoop: Show mouse clicks
   setEraseOriginal: Erase original with link (WARNING!)
   # To use 'a' instead of 'album' as parameter did HANG
   # both FF and Chromium (UNBELIEVABLE!):

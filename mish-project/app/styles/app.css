@@ -40,6 +40,13 @@ dialog header, dialog nav {
   background: #adadad;
   cursor: grabbing;
 }
+dialog main {
+  width: auto;
+  height: auto;
+  max-height: calc(min(60rem,95vh) - 7rem);
+  overflow-y: auto;
+  background: #ccc;
+}
 dialog footer {
   display: flex;
   flex-wrap: wrap;
@@ -65,12 +72,6 @@ dialog .insertChar {
 }
 dialog .insertChar:hover {
   border: 2px solid #5dabdf;
-}
-dialog main {
-  width: auto;
-  height: auto;
-  overflow-y: auto;
-  background: #ccc;
 }
 dialog textarea {
   width:calc(100% - 8px);
