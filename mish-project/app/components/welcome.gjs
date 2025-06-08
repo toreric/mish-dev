@@ -239,9 +239,14 @@ class Welcome extends Component {
 
       // Language cookie
       let lng = this.z.getCookie('mish_lang');
-      if (lng) this.intl.setLocale([lng]);
+      if (lng) {
+        // A lot of trial-and-error came to that the simplest way to
+        // initiate the right user name language are these two lines:
+        document.querySelector('span.langflags.en-us').click();
+        document.querySelector('span.langflags.' + lng).click();
+      }
       this.z.intlCodeCurr = lng;
-      // Each language must define it's found pics name, initially.
+      // Each language must define it's picFound name, initially.
       // At a subsequent lnguage change, the picFound name will not change.
       this.z.RID = Math.random().toString(36).slice(2,6);
       this.z.picFound = this.z.picFoundBaseName + '.' + this.z.RID;

@@ -85,7 +85,7 @@ export class DialogUtil extends Component {
       // this.z.loli('picFound: ' +  this.z.picFound, 'color:yellow');
     if (!found && this.z.imdbDir && this.z.allow.albumEdit) { // Don't erase ''=root
       this.tool = '';
-      this.tools ++;
+      this.tools = 1;
       return true
     } else {
       return false;
@@ -98,7 +98,7 @@ export class DialogUtil extends Component {
       // this.z.loli('numShown ' + this.z.numShown, 'color:brown ');
     if (this.z.numShown > 0) {
       this.tool = '';
-      this.tools ++;
+       this.tools = 1;
       return true;
     } else {
       return false;
@@ -108,7 +108,7 @@ export class DialogUtil extends Component {
   get okSubalbum() { // true if subalbums allowed
     if (this.z.imdbDir.slice(1) !== this.z.picFound && this.z.allow.albumEdit) {
       this.tool = '';
-      this.tools ++;
+      this.tools = 1;
       return true;
     } else {
       return false;
@@ -118,7 +118,7 @@ export class DialogUtil extends Component {
   get okSort() { // true if sorting by name is possible
     if (this.z.numShown > 1) {
       this.tool = '';
-      this.tools ++;
+      this.tools = 1;
       return true;
     } else {
       return false;
@@ -126,11 +126,13 @@ export class DialogUtil extends Component {
   }
 
   get okDupNames() {
+    this.tools = 0;
     this.tool = '';
     return true;
   }
 
   get okDupImages() {
+    this.tools = 0;
     this.tool = '';
     return true;
   }
@@ -138,7 +140,7 @@ export class DialogUtil extends Component {
   get okUpload() {
     if (this.z.imdbDir.slice(1) !== this.z.picFound && this.z.allow.deleteImg) {
       this.tool = '';
-      this.tools ++;
+      this.tools = 1;
       return true;
     } else {
       return false;
@@ -146,12 +148,19 @@ export class DialogUtil extends Component {
   }
 
   get okDbUpdate() {
+    this.tools = 0;
     this.tool = '';
     return true;
   }
 
   get notEmpty() { // true if the album is not empty
     return this.z.subaIndex.length > 0 || this.z.numImages > 0;
+  }
+
+  toolExist = async () => {
+    await new Promise (z => setTimeout (z, 399)); // toolExist
+    if (document.querySelector('#dialogUtil input[type="radio"]')) return true;
+    else return false;
   }
 
   doDelete = async () => { // Delete an empty album
@@ -250,7 +259,7 @@ export class DialogUtil extends Component {
     document.querySelector('img.spinner').style.display = '';
     this.z.closeDialog('dialogUtil');
     // let path = this.z.imdbPath + this.z.imdbDir;
-    let path = this.z.imdbPath; //OVERRIDE!
+    let path = this.z.imdbPath; //OVERRIDE! I.e. search all albums.
     try { // Start try
       let duplist = await this.z.execute('finddupnames 2 ' + path);
         // this.z.loli('\n' + duplist, 'color:brown');
@@ -374,7 +383,7 @@ export class DialogUtil extends Component {
               <label for="util5"> &nbsp;{{t 'write.tool5'}}</label>
             </span>
           {{/if}}
-          {{#if this.tools}}
+          {{#if this.toolExist}}
             {{!-- Tools will come --}}
           {{else}}
             <span>{{t 'write.tool99'}}</span>
