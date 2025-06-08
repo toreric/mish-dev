@@ -9,6 +9,8 @@ import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 import { cached } from '@glimmer/tracking';
 
+import RefreshThis from './refresh-this';
+
 export const dialogUtilId = 'dialogUtil';
 const LF = '\n';
 
@@ -18,7 +20,7 @@ export class DialogUtil extends Component {
 
   @tracked tool = ''; // utility tool id
   @tracked countImgs = 0; // duplicate image name counter
-  @tracked tools = false;
+  @tracked tools = 0;
 
   // Detect closing Esc key
   detectEscClose = (e) => {
@@ -43,15 +45,18 @@ export class DialogUtil extends Component {
   }
 
   // Reset all at album change. Called from okDelete, which is the first
-  // of 'ok...' checks called from the template. 'imdbDir' is used for
-  // resetting before the simple return of the 1-sliced-off imdbDir value:
-  get imdbDir() { // this.imdbDir
-    this.tools = false;
+  // of 'ok...' checks in the template. 'imdbDir' is used for resetting
+  // before the simple return of the 1-sliced-off imdbDir value. WARNING:
+  // 'this.imdbDir' MUSTS NOT BE USE ELSEWHERE TO REPLACE 'this.z.imdbDir.slice(1)'!
+  get imdbDir() {
+    this.z.refreshTexts ++;
+    this.tools = 0;
     this.tool = '';
-    let elRadio = document.querySelectorAll('#dialogUtil input[type="radio"]');
-    for (let i=0; i<elRadio.length; i++) {
-      elRadio[i].checked = false;
-    }
+    // document.querySelector('#dialogUtil footer').innerHTML = '';
+    // let elRadio = document.querySelectorAll('#dialogUtil input[type="radio"]');
+    // for (let i=0; i<elRadio.length; i++) {
+    //   elRadio[i].checked = false;
+    // }
     // remove initial slash (except root: already empty)
     return this.z.imdbDir.slice(1);
   }
@@ -69,16 +74,18 @@ export class DialogUtil extends Component {
     return '<br><div style="text-align:center"><button class="unclosable" type="button" onclick="location.reload(true);return false">' + this.intl.t('button.restart') + '</utton></div>'
   }
 
-  // Should be the first called from the template
-  // The first and ONLY use of this.imdbDir is here:
+  // Must be the first called from the template.
+  // THE FIRST AND ONLY USE IN DialogUtil OF 'this.imdbDir' IS HERE:
   get okDelete() { // true if delete album is allowed
-    this.tools = false;
-    if (!this.z.imdbDir) return; // Avoid misuse
+    this.tools = 0;
+    this.tool = '';
+      // this.z.loli('numShown ' + this.z.numShown, 'color:#444'); // Printout to wait
     let found = this.imdbDir === this.z.picFound;
       // this.z.loli('imdbDir: ' +  this.imdbDir, 'color:yellow');
       // this.z.loli('picFound: ' +  this.z.picFound, 'color:yellow');
-    if (!found && this.z.imdbDir && this.z.allow.albumEdit) { // root == ''
-      this.tools = true;
+    if (!found && this.z.imdbDir && this.z.allow.albumEdit) { // Don't erase ''=root
+      this.tool = '';
+      this.tools ++;
       return true
     } else {
       return false;
@@ -86,9 +93,12 @@ export class DialogUtil extends Component {
   }
 
   get okTexts() { // true if images shown
-      // this.z.loli('numShown ' + this.z.numShown, 'color:red');
+      // this.z.loli('numShown ' + this.z.numShown, 'color:#111'); // Printout to wait
+    // await new Promise (z => setTimeout (z, 39));
+      // this.z.loli('numShown ' + this.z.numShown, 'color:brown ');
     if (this.z.numShown > 0) {
-      this.tools = true;
+      this.tool = '';
+      this.tools ++;
       return true;
     } else {
       return false;
@@ -97,16 +107,18 @@ export class DialogUtil extends Component {
 
   get okSubalbum() { // true if subalbums allowed
     if (this.z.imdbDir.slice(1) !== this.z.picFound && this.z.allow.albumEdit) {
-      this.tools = true;
+      this.tool = '';
+      this.tools ++;
       return true;
     } else {
       return false;
     }
   }
 
-  get okSort() { // true if sorting by name is allowed
-    if (this.z.numImages > 1) {
-      this.tools = true;
+  get okSort() { // true if sorting by name is possible
+    if (this.z.numShown > 1) {
+      this.tool = '';
+      this.tools ++;
       return true;
     } else {
       return false;
@@ -114,16 +126,19 @@ export class DialogUtil extends Component {
   }
 
   get okDupNames() {
+    this.tool = '';
     return true;
   }
 
   get okDupImages() {
+    this.tool = '';
     return true;
   }
 
   get okUpload() {
     if (this.z.imdbDir.slice(1) !== this.z.picFound && this.z.allow.deleteImg) {
-      this.tools = true;
+      this.tool = '';
+      this.tools ++;
       return true;
     } else {
       return false;
@@ -131,6 +146,7 @@ export class DialogUtil extends Component {
   }
 
   get okDbUpdate() {
+    this.tool = '';
     return true;
   }
 
@@ -306,15 +322,28 @@ export class DialogUtil extends Component {
 
     <dialog id="dialogUtil" style="width:min(calc(100vw - 2rem),auto);max-width:480px" {{on 'keydown' this.detectEscClose}}>
       <header data-dialog-draggable>
+
         <p>&nbsp;</p>
-        <p><b>{{t 'write.utilHeader'}} <span>{{{this.imdbDirName}}}</span></b><br>({{this.z.imdbRoot}}{{this.z.imdbDir}})</p>
+
+        {{#if this.z.albumTools}}
+          <p><b>{{t 'write.utilHeader'}} <span>{{{this.imdbDirName}}}</span></b><br>({{this.z.imdbRoot}}{{this.z.imdbDir}})</p>
+        {{else}}
+          <p><b>{{t 'write.utilHeader0'}}</b></p>
+        {{/if}}
+
         <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogUtilId)}}>×</button>
+
       </header>
       <main style="padding:0 0.75rem;max-height:24rem" width="99%">
 
         <div style="padding:0.5rem 0;line-height:1.4rem">
+
+        {{#if this.z.albumTools}}
+        {{!-- Album tools --}}
+
+          {{!-- Here are tools specific for the actual album --}}
           {{{t 'write.tool0' a=(this.imdbDirName)}}}<br>
-          {{!-- This only reference to okDelete resets radio buttons etc. --}}
+          {{!-- This reference to okDelete resets radio buttons etc. --}}
           {{#if this.okDelete}}
             <span class="glue">
               <input id="util1" name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
@@ -350,6 +379,11 @@ export class DialogUtil extends Component {
           {{else}}
             <span>{{t 'write.tool99'}}</span>
           {{/if}}
+
+        {{else}}
+        {{!-- Common tools --}}
+
+          {{!-- Here are tools for the entire album collection --}}
           <div style="margin:0.5rem 0 0 0">{{{t 'write.tool01'}}}</div>
           {{#if this.okDupNames}}
             <span class="glue">
@@ -369,14 +403,21 @@ export class DialogUtil extends Component {
               <label for="util6"> &nbsp;{{t 'write.tool6'}}</label>
             </span>
           {{/if}}
-        </div>
 
+        {{/if}}
+
+        </div>
+        “{{this.tool}}“
         <div style="padding:0.5rem 0">
           {{!-- {{ this.noTools}}
             <span style="color:blue">{{t 'write.tool99'}}</span> --}}
 
+        {{!-- <RefreshThis @for={{this.z.refreshTexts}}> --}}
           {{#if (eq this.tool '')}}
-            {{t 'write.chooseTool'}}
+
+            {{#unless this.z.albumTools}}
+              {{t 'write.chooseTool'}}
+            {{/unless}}
 
           {{!-- === Delete the album === --}}
           {{else if (eq this.tool 'util1')}}
@@ -455,6 +496,7 @@ export class DialogUtil extends Component {
             <button type="button" {{on 'click' (fn this.doDbUpdate)}}>{{t 'write.tool6'}}</button>
 
           {{/if}}
+        {{!-- </RefreshThis> --}}
 
         </div>
 

@@ -405,7 +405,7 @@ write:
   setPoop: Mausklicks anzeigen
   setEraseOriginal: Original mit Link löschen (WARNUNG!)
   tool0: "Für <b>{a}</b> wählen:"
-  tool01: "Für <b>alle Alben</b> der Sammlung:"
+  tool01: "Für <b>alle Alben</b> dieser Sammlung:"
   tool1: Das Album löschen (muss leer sein)
   tool2: Ein Unteralbum erstellen
   tool3: Die Bilder nach Namen sortieren
@@ -420,4 +420,5 @@ write:
   tool8: Textliste für angezeigte Bilder erstellen
   tool99: Hier gibt es nichts zu wählen!
   utilHeader: Werkzeuge für
+  utilHeader0: Werkzeuge für die Albumsammlung
 

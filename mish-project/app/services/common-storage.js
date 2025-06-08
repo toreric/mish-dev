@@ -93,6 +93,7 @@ export default class CommonStorageService extends Service {
   //   #region VIEW VARS
   //== Miniature and show images etc. information
 
+  @tracked  albumTools = true; // For DialogUtil choice (tools for the album or common)
   @tracked  chooseText = ' Choose what?'; // Choice text
   @tracked  displayNames = 'none'; // Image name display switch
   @tracked  edgeImage = '';  // Text indicating first/last image
@@ -442,9 +443,6 @@ export default class CommonStorageService extends Service {
     // "push the allFiles content" into the thumbnail template:
     document.getElementById('loadMiniImages').click();
 
-    // Then hide the spinner
-    document.querySelector('img.spinner').style.display = 'none';
-
     // Show the subalbums etc.
     document.querySelector('#upperButtons').style.display = '';
     document.querySelector('.albumsHdr').style.display = '';
@@ -454,6 +452,17 @@ export default class CommonStorageService extends Service {
       this.alertMess(this.intl.t('sizewarning') + ' ' + this.maxWarning + ' ' + this.intl.t('images') + '!', 6);
     }
 
+    this.refreshTexts ++ // retrigger rendering, extra for some occasions
+
+    // Allow for the rendering of mini images and preload of view images
+    let size = this.albumAllImg(i);
+    await new Promise (z => setTimeout (z, size*2)); // album load
+
+    // Then hide the spinner
+    document.querySelector('img.spinner').style.display = 'none';
+
+    // Set classes and different background on hidden images
+    await this.paintHideFlags(true);
     // Reset the show/hide button since hidden images are not shown initially
     this.hideHidden();
 
@@ -463,13 +472,9 @@ export default class CommonStorageService extends Service {
       this.picName = this.allFiles[this.allFiles.length - 1].name;
     } else this.picName = '';
 
-    // Allow for the rendering of mini images and preload of view images
-    this.refreshTexts ++ // retrigger rendering, extra for some occasions
-    let size = this.albumAllImg(i);
-    await new Promise (z => setTimeout (z, size*2)); // album load
+    // size = this.albumAllImg(i);
+    // await new Promise (z => setTimeout (z, size*2)); // album load
 
-    // Set classes and different background on hidden images
-    this.paintHideFlags();
     // Set colors in the album tree
     this.paintTree(i);
   }
@@ -656,8 +661,16 @@ export default class CommonStorageService extends Service {
     document.getElementById('toggleHide').style.backgroundImage = 'url(/images/eyes-blue.png)';
     let n = 0;
     for (let pic of document.querySelectorAll('.img_mini.hidden')) {
+      // console.log('hideHidden:', pic.classList);
       pic.classList.add('invisible');
+
+      // const claLis = pic.classList;
+
+      // pic.className = String([...claLis].join(' '));
+      // this.loli([...claLis].join(' '));
+      // console.log('hideHidden:', pic.classList);
       n++;
+      // this.loli('hideHidden ' + n, 'color:red');
     }
     this.numInvisible = n;
     this.numShown = this.numImages - this.numInvisible;
@@ -665,20 +678,22 @@ export default class CommonStorageService extends Service {
 
   // Check each thumbnails' hide status and set classes
   //#region paintHideFlags
-  paintHideFlags = async () => {
+  paintHideFlags = async (first) => {
     // let order = this.updateOrder(true); // array if true, else text
     let order = this.sortOrder.split(LF);
-    if (order.length === 1 && !order[0]) order = [];
+      // console.log('paintHideFlags:', order);
+    if (order.length === 1 && !order[0]) order = []; // NOTE!
     for (let p of order) {
       let i = p.indexOf(',');
       if (!p.slice(0, i)) this.loli('CommonStorageService error 1', 'color:red');
-
+        // this.loli('i' + p.slice(0, i), 'color:red')
       var mini = document.getElementById('i' + p.slice(0, i));
+        // console.log('paintHideFlags:', mini);
       if (mini) { // NOTE: There may be outdated rows in sortOrder!
         if (p[i + 1] === '1') {
             // this.loli('paintHideFlags (hidden) ' + p[i + 1], 'color:pink');
           mini.classList.add('hidden');
-          if (this.ifHideSet()) mini.classList.add('invisible');
+          if (this.ifHideSet() || first) mini.classList.add('invisible');
         } else {
           mini.classList.remove('hidden');
           mini.classList.remove('invisible');
@@ -1783,7 +1798,6 @@ export default class CommonStorageService extends Service {
       let size = this.albumAllImg(this.imdbDirs.indexOf(this.imdbDir));
       await new Promise (z => setTimeout (z, size*6 + 10)); // album rerender
       this.paintHideFlags(); // AFTER RERENDER!
-      // this.paintViewImg();   // AFTER RERENDER!
       this.markBorders(this.picName, 'z.saveDialog');
       // Remove the initial '../..etc.' if 'path' is from 'f.orig' //**
       path = this.imdbRoot + path.replace(/^\.*(\/\.+)*/, '');

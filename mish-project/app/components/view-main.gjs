@@ -116,14 +116,21 @@ class SubAlbums extends Component {
     return this.z.imdbDirs[i].slice(1, 2) === '§' ? false : true;
   }
 
+  toggDia = (id) => {
+    this.z.albumTools = true;
+    this.z.toggleDialog(id);
+  }
+
   <template>
    <RefreshThis @for={{this.z.numShown}}>
     <p class='albumsHdr' draggable="false" ondragstart="return false">
       <div class="miniImgs albs">
         {{#if this.z.imdbRoot}}
 
+          {{#if this.z.numShown}}
             {{!-- Open the Tools dialog --}}
-            <button type="button" style="border:0.5px solid #909;background:transparent;color:#909" {{on 'click' (fn this.z.openDialog 'dialogUtil')}}>{{t 'tools'}}</button>
+            <button type="button" title-2="{{t 'tools'}}" style="border:0.5px solid #909;height:20px;width:60px;background-color:transparent;background-image:url(/images/icons0-spanner.png)" {{on 'click' (fn this.toggDia 'dialogUtil')}}> &nbsp; &nbsp; &nbsp; </button>
+          {{/if}}
 
           {{#if this.z.imdbDir}}
             <span title-2="{{this.z.imdbRoot}}{{this.z.imdbDir}}">

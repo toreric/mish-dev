@@ -167,7 +167,7 @@ document.addEventListener('mouseup', async (event) => {
     // console.log('event:', event);
     // console.log(event.target);
   if (BEEP) beep(50, 550, 100);
-  if (POOP) { // About BEEP and POOP: see getCred below
+  if (POOP) { // The mouse click visual popup spinner
     let poop = document.getElementById('poop');
     poop.style.zIndex = 12000;
     poop.style.left = event.clientX - 50 + 'px';
@@ -227,7 +227,7 @@ class Welcome extends Component {
       this.z.displayNames = 'none'; // Hide image names
       this.z.initBrowser();         // Manipulate browser back-arrow
       this.z.maxWarning = 100;      // Set recommended album maxsize, about 100
-      await new Promise (z => setTimeout (z, 99)); // getCred before awakening the system
+      await new Promise (z => setTimeout (z, 99)); // getCred: before awakening the system
 
       // Read the build stamp files (nodestamp.txt may be initially missing) etc.
       this.z.aboutThis = 'Mish ' + await this.z.execute('cat buildstamp.txt') + ' ' + await this.z.execute('cat nodestamp.txt') + ' and Glimmer by Ember<br>' + await this.z.execute('head -n1 LICENSE.txt');
@@ -307,6 +307,7 @@ export default class extends Welcome {
 
     <div id='highUp'></div>
     <RefreshThis @for={{this.z.refreshTexts}}>
+      {{!-- The mouse click visual popup spinner --}}
       <div id="poop" style="position:fixed;display:none;left:0;top:0;width:100px;height:100px;background-image:url(/images/spinner.svg)"></div>
     </RefreshThis>
 

@@ -405,7 +405,7 @@ write:
   setPoop: Visa musklick
   setEraseOriginal: Radera original med länk (VARNING!)
   tool0: "Välj för <b>{a}</b>:"
-  tool01: "För <b>alla album</b> i samlingen:"
+  tool01: "För <b>alla album</b> i den här samlingen:"
   tool1: Radera albumet (måste vara tomt)
   tool2: Gör ett underalbum
   tool3: Sortera bilderna efter namn
@@ -420,3 +420,4 @@ write:
   tool8: Gör textlista till bilder som visas
   tool99: Här finns inget att välja!
   utilHeader: Verktyg för
+  utilHeader0: Verktyg för albumsamlingen

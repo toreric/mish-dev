@@ -50,6 +50,11 @@ export class ButtonsLeft extends Component {
     else this.z.displayNames = 'none';
   }
 
+  toggDia = (id) => {
+    this.z.albumTools = false;
+    this.z.toggleDialog(id);
+  }
+
   <template>
 
     <iframe class="intro" src="start.html" style="display:none"></iframe>
@@ -58,6 +63,8 @@ export class ButtonsLeft extends Component {
     <div id="smallButtons" draggable="false" ondragstart="return false" style="z-index:10">
 
       <a id="menuButton" class="smBu" title-2={{t 'buttons.left.main'}} draggable="false" ondragstart="return false" {{on 'click' this.toggleMainMenu}} style="font-family:Comic Sans MS;line-height:80%"><span class="menu">𝌆</span></a>
+
+      <a id="commonTools" class="smBu" title={{t 'buttons.left.help'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.toggDia 'dialogUtil')}}>T</a>
 
       <a id="questionMark" class="smBu" title={{t 'buttons.left.help'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.z.toggleDialog dialogHelpId false)}}>?</a>
 
