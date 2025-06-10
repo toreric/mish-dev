@@ -117,8 +117,19 @@ class SubAlbums extends Component {
   }
 
   toggDia = (id) => {
-    this.z.albumTools = true;
-    this.z.toggleDialog(id);
+    if (this.z.albumTools === undefined) this.z.albumTools = true;
+    let diaObj = document.getElementById(id);
+    if (this.z.albumTools) {
+      if (diaObj.hasAttribute('open')) {
+        this.z.closeDialog(id);
+        this.z.albumTools = undefined;
+      } else {
+        this.z.albumTools = true;
+        this.z.openDialog(id);
+      }
+    } else {
+      document.getElementById('commonTools').click();
+    }
   }
 
   <template>
@@ -127,10 +138,10 @@ class SubAlbums extends Component {
       <div class="miniImgs albs">
         {{#if this.z.imdbRoot}}
 
-          {{#if this.z.numShown}}
+          {{!-- {{#if this.z.numShown}} --}}
             {{!-- Open the Tools dialog --}}
-            <button type="button" title-2="{{t 'tools'}}" style="border:0.5px solid #909;height:20px;width:60px;background-color:transparent;background-image:url(/images/icons0-spanner.png)" {{on 'click' (fn this.toggDia 'dialogUtil')}}> &nbsp; &nbsp; &nbsp; </button>
-          {{/if}}
+            <button id='albumTools' type="button" title-2="{{t 'tools'}}" style="border:0.5px solid #909;height:20px;width:60px;background-color:transparent;background-image:url(/images/icons0-spanner.png)" {{on 'click' (fn this.toggDia 'dialogUtil')}}> &nbsp; &nbsp; &nbsp; </button>
+          {{!-- {{/if}} --}}
 
           {{#if this.z.imdbDir}}
             <span title-2="{{this.z.imdbRoot}}{{this.z.imdbDir}}">

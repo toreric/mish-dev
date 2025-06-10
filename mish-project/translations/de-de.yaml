@@ -338,7 +338,7 @@ write:
               <br>Es ist eine Sicherheitsmaßnahme beim Löschen.
   chooseOne:  Soll dieses Bild
   chooseThis: "Ausgewähltes Album: <b>{a}</b>"
-  chooseTool: Keines ausgewählt, ein Werkzeug wählen!
+  chooseTool: Werkzeug wählen!
   confirm: Nicht verwendet, melden!
   creator: "Herkunft: Foto Ursprung Quelle"
   description: "Beschreibung: Wann wo was welche"

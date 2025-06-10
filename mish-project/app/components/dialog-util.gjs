@@ -20,7 +20,8 @@ export class DialogUtil extends Component {
 
   @tracked tool = ''; // utility tool id
   @tracked countImgs = 0; // duplicate image name counter
-  @tracked tools = 0;
+  @tracked amTools = 0; // album tools flag
+  @tracked cnTools = 0; // common tools flag
 
   // Detect closing Esc key
   detectEscClose = (e) => {
@@ -49,8 +50,8 @@ export class DialogUtil extends Component {
   // before the simple return of the 1-sliced-off imdbDir value. WARNING:
   // 'this.imdbDir' MUSTS NOT BE USE ELSEWHERE TO REPLACE 'this.z.imdbDir.slice(1)'!
   get imdbDir() {
-    this.z.refreshTexts ++;
-    this.tools = 0;
+    // this.amTools = 0;
+    this.cnTools = 0;
     this.tool = '';
     // document.querySelector('#dialogUtil footer').innerHTML = '';
     // let elRadio = document.querySelectorAll('#dialogUtil input[type="radio"]');
@@ -77,7 +78,8 @@ export class DialogUtil extends Component {
   // Must be the first called from the template.
   // THE FIRST AND ONLY USE IN DialogUtil OF 'this.imdbDir' IS HERE:
   get okDelete() { // true if delete album is allowed
-    this.tools = 0;
+    // this.amTools = 0;
+    this.cnTools = 0;
     this.tool = '';
       // this.z.loli('numShown ' + this.z.numShown, 'color:#444'); // Printout to wait
     let found = this.imdbDir === this.z.picFound;
@@ -85,7 +87,7 @@ export class DialogUtil extends Component {
       // this.z.loli('picFound: ' +  this.z.picFound, 'color:yellow');
     if (!found && this.z.imdbDir && this.z.allow.albumEdit) { // Don't erase ''=root
       this.tool = '';
-      this.tools = 1;
+      // if (this.z.albumTools) this.amTools = 1;
       return true
     } else {
       return false;
@@ -98,7 +100,7 @@ export class DialogUtil extends Component {
       // this.z.loli('numShown ' + this.z.numShown, 'color:brown ');
     if (this.z.numShown > 0) {
       this.tool = '';
-       this.tools = 1;
+      // if (this.z.albumTools) this.amTools = 1;
       return true;
     } else {
       return false;
@@ -108,7 +110,7 @@ export class DialogUtil extends Component {
   get okSubalbum() { // true if subalbums allowed
     if (this.z.imdbDir.slice(1) !== this.z.picFound && this.z.allow.albumEdit) {
       this.tool = '';
-      this.tools = 1;
+      // if (this.z.albumTools) this.amTools = 1;
       return true;
     } else {
       return false;
@@ -118,7 +120,7 @@ export class DialogUtil extends Component {
   get okSort() { // true if sorting by name is possible
     if (this.z.numShown > 1) {
       this.tool = '';
-      this.tools = 1;
+      // if (this.z.albumTools) this.amTools = 1;
       return true;
     } else {
       return false;
@@ -126,13 +128,13 @@ export class DialogUtil extends Component {
   }
 
   get okDupNames() {
-    this.tools = 0;
+    if (!this.z.albumTools) this.cnTools = 1;
     this.tool = '';
     return true;
   }
 
   get okDupImages() {
-    this.tools = 0;
+    if (!this.z.albumTools) this.cnTools = 1;
     this.tool = '';
     return true;
   }
@@ -140,7 +142,7 @@ export class DialogUtil extends Component {
   get okUpload() {
     if (this.z.imdbDir.slice(1) !== this.z.picFound && this.z.allow.deleteImg) {
       this.tool = '';
-      this.tools = 1;
+    // if (this.z.albumTools) this.amTools = 1;
       return true;
     } else {
       return false;
@@ -148,19 +150,13 @@ export class DialogUtil extends Component {
   }
 
   get okDbUpdate() {
-    this.tools = 0;
+    if (!this.z.albumTools) this.cnTools = 1;
     this.tool = '';
     return true;
   }
 
   get notEmpty() { // true if the album is not empty
     return this.z.subaIndex.length > 0 || this.z.numImages > 0;
-  }
-
-  toolExist = async () => {
-    await new Promise (z => setTimeout (z, 399)); // toolExist
-    if (document.querySelector('#dialogUtil input[type="radio"]')) return true;
-    else return false;
   }
 
   doDelete = async () => { // Delete an empty album
@@ -324,6 +320,16 @@ export class DialogUtil extends Component {
     this.z.alertMess(this.intl.t('write.dbUpdated'));
   }
 
+  get zeroTools1() {
+    this.amTools = 0;
+    return '';
+  }
+
+  get addTools1() {
+    this.amTools ++;
+    return '';
+  }
+
   // NOTE, within the <template></template>:
   // *** The utility numbering is not always in sequence ***
 
@@ -348,45 +354,40 @@ export class DialogUtil extends Component {
         <div style="padding:0.5rem 0;line-height:1.4rem">
 
         {{#if this.z.albumTools}}
-        {{!-- Album tools --}}
+        {{!-- Album tools --}}{{this.zeroTools1}}
 
           {{!-- Here are tools specific for the actual album --}}
           {{{t 'write.tool0' a=(this.imdbDirName)}}}<br>
           {{!-- This reference to okDelete resets radio buttons etc. --}}
           {{#if this.okDelete}}
             <span class="glue">
-              <input id="util1" name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
+              <input id="util1" {{this.addTools1}} name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
               <label for="util1"> &nbsp;{{t 'write.tool1'}}</label>
             </span>
           {{/if}}
           {{#if this.okTexts}}
             <span class="glue">
-              <input id="util8" name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
+              <input id="util8" {{this.addTools1}} name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
               <label for="util8"> &nbsp;{{{t 'write.tool8'}}}</label>
             </span>
           {{/if}}
           {{#if this.okSubalbum}}
             <span class="glue">
-              <input id="util2" name="albumUtility" type="radio" autofocus {{on 'click' (fn this.detectRadio)}}>
+              <input id="util2" {{this.addTools1}} name="albumUtility" type="radio" autofocus {{on 'click' (fn this.detectRadio)}}>
               <label for="util2"> &nbsp;{{t 'write.tool2'}}</label>
             </span>
           {{/if}}
           {{#if this.okSort}}
             <span class="glue">
-              <input id="util3" name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
+              <input id="util3" {{this.addTools1}} name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
               <label for="util3"> &nbsp;{{t 'write.tool3'}}</label>
             </span>
           {{/if}}
           {{#if this.okUpload}}
             <span class="glue">
-              <input id="util5" name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
+              <input id="util5" {{this.addTools1}} name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
               <label for="util5"> &nbsp;{{t 'write.tool5'}}</label>
             </span>
-          {{/if}}
-          {{#if this.toolExist}}
-            {{!-- Tools will come --}}
-          {{else}}
-            <span>{{t 'write.tool99'}}</span>
           {{/if}}
 
         {{else}}
@@ -416,20 +417,22 @@ export class DialogUtil extends Component {
         {{/if}}
 
         </div>
-        “{{this.tool}}“
+
         <div style="padding:0.5rem 0">
-          {{!-- {{ this.noTools}}
-            <span style="color:blue">{{t 'write.tool99'}}</span> --}}
+        {{!-- “{{this.tool}}“ {{this.amTools}} {{this.cnTools}} --}}
 
-        {{!-- <RefreshThis @for={{this.z.refreshTexts}}> --}}
-          {{#if (eq this.tool '')}}
-
-            {{#unless this.z.albumTools}}
-              {{t 'write.chooseTool'}}
-            {{/unless}}
+          {{#if this.z.albumTools}}
+            {{#if this.amTools}}
+              {{t 'write.chooseTool'}}<br>
+            {{else}}
+              {{t 'write.tool99'}}
+            {{/if}}
+          {{else}}
+            {{t 'write.chooseTool'}}<br>
+          {{/if}}
 
           {{!-- === Delete the album === --}}
-          {{else if (eq this.tool 'util1')}}
+          {{#if (eq this.tool 'util1')}}
               <b>{{t 'write.tool1'}}</b>
             {{#if this.notEmpty}}
               <br><span style="color:blue">{{t 'write.notEmpty'}}</span>
@@ -505,7 +508,6 @@ export class DialogUtil extends Component {
             <button type="button" {{on 'click' (fn this.doDbUpdate)}}>{{t 'write.tool6'}}</button>
 
           {{/if}}
-        {{!-- </RefreshThis> --}}
 
         </div>
 

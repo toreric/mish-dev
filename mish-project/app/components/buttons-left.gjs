@@ -51,8 +51,19 @@ export class ButtonsLeft extends Component {
   }
 
   toggDia = (id) => {
-    this.z.albumTools = false;
-    this.z.toggleDialog(id);
+    if (this.z.albumTools === undefined) this.z.albumTools = false;
+    let diaObj = document.getElementById(id);
+    if (!this.z.albumTools) {
+      if (diaObj.hasAttribute('open')) {
+        this.z.closeDialog(id);
+        this.z.albumTools = undefined;
+      } else {
+        this.z.albumTools = false;
+        this.z.openDialog(id);
+      }
+    } else {
+      document.getElementById('albumTools').click();
+    }
   }
 
   <template>
