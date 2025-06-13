@@ -62,10 +62,9 @@ export class DialogUtil extends Component {
     return this.z.imdbDir.slice(1);
   }
 
-  // get imdbDirName() {
-  imdbDirName = () => {
+  get imdbDirName() {
+  // imdbDirName = () => {
     let tmp = this.z.imdbDirName;
-    // await new Promise (z => setTimeout (z, 19));
     return this.z.handsomize2sp(tmp);
   }
 
@@ -341,7 +340,7 @@ export class DialogUtil extends Component {
         <p>&nbsp;</p>
 
         {{#if this.z.albumTools}}
-          <p><b>{{t 'write.utilHeader'}} <span>{{{this.imdbDirName}}}</span></b><br>({{this.z.imdbRoot}}{{this.z.imdbDir}})</p>
+          <p><b>{{t 'write.utilHeader'}} <span>{{this.imdbDirName}}</span></b><br>({{this.z.imdbRoot}}{{this.z.imdbDir}})</p>
         {{else}}
           <p><b>{{t 'write.utilHeader0'}}</b></p>
         {{/if}}
@@ -357,7 +356,7 @@ export class DialogUtil extends Component {
         {{!-- Album tools --}}{{this.zeroTools1}}
 
           {{!-- Here are tools specific for the actual album --}}
-          {{{t 'write.tool0' a=(this.imdbDirName)}}}<br>
+          {{{t 'write.tool0' a=this.imdbDirName}}}<br>
           {{!-- This reference to okDelete resets radio buttons etc. --}}
           {{#if this.okDelete}}
             <span class="glue">
@@ -520,7 +519,7 @@ export class DialogUtil extends Component {
     <dialog id="dialogDupResult" style="max-width:calc(100vw - 2rem);z-index:15;max-width:480px"{{on 'keydown' this.detectEscClose}}>
       <header data-dialog-draggable>
         <p>&nbsp;</p>
-        <p>{{{t 'write.dialogDupResult' a=(this.imdbDirName)}}}</p>
+        <p>{{{t 'write.dialogDupResult' a=this.imdbDirName}}}</p>
         <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogDupResult')}}>×</button>
       </header>
       <main style="padding:0 0.5rem 0 1rem;height:auto;line-height:150%;overflow:auto" width="99%">

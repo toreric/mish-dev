@@ -340,7 +340,7 @@ write:
               <br>This applies to deletion as a security measure.
   chooseOne:  Should this image
   chooseThis: "Selected album: <b>{a}</b>"
-  chooseTool: Choose tool!
+  chooseTool: Choose tool
   confirm: Not used, report!
   creator: 'Origin: Photographer Source'
   dbUpdated: Text search database updated

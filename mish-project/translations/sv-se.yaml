@@ -338,7 +338,7 @@ write:
               <br>Det gäller för radering som en säkerhetsåtgärd.
   chooseOne:  Ska den här bilden
   chooseThis: "Valt album: <b>{a}</b>"
-  chooseTool: Välj verktyg!
+  chooseTool: Välj verktyg
   confirm: Används inte, rapportera!
   creator: "Ursprung: Foto upphov källa"
   dbUpdated: Textsökningsdatabasen uppdaterad

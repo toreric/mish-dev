@@ -75,7 +75,7 @@ export class ButtonsLeft extends Component {
 
       <a id="menuButton" class="smBu" title-2={{t 'buttons.left.main'}} draggable="false" ondragstart="return false" {{on 'click' this.toggleMainMenu}} style="font-family:Comic Sans MS;line-height:80%"><span class="menu">𝌆</span></a>
 
-      <a id="commonTools" class="smBu" title={{t 'buttons.left.help'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.toggDia 'dialogUtil')}}>T</a>
+      <a id="commonTools" class="smBu" title="{{t 'tools'}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.toggDia 'dialogUtil')}} style="background-image:url(/images/icons1-spanner.png);background-size:2rem"></a>
 
       <a id="questionMark" class="smBu" title={{t 'buttons.left.help'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.z.toggleDialog dialogHelpId false)}}>?</a>
 

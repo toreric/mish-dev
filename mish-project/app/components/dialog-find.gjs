@@ -294,12 +294,12 @@ export class DialogFind extends Component {
     document.querySelector('#dialogFindResult').style.zIndex = Number(document.querySelector('#dialogFind').style.zIndex) + 1;
       // this.z.loli('Ignored: ' + this.counts[chalbs.length], 'color:lime');
       // this.z.loli('N, max: ' + this.nchk + ', ' + this.z.maxWarning, 'color:lime');
+    let butt = document.querySelector('#dialogFindResult button.show');
     if (this.nchk > this.z.maxWarning) {
       this.z.alertMess(this.intl.t('write.maxWarning', {n: this.z.maxWarning}), 6);
-      document.querySelector('#dialogFindResult button.show').setAttribute('disabled', '');
-    } else {
-      document.querySelector('#dialogFindResult button.show').removeAttribute('disabled');
-    }
+      butt.setAttribute('disabled', '');
+    } else if (this.nchk) butt.removeAttribute('disabled');
+    if (!this.nchk) butt.setAttribute('disabled', '');
 
   }
 
@@ -407,24 +407,30 @@ export class DialogFind extends Component {
           <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogFindResult')}}>×</button>
         </header>
         <main style="line-height:180%;border-bottom:1px solid black;padding-left:1rem">
-          <span>{{{t 'chooseShow' f=this.albumFound}}}:<br></span>
+          {{#if this.nchk}}
+            <span>{{{t 'chooseShow' f=this.albumFound}}}:<br></span>
+          {{else}}
+            <span style="color:blue"><b>{{t 'write.noneFound'}}</b></span>
+          {{/if}}
         </main>
         <main style="padding:0 0.5rem 0.5rem 1rem;height:auto;line-height:150%;overflow:auto" width="99%">
-          {{#each this.keepIndex as |i|}}
 
-            <a class="hoverDark" style="text-decoration:none"
-             {{on 'click' (fn this.openFound i)}}>
-              {{{this.count i}}} &nbsp;&nbsp;{{t 'in'}}&nbsp;&nbsp; {{this.z.imdbRoot}}{{this.album i}}
-            </a> &nbsp;&nbsp;&nbsp;&nbsp;
+          {{#if this.nchk}}
+            {{#each this.keepIndex as |i|}}
 
-            <a class="hoverDark" style="font-family:Arial,Helvetica,sans-serif;font-size:70%;font-variant:small-caps;text-decoration:none"
-             {{on 'click' (fn this.z.openAlbum i)}}>
-              {{t 'allInAlbum'}}
-            </a><br>
+              <a class="hoverDark" style="text-decoration:none"
+              {{on 'click' (fn this.openFound i)}}>
+                {{{this.count i}}} &nbsp;&nbsp;{{t 'in'}}&nbsp;&nbsp; {{this.z.imdbRoot}}{{this.album i}}
+              </a> &nbsp;&nbsp;&nbsp;&nbsp;
 
-          {{/each}}
+              <a class="hoverDark" style="font-family:Arial,Helvetica,sans-serif;font-size:70%;font-variant:small-caps;text-decoration:none"
+              {{on 'click' (fn this.z.openAlbum i)}}>
+                {{t 'allInAlbum'}}
+              </a><br>
 
-          {{!-- <br>{{{this.countAlbs}}}<br><br> --}}
+            {{/each}}
+          {{/if}}
+
           <button class="show" type="button" {{on 'click' (fn this.openFound -1)}}>
             {{t 'button.show'}} <b>{{{this.albumFound}}}</b></button>
 
