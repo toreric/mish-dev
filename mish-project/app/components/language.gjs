@@ -14,7 +14,10 @@ export class Language extends Component {
   @service intl;
   selections = this.intl.get('locales').sort();
 
+
+
   changeLocale = async (newLoc) => {
+      // console.log('selections', this.selections);
     if (newLoc === this.z.intlCodeCurr) return;
     let defaultUser = this.z.userName === this.z.defaultUserName;
     this.intl.setLocale([newLoc]);

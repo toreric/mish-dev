@@ -319,7 +319,7 @@ export class DialogFind extends Component {
             <VirtualKeys />
           </div>
 
-          <textarea name="searchtext" placeholder="{{t 'write.searchTerms'}}" autofocus="true" style="width:calc(100% - 8px)" rows="4"></textarea>
+          <textarea id="srchTxt" name="searchtext" placeholder="{{t 'write.searchTerms'}}" autofocus="true" style="width:calc(100% - 8px)" rows="4" {{on 'mouseleave' onMouseLeaveTextarea}}></textarea>
 
           <div class="diaMess">
             <div class="edWarn" style="font-weight:normal;text-align:right"></div>

@@ -34,7 +34,7 @@ export class DialogUtil extends Component {
   // Which tool was selected?
   detectRadio = async (e) => {
     var elRadio = e.target;
-      // this.z.loli(`${elRadio.id} ${elRadio.checked}`, 'color:red');
+      this.z.loli(`${elRadio.id} ${elRadio.checked}`, 'color:red');
     this.tool = elRadio.id;
   }
 
@@ -49,18 +49,18 @@ export class DialogUtil extends Component {
   // of 'ok...' checks in the template. 'imdbDir' is used for resetting
   // before the simple return of the 1-sliced-off imdbDir value. WARNING:
   // 'this.imdbDir' MUSTS NOT BE USE ELSEWHERE TO REPLACE 'this.z.imdbDir.slice(1)'!
-  get imdbDir() {
-    // this.amTools = 0;
-    this.cnTools = 0;
-    this.tool = '';
-    // document.querySelector('#dialogUtil footer').innerHTML = '';
-    // let elRadio = document.querySelectorAll('#dialogUtil input[type="radio"]');
-    // for (let i=0; i<elRadio.length; i++) {
-    //   elRadio[i].checked = false;
-    // }
-    // remove initial slash (except root: already empty)
-    return this.z.imdbDir.slice(1);
-  }
+  // get imdbDir() {
+  //   this.cnTools = 0;
+  //   this.tool = '';
+  //   document.getElementById('xTools').innerHTML = '';
+  //   // document.querySelector('#dialogUtil footer').innerHTML = '';
+  //   let elRadio = document.querySelectorAll('#dialogUtil input[type="radio"]');
+  //   for (let elRa of elRadio) {
+  //     elRa.checked = false;
+  //   }
+  //   // remove initial slash (except root: already empty)
+  //   return this.z.imdbDir.slice(1);
+  // }
 
   get imdbDirName() {
   // imdbDirName = () => {
@@ -74,19 +74,15 @@ export class DialogUtil extends Component {
     return '<br><div style="text-align:center"><button class="unclosable" type="button" onclick="location.reload(true);return false">' + this.intl.t('button.restart') + '</utton></div>'
   }
 
-  // Must be the first called from the template.
-  // THE FIRST AND ONLY USE IN DialogUtil OF 'this.imdbDir' IS HERE:
+  // Album tools
   get okDelete() { // true if delete album is allowed
-    // this.amTools = 0;
     this.cnTools = 0;
     this.tool = '';
-      // this.z.loli('numShown ' + this.z.numShown, 'color:#444'); // Printout to wait
-    let found = this.imdbDir === this.z.picFound;
-      // this.z.loli('imdbDir: ' +  this.imdbDir, 'color:yellow');
+    let found = this.z.imdbDir.slice(1) === this.z.picFound;
+      // this.z.loli('imdbDir: ' +  this.z.imdbDir.slice(1), 'color:yellow');
       // this.z.loli('picFound: ' +  this.z.picFound, 'color:yellow');
-    if (!found && this.z.imdbDir && this.z.allow.albumEdit) { // Don't erase ''=root
+    if (!this.z.albumTools && !found && this.z.allow.albumEdit && this.z.imdbDir) { // Don't erase ''=root
       this.tool = '';
-      // if (this.z.albumTools) this.amTools = 1;
       return true
     } else {
       return false;
@@ -94,12 +90,9 @@ export class DialogUtil extends Component {
   }
 
   get okTexts() { // true if images shown
-      // this.z.loli('numShown ' + this.z.numShown, 'color:#111'); // Printout to wait
-    // await new Promise (z => setTimeout (z, 39));
       // this.z.loli('numShown ' + this.z.numShown, 'color:brown ');
-    if (this.z.numShown > 0) {
+    if (this.z.albumTools && this.z.numShown > 0) {
       this.tool = '';
-      // if (this.z.albumTools) this.amTools = 1;
       return true;
     } else {
       return false;
@@ -107,9 +100,8 @@ export class DialogUtil extends Component {
   }
 
   get okSubalbum() { // true if subalbums allowed
-    if (this.z.imdbDir.slice(1) !== this.z.picFound && this.z.allow.albumEdit) {
+    if (this.z.albumTools && this.z.imdbDir.slice(1) !== this.z.picFound && this.z.allow.albumEdit) {
       this.tool = '';
-      // if (this.z.albumTools) this.amTools = 1;
       return true;
     } else {
       return false;
@@ -117,47 +109,56 @@ export class DialogUtil extends Component {
   }
 
   get okSort() { // true if sorting by name is possible
-    if (this.z.numShown > 1) {
+    if (this.z.albumTools && this.z.numShown > 1) {
       this.tool = '';
-      // if (this.z.albumTools) this.amTools = 1;
       return true;
     } else {
       return false;
     }
   }
 
+    get okUpload() {
+      if (this.z.albumTools && this.z.imdbDir.slice(1) !== this.z.picFound && this.z.allow.deleteImg) {
+        this.tool = '';
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+  // Common tools
   get okDupNames() {
-    if (!this.z.albumTools) this.cnTools = 1;
-    this.tool = '';
-    return true;
+    if (this.z.albumTools) {
+      return false;
+    } else {
+      this.tool = '';
+      return true
+    }
   }
 
   get okDupImages() {
-    if (!this.z.albumTools) this.cnTools = 1;
-    this.tool = '';
-    return true;
-  }
-
-  get okUpload() {
-    if (this.z.imdbDir.slice(1) !== this.z.picFound && this.z.allow.deleteImg) {
-      this.tool = '';
-    // if (this.z.albumTools) this.amTools = 1;
-      return true;
-    } else {
+    if (this.z.albumTools) {
       return false;
+    } else {
+      this.tool = '';
+      return true;
     }
   }
 
   get okDbUpdate() {
-    if (!this.z.albumTools) this.cnTools = 1;
-    this.tool = '';
-    return true;
+    if (this.z.albumTools && this.z.allow.textEdit) {
+      return false;
+    } else {
+      this.tool = '';
+      return true;
+    }
   }
 
   get notEmpty() { // true if the album is not empty
     return this.z.subaIndex.length > 0 || this.z.numImages > 0;
   }
 
+  // Album tools
   doDelete = async () => { // Delete an empty album
     // this.z.alertMess(this.intl.t('futureFacility'))
     let cmd = 'rm -rf ' + this.z.imdbPath + this.z.imdbDir;
@@ -249,6 +250,15 @@ export class DialogUtil extends Component {
     }
   }
 
+  doTexts = () => {
+    this.z.futureNotYet('write.tool8');
+  }
+
+  doUpload = () => {
+    this.z. futureNotYet('write.tool5');
+  }
+
+  // Common tools
   doDupNames = async () => {
       // return new Promise (async function (resolve, reject) {
     document.querySelector('img.spinner').style.display = '';
@@ -301,14 +311,6 @@ export class DialogUtil extends Component {
     this.z.futureNotYet('write.tool7');
   }
 
-  doTexts = () => {
-    this.z.futureNotYet('write.tool8');
-  }
-
-  doUpload = () => {
-    this.z. futureNotYet('write.tool5');
-  }
-
   doDbUpdate = async () => {
     document.querySelector('img.spinner').style.display = '';
     let cmd = './ld_imdb.js -e ' + this.z.imdbPath;
@@ -329,19 +331,34 @@ export class DialogUtil extends Component {
     return '';
   }
 
+  get zeroTools2() {
+    this.cnTools = 0;
+    return '';
+  }
+
+  get addTools2() {
+    this.cnTools ++;
+    return '';
+  }
+
   // NOTE, within the <template></template>:
   // *** The utility numbering is not always in sequence ***
 
   <template>
 
+    {{!-- <RefreshThis @for={{this.z.albumTools}}> --}}
     <dialog id="dialogUtil" style="width:min(calc(100vw - 2rem),auto);max-width:480px" {{on 'keydown' this.detectEscClose}}>
       <header data-dialog-draggable>
 
+        {{!-- Placeholder for
+        display:flex;justify-content:space-between --}}
         <p>&nbsp;</p>
 
         {{#if this.z.albumTools}}
+          {{!-- Album tools --}}
           <p><b>{{t 'write.utilHeader'}} <span>{{this.imdbDirName}}</span></b><br>({{this.z.imdbRoot}}{{this.z.imdbDir}})</p>
         {{else}}
+          {{!-- Common tools --}}
           <p><b>{{t 'write.utilHeader0'}}</b></p>
         {{/if}}
 
@@ -357,7 +374,7 @@ export class DialogUtil extends Component {
 
           {{!-- Here are tools specific for the actual album --}}
           {{{t 'write.tool0' a=this.imdbDirName}}}<br>
-          {{!-- This reference to okDelete resets radio buttons etc. --}}
+
           {{#if this.okDelete}}
             <span class="glue">
               <input id="util1" {{this.addTools1}} name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
@@ -390,25 +407,25 @@ export class DialogUtil extends Component {
           {{/if}}
 
         {{else}}
-        {{!-- Common tools --}}
+        {{!-- Common tools --}}{{this.zeroTools2}}
 
           {{!-- Here are tools for the entire album collection --}}
           <div style="margin:0.5rem 0 0 0">{{{t 'write.tool01'}}}</div>
           {{#if this.okDupNames}}
             <span class="glue">
-              <input id="util4" name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
+              <input id="util4" {{this.addTools2}} name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
               <label for="util4"> &nbsp;{{t 'write.tool4'}}</label>
             </span>
           {{/if}}
           {{#if this.okDupImages}}
             <span class="glue">
-              <input id="util7" name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
+              <input id="util7" {{this.addTools2}} name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
               <label for="util7"> &nbsp;{{{t 'write.tool7'}}}</label>
             </span>
           {{/if}}
           {{#if this.okDbUpdate}}
             <span class="glue">
-              <input id="util6" name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
+              <input id="util6" {{this.addTools2}} name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
               <label for="util6"> &nbsp;{{t 'write.tool6'}}</label>
             </span>
           {{/if}}
@@ -417,8 +434,7 @@ export class DialogUtil extends Component {
 
         </div>
 
-        <div style="padding:0.5rem 0">
-        {{!-- “{{this.tool}}“ {{this.amTools}} {{this.cnTools}} --}}
+        <div id="xTools" style="padding:0.5rem 0">
 
           {{#if this.z.albumTools}}
             {{#if this.amTools}}
@@ -515,6 +531,7 @@ export class DialogUtil extends Component {
         <button type="button" {{on 'click' (fn this.z.closeDialog dialogUtilId)}}>{{t 'button.cancel'}}</button>&nbsp;
       </footer>
     </dialog>
+    {{!-- </RefreshThis> --}}
 
     <dialog id="dialogDupResult" style="max-width:calc(100vw - 2rem);z-index:15;max-width:480px"{{on 'keydown' this.detectEscClose}}>
       <header data-dialog-draggable>

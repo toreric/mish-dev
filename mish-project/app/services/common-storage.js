@@ -472,9 +472,6 @@ export default class CommonStorageService extends Service {
       this.picName = this.allFiles[this.allFiles.length - 1].name;
     } else this.picName = '';
 
-    // size = this.albumAllImg(i);
-    // await new Promise (z => setTimeout (z, size*2)); // album load
-
     // Set colors in the album tree
     this.paintTree(i);
   }
@@ -655,7 +652,9 @@ export default class CommonStorageService extends Service {
     }
     this.numInvisible = 0;
     this.numShown = this.numImages;
+    document.getElementById('toggleName').style.display = this.numShown ? '' : 'none';
   }
+
   //#region hideHidden
   hideHidden = () => {
     document.getElementById('toggleHide').style.backgroundImage = 'url(/images/eyes-blue.png)';
@@ -663,17 +662,13 @@ export default class CommonStorageService extends Service {
     for (let pic of document.querySelectorAll('.img_mini.hidden')) {
       // console.log('hideHidden:', pic.classList);
       pic.classList.add('invisible');
-
-      // const claLis = pic.classList;
-
-      // pic.className = String([...claLis].join(' '));
-      // this.loli([...claLis].join(' '));
-      // console.log('hideHidden:', pic.classList);
       n++;
-      // this.loli('hideHidden ' + n, 'color:red');
+      // this.loli('invisible: ' + n, 'color:red');
     }
     this.numInvisible = n;
     this.numShown = this.numImages - this.numInvisible;
+      // this.loli('numShown: ' + this.numShown, 'color:yellow')
+    document.getElementById('toggleName').style.display = this.numShown ? '' : 'none';
   }
 
   // Check each thumbnails' hide status and set classes
@@ -1819,8 +1814,8 @@ export default class CommonStorageService extends Service {
     }
   }
 
-  saveCloseDialog = (dialogId) => {
-    this.saveDialog(dialogId);
+  saveCloseDialog = async (dialogId) => {
+    await this.saveDialog(dialogId);
     this.closeDialog(dialogId);
   }
 

@@ -318,7 +318,7 @@ write:
   afterSort: Dra-och-släpp-flyttning av bilder är<br>
              inte möjlig efter detta, men återställs<br>
              genom att ladda om <a id="reFr0" class="helpIcon"><img draggable="false" src="/images/reload.png"></a> albumet, efter<br>
-             att först eventuellt ha sparat <a class="helpIcon">S</a> det<br><br>
+             att först eventuellt ha sparat <a class="helpIcon"><img draggable="false" src="/images/floppy1.png" style="width:.9rem"></a> det<br><br>
              Gäster kan bara ladda om<br><br>
              <span style="font-weight:normal;color:#000">Förhoppningsvis ska dra-och-släpp-<br>
              problemet så småningom åtgärdas</span>
@@ -399,7 +399,7 @@ write:
   originUntouch: "<b>OBSERVERA</b> att det är skillnad på bilder: Gröna bildnamn avser inte egna <b>originalbilder</b> utan <b>inlänkade bilder</b> (enklare: <b>länkar</b>). En bild med grön underkant är egentligen bara en länk till sin originalbild i ett annat album. En originalbild förblir orörd även när länken till den tas bort."
   origRemove: "Alternativ:"
   reloadRequired: <br><br>Ändrad albumstruktur kräver omstart<br>
-  searchTerms: Skriv sökbegrepp åtskilda av blanktecken, små/stora bokstäver är oviktigt (välj nedan vilka texter du vill söka i)
+  searchTerms: Skriv sökbegrepp åtskilda av blanktecken, små/stora bokstäver är betydelselöst, liksom diakritiska tecken förutom üåäö (välj nedan vilka texter du vill söka i)
   set0: Välj inställningar
   setBeep: Pip vid musklick
   setPoop: Visa musklick

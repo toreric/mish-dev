@@ -1,7 +1,7 @@
 //== Mish main component Welcome
 //   'Welcome' is referenced in 'templates/applications.hbs'
 
-//   NOTE: 'DialogSettings' ends his file
+//   NOTE: 'DialogSettings' ends this file
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
@@ -321,7 +321,10 @@ export default class extends Welcome {
       <div {{executeOnInsert this}} class="" style="display:flex;justify-content:space-between;margin:0 3.25rem 0 4rem">
 
         <span>
-          <Language />&nbsp;
+          <Language />
+
+          <button id="dark_light" style="line-height:0.65rem;margin-left:0.1rem" type="button" title-2="{{t 'button.backgtitle'}}: {{t 'dark'}}/{{t 'light'}}" {{on 'click' (fn this.z.toggleBackg)}}>&nbsp;</button>
+
           <b style="font-size:106%;margin-top:0.35rem;display:inline-block">
             {{t "header"}}
           </b>&nbsp;&nbsp;
@@ -337,15 +340,19 @@ export default class extends Welcome {
 
           <span id="loggedInUser">
             {{!-- Open the Settings dialog --}}
-            <button type="button" style="border:0.5px solid #909;background:transparent;color:#909" {{on 'click' (fn this.z.toggleDialog 'dialogSettings')}}>{{t 'settings'}}</button>&nbsp;
+            {{#if this.z.allow.textEdit}}
+              <button type="button" style="border:0.5px solid #909;background:transparent;color:#909" {{on 'click' (fn this.z.toggleDialog 'dialogSettings')}}>{{t 'settings'}}</button>&nbsp;
+            {{/if}}
 
             {{!-- Open the Login and Rights dialog --}}
             <button type="button" style="border:0.5px solid #909;background:transparent;color:#909" title-2="{{t 'button.optchuser'}}" {{on 'click' (fn this.openLogIn)}}>{{t 'button.optlogin'}}</button>
+
             {{!-- Present who's logged in with rights --}}
             {{t 'loggedIn'}}: <b>{{this.z.userName}}</b>
             {{t 'with'}} [{{this.z.userStatus}}]-{{t 'rights'}}.&nbsp;&nbsp;
-            {{!-- Display the current time --}}
-            <div style="display:inline-block">{{t 'time.text'}}<span style="font:80% monospace"><Clock @locale={{this.z.intlCodeCurr}} /></span></div>
+
+            {{!-- Display the current time
+            <div style="display:inline-block">{{t 'time.text'}}<span style="font:80% monospace"><Clock @locale={{this.z.intlCodeCurr}} /></span></div> --}}
           </span>
 
         </span>
@@ -446,7 +453,7 @@ export class DialogSettings extends Component {
     for (let cbs of cboxes) {
       switch(cbs.id) {
         case 'setPoop':
-          if (cbs.checked) POOP = 1; // Keydown poop on (visual)
+          if (cbs.checked) POOP = 1; // Keydown poop on (visual popup)
           else POOP = 0; break;
         case 'setBeep':
           if (cbs.checked) BEEP = 1; // Keydown beep on
@@ -471,8 +478,8 @@ export class DialogSettings extends Component {
         <div style="padding:0.5rem 0;line-height:1.4rem">
 
           {{t 'write.set0'}}:<br>
-          <button id="dark_light" style="line-height:0.65rem;margin-right:-0.25rem;" type="button" {{on 'click' (fn this.z.toggleBackg)}}>&nbsp;</button>
-          <label for="dark_light">{{t 'button.backgtitle'}}: {{t 'dark'}}/{{t 'light'}}</label><br>
+          {{!-- <button id="dark_light" style="line-height:0.65rem;margin-right:-0.25rem;" type="button" {{on 'click' (fn this.z.toggleBackg)}}>&nbsp;</button>
+          <label for="dark_light">{{t 'button.backgtitle'}}: {{t 'dark'}}/{{t 'light'}}</label><br> --}}
           <span class="glue">
             <input id="setPoop" name="settings" value="" type="checkbox" {{on 'click' this.detectCheckbox}}>
             <label for="setPoop"> &nbsp;{{t 'write.setPoop'}}</label>

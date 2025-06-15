@@ -304,8 +304,8 @@ plusExplain: Subalbums also have subalbums!
 printOut: Prnt
 reloadApp: Reload the app!
 select:
-  language: Choose language
-  languagetext: English
+  language: Elige idioma
+  languagetext: Español
 selectAlbumMove: Move to which album?
 selectAlbumLink: Link to which album?
 selectTarget: Select destination album
@@ -400,7 +400,7 @@ write:
   notes: Notes not shown with the image
   originUntouch: "<b>NOTE</b> that there is a difference between images: Green image names do not refer to own <b>original images</b> but to <b>linked images</b> (more simply: <b>links</b>). An image with a green bottom border is actually just a link to its original image in another album. An original image remains untouched even when the link to it is removed."
   reloadRequired: <br><br>Changed album structure requires restart<br>
-  searchTerms: Enter search terms separated by spaces, lower/uppercase do not matter, nor diacritics except üåäö (choose below which texts to search in)
+  searchTerms: Escribe los términos de búsqueda separados por espacios, no importa si son mayúsculas o minúsculas, ni tampoco diacríticos excepto üåäö (elija a continuación en qué textos buscar)
   set0: Choose settings
   setBeep: Beep at mouse clicks
   setPoop: Show mouse clicks

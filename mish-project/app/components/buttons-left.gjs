@@ -7,6 +7,8 @@ import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
 
+import RefreshThis from './refresh-this';
+
 import { dialogHelpId } from './dialog-help';
 
 // Left buttons, most without href attribute
@@ -50,20 +52,22 @@ export class ButtonsLeft extends Component {
     else this.z.displayNames = 'none';
   }
 
-  toggDia = (id) => {
-    if (this.z.albumTools === undefined) this.z.albumTools = false;
+  toggDia = async () => {
+    let id = 'dialogUtil';
+    this.z.albumTools = false;
     let diaObj = document.getElementById(id);
-    if (!this.z.albumTools) {
-      if (diaObj.hasAttribute('open')) {
-        this.z.closeDialog(id);
-        this.z.albumTools = undefined;
-      } else {
-        this.z.albumTools = false;
-        this.z.openDialog(id);
-      }
-    } else {
-      document.getElementById('albumTools').click();
+    if (diaObj.hasAttribute('open')) {
+      this.z.closeDialog(id);
+      return;
     }
+    await this.z.openDialog(id);
+    await new Promise (z => setTimeout (z, 122));
+    this.z.albumTools = !this.z.albumTools;
+    this.z.albumTools = !this.z.albumTools;
+    await new Promise (z => setTimeout (z, 122));
+    this.z.albumTools = !this.z.albumTools;
+    this.z.albumTools = !this.z.albumTools;
+    // this.z.albumTools = undefined;
   }
 
   <template>
@@ -75,7 +79,7 @@ export class ButtonsLeft extends Component {
 
       <a id="menuButton" class="smBu" title-2={{t 'buttons.left.main'}} draggable="false" ondragstart="return false" {{on 'click' this.toggleMainMenu}} style="font-family:Comic Sans MS;line-height:80%"><span class="menu">𝌆</span></a>
 
-      <a id="commonTools" class="smBu" title="{{t 'tools'}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.toggDia 'dialogUtil')}} style="background-image:url(/images/icons1-spanner.png);background-size:2rem"></a>
+      <a id="commonTools" class="smBu" title="{{t 'tools'}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.toggDia)}} style="background:#444 url(/images/tools.png) center 0.15rem/1.8rem no-repeat"></a>
 
       <a id="questionMark" class="smBu" title={{t 'buttons.left.help'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.z.toggleDialog dialogHelpId false)}}>?</a>
 
@@ -83,13 +87,13 @@ export class ButtonsLeft extends Component {
 
       <a id="reLd" class="smBu" title={{t 'buttons.left.reload'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.reloadAlbum)}} src="/images/reload.png"></a>
 
-      <a id="toggleName" class="smBu" title={{t 'buttons.left.name'}} draggable="false" ondragstart="return false" style="display:" {{on 'click' (fn this.toggleNameView)}}>N</a>
-
       <a id="toggleHide" class="smBu" title={{t 'buttons.left.hide'}} draggable="false" ondragstart="return false" style="display:none" {{on 'click' (fn this.toggleHideFlagged)}}></a>
 
-      <a id="saveOrder" class="smBu" title={{t 'buttons.left.save'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.z.saveOrder)}}>S</a>
+      <a id="toggleName" class="smBu" title={{t 'buttons.left.name'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.toggleNameView)}} style="background:#444 url(/images/img-name.png) center 0.44rem/1.6rem no-repeat"></a>
 
-      <a class="smBu" draggable="false" ondragstart="return false" title={{t 'buttons.left.up'}} style="font:bold 190% sans-serif;line-height:90%" onclick="window.scrollTo(0,0)">↑</a>
+      <a id="saveOrder" class="smBu" title={{t 'buttons.left.save'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.z.saveOrder)}} style="background:#444 url(/images/floppy1.png) center 0.15rem/1.7rem no-repeat"></a>
+
+      <a class="smBu" draggable="false" ondragstart="return false" title={{t 'buttons.left.up'}} style="background:#444 url(/images/arrow.png) center 0.2rem/1.6rem no-repeat" onclick="window.scrollTo(0,0)"></a>
 
     </div>
   </template>

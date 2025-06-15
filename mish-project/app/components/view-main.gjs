@@ -116,20 +116,22 @@ class SubAlbums extends Component {
     return this.z.imdbDirs[i].slice(1, 2) === '§' ? false : true;
   }
 
-  toggDia = (id) => {
-    if (this.z.albumTools === undefined) this.z.albumTools = true;
+  toggDia = async () => {
+    let id = 'dialogUtil';
+    this.z.albumTools = true;
     let diaObj = document.getElementById(id);
-    if (this.z.albumTools) {
-      if (diaObj.hasAttribute('open')) {
-        this.z.closeDialog(id);
-        this.z.albumTools = undefined;
-      } else {
-        this.z.albumTools = true;
-        this.z.openDialog(id);
-      }
-    } else {
-      document.getElementById('commonTools').click();
+    if (diaObj.hasAttribute('open')) {
+      this.z.closeDialog(id);
+      return;
     }
+    await this.z.openDialog(id);
+    await new Promise (z => setTimeout (z, 122));
+    this.z.albumTools = !this.z.albumTools;
+    this.z.albumTools = !this.z.albumTools;
+    await new Promise (z => setTimeout (z, 122));
+    this.z.albumTools = !this.z.albumTools;
+    this.z.albumTools = !this.z.albumTools;
+    // this.z.albumTools = undefined;
   }
 
   <template>
@@ -140,7 +142,7 @@ class SubAlbums extends Component {
 
           {{!-- {{#if this.z.numShown}} --}}
             {{!-- Open the Tools dialog --}}
-            <button id='albumTools' type="button" title-2="{{t 'tools'}}" style="border:0.5px solid #909;height:20px;width:60px;background-color:transparent;background-image:url(/images/icons0-spanner.png)" {{on 'click' (fn this.toggDia 'dialogUtil')}}> &nbsp; &nbsp; &nbsp; </button>
+            <button id='albumTools' type="button" title-2="{{t 'tools'}}" style="border:0.5px solid #909;height:18px;width:32px;background-color:transparent;background:url(/images/tool0.png) center 0/1.8rem no-repeat" {{on 'click' (fn this.toggDia)}}>&nbsp;</button>
           {{!-- {{/if}} --}}
 
           {{#if this.z.imdbDir}}
