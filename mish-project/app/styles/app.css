@@ -604,11 +604,8 @@ img.spinner {
   text-decoration: none;
 }
 #albSel {
-  height: 0.7rem !important;
   width: 1rem !important;
-  background: #0085ff !important;
-  font-size: 95%;
-  line-height: 0.5rem;
+  background: #444
 }
 div[aria-describedby="textareas"] {
   z-index: 99;

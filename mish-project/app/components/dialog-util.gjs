@@ -147,6 +147,15 @@ export class DialogUtil extends Component {
     }
   }
 
+  get okSeeFavorites() {
+    if (this.z.albumTools) {
+      return false;
+    } else {
+      this.tool = '';
+      return true
+    }
+  }
+
   get okDupNames() {
     if (this.z.albumTools) {
       return false;
@@ -442,6 +451,12 @@ export class DialogUtil extends Component {
               <label for="util9"> &nbsp;{{t 'write.tool9'}} <span style="font:normal .95rem monospace!important">[F]</span></label>
             </span>
           {{/if}}
+          {{#if this.okSeeFavorites}}
+            <span class="glue">
+              <input id="util91" {{this.addTools2}} name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
+              <label for="util91"> &nbsp;{{t 'write.tool91'}}</label>
+            </span>
+          {{/if}}
           {{#if this.okDupNames}}
             <span class="glue">
               <input id="util4" {{this.addTools2}} name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
@@ -561,9 +576,15 @@ export class DialogUtil extends Component {
 
             <button type="button" {{on 'click' (fn this.z.doFindText)}}>{{t 'write.tool9'}}</button>
 
-            {{!-- <p onclick="return false" draggable="false" ondragstart="return false" title-2="{{t 'imageSearch'}}">
-              <a id="searchText" {{on "click" (fn this.findText)}}>{{t 'imageFind'}}</a>
+          {{!-- === Manage personal favorites === --}}
+          {{else if (eq this.tool 'util91')}}
+
+            <button type="button" {{on 'click' (fn this.z.futureNotYet 'write.tool91')}}>{{t 'write.tool91'}}</button>
+
+            {{!-- <p onclick="return false" draggable="false" ondragstart="return false" title-2={{t 'fav.manage'}}>
+              <a id ="favorites" {{on "click" (fn this.seeFavorites)}}>{{t 'fav.images'}}</a>
             </p><br> --}}
+
           {{/if}}
 
         </div>

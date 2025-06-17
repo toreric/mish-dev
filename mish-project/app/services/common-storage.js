@@ -296,7 +296,7 @@ export default class CommonStorageService extends Service {
 
 
 
-  // Alert a not yet implemented facility (text)
+  // Alert a not yet implemented facility (intl.text)
   //#region futureNotYet
   futureNotYet = (facility) => {
     let alrt = document.getElementById('dialogAlert');
@@ -1664,8 +1664,7 @@ export default class CommonStorageService extends Service {
     var menuMain = document.getElementById('menuMain');
     menuMain.style.display = '';
     await new Promise (z => setTimeout (z, 9)); // openMainMenu
-    // menuButton.innerHTML = '<span class="menu">×</span>';
-    menuButton.style.background = "#444 url('/images/cross-21.png') center 0.3rem/1.5rem no-repeat";
+    menuButton.style.background = "#444 url('/images/cross.png') center 0.4rem/1.3rem no-repeat";
     await new Promise (z => setTimeout (z, 29)); // openMainMenu
       console.log('menuButton', menuButton);
     this.loli('opened main menu');
@@ -1678,8 +1677,7 @@ export default class CommonStorageService extends Service {
     var menuButton = document.getElementById('menuButton');
     menuMain.style.display = 'none';
     await new Promise (z => setTimeout (z, 9)); // closeMainMenu
-    // menuButton.innerHTML = '<span class="menu">𝌆</span>';
-    menuButton.style.background = "#444 url('/images/favicon0.png') center 0.3rem/1.5rem no-repeat";
+    menuButton.style.background = "#444 url('/images/favicon0.png') center 0.3rem/1.5rem no-repeat"; // Also in CSS (app.css)
     await new Promise (z => setTimeout (z, 29)); // closeMainMenu
       console.log('menuButton', menuButton);
     this.loli('closed main menu ' + msg);

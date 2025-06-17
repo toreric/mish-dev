@@ -50,19 +50,19 @@ export class DialogHelp extends Component {
       <p style="text-align:left;margin:0.5rem 0.3rem 0 1.5rem;line-height:1.7rem" draggable="false" ondragstart="return false">
         <b>{{t 'dialog.help.flebu'}}</b> ({{t 'dialog.help.wviva'}}):<br>
 
-        <a id="albSel" class="helpIcon">𝌆</a>&nbsp; {{t 'dialog.help.mmenu'}}<br>
+        <a id="albSel" class="helpIcon"><img draggable="false" ondragstart="return false" src="/images/favicon0.png" style="background:#444;width:0.85rem"></a>&nbsp; {{t 'dialog.help.mmenu'}}<br>
 
         <a id="questionMark0" class="helpIcon">?</a>&nbsp; {{t 'dialog.help.qmark'}}<br>
 
         <a id="reFr0" class="helpIcon"><img draggable="false" ondragstart="return false" src="/images/reload.png"></a>&nbsp; {{t 'dialog.help.rload'}}<br>
 
-        <a id="toggleName0" class="helpIcon">N</a>&nbsp; {{t 'dialog.help.names'}}<br>
+        <a id="toggleName0" class="helpIcon"><img draggable="false" ondragstart="return false" src="/images/img-name.png" style="background:#444;width:0.85rem"></a>&nbsp; {{t 'dialog.help.names'}}<br>
 
         <a id="toggleHide0" class="helpIcon"></a>&nbsp; {{t 'dialog.help.hide'}}<br>
 
-        <a id="saveOrder0" class="helpIcon">S</a>&nbsp; {{t 'dialog.help.save'}}<br>
+        <a id="saveOrder0" class="helpIcon"><img draggable="false" ondragstart="return false" src="/images/floppy1.png" style="background:#444;width:0.85rem"></a>&nbsp; {{t 'dialog.help.save'}}<br>
 
-        <a class="helpIcon">↑</a>&nbsp; {{t 'dialog.help.uptop'}}
+        <a class="helpIcon"><img draggable="false" ondragstart="return false" src="/images/arrow.png" style="background:#444;width:0.9rem"></a>&nbsp; {{t 'dialog.help.uptop'}}
       </p>
       <p style="text-align:left;margin:0.3rem 0.3rem 0 1.5rem;line-height:1.4rem" draggable="false" ondragstart="return false"> {{t 'dialog.help.note1'}}
         <br> {{t 'dialog.help.note2'}}

@@ -245,11 +245,6 @@ export class MenuMain extends Component {
 
     <div id="menuMain" class="mainMenu" onclick="return false" draggable="false" ondragstart="return false" style="display:none">
 
-      <p onclick="return false" draggable="false" ondragstart="return false" title-2={{t 'fav.manage'}}>
-        {{!-- <a id ="favorites" {{on "click" (fn this.seeFavorites)}}>Favoritbilder</a> --}}
-        <a id ="favorites" {{on "click" (fn this.seeFavorites)}}>{{t 'fav.images'}}</a>
-      </p><br>
-
       <p onclick="return false" draggable="false" ondragstart="return false">
         <a class="" style="color:white;cursor:default">
 
@@ -279,7 +274,7 @@ export class MenuMain extends Component {
 
       {{/if}}
 
-      <div id='albumHead' style="display:none;justify-content:space-between">
+      <div id='albumHead' style="justify-content:space-between">
         <span style="margin:0.2rem;padding:0.1rem 0.2rem">
           <em>{{t 'totalImgNumber'}}</em>:&nbsp;{{this.totalImgNumber}}
 
@@ -290,7 +285,7 @@ export class MenuMain extends Component {
       </div>
 
       <RefreshThis @for={{this.z.refreshTree}}>
-      <div class="albumTree" style="display:none">
+      <div class="albumTree">
         <Tree @tree={{this.tree}} />
         {{#if this.z.imdbRoot}}
           <p style="font-size:77%;vertical-align:top;line-height:1.1rem;margin:0 0.2rem 0 3rem">

@@ -56,10 +56,11 @@ export class DialogLogin extends Component {
         this.z.freeUsers = cred[3];
         this.z.allowFunc(); // SET ALLOWANCES PATTERN
         this.z.loli('logged in');
+        // Ensure that the main menu is 'unfolded'
+        document.getElementById('albumHead').style.display = '';
+        document.querySelector('div.albumTree').style.display = '';
         // Manage the main menu and reset everything
         document.getElementById('rootSel').selectedIndex = -1;
-        document.getElementById('albumHead').style.display = 'none';
-        document.querySelector('div.albumTree').style.display = 'none';
         this.z.imdbCoco = '';
         this.z.imdbDir = '';
         this.z.imdbDirIndex = 0;

@@ -72,8 +72,8 @@ document.addEventListener('keydown', (event) => {
           return;
         }
       }
-      let allist = document.querySelectorAll('.menu_img_list');
-      for (let list of allist) list.style.display = 'none';
+      // let allist = document.querySelectorAll('.menu_img_list');
+      // for (let list of allist) list.style.display = 'none';
       if (!document.getElementById('menuMain').style.display)
         document.getElementById('menuButton').click(); //close menu
       // The view image is displayed with its navigation buttons:
