@@ -22,6 +22,7 @@ export class DialogUtil extends Component {
   @tracked countImgs = 0; // duplicate image name counter
   @tracked amTools = 0; // album tools flag
   @tracked cnTools = 0; // common tools flag
+  @tracked resRad = 0; // to trigger rerender/reset of radio buttons
 
   // Detect closing Esc key
   detectEscClose = (e) => {
@@ -31,10 +32,20 @@ export class DialogUtil extends Component {
     }
   }
 
+  // Detect
+  detectMouseDown = (e) => {
+    e.stopPropagation();
+  }
+
+  // Detect
+  detectMouseUp = (e) => {
+    e.stopPropagation();
+  }
+
   // Which tool was selected?
   detectRadio = async (e) => {
     var elRadio = e.target;
-      this.z.loli(`${elRadio.id} ${elRadio.checked}`, 'color:red');
+      // this.z.loli(`${elRadio.id} ${elRadio.checked}`, 'color:red');
     this.tool = elRadio.id;
   }
 
@@ -89,7 +100,7 @@ export class DialogUtil extends Component {
     }
   }
 
-  get okTexts() { // true if images shown
+  get okTextSheet() { // true if images shown
       // this.z.loli('numShown ' + this.z.numShown, 'color:brown ');
     if (this.z.albumTools && this.z.numShown > 0) {
       this.tool = '';
@@ -127,6 +138,15 @@ export class DialogUtil extends Component {
     }
 
   // Common tools
+  get okFindText() {
+    if (this.z.albumTools) {
+      return false;
+    } else {
+      this.tool = '';
+      return true
+    }
+  }
+
   get okDupNames() {
     if (this.z.albumTools) {
       return false;
@@ -250,7 +270,7 @@ export class DialogUtil extends Component {
     }
   }
 
-  doTexts = () => {
+  doTextSheet = () => {
     this.z.futureNotYet('write.tool8');
   }
 
@@ -321,6 +341,11 @@ export class DialogUtil extends Component {
     this.z.alertMess(this.intl.t('write.dbUpdated'));
   }
 
+  get resetRadio() {
+    this.resRad ++;
+    return '';
+  }
+
   get zeroTools1() {
     this.amTools = 0;
     return '';
@@ -346,8 +371,7 @@ export class DialogUtil extends Component {
 
   <template>
 
-    {{!-- <RefreshThis @for={{this.z.albumTools}}> --}}
-    <dialog id="dialogUtil" style="width:min(calc(100vw - 2rem),auto);max-width:480px" {{on 'keydown' this.detectEscClose}}>
+    <dialog id="dialogUtil" style="width:min(calc(100vw - 2rem),auto);max-width:480px" {{on 'keydown' this.detectEscClose}} {{on 'mousedown' this.detectMouseDown}} {{on 'mouseup' this.detectMouseUp}}>
       <header data-dialog-draggable>
 
         {{!-- Placeholder for
@@ -367,8 +391,8 @@ export class DialogUtil extends Component {
       </header>
       <main style="padding:0 0.75rem;max-height:24rem" width="99%">
 
+        <RefreshThis @for={{this.resRad}}>
         <div style="padding:0.5rem 0;line-height:1.4rem">
-
         {{#if this.z.albumTools}}
         {{!-- Album tools --}}{{this.zeroTools1}}
 
@@ -381,7 +405,7 @@ export class DialogUtil extends Component {
               <label for="util1"> &nbsp;{{t 'write.tool1'}}</label>
             </span>
           {{/if}}
-          {{#if this.okTexts}}
+          {{#if this.okTextSheet}}
             <span class="glue">
               <input id="util8" {{this.addTools1}} name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
               <label for="util8"> &nbsp;{{{t 'write.tool8'}}}</label>
@@ -411,6 +435,13 @@ export class DialogUtil extends Component {
 
           {{!-- Here are tools for the entire album collection --}}
           <div style="margin:0.5rem 0 0 0">{{{t 'write.tool01'}}}</div>
+
+          {{#if this.okFindText}}
+            <span class="glue">
+              <input id="util9" {{this.addTools2}} name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
+              <label for="util9"> &nbsp;{{t 'write.tool9'}} <span style="font:normal .95rem monospace!important">[F]</span></label>
+            </span>
+          {{/if}}
           {{#if this.okDupNames}}
             <span class="glue">
               <input id="util4" {{this.addTools2}} name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
@@ -431,10 +462,9 @@ export class DialogUtil extends Component {
           {{/if}}
 
         {{/if}}
-
         </div>
 
-        <div id="xTools" style="padding:0.5rem 0">
+        <div style="padding:0.5rem 0">
 
           {{#if this.z.albumTools}}
             {{#if this.amTools}}
@@ -443,7 +473,11 @@ export class DialogUtil extends Component {
               {{t 'write.tool99'}}
             {{/if}}
           {{else}}
-            {{t 'write.chooseTool'}}<br>
+            {{#if this.cnTools}}
+              {{t 'write.chooseTool'}}<br>
+            {{else}}
+              {{t 'write.tool99'}}
+            {{/if}}
           {{/if}}
 
           {{!-- === Delete the album === --}}
@@ -459,7 +493,7 @@ export class DialogUtil extends Component {
           {{!-- === Make text list === --}}
           {{else if (eq this.tool 'util8')}}
 
-              <button type="button" {{on 'click' (fn this.doTexts)}}>{{{t 'write.tool8' a=this.imdbDirName}}}</button>
+              <button type="button" {{on 'click' (fn this.doTextSheet)}}>{{{t 'write.tool8' a=this.imdbDirName}}}</button>
 
           {{!-- === Make a new subalbum === --}}
           {{else if (eq this.tool 'util2')}}
@@ -522,16 +556,26 @@ export class DialogUtil extends Component {
 
             <button type="button" {{on 'click' (fn this.doDbUpdate)}}>{{t 'write.tool6'}}</button>
 
+          {{!-- === Find texts in the entire album collection === --}}
+          {{else if (eq this.tool 'util9')}}
+
+            <button type="button" {{on 'click' (fn this.z.doFindText)}}>{{t 'write.tool9'}}</button>
+
+            {{!-- <p onclick="return false" draggable="false" ondragstart="return false" title-2="{{t 'imageSearch'}}">
+              <a id="searchText" {{on "click" (fn this.findText)}}>{{t 'imageFind'}}</a>
+            </p><br> --}}
           {{/if}}
 
         </div>
+        </RefreshThis>
+
+        {{this.resetRadio}}
 
       </main>
       <footer data-dialog-draggable>
-        <button type="button" {{on 'click' (fn this.z.closeDialog dialogUtilId)}}>{{t 'button.cancel'}}</button>&nbsp;
+        <button type="button" {{on 'click' (fn this.z.closeDialog dialogUtilId)}}>{{t 'button.close'}}</button>&nbsp;
       </footer>
     </dialog>
-    {{!-- </RefreshThis> --}}
 
     <dialog id="dialogDupResult" style="max-width:calc(100vw - 2rem);z-index:15;max-width:480px"{{on 'keydown' this.detectEscClose}}>
       <header data-dialog-draggable>

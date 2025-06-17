@@ -57,16 +57,16 @@ export class ButtonsLeft extends Component {
     this.z.albumTools = false;
     let diaObj = document.getElementById(id);
     if (diaObj.hasAttribute('open')) {
+      document.getElementById(id).focus();
       this.z.closeDialog(id);
+      // In the commonTools, close with albumTools: Cleans the dialog!
+      // await new Promise (z => setTimeout (z, 322));
+      // document.getElementById('commonTools').click();
+      // await new Promise (z => setTimeout (z, 322));
       return;
     }
     await this.z.openDialog(id);
-    await new Promise (z => setTimeout (z, 122));
-    this.z.albumTools = !this.z.albumTools;
-    this.z.albumTools = !this.z.albumTools;
-    await new Promise (z => setTimeout (z, 122));
-    this.z.albumTools = !this.z.albumTools;
-    this.z.albumTools = !this.z.albumTools;
+    await new Promise (z => setTimeout (z, 322));
     // this.z.albumTools = undefined;
   }
 
@@ -77,7 +77,7 @@ export class ButtonsLeft extends Component {
     {{!-- LEFT BUTTONS without href attributes --}}
     <div id="smallButtons" draggable="false" ondragstart="return false" style="z-index:10">
 
-      <a id="menuButton" class="smBu" title-2={{t 'buttons.left.main'}} draggable="false" ondragstart="return false" {{on 'click' this.toggleMainMenu}} style="font-family:Comic Sans MS;line-height:80%"><span class="menu">𝌆</span></a>
+      <a id="menuButton" class="smBu" title-2={{t 'buttons.left.main'}} draggable="false" ondragstart="return false" {{on 'click' this.toggleMainMenu}}>&nbsp;</a>
 
       <a id="commonTools" class="smBu" title="{{t 'tools'}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.toggDia)}} style="background:#444 url(/images/tools.png) center 0.15rem/1.8rem no-repeat"></a>
 
@@ -89,9 +89,9 @@ export class ButtonsLeft extends Component {
 
       <a id="toggleHide" class="smBu" title={{t 'buttons.left.hide'}} draggable="false" ondragstart="return false" style="display:none" {{on 'click' (fn this.toggleHideFlagged)}}></a>
 
-      <a id="toggleName" class="smBu" title={{t 'buttons.left.name'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.toggleNameView)}} style="background:#444 url(/images/img-name.png) center 0.44rem/1.6rem no-repeat"></a>
-
       <a id="saveOrder" class="smBu" title={{t 'buttons.left.save'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.z.saveOrder)}} style="background:#444 url(/images/floppy1.png) center 0.15rem/1.7rem no-repeat"></a>
+
+      <a id="toggleName" class="smBu" title={{t 'buttons.left.name'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.toggleNameView)}} style="background:#444 url(/images/img-name.png) center 0.44rem/1.6rem no-repeat"></a>
 
       <a class="smBu" draggable="false" ondragstart="return false" title={{t 'buttons.left.up'}} style="background:#444 url(/images/arrow.png) center 0.2rem/1.6rem no-repeat" onclick="window.scrollTo(0,0)"></a>
 

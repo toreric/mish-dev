@@ -148,13 +148,6 @@ export class MenuMain extends Component {
     return this.args.tree ?? this.z.imdbTree;
   }
 
-  // Search album texts to find images
-  findText = () => {
-    if (this.missingRoot()) return;
-    this.z.openDialog(dialogFindId);
-    this.z.closeMainMenu('after opening find dialog'); // Close the main menu
-  }
-
   // Manage favorite image lists
   seeFavorites = () => {
     if (this.missingRoot()) return;
@@ -168,14 +161,14 @@ export class MenuMain extends Component {
   }
 
   // Edit or create albums etc.
-  albumEdit = () => {
-    if (this.missingRoot()) return;
-      // this.z.loli('albumEdit', 'color:red');
-      // this.z.loli(this.z.picFound, 'color:red');
-      // this.z.loli(this.z.imdbDir, 'color:red');
-    this.z.openDialog(dialogUtilId);
-    this.z.closeMainMenu('');
-  }
+  // albumEdit = () => {
+  //   if (this.missingRoot()) return;
+  //     // this.z.loli('albumEdit', 'color:red');
+  //     // this.z.loli(this.z.picFound, 'color:red');
+  //     // this.z.loli(this.z.imdbDir, 'color:red');
+  //   this.z.openDialog(dialogUtilId);
+  //   this.z.closeMainMenu('');
+  // }
 
   // Close/open albumTree
   toggleAlbumTree = async () => {
@@ -202,7 +195,6 @@ export class MenuMain extends Component {
   missingRoot = () => {
     if (document.getElementById('dialogAlert').hasAttribute('open')) {
       this.z.closeDialog(dialogAlertId);
-      return true;
     }
     if (!this.z.imdbRoot) {
       // alertMess opens the alert dialog
@@ -253,10 +245,6 @@ export class MenuMain extends Component {
 
     <div id="menuMain" class="mainMenu" onclick="return false" draggable="false" ondragstart="return false" style="display:none">
 
-      <p onclick="return false" draggable="false" ondragstart="return false" title-2="{{t 'imageSearch'}}">
-        <a id="searchText" {{on "click" (fn this.findText)}}>{{t 'imageFind'}}<span style="font:normal 1em monospace!important">[F]</span></a>
-      </p><br>
-
       <p onclick="return false" draggable="false" ondragstart="return false" title-2={{t 'fav.manage'}}>
         {{!-- <a id ="favorites" {{on "click" (fn this.seeFavorites)}}>Favoritbilder</a> --}}
         <a id ="favorites" {{on "click" (fn this.seeFavorites)}}>{{t 'fav.images'}}</a>
@@ -275,6 +263,9 @@ export class MenuMain extends Component {
           <a class="rootQuest" title-2={{t 'albumSelectInfo'}}>&nbsp;?&nbsp;</a>
         </a>
       </p><br>
+
+      {{!-- Hidden button for [F] open of doFindText --}}
+      <button id="searchText" type="button" style="display:none" {{on 'click' (fn this.z.doFindText)}}>[F]</button>
 
       {{#if this.z.imdbRoot}}
 

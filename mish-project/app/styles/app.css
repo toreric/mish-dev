@@ -697,11 +697,9 @@ a#do_mail,
   background-position: center !important;
 }
 #menuButton {
-  background-color: #0085ff;
+  background: #444 url('/images/favicon0.png') center 0.3rem/1.5rem no-repeat;
 }
-#menuButton span.menu {
-  font-size: 1.6rem;
-}
+
 /* for the language flag buttons */
 .langflags img {
   cursor: pointer;

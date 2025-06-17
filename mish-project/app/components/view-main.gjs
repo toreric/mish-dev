@@ -121,16 +121,16 @@ class SubAlbums extends Component {
     this.z.albumTools = true;
     let diaObj = document.getElementById(id);
     if (diaObj.hasAttribute('open')) {
+      document.getElementById(id).focus();
       this.z.closeDialog(id);
+      // In the albumTools, close with commonTools: Cleans the dialog!
+      // await new Promise (z => setTimeout (z, 322));
+      // document.getElementById('albumTools').click();
+      // await new Promise (z => setTimeout (z, 322));
       return;
     }
     await this.z.openDialog(id);
-    await new Promise (z => setTimeout (z, 122));
-    this.z.albumTools = !this.z.albumTools;
-    this.z.albumTools = !this.z.albumTools;
-    await new Promise (z => setTimeout (z, 122));
-    this.z.albumTools = !this.z.albumTools;
-    this.z.albumTools = !this.z.albumTools;
+    await new Promise (z => setTimeout (z, 322));
     // this.z.albumTools = undefined;
   }
 

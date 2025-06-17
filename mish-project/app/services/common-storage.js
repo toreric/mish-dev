@@ -1045,6 +1045,30 @@ export default class CommonStorageService extends Service {
     document.getElementById('dialogTextDescription').focus();
   }
 
+  // Search album texts to find images
+  //#region doFindText
+  doFindText = () => {
+    if (this.missingRoot()) return;
+    this.openDialog('dialogFind');
+    this.closeMainMenu('after opening find dialog'); // Close the main menu
+  }
+
+  // Check if the alert dialog is open (then close it), or if no
+  // album root/collection (imdbRoot) is chosen (then open it)
+  //#region missingRoot
+  missingRoot = () => {
+    if (document.getElementById('dialogAlert').hasAttribute('open')) {
+      this.closeDialog(dialogAlertId);
+    }
+    if (!this.imdbRoot) {
+      // alertMess opens the alert dialog
+      this.alertMess(this.intl.t('needaroot'), 0);
+      document.querySelector('.mainMenu select').focus();
+      return true;
+    }
+    return false;
+  }
+
   //#region COOKIES
   //== Cookie names are mish_lang, mish_bkgr, ...
   setCookie = (cname, cvalue, exminutes) => {
@@ -1636,12 +1660,14 @@ export default class CommonStorageService extends Service {
 
   openMainMenu = async (e) => {
     if (e) e.stopPropagation();
-    var menuMain = document.getElementById('menuMain');
     var menuButton = document.getElementById('menuButton');
+    var menuMain = document.getElementById('menuMain');
     menuMain.style.display = '';
     await new Promise (z => setTimeout (z, 9)); // openMainMenu
-    menuButton.innerHTML = '<span class="menu">×</span>';
-    await new Promise (z => setTimeout (z, 9)); // openMainMenu
+    // menuButton.innerHTML = '<span class="menu">×</span>';
+    menuButton.style.background = "#444 url('/images/cross-21.png') center 0.3rem/1.5rem no-repeat";
+    await new Promise (z => setTimeout (z, 29)); // openMainMenu
+      console.log('menuButton', menuButton);
     this.loli('opened main menu');
     return '';
   }
@@ -1652,8 +1678,10 @@ export default class CommonStorageService extends Service {
     var menuButton = document.getElementById('menuButton');
     menuMain.style.display = 'none';
     await new Promise (z => setTimeout (z, 9)); // closeMainMenu
-    menuButton.innerHTML = '<span class="menu">𝌆</span>';
-    await new Promise (z => setTimeout (z, 9)); // closeMainMenu
+    // menuButton.innerHTML = '<span class="menu">𝌆</span>';
+    menuButton.style.background = "#444 url('/images/favicon0.png') center 0.3rem/1.5rem no-repeat";
+    await new Promise (z => setTimeout (z, 29)); // closeMainMenu
+      console.log('menuButton', menuButton);
     this.loli('closed main menu ' + msg);
     return '';
   }

@@ -61,7 +61,7 @@ document.addEventListener('keydown', (event) => {
 
   event.stopPropagation();
   var key = event.keyCode;
-      // console.log('Key ' + key + ' pressed');
+    // console.log('Key ' + key + ' pressed');
   switch(key) {
     case 27:  // Esc
         // console.log(event.target);

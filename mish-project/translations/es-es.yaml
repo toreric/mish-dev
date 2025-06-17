@@ -201,7 +201,7 @@ buttons:
 
 dialog:
   find:
-    header: Find images
+    header: Find images in the album collection
     nolinks: (not linked)
   help:
     header: User guide
@@ -304,7 +304,7 @@ plusExplain: Subalbums also have subalbums!
 printOut: Prnt
 reloadApp: Reload the app!
 select:
-  language: Elige idioma
+  language: Eliga idioma
   languagetext: Español
 selectAlbumMove: Move to which album?
 selectAlbumLink: Link to which album?
@@ -421,6 +421,7 @@ write:
   tool6: Update search data
   tool7: Try to find similar images
   tool8: Make text list for displayed images
+  tool9: Find in captions and more
   tool99: Here is nothing to choose!
   utilHeader: Tools for
   utilHeader0: Tools for the album collection

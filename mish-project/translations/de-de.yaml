@@ -199,7 +199,7 @@ buttons:
 
 dialog:
   find:
-    header: Bilder finden
+    header: Bilder in der Sammlung finden
     nolinks: (nicht verlinkte)
   help:
     header: Benutzeranweisung
@@ -417,6 +417,7 @@ write:
   tool6: Suchdaten aktualisieren
   tool7: Ähnliche Bilder finden versuchen
   tool8: Textliste für angezeigte Bilder erstellen
+  tool9: In Untertiteln und mehr finden
   tool99: Hier gibt es nichts zu wählen!
   utilHeader: Werkzeuge für
   utilHeader0: Werkzeuge für die Albumsammlung
