@@ -575,7 +575,7 @@ img.spinner {
   font-size: 114%;
 }
 /* In helpText: */
-/* .helpIcon, #questionMark0, #albSel, #toggleName0, #toggleHide0, #upLoad0, #goTop0 { */
+/* .helpIcon, #questionMark0, #albSel, #toggleName0, #toggleHide0, #upLoad0 { */
 .helpIcon {
   display: inline-block;
   width: 0.9rem;
@@ -605,7 +605,7 @@ img.spinner {
 }
 #albSel {
   width: 1rem !important;
-  background: #444
+  background: #444;
 }
 div[aria-describedby="textareas"] {
   z-index: 99;
@@ -657,14 +657,6 @@ a.smBu:hover {
   animation-name: bluefade;
   animation-duration: 0.4s; /* for toutchs */
 }
-a#goTop,
-#goTop0 {
-  background-color: #444;
-  background-image: url(/images/arrUp.png);
-  background-size: 1em 1em !important;
-  background-repeat: no-repeat !important;
-  background-position: center !important;
-}
 a#reLd {
   background-color: #444;
   background-image: url(/images/reload.png);
@@ -679,11 +671,6 @@ a#do_mail,
   background-size: 0.8em 0.8em !important;
   background-repeat: no-repeat !important;
   background-position: center !important;
-}
-#goTop:hover,
-#toggleHide:hover,
-#reLd:hover {
-  background-color: #555;
 }
 #toggleHide,
 #toggleHide0 {
@@ -1550,7 +1537,7 @@ div.albumTree > div:first-of-type {
 span.album:hover {
   color: #7df!important;
 }
-#headDiv {display:none}
+#albumHead, div.albumTree {display:block}
 
 @-webkit-keyframes borderBlink {
   from,

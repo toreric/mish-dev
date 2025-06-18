@@ -1,0 +1,40 @@
+#!/bin/bash
+#
+# Xmp.dc.<key> in         
+# image metadata   GUI name
+# ---------------  --------------------------------------------
+# description      Beskrivning (var-vad-vem?) 
+# creator          Ursprung/upphovsrätt etc.
+# subject          Extra nyckelord (avdelade med semikolon)
+# title            Bildidentitet/arkivnummer
+# rights           Copyright
+# source           Bastext (preliminär/kompletterande/osäker...)
+key=''
+keys='description creator subject title rights source'
+keyname=''
+fil=''
+txt='<text string>'
+if [ $1 ]; then key=$1; fi  
+if [ $2 ]; then fil=$2; fi  
+for name in $keys; do
+  if [[ $key == $name ]]; then
+    keyname=$name
+  fi
+done
+if [[ $keyname != '' && $# == 3 ]]; then
+  txt=$3
+  XMP="Xmp.dc.$key"
+  exiv2 -M"del $XMP" $fil
+  exiv2 -M"set $XMP $txt" $fil
+else
+  if [[ $keyname == '' ]]; then key='<Xmp.dc-key>'; fi
+  echo
+  echo "Usage: "`basename $0`" $key <image file name> $txt"
+  echo "  Erases and then sets the utf-8 text string as Xmp.dc.$key"
+  if [[ $keyname == '' ]]; then
+    echo "  The key must be one of these items: description,"
+    echo "  creator, subject, title, rights, or source"
+    echo "  Needs: exiv2"
+  fi
+  echo
+fi

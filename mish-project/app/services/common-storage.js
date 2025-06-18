@@ -507,7 +507,7 @@ export default class CommonStorageService extends Service {
       // console.log('setTreeMax scrollY', window.scrollY);
       // console.log('setTreeMax innerHeight', window.innerHeight);
       // console.log('setTreeMax top', atree.getBoundingClientRect().top);
-    let max = window.innerHeight - atree.getBoundingClientRect().top  ;
+    let max = window.innerHeight - atree.getBoundingClientRect().top;
     if (max < 16) max =16;
       // console.log('setTreeMax max', max);
     atree.style.maxHeight = max + 'px';
@@ -1666,7 +1666,7 @@ export default class CommonStorageService extends Service {
     await new Promise (z => setTimeout (z, 9)); // openMainMenu
     menuButton.style.background = "#444 url('/images/cross.png') center 0.4rem/1.3rem no-repeat";
     await new Promise (z => setTimeout (z, 29)); // openMainMenu
-      console.log('menuButton', menuButton);
+      // console.log('menuButton', menuButton);
     this.loli('opened main menu');
     return '';
   }
@@ -1679,7 +1679,7 @@ export default class CommonStorageService extends Service {
     await new Promise (z => setTimeout (z, 9)); // closeMainMenu
     menuButton.style.background = "#444 url('/images/favicon0.png') center 0.3rem/1.5rem no-repeat"; // Also in CSS (app.css)
     await new Promise (z => setTimeout (z, 29)); // closeMainMenu
-      console.log('menuButton', menuButton);
+      // console.log('menuButton', menuButton);
     this.loli('closed main menu ' + msg);
     return '';
   }

@@ -79,8 +79,6 @@ export class ButtonsLeft extends Component {
 
       <a id="menuButton" class="smBu" title-2={{t 'buttons.left.main'}} draggable="false" ondragstart="return false" {{on 'click' this.toggleMainMenu}}>&nbsp;</a>
 
-      <a id="questionMark" class="smBu" title={{t 'buttons.left.help'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.z.toggleDialog dialogHelpId false)}}>?</a>
-
       <a id="commonTools" class="smBu" title="{{t 'tools'}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.toggDia)}} style="background:#444 url(/images/tools.png) center 0.15rem/1.8rem no-repeat"></a>
 
       {{!-- <a id="reFr" {{on 'click' (fn this.someFunction 'refresh')}} title="NOTE: refresh was reLd" style="display:none"></a> --}}
@@ -92,6 +90,8 @@ export class ButtonsLeft extends Component {
       <a id="saveOrder" class="smBu" title={{t 'buttons.left.save'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.z.saveOrder)}} style="background:#444 url(/images/floppy1.png) center 0.15rem/1.7rem no-repeat"></a>
 
       <a id="toggleName" class="smBu" title={{t 'buttons.left.name'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.toggleNameView)}} style="background:#444 url(/images/img-name.png) center 0.44rem/1.6rem no-repeat"></a>
+
+      <a id="questionMark" class="smBu" title={{t 'buttons.left.help'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.z.toggleDialog dialogHelpId false)}}>?</a>
 
       <a class="smBu" draggable="false" ondragstart="return false" title={{t 'buttons.left.up'}} style="background:#444 url(/images/arrow.png) center 0.2rem/1.6rem no-repeat" onclick="window.scrollTo(0,0)"></a>
 

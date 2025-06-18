@@ -56,9 +56,10 @@ export class DialogLogin extends Component {
         this.z.freeUsers = cred[3];
         this.z.allowFunc(); // SET ALLOWANCES PATTERN
         this.z.loli('logged in');
-        // Ensure that the main menu is 'unfolded'
-        document.getElementById('albumHead').style.display = '';
-        document.querySelector('div.albumTree').style.display = '';
+        // Ensure that the main menu behaves
+        let ifshow = this.z.imdbRoot ? '' : 'none';
+        document.getElementById('albumHead').style.display = ifshow;
+        document.querySelector('div.albumTree').style.display = ifshow;
         // Manage the main menu and reset everything
         document.getElementById('rootSel').selectedIndex = -1;
         this.z.imdbCoco = '';
@@ -79,7 +80,7 @@ export class DialogLogin extends Component {
       document.querySelector('.mainMenu select').focus();
         // this.z.loli('imdbRoot = ' + this.z.imdbRoot, 'color:deeppink');
       if (this.z.imdbRoot) {
-        let selEl = document.getElementById('rootSel');
+        let selEl = document.getElementById(' ');
         selEl.value = this.z.imdbRoot;
         await new Promise (z => setTimeout (z, 88));
         selEl.dispatchEvent(new Event('change'));

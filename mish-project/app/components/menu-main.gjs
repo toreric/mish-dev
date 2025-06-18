@@ -176,9 +176,9 @@ export class MenuMain extends Component {
     let headDiv = document.getElementById('albumHead');
     let treeDiv = document.querySelector('div.albumTree');
     let what;
-    if (treeDiv.style.display === 'none') {
+    if (headDiv.style.display === 'none' && treeDiv.style.display === 'none') {
       what = 'opened';
-      headDiv.style.display = 'flex';
+      headDiv.style.display = '';
       treeDiv.style.display = '';
       await new Promise (z => setTimeout (z, 22));
       this.z.setTreeMax();
@@ -262,19 +262,19 @@ export class MenuMain extends Component {
       {{!-- Hidden button for [F] open of doFindText --}}
       <button id="searchText" type="button" style="display:none" {{on 'click' (fn this.z.doFindText)}}>[F]</button>
 
-      {{#if this.z.imdbRoot}}
-
-      {{!-- <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title-2="{{t 'albumcareinfo'}} {{t 'for'}} {{this.z.imdbRoot}}{{this.z.imdbDir}}">
+      {{!-- {{#if this.z.imdbRoot}}
+         Moved to dialogUtil:
+      <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title-2="{{t 'albumcareinfo'}} {{t 'for'}} {{this.z.imdbRoot}}{{this.z.imdbDir}}">
         <a {{on "click" (fn this.albumEdit)}}>{{t 'albumcare'}} <span title="">”{{{fn this.z.handsomize2sp this.z.imdbDirName}}}”</span></a>
-      </p><br> --}}
-
+      </p><br>
+         Removed as superfluous:
       <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title-2={{t 'albumcollshow'}}>
         <a {{on "click" (fn this.toggleAlbumTree)}}><pre style="margin:0">{{t 'albumcoll'}} ”{{this.z.imdbRoot}}”     ⌵  </pre></a>
       </p>
 
-      {{/if}}
+      {{/if}} --}}
 
-      <div id='albumHead' style="justify-content:space-between">
+      <div id="albumHead">
         <span style="margin:0.2rem;padding:0.1rem 0.2rem">
           <em>{{t 'totalImgNumber'}}</em>:&nbsp;{{this.totalImgNumber}}
 

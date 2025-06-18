@@ -170,7 +170,7 @@ button:
 
 buttons:
   left:
-    main: Hauptmenü
+    main: Albensammlung
 
     help: "Anweisungen\n
           [F1]"

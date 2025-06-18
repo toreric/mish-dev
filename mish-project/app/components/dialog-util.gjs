@@ -87,12 +87,10 @@ export class DialogUtil extends Component {
 
   // Album tools
   get okDelete() { // true if delete album is allowed
-    this.cnTools = 0;
-    this.tool = '';
-    let found = this.z.imdbDir.slice(1) === this.z.picFound;
       // this.z.loli('imdbDir: ' +  this.z.imdbDir.slice(1), 'color:yellow');
       // this.z.loli('picFound: ' +  this.z.picFound, 'color:yellow');
-    if (!this.z.albumTools && !found && this.z.allow.albumEdit && this.z.imdbDir) { // Don't erase ''=root
+    let found = this.z.imdbDir.slice(1) === this.z.picFound;
+    if (this.z.albumTools && !found && this.z.allow.albumEdit && this.z.imdbDir) { // Don't erase ''=root
       this.tool = '';
       return true
     } else {
@@ -350,7 +348,7 @@ export class DialogUtil extends Component {
     this.z.alertMess(this.intl.t('write.dbUpdated'));
   }
 
-  get resetRadio() {
+  get resetRadio() { // trigger
     this.resRad ++;
     return '';
   }
@@ -601,7 +599,8 @@ export class DialogUtil extends Component {
     <dialog id="dialogDupResult" style="max-width:calc(100vw - 2rem);z-index:15;max-width:480px"{{on 'keydown' this.detectEscClose}}>
       <header data-dialog-draggable>
         <p>&nbsp;</p>
-        <p>{{{t 'write.dialogDupResult' a=this.imdbDirName}}}</p>
+        {{!-- <p>{{{t 'write.dialogDupResult' a=this.imdbDirName}}}</p> --}}
+        <p>{{{t 'write.dialogDupResult' a=this.z.imdbRoot}}}</p>
         <button class="close" type="button" {{on 'click' (fn this.z.closeDialog 'dialogDupResult')}}>×</button>
       </header>
       <main style="padding:0 0.5rem 0 1rem;height:auto;line-height:150%;overflow:auto" width="99%">
@@ -613,7 +612,8 @@ export class DialogUtil extends Component {
               {{t 'button.show'}} <b>{{this.z.handsomize2sp this.z.picFound}}</b>
             </button><br>
           {{else}}
-            {{{t 'write.noDupNamesFound' a=this.imdbDirName}}}<br>
+            {{!-- {{{t 'write.noDupNamesFound' a=this.imdbDirName}}}<br> --}}
+            {{{t 'write.noDupNamesFound' a=this.z.imdbRoot}}}<br>
           {{/if}}
         </div>
 

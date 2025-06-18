@@ -171,7 +171,7 @@ button:
 
 buttons:
   left:
-    main: Main menu
+    main: Album collection
 
     help: "User guide\n
           [F1]"
