@@ -80,7 +80,7 @@ export class DialogLogin extends Component {
       document.querySelector('.mainMenu select').focus();
         // this.z.loli('imdbRoot = ' + this.z.imdbRoot, 'color:deeppink');
       if (this.z.imdbRoot) {
-        let selEl = document.getElementById(' ');
+        let selEl = document.getElementById('rootSel');
         selEl.value = this.z.imdbRoot;
         await new Promise (z => setTimeout (z, 88));
         selEl.dispatchEvent(new Event('change'));

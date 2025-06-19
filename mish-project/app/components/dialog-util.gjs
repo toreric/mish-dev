@@ -390,7 +390,7 @@ export class DialogUtil extends Component {
           <p><b>{{t 'write.utilHeader'}} <span>{{this.imdbDirName}}</span></b><br>({{this.z.imdbRoot}}{{this.z.imdbDir}})</p>
         {{else}}
           {{!-- Common tools --}}
-          <p><b>{{t 'write.utilHeader0'}}</b></p>
+          <p><b>{{t 'write.utilHeader0'}} <span>{{this.z.imdbRoot}}</span></b></p>
         {{/if}}
 
         <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogUtilId)}}>×</button>

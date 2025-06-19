@@ -284,6 +284,7 @@ class Welcome extends Component {
     // Now check if the album root is already chosen and if so,
     // ensure it belongs to the options in its select statement:
     if (this.z.imdbRoot && this.z.imdbRoots.indexOf(this.z.imdbRoot) > -1) {
+      await new Promise (z => setTimeout (z, 22));
       let selEl = document.getElementById('rootSel');
       selEl.value = this.z.imdbRoot;
       await new Promise (z => setTimeout (z, 88));
