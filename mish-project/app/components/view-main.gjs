@@ -86,6 +86,11 @@ class SubAlbums extends Component {
     return plus;
   }
 
+  get ifTool() {
+    if (this.z.numShown || this.z.allow.albumEdit || this.z.allow.imgUpload) return true;
+    else return false;
+  }
+
   hasImages = () => {
     let txt = '';
     if (this.z.hasImages) {
@@ -140,10 +145,10 @@ class SubAlbums extends Component {
       <div class="miniImgs albs">
         {{#if this.z.imdbRoot}}
 
-          {{!-- {{#if this.z.numShown}} --}}
+          {{#if this.ifTool}}
             {{!-- Open the Tools dialog --}}
             <button id='albumTools' type="button" title-2="{{t 'tools'}}" style="border:0.5px solid #909;height:18px;width:32px;background-color:transparent;background:url(/images/tool0.png) center 0/1.8rem no-repeat" {{on 'click' (fn this.toggDia)}}>&nbsp;</button>
-          {{!-- {{/if}} --}}
+          {{/if}}
 
           {{#if this.z.imdbDir}}
             <span title-2="{{this.z.imdbRoot}}{{this.z.imdbDir}}">
