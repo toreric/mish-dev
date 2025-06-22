@@ -147,7 +147,7 @@ class SubAlbums extends Component {
 
           {{#if this.ifTool}}
             {{!-- Open the Tools dialog --}}
-            <button id='albumTools' type="button" title-2="{{t 'tools'}}" style="border:0.5px solid #909;height:18px;width:32px;background-color:transparent;background:url(/images/tool0.png) center 0/1.8rem no-repeat" {{on 'click' (fn this.toggDia)}}>&nbsp;</button>
+            <button id='albumTools' type="button" title-2="{{t 'tools'}}" style="border:0;background:url(/images/tool0.png) center 0/2rem no-repeat" {{on 'click' (fn this.toggDia)}}> &nbsp; &nbsp; &nbsp;</button>
           {{/if}}
 
           {{#if this.z.imdbDir}}

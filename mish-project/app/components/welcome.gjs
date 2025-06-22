@@ -331,7 +331,6 @@ export default class extends Welcome {
           </b>&nbsp;&nbsp;
         </span>
 
-
         <span style="margin-top:0.25rem">
 
           {{#if this.z.allow.deleteImg}}
@@ -342,11 +341,11 @@ export default class extends Welcome {
           <span id="loggedInUser">
             {{!-- Open the Settings dialog --}}
             {{#if this.z.allow.textEdit}}
-              <button type="button" style="border:0.5px solid #909;background:transparent;color:#909" {{on 'click' (fn this.z.toggleDialog 'dialogSettings')}}>{{t 'settings'}}</button>&nbsp;
+              <button type="button" style="background:url(/images/settings.png) center 0/1.13rem no-repeat;border:0" title-2="{{t 'settings'}}" {{on 'click' (fn this.z.toggleDialog 'dialogSettings')}}> &nbsp; &nbsp;</button>
             {{/if}}
 
             {{!-- Open the Login and Rights dialog --}}
-            <button type="button" style="border:0.5px solid #909;background:transparent;color:#909" title-2="{{t 'button.optchuser'}}" {{on 'click' (fn this.openLogIn)}}>{{t 'button.optlogin'}}</button>
+            <button type="button" style="background:url(/images/profile.png) center 0/1.13rem no-repeat;border:0" title-2="{{t 'button.optchuser'}}" {{on 'click' (fn this.openLogIn)}}> &nbsp; &nbsp;</button>
 
             {{!-- Present who's logged in with rights --}}
             {{t 'loggedIn'}}: <b>{{this.z.userName}}</b>

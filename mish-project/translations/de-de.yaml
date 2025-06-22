@@ -158,7 +158,6 @@ button:
   moveFunc:  0Verschieben in das ausgewählte Album
   notes:     Anmerkungen
   optchuser: Benutzer wechseln Rechteinformation
-  optlogin:  Anmeldung
   restart:   "Den Browser neuladen\n
              durch hier klicken!"
   rightsinfo: Rechteinformation
@@ -170,7 +169,7 @@ button:
 
 buttons:
   left:
-    main: Albensammlung
+    main: "Hauptmenü: Albensammlung"
 
     help: "Anweisungen\n
           [F1]"

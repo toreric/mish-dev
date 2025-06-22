@@ -159,7 +159,6 @@ button:
   moveFunc:  0Transfer to the selected album
   notes:     Notes
   optchuser: Change user About rights
-  optlogin:  Log in
   restart:   "Reload the browser\n
              by clicking here!"
   rights:    About rights
@@ -171,7 +170,7 @@ button:
 
 buttons:
   left:
-    main: Album collection
+    main: "Main menu: Album collection"
 
     help: "User guide\n
           [F1]"

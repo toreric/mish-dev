@@ -160,16 +160,6 @@ export class MenuMain extends Component {
     // ...todo
   }
 
-  // Edit or create albums etc.
-  // albumEdit = () => {
-  //   if (this.missingRoot()) return;
-  //     // this.z.loli('albumEdit', 'color:red');
-  //     // this.z.loli(this.z.picFound, 'color:red');
-  //     // this.z.loli(this.z.imdbDir, 'color:red');
-  //   this.z.openDialog(dialogUtilId);
-  //   this.z.closeMainMenu('');
-  // }
-
   // Close/open albumTree
   toggleAlbumTree = async () => {
     if (this.missingRoot()) return;
@@ -262,18 +252,7 @@ export class MenuMain extends Component {
       {{!-- Hidden button for [F] open of doFindText --}}
       <button id="searchText" type="button" style="display:none" {{on 'click' (fn this.z.doFindText)}}>[F]</button>
 
-      {{!-- {{#if this.z.imdbRoot}}
-         Moved to dialogUtil:
-      <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title-2="{{t 'albumcareinfo'}} {{t 'for'}} {{this.z.imdbRoot}}{{this.z.imdbDir}}">
-        <a {{on "click" (fn this.albumEdit)}}>{{t 'albumcare'}} <span title="">”{{{fn this.z.handsomize2sp this.z.imdbDirName}}}”</span></a>
-      </p><br>
-         Removed as superfluous:
-      <p onclick="return false" draggable="false" ondragstart="return false" style="z-index:0" title-2={{t 'albumcollshow'}}>
-        <a {{on "click" (fn this.toggleAlbumTree)}}><pre style="margin:0">{{t 'albumcoll'}} ”{{this.z.imdbRoot}}”     ⌵  </pre></a>
-      </p>
-
-      {{/if}} --}}
-
+      <RefreshThis @for={{this.z.refreshTree}}>
       <div id="albumHead">
         <span style="margin:0.2rem;padding:0.1rem 0.2rem">
           <em>{{t 'totalImgNumber'}}</em>:&nbsp;{{this.totalImgNumber}}
@@ -284,7 +263,6 @@ export class MenuMain extends Component {
         </span>
       </div>
 
-      <RefreshThis @for={{this.z.refreshTree}}>
       <div class="albumTree">
         <Tree @tree={{this.tree}} />
         {{#if this.z.imdbRoot}}

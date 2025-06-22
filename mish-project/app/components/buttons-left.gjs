@@ -79,7 +79,7 @@ export class ButtonsLeft extends Component {
 
       <a id="menuButton" class="smBu" title-2={{t 'buttons.left.main'}} draggable="false" ondragstart="return false" {{on 'click' this.toggleMainMenu}}>&nbsp;</a>
 
-      <a id="commonTools" class="smBu" title="{{t 'tools'}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.toggDia)}} style="background:#444 url(/images/tools.png) center 0.15rem/1.8rem no-repeat"></a>
+      <a id="commonTools" class="smBu" title="{{t 'tools'}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.toggDia)}} style="background:#444 url(/images/tools.png) center 0rem/2.2rem no-repeat"></a>
 
       {{!-- <a id="reFr" {{on 'click' (fn this.someFunction 'refresh')}} title="NOTE: refresh was reLd" style="display:none"></a> --}}
 

@@ -3,12 +3,12 @@ EMBER/GLIMMER browser input:
 evo@discord 2024-10-17 16:51
 a very basic example here of the browser behaviour
 
-if you type into the textarea it will stop updating from the setInterval, but if you reset it where the dom is replaced it will begin updating again.
+if you type into the textarea it will stop updating from the setInterval, but if you reset it where the dom is replaced it will begin updating again:
 
 https://codepen.io/evoactivity/pen/qBejBxX
 
 
-TAR ARCHIVE (backup) search and extraction
+TAR ARCHIVE (backup) search and extraction examples
 
 SEARCH with zfind for files:
 tore@nejlika:/media/tore/SAMSUNG

@@ -159,7 +159,6 @@ button:
   moveFunc:  0Flytta till det valda albumet
   notes:     Anteckningar
   optchuser: Byt användare Om rättigheter
-  optlogin:  Inloggning
   restart:   "Ladda om webbläsaren\n
              genom att klicka här!"
   rights:    Om rättigheter
@@ -171,7 +170,7 @@ button:
 
 buttons:
   left:
-    main: Albumsamling
+    main: "Huvudmeny: Albumsamling"
 
     help: "Användarhand-\n
           ledning [F1]"

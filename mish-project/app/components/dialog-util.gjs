@@ -348,6 +348,11 @@ export class DialogUtil extends Component {
     this.z.alertMess(this.intl.t('write.dbUpdated'));
   }
 
+  doFindText = () => {
+    this.z.closeDialog('dialogUtil');
+    this.z.doFindText();
+  }
+
   get resetRadio() { // trigger
     this.resRad ++;
     return '';
@@ -446,7 +451,7 @@ export class DialogUtil extends Component {
           {{#if this.okFindText}}
             <span class="glue">
               <input id="util9" {{this.addTools2}} name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
-              <label for="util9"> &nbsp;{{t 'write.tool9'}} <span style="font:normal .95rem monospace!important">[F]</span></label>
+              <label for="util9"> &nbsp;{{t 'write.tool9'}} &nbsp;<span style="font:normal .9rem Arial;border:2px solid blue;border-radius:5px">&nbsp;F&nbsp;</span></label>
             </span>
           {{/if}}
           {{#if this.okSeeFavorites}}
@@ -572,7 +577,7 @@ export class DialogUtil extends Component {
           {{!-- === Find texts in the entire album collection === --}}
           {{else if (eq this.tool 'util9')}}
 
-            <button type="button" {{on 'click' (fn this.z.doFindText)}}>{{t 'write.tool9'}}</button>
+            <button type="button" {{on 'click' (fn this.doFindText)}}>{{t 'write.tool9'}}</button>
 
           {{!-- === Manage personal favorites === --}}
           {{else if (eq this.tool 'util91')}}
