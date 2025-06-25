@@ -6,6 +6,9 @@
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <meta http-equiv="Content-Security-Policy" content="script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' 'self'; default-src 'self' https://mish.hopto.org/text/" />
+    <!--  http-equiv="Content-Security-Policy" content="script-src-attr 'unsafe-inline'; style-src 'unsafe-inline' 'self'; default-src 'self' https://mish.hopto.org/text/" -->
+
     {{content-for "head"}}
 
     <link integrity="" rel="stylesheet" href="{{rootURL}}assets/vendor.css" />
@@ -20,15 +23,15 @@
     <!-- <script type="text/javascript" src="{{rootURL}}dtree-src.js"></script> -->
     <!-- <link rel="StyleSheet" href="{{rootURL}}dtree.css" type="text/css" /> -->
 
-    {{content-for "head-footer"}}
-  </head>
-  <body tabindex="-1">
-    {{content-for "body"}}
-
     <script src="{{rootURL}}assets/vendor.js"></script>
     <script src="{{rootURL}}assets/polaris-starter.js"></script>
 
     <!--script src="{{rootURL}}xdialog.3.4.0.js"></script-->
+
+    {{content-for "head-footer"}}
+  </head>
+  <body tabindex="-1">
+    {{content-for "body"}}
 
     {{content-for "body-footer"}}
   </body>

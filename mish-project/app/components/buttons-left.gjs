@@ -72,7 +72,7 @@ export class ButtonsLeft extends Component {
 
   <template>
 
-    <iframe class="intro" src="start.html" style="display:none"></iframe>
+    {{!-- <iframe class="intro" src="start.html" style="display:none"></iframe> --}}
 
     {{!-- LEFT BUTTONS without href attributes --}}
     <div id="smallButtons" draggable="false" ondragstart="return false" style="z-index:10">

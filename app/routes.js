@@ -17,7 +17,7 @@ module.exports = function(app) { // Start module.exports
 
   const SQLite = require('better-sqlite3')
 
-  // This row should be moved to the 'login' and also followed at end by 'setdb.close'
+  // This row should be moved to the 'login' and there followed at end by 'setdb.close'
   // in order to free it for construction of an admin gui for settings management:
   const setdb = new SQLite('_imdb_settings.sqlite')
 

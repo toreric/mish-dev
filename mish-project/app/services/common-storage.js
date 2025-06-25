@@ -764,7 +764,14 @@ export default class CommonStorageService extends Service {
   //#region albumAllImg
   albumAllImg = (i) => { // number of original + symlink images in album 'i'
     let c = this.imdbCoco[i];
-    return eval(c.replace(/^.*(\(.+\)).*$/, '$1'));
+    let a = c.replace(/^.*(\(.+\)).*$/, '$1'); // NOTE; Avoiding eval(a)
+      // this.loli('eval ' + a, 'color:red');
+    a = a.slice(0, -1).slice(1).split('+');
+      // this.loli('array ' + a, 'color:red');
+    let v = 0;
+    for (let d of a) v = v + Number(d);
+      // this.loli('value ' + v, 'color:red');
+    return v;
   }
 
 

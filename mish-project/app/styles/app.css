@@ -687,9 +687,9 @@ a#do_mail,
 /* for the language flag buttons */
 .langflags img {
   cursor: pointer;
-  height: 1rem;
+  height: 0.72rem;
   padding: 0;
-  margin: 0 0 -0.2rem 0;
+  margin: 0 0 -0rem 0;
   opacity: 0.5;
   border: 1px solid #fff;
   border-radius: 2px;
