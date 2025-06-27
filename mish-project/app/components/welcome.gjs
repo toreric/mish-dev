@@ -291,7 +291,7 @@ class Welcome extends Component {
       selEl.dispatchEvent(new Event('change'));
       await new Promise (z => setTimeout (z, 888));
     } else {
-    this.z.openMainMenu();
+      this.z.openMainMenu();
     }
     // this.openLogIn();
   }

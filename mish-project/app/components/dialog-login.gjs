@@ -56,10 +56,6 @@ export class DialogLogin extends Component {
         this.z.freeUsers = cred[3];
         this.z.allowFunc(); // SET ALLOWANCES PATTERN
         this.z.loli('logged in');
-        // Ensure that the main menu behaves
-        let ifshow = this.z.imdbRoot ? '' : 'none';
-        document.getElementById('albumHead').style.display = ifshow;
-        document.querySelector('div.albumTree').style.display = ifshow;
         // Manage the main menu and reset everything
         document.getElementById('rootSel').selectedIndex = -1;
         this.z.imdbCoco = '';

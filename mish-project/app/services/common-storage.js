@@ -1672,6 +1672,10 @@ export default class CommonStorageService extends Service {
     menuMain.style.display = '';
     await new Promise (z => setTimeout (z, 9)); // openMainMenu
     menuButton.style.background = "#444 url('/images/cross.png') center 0.4rem/1.3rem no-repeat";
+    // Ensure that the main menu behaves
+    let ifshow = this.imdbRoot ? '' : 'none';
+    document.getElementById('albumHead').style.display = ifshow;
+    document.querySelector('div.albumTree').style.display = ifshow;
     await new Promise (z => setTimeout (z, 29)); // openMainMenu
       // console.log('menuButton', menuButton);
     this.loli('opened main menu');

@@ -702,7 +702,6 @@ a#do_mail,
   position: fixed;
   top: 3.1em;
   left: 2px;
-  min-width: 16em;
   margin: 0 0 0 4px;
   padding: 0 3px;
   border: 1px solid gray;

@@ -160,26 +160,6 @@ export class MenuMain extends Component {
     // ...todo
   }
 
-  // Close/open albumTree
-  toggleAlbumTree = async () => {
-    if (this.missingRoot()) return;
-    let headDiv = document.getElementById('albumHead');
-    let treeDiv = document.querySelector('div.albumTree');
-    let what;
-    if (headDiv.style.display === 'none' && treeDiv.style.display === 'none') {
-      what = 'opened';
-      headDiv.style.display = '';
-      treeDiv.style.display = '';
-      await new Promise (z => setTimeout (z, 22));
-      this.z.setTreeMax();
-    }else {
-      what = 'closed';
-      headDiv.style.display = 'none';
-      treeDiv.style.display = 'none';
-    }
-    this.z.loli(what + ' the album tree');
-  }
-
   // Check if the alert dialog is open (then close it), or if no
   // album root/collection (imdbRoot) is chosen (then open it)
   missingRoot = () => {
