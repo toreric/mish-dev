@@ -172,6 +172,9 @@ buttons:
   left:
     main: "Huvudmeny: Albumsamling"
 
+    find: "Finn bildtexter\n
+           med mera [F]"
+
     help: "Användarhand-\n
           ledning [F1]"
 
@@ -222,6 +225,8 @@ dialog:
     flebu: Knapparna till vänster
     wviva: vilka som är synliga varierar
     mmenu: "Huvudmeny: Välj album, sökning, favoriter, albumöversikt ..."
+    tools: Verktyg för albumsamlingen
+    find:  Finn bilder i albumsamlingen med textsökning
     qmark: Visa/dölj den här användarhandledningen
     rload: Ladda om albumet, återställ eventuella osparade ändringar (’ångerknapp’ men avser ej textändringar)¹ ²
     names: Visa/dölj namn på bilden (filnamn utan .filtyp)

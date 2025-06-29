@@ -83,6 +83,8 @@ export class ButtonsLeft extends Component {
 
       {{!-- <a id="reFr" {{on 'click' (fn this.someFunction 'refresh')}} title="NOTE: refresh was reLd" style="display:none"></a> --}}
 
+      <a id="find" class="smBu" title={{t 'buttons.left.find'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.z.toggleDialog 'dialogFind')}} style="background:#444 url(/images/find_icon.png) center 0.1rem/1.9rem no-repeat"></a>
+
       <a id="reLd" class="smBu" title={{t 'buttons.left.reload'}} draggable="false" ondragstart="return false" {{on 'click' (fn this.reloadAlbum)}} src="/images/reload.png"></a>
 
       <a id="toggleHide" class="smBu" title={{t 'buttons.left.hide'}} draggable="false" ondragstart="return false" style="display:none" {{on 'click' (fn this.toggleHideFlagged)}}></a>

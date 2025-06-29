@@ -172,6 +172,9 @@ buttons:
   left:
     main: "Main menu: Album collection"
 
+    find: "Find in captions\n
+           and more [F]"
+
     help: "User guide\n
           [F1]"
 
@@ -224,6 +227,8 @@ dialog:
     flebu: The left hand buttons
     wviva: which ones visible varies
     mmenu: "Main menu: Choose album, search, favorites, album overview..."
+    tools: Tools for the album collection
+    find:  Find images in the album collection by text search
     qmark: Show/hide this user guide
     rload: Reload the album, restore any unsaved changes (’undo button’, but doesn't refer to text changes)¹ ²
     names: Show/hide image name (file name without .type)

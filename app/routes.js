@@ -9,9 +9,13 @@ module.exports = function(app) { // Start module.exports
   const execP = Promise.promisify(require('child_process').exec)
   const multer = require('multer')
   const upload = multer( {dest: '/tmp'} ) // tmp upload
-  const exec = require('child_process').exec
+  // const exec = require('child_process').exec
   const execSync = require('child_process').execSync
   const bodyParser = require('body-parser')
+
+  // const { exec } = require('node:child_process')
+  const util = require("util")
+  const exec = util.promisify(require("child_process").exec)
 
   app.use(bodyParser.urlencoded( {extended: false} ))
 
@@ -76,42 +80,56 @@ module.exports = function(app) { // Start module.exports
         // isn't touched since long ago. We should 'touch' that directory, or
         // possibly recreate it, since it may even be erased by another user:
         if (IMDB && picFound) {
+
+          // // OLD WITH BUEBIRD
+          // try {
+          //   var cmd = 'touch ' + IMDB + '/' + picFound
+          //   var cmd1 = '/ && touch ' + IMDB + '/' + picFound + '/.imdb'
+          //   await execP(cmd + cmd1)
+          // } catch (error) { // command failed, dir not found
+          //   cmd = 'mkdir ' + IMDB + '/' + picFound
+          //   await execP(cmd + cmd1)
+          // }
+          //   // console.log(BYEL + cmd + cmd1 + RSET) // Does reveal paths!
+
+          // NEW ATTEMPT WITH AWAIT BY util.promisify
           try {
             var cmd = 'touch ' + IMDB + '/' + picFound
             var cmd1 = '/ && touch ' + IMDB + '/' + picFound + '/.imdb'
-            await execP(cmd + cmd1)
-          } catch (error) { // command failed, dir not found
+            var errmsg = await exec(cmd + cmd1)
+          } catch (errmsg) { // command failed, dir not found
             cmd = 'mkdir ' + IMDB + '/' + picFound
-            await execP(cmd + cmd1)
+            await exec(cmd + cmd1)
           }
-            // console.log(BYEL + cmd + cmd1 + RSET) // Does reveal paths!
         }
-        // The server automatically removes old search result temporary albums:
-        // Remove too old picFound (search result tmp) catalogs (with added random .01yz)
-        cmd = 'find -L ' + IMDB + ' -type d -name "' + '§*" -amin +' + toold + ' | xargs rm -rf'
-        // await cmdasync(cmd) // ger direktare diagnos
-        await execP(cmd)
-        // console.log(BYEL + cmd + RSET)
       }
+      // The server automatically removes old search result temporary albums:
+      // Remove too old picFound (search result tmp) catalogs (with added random .01yz)
+      cmd = 'find -L ' + IMDB + ' -type d -name "' + '§*" -amin +' + toold + ' | xargs rm -rf'
+      // await cmdasync(cmd) // ger direktare diagnos
+      await execP(cmd)
+      // console.log(BYEL + cmd + RSET)
+      
+    
+      tmp = decodeURIComponent(req.originalUrl)
+      if (tmp !== '/execute/' && tmp !== '/filestat/') console.log(BGRE + tmp + RSET)
+        // console.log('  WWW_ROOT:', WWW_ROOT)
+        // console.log(' IMDB_HOME:', IMDB_HOME)
+        // console.log('      IMDB:', IMDB)
+        // console.log(' IMDB_ROOT:', IMDB_ROOT)
+        // console.log('  IMDB_DIR:', IMDB_DIR)
+        // console.log('  picFound:', picFound)
+      if (show_imagedir) {
+        console.log(req.params)
+        console.log(req.hostname)
+        console.log(req.originalUrl)
+      }
+      // console.log(process.memoryUsage())
+      if (req.body && req.body.like) {
+        console.log('LIKE', req.body.like)
+      }
+      next() // pass control to the next handler
     }
-    tmp = decodeURIComponent(req.originalUrl)
-    if (tmp !== '/execute/' && tmp !== '/filestat/') console.log(BGRE + tmp + RSET)
-      // console.log('  WWW_ROOT:', WWW_ROOT)
-      // console.log(' IMDB_HOME:', IMDB_HOME)
-      // console.log('      IMDB:', IMDB)
-      // console.log(' IMDB_ROOT:', IMDB_ROOT)
-      // console.log('  IMDB_DIR:', IMDB_DIR)
-      // console.log('  picFound:', picFound)
-    if (show_imagedir) {
-      console.log(req.params)
-      console.log(req.hostname)
-      console.log(req.originalUrl)
-    }
-    // console.log(process.memoryUsage())
-    if (req.body && req.body.like) {
-      console.log('LIKE', req.body.like)
-    }
-    next() // pass control to the next handler
   })
 
   // ##### Execute a shell command
@@ -954,20 +972,33 @@ module.exports = function(app) { // Start module.exports
     var imckcmd
     imckcmd = "convert " + origpath + " -antialias -quality 80 -resize " + size + " -strip " + filepath1
     //console.log(imckcmd)
-    exec(imckcmd,(error, stdout, stderr) => {
-      if (error) {
-        console.error(`exec error: ${error}`)
-        return
-      }
-      //if(filepath1 !== filepath) {
-        try { // Rename to 'fake png' and adjust mode
-          execSync("mv " + filepath1 + " " + filepath + "&&chmod 664 " + filepath)
-        } catch(err) {
-          console.error(err.message)
-        }
-      //}
+
+    // NEW EXEC WITH util.promisify
+    var errmsg = await exec(imckcmd)
+    if (errmsg) {
+      console.error(`exec error: ${errmsg}`)
+      return
+    }
+    if(filepath1 !== filepath) {
+      // execSync("mv " + filepath1 + " " + filepath + "&&chmod 664 " + filepath)
+      await exec("mv " + filepath1 + " " + filepath + "&&chmod 664 " + filepath)
+    }
+
+    // // OLD EXEC
+    // exec(imckcmd,(error, stdout, stderr) => {
+    //   if (error) {
+    //     console.error(`exec error: ${error}`)
+    //     return
+    //   }
+    //   //if(filepath1 !== filepath) {
+    //     try { // Rename to 'fake png' and adjust mode
+    //       execSync("mv " + filepath1 + " " + filepath + "&&chmod 664 " + filepath)
+    //     } catch(err) {
+    //       console.error(err.message)
+    //     }
+    //   //}
       console.log(' .' + filepath.slice(IMDB.length) + ' created') // Hide absolute server path
-    })
+    // })
     return
   }
 

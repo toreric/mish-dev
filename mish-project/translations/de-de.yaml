@@ -1,17 +1,17 @@
 price_banner: "{product} kostet {price, number, ::currency/EUR}"
 
 # For the main menu = MenuMain component
-selalbumcoll: Albumsammlung wählen
-albumcollinfo: Albumsammlung (oder Albumstamm)
+selalbumcoll: Albensammlung wählen
+albumcollinfo: Albensammlung (oder Albenstamm)
 albumcare: Albumwerkzeuge für
 albumcareinfo: Löschen, neu erstellen, Bilder sortieren, nach Duplikaten suchen, und mehr
-albumcoll: Albumsammlung
+albumcoll: Albensammlung
 albumcollshow: Albumliste ein-/ausblenden
 openallalb: Unteralben zeigen/verbergen
 showselected: Gewähltes Album anzeigen
 tmpalbum1: Mit
 tmpalbum2: "zuerst: Temporäres Album zur Anzeige gefundener Bilder"
-needaroot: Zuerst Albumsammlung auswählen!
+needaroot: Zuerst Albensammlung auswählen!
 nimages: Anzahl der Bilder
 nlinked: plus Anzahl der verlinkten Bilder
 nsubalbums: Anzahl der Unteralben
@@ -125,15 +125,15 @@ wait: warten
 with: mit
 xplErrImg: Beurteilung der technischen \nQualität des Originalbildes
 
-albumcollselect: Bitte eine Albumsammlung auswählen im Hauptmenü!
+albumcollselect: Bitte eine Albensammlung auswählen im Hauptmenü!
 albumMissing: Dieses Album kann, möglicherweise<br>
               aufgrund unzureichender Rechte,<br>
               nicht angezeigt werden
-albumSelectInfo: "Eine Albumsammlung hier auswählen,
+albumSelectInfo: "Eine Albensammlung hier auswählen,
                  falls diese nicht bereits vorausgewählt ist.
                  Möglicherweise gibt es noch mehr
                  als eine Alternative.
-                 Das Eingabealbum einer Albumsammlung ist
+                 Das Eingabealbum einer Albensammlung ist
                  auch „Album Root“ genannt, und es
                  verzweigt sich nach unten.
                  – Tipps bei Problemen:
@@ -171,6 +171,9 @@ buttons:
   left:
     main: "Hauptmenü: Albensammlung"
 
+    find: "In Untertiteln und\n
+           mehr finden [F]"
+
     help: "Anweisungen\n
           [F1]"
 
@@ -206,7 +209,7 @@ dialog:
     imgdef0: Ein Bild
     imgdef1: in einem Album ist entweder ein
     imgdef2: Originalbild
-    imgdef3: oder ein verlinktes Bild aus einem anderen Album in der Albumsammlung
+    imgdef3: oder ein verlinktes Bild aus einem anderen Album in der Albensammlung
     imgdef4: ein “Link“
     login0: Wer als Gast-Benutzer⋅in (gast) angemeldet ist
     login1: hat nur beschränkte Rechte (Vorschaubilder verstecken, markieren und mit drag & drop bewegen; zum Originalbild gehen). Nach persönlichem Login (Anmeldung) erfolgen weitere Rechte (z.B. Bildunterschriften ändern und speichern). Nur Systemadministrierende können ein persönliches Login bereitstellen
@@ -222,6 +225,8 @@ dialog:
     flebu: Die linke Schaltflächen
     wviva: welche sichtbar sind, variiert
     mmenu: "Im Hauptmenü wählen: Album, Suche, Favoriten, Albumübersicht ..."
+    tools: Werkzeuge für die Albensammlung
+    find:  Bilder in der Albensammlung finden per Textsuche
     qmark: Benutzeranweisung öffnen/schließen
     rload: Das Album neuladen, alle nicht gespeicherten Änderungen wiederherstellen („reset-Taste“, jedoch nicht für Textänderungen)¹ ²
     names: Bildnamen ein-/ausblenden (Dateiname ohne .file-Typ)
@@ -259,7 +264,7 @@ dialog:
     text1: Es ist Ihnen gestattet, die Bilder für Ihren eigenen Gebrauch zu sehen und zu besitzen, sie jedoch nicht weiter zu verbreiten.
     text2: Sie dürfen die Bilder auch nicht für kommerzielle oder gewinnbringende Zwecke verwenden.
     text3: Sie verpflichten sich, die geltenden Urheberrechtsgesetze zu respektieren und Bilder nicht an Dritte weiterzugeben.
-    text4: Bei Fragen zur Genehmigung einer möglichen Verbreitung oder Übertragung wenden Sie sich bitte an den Verantwortlichen für die Albumsammlung.
+    text4: Bei Fragen zur Genehmigung einer möglichen Verbreitung oder Übertragung wenden Sie sich bitte an den Verantwortlichen für die Albensammlung.
     footnote1: "¹ In Klammern: Noch nicht implementiert"
     footnote2: "² Einschränkungen für einige Bilder aufgrund unvollständiger Urheberrechte"
     footnote3: "³ Ohne diese Berechtigung kann man nicht wissen, ob versteckte Alben vorhanden sind"
@@ -295,7 +300,7 @@ imageMenu: "Bild-\nmenü"
 imageNumber: bild nummer {n}
 infoHeader: Information
 loggedIn: Angemeldet
-noCollSelected: Keine Albumsammlung ausgewählt
+noCollSelected: Keine Albensammlung ausgewählt
 picfound: §Gefundene_Bilder
 plusExplain: Unteralben haben auch Unteralben!
 printOut: Ausdrucken
@@ -381,7 +386,7 @@ write:
             &nbsp;&nbsp;&nbsp;&nbsp; <span>nils jacobss</span> (zwei Suchbegriffe) findet alle Bilder mit dem Text „Nils Jacobsson“ und auch alle Bilder mit irgendein von „Nils“ oder „Jacobss“ im Text, zum Beispiel „Fredrik Nilson“ und/oder „Filip Jacobsson“ (aber nicht „Nisse Jacobson“).<br>
             &nbsp;&nbsp;&nbsp;&nbsp; <span>nils%jacobs</span> (ein Suchbegriff) findet Bilder mit zum Beispiel „Nils Jacobsson“ oder „Nils Jacobsen“ (wie in <span>1</span>, weil nur ein Suchbegriff)."
   findHelp5: Schreiben in das Feld oben, wonach gesucht werden soll, dann die Suche starten. Das Ergebnis wird in einem temporären Album mit dem Namen <b>Gefundene Bilder</b> präsentiert. Es gibt einem Link zum Original im Menü jedes Miniaturbildes. <span style="color:#0a0;text-decoration:underline">Ein grüner Rand unter der Bildunterschrift</span> bedeutet ein verlinktes Bild.
-  findHelp6: "Tipp: Die Gesamtzahl der Bilder in der Albumsammlung wird durch die Suche (in Albumnamen) nach einem „/“ angezeigt!"
+  findHelp6: "Tipp: Die Gesamtzahl der Bilder in der Albensammlung wird durch die Suche (in Albumnamen) nach einem „/“ angezeigt!"
   foundNoAlbums: Keine Alben gefunden!
   isEmpty: ist leer
   imageSeveral: Die Namen von {n} Bildern, die entfernt werden sollen
@@ -420,5 +425,5 @@ write:
   tool91: Eigene Lieblingsbilder verwalten
   tool99: Hier gibt es nichts zu wählen!
   utilHeader: Werkzeuge für das Album
-  utilHeader0: Werkzeuge für die Albumsammlung
+  utilHeader0: Werkzeuge für die Albensammlung
 

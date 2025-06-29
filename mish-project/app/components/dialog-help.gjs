@@ -52,15 +52,19 @@ export class DialogHelp extends Component {
 
         <a id="albSel" class="helpIcon"><img draggable="false" ondragstart="return false" src="/images/favicon0.png" style="background:#444;width:0.85rem"></a>&nbsp; {{t 'dialog.help.mmenu'}}<br>
 
-        <a id="questionMark0" class="helpIcon">?</a>&nbsp; {{t 'dialog.help.qmark'}}<br>
+        <a id="" class="helpIcon"><img draggable="false" ondragstart="return false" src="/images/tools.png" style="background:#444;width:1.3rem;margin:-5px"></a>&nbsp; {{t 'dialog.help.tools'}}<br>
+
+        <a id="" class="helpIcon"><img draggable="false" ondragstart="return false" src="/images/find_icon.png" style="background:#444;width:1.15rem;margin:-3px"></a>&nbsp; {{t 'dialog.help.find'}}<br>
 
         <a id="reFr0" class="helpIcon"><img draggable="false" ondragstart="return false" src="/images/reload.png"></a>&nbsp; {{t 'dialog.help.rload'}}<br>
-
-        <a id="toggleName0" class="helpIcon"><img draggable="false" ondragstart="return false" src="/images/img-name.png" style="background:#444;width:0.85rem"></a>&nbsp; {{t 'dialog.help.names'}}<br>
 
         <a id="toggleHide0" class="helpIcon"></a>&nbsp; {{t 'dialog.help.hide'}}<br>
 
         <a id="saveOrder0" class="helpIcon"><img draggable="false" ondragstart="return false" src="/images/floppy1.png" style="background:#444;width:0.85rem"></a>&nbsp; {{t 'dialog.help.save'}}<br>
+
+        <a id="toggleName0" class="helpIcon"><img draggable="false" ondragstart="return false" src="/images/img-name.png" style="background:#444;width:0.85rem"></a>&nbsp; {{t 'dialog.help.names'}}<br>
+
+        <a id="questionMark0" class="helpIcon">?</a>&nbsp; {{t 'dialog.help.qmark'}}<br>
 
         <a class="helpIcon"><img draggable="false" ondragstart="return false" src="/images/arrow.png" style="background:#444;width:0.9rem"></a>&nbsp; {{t 'dialog.help.uptop'}}
       </p>
