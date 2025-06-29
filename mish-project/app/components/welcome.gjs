@@ -69,11 +69,11 @@ document.addEventListener('keydown', (event) => {
       for (let d of document.querySelectorAll('dialog')) {
         if (d.hasAttribute('open')) {
           if (d.id === dialogInfoId) d.close();
-          return;
+          if (d.id === 'dialogUtil') d.close();
+          if (d.id === 'dialogHelp') d.close();
+          // return;
         }
       }
-      // let allist = document.querySelectorAll('.menu_img_list');
-      // for (let list of allist) list.style.display = 'none';
       if (!document.getElementById('menuMain').style.display)
         document.getElementById('menuButton').click(); //close menu
       // The view image is displayed with its navigation buttons:

@@ -425,7 +425,7 @@ write:
   tool6: Update search data
   tool7: Try to find similar images
   tool8: Make text list for displayed images
-  tool9: Find in captions and more
+  #tool9: Find in captions and more
   tool91: Manage own favorite images
   tool99: Here is nothing to choose!
   utilHeader: Tools for the album

@@ -136,14 +136,14 @@ export class DialogUtil extends Component {
     }
 
   // Common tools
-  get okFindText() {
-    if (this.z.albumTools) {
-      return false;
-    } else {
-      this.tool = '';
-      return true
-    }
-  }
+  // get okFindText() {
+  //   if (this.z.albumTools) {
+  //     return false;
+  //   } else {
+  //     this.tool = '';
+  //     return true
+  //   }
+  // }
 
   get okSeeFavorites() {
     if (this.z.albumTools) {
@@ -348,10 +348,10 @@ export class DialogUtil extends Component {
     this.z.alertMess(this.intl.t('write.dbUpdated'));
   }
 
-  doFindText = () => {
-    this.z.closeDialog('dialogUtil');
-    this.z.doFindText();
-  }
+  // doFindText = () => {
+  //   this.z.closeDialog('dialogUtil');
+  //   this.z.doFindText();
+  // }
 
   get resetRadio() { // trigger
     this.resRad ++;
@@ -448,12 +448,12 @@ export class DialogUtil extends Component {
           {{!-- Here are tools for the entire album collection --}}
           <div style="margin:0.5rem 0 0 0">{{{t 'write.tool01'}}}</div>
 
-          {{#if this.okFindText}}
+          {{!-- {{#if this.okFindText}}
             <span class="glue">
               <input id="util9" {{this.addTools2}} name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
               <label for="util9"> &nbsp;{{t 'write.tool9'}} &nbsp;<span style="font:normal .9rem Arial;border:2px solid blue;border-radius:5px">&nbsp;F&nbsp;</span></label>
             </span>
-          {{/if}}
+          {{/if}} --}}
           {{#if this.okSeeFavorites}}
             <span class="glue">
               <input id="util91" {{this.addTools2}} name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
@@ -575,9 +575,9 @@ export class DialogUtil extends Component {
             <button type="button" {{on 'click' (fn this.doDbUpdate)}}>{{t 'write.tool6'}}</button>
 
           {{!-- === Find texts in the entire album collection === --}}
-          {{else if (eq this.tool 'util9')}}
+          {{!-- {{else if (eq this.tool 'util9')}}
 
-            <button type="button" {{on 'click' (fn this.doFindText)}}>{{t 'write.tool9'}}</button>
+            <button type="button" {{on 'click' (fn this.doFindText)}}>{{t 'write.tool9'}}</button> --}}
 
           {{!-- === Manage personal favorites === --}}
           {{else if (eq this.tool 'util91')}}
