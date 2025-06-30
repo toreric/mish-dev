@@ -218,10 +218,10 @@ dialog:
     ihrcm0: Each image has a menu
     ihrcm1: ( <b>⡇</b>) with commands/functions
     ctrlclick:  Ctrl + click (⌘ + click)
-    ihrcm2: also shows the menu (⌘ with Mac keyboard)
+    ihrcm2: an image also shows the menu (⌘ with Mac keyboard)
     mark0:  "<b>Select an image</b> in the upper right corner, or:"
-    shift0: Shift + click an image
-    shift1: selects/deselects it
+    shift0: Shift + click
+    shift1: an image selects/deselects it
     green0: An image with a green bottom border
     green1: is linked from another album – the thumbnail menu has a link to the original image
     flebu: The left hand buttons

@@ -216,10 +216,10 @@ dialog:
     ihrcm0: Jedes Bild hat ein Menü
     ihrcm1: ( <b>⡇</b>) mit Befehlen/Funktionen
     ctrlclick: Ctrl + klicken (⌘ + klicken)
-    ihrcm2: öffnet es auch (⌘ mit Mac-Tastatur)
+    ihrcm2: einem Bild öffnet es auch (⌘ mit Mac-Tastatur)
     mark0:  "<b>Ein Bild auswählen</b> in der oberen rechten Ecke, oder:"
-    shift0: Shift + klicken auf einem Bild
-    shift1: macht markieren/ausmarkieren
+    shift0: Shift + klicken
+    shift1: auf einem Bild macht markieren/ausmarkieren
     green0: Ein Bild mit einem grünen unteren Rand
     green1: ist aus einem anderen Album verlinkt – das Miniaturbildmenü enthält einen Link zum Originalbild
     flebu: Die linke Schaltflächen

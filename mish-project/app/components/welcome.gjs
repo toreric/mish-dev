@@ -130,6 +130,7 @@ document.addEventListener('mousedown', async (event) => {
     tgt.closest('.toggleNavInfo') ||
     tgt.closest('#link_show ul') ||
     tgt.closest('#smallButtons') ||
+    tgt.closest('#smallButtons1') ||
     // tgt.closest('#upperButtons') ||
     tgt.closest('#link_texts') ||
     tgt.closest('.nav_links') ||

@@ -216,10 +216,10 @@ dialog:
     ihrcm0: Varje bild har en meny
     ihrcm1: ( <b>⡇</b>) med kommandon/funktioner
     ctrlclick: Ctrl + klick (⌘ + klick)
-    ihrcm2: visar också menyn (⌘ med Mac-tangentbord)
+    ihrcm2: på en bild visar också menyn (⌘ med Mac-tangentbord)
     mark0:  "<b>Markera en bild</b> uppe i högra hörnet, eller:"
-    shift0: Skifttangent + klick på en bild
-    shift1: markerar/avmarkerar den
+    shift0: Skifttangent + klick
+    shift1: på en bild markerar/avmarkerar den
     green0: En bild med grön underkant är länkad
     green1: från annat album – miniatyrbildmenyn har en länk till originalbilden
     flebu: Knapparna till vänster

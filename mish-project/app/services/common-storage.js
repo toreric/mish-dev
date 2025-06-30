@@ -202,6 +202,8 @@ export default class CommonStorageService extends Service {
     } else { // Any user may reorder but not save
       document.getElementById('saveOrder').style.display = 'none';
     }
+    if (!this.imdbRoot) document.getElementById('smallButtons1').style.display = 'none';
+
     this.allow = allow;
     this.allowance = allowance;
     this.allowvalue = allowvalue;
@@ -380,7 +382,7 @@ export default class CommonStorageService extends Service {
     // Hide the right side buttons
     document.querySelector('.nav_links').style.display = 'none';
     // Show left buttons, language buttons, subalbums
-    document.querySelector('#smallButtons').style.display = '';
+    document.querySelector('#smallButtons1').style.display = '';
     document.querySelector('#upperButtons').style.display = '';
     document.querySelector('.albumsHdr').style.display = '';
     // Display the spinner
@@ -395,6 +397,7 @@ export default class CommonStorageService extends Service {
     let h = this.albumHistory;
     if (h.length > 0 && h[h.length - 1] !== i) this.albumHistory.push(i);
     let a = this.imdbRoot + this.imdbDir;
+    document.getElementById('smallButtons1').style.display = '';
     this.loli('opened album ' + i + ' ' + a, 'color:lightgreen' );
     // Reset colors in the album tree of the main menu
     for (let tmp of document.querySelectorAll('span.album')) {
