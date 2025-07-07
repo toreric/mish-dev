@@ -379,7 +379,7 @@ write:
   findHelp0: Search in captions etc.
   findHelp1: Mark in the <span>Search in:</span> line, which text fields should be included in the search (red = marked).
   findHelp2: "<span>In the bottom</span> line, you can choose one of two options:"
-  findHelp3: "<span>1</span>. Do mark that <span>all to be found...</span> and then write in the text box above, for example (blue marked):
+  findHelp3: "<span>1</span>. Do mark that <span>all to be found...</span> and then write in the text box above, some examples (blue marked):
             <br>
             &nbsp;&nbsp;&nbsp;&nbsp; <span>nils jacobss</span> (two search terms) finds all images with the text ’Nils Jacobsson’ but also other images with both ’Nils’ and ’Jacobss’ in the text, for example ’Nils Jonasson and Bertil Jacobsson’.<br>
             &nbsp;&nbsp;&nbsp;&nbsp; <span>nils%jacobs</span> (one search term) finds images with, for example ’Nils Jacobsson’ or ’Nils Jacobsen’."

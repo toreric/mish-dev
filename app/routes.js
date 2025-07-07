@@ -134,7 +134,7 @@ module.exports = function(app) { // Start module.exports
 
   // ##### Execute a shell command
   //region execute
-  app.get ('/execute', async (req, res) => {
+  app.get('/execute', async (req, res) => {
     var cmd = decodeURIComponent(req.get('command'))
       // console.log(BYEL + cmd + RSET) // hide this to protect image paths
     try {
@@ -155,7 +155,7 @@ module.exports = function(app) { // Start module.exports
 
   // ##### Return file information
   //#region filestat
-  app.get ('/filestat', async (req, res) => {
+  app.get('/filestat', async (req, res) => {
     var file = decodeURIComponent(req.get('path'))
     file = IMDB + file
     // This is an emergency solution, which was necessary since the 'filstat'
@@ -277,6 +277,27 @@ module.exports = function(app) { // Start module.exports
       res.location('/')
       res.send('Sqlite(?)error: ' + err.message)
     }
+  })
+
+  // ##### Get full-size (djvu?) file   CHECK path
+  //#region fullsize
+  app.get('/fullsize', async function(req, res) {
+    var fileName = decodeURIComponent(req.get('path'))
+    // var fileName = req.get('path') // with path but servers may remove first `/`:
+    if (fileName.slice (0, 1) !== "/") fileName = "/" + fileName;
+    //console.log (fileName)
+    // Make a temporary .djvu file with the mkdjvu script
+    // Plugins missing for most browsers January 2019
+    //var tmpName = execSync ('mkdjvu ' + fileName)
+    // Make a temporary png file instead (much bigger, sorry!)
+    console.log('mkpng ' + IMDB + fileName, 'color:red');
+    let pwd0 = await exec('pwd');
+    console.log(pwd0.stdout);
+    var tmpName = (await exec('mkpng ' + IMDB + fileName)).stdout;
+    res.location ('/')
+    res.send (tmpName)
+    //res.end ()
+    console.log ('Started fullsize image generation')
   })
 
   // ##### Find subdirs which are album roots

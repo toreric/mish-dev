@@ -448,7 +448,7 @@ class AllImages extends Component {
         {{!-- Preload the show images --}}
         <section style="display:none">
           {{#each this.items as |item|}}
-            <img src="{{item.show}}" style="width:1px;heigh:1px;display:none">
+            <img src="{{item.show}}" style="width:1px;height:1px;display:none">
           {{/each}}
         </section>
 

@@ -165,8 +165,11 @@ document.addEventListener('mousedown', async (event) => {
 
 // ALL bubbling mouseups should be caught
 document.addEventListener('mouseup', async (event) => {
+  let tgt = event.target;
+  let tgtid = tgt.id;
     // console.log('event:', event);
-    // console.log(event.target);
+    // console.log('target:', tgtid);
+  // event.stopPropagation();
   if (BEEP) beep(50, 550, 100);
   if (POOP) { // The mouse click visual popup spinner
     let poop = document.getElementById('poop');
@@ -179,6 +182,14 @@ document.addEventListener('mouseup', async (event) => {
       poop.style.display = 'none';
     }, 250)
   }
+  // This is to prevent closing dialogText, which is triggered from
+  // some weird unknown reason at mouseup after dragging the dialog.
+  // Thus it has to be reopened, and this will do it, just in case:
+  if (tgtid === 'dialogText') {
+    await new Promise (z => setTimeout (z, 9)); // welcome, mouseup
+    tgt.show();
+  }
+  return;
 });
 
 const resetBorders = () => { //copy from z

@@ -20,6 +20,18 @@ export class ButtonsRight extends Component {
     }
   }
 
+  doGetFullSize = async () => {
+    let i = this.z.picIndex;
+    let f012345 = '';
+    if (i > -1) f012345 = await this.z.getFullSize(this.z.allFiles[i].linkto);
+    await new Promise (z => setTimeout (z, 99));
+    if (f012345) {
+      var wiName = window.open (f012345, 'w' +   f012345, 'width=916,height=600,menubar=no,popup=true,status=no,titlebar=no,toolbar=no');
+    }
+    if (wiName) wiName.focus();
+    else this.z.alertMess('POPUP blocked by browser');
+  }
+
   <template>
 
     {{!-- RIGHT BUTTONS without href attribute --}}
@@ -51,7 +63,8 @@ export class ButtonsRight extends Component {
       </span><br> --}}
 
       {{!-- FULL SIZE fullSize --}}
-      <a class="nav_" id="full_size" title="{{t 'fullSize'}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.futureNotYet 'fullSize')}}> </a> &nbsp;<br>
+      {{!-- <a class="nav_" id="full_size" title="{{t 'fullSize'}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.z.futureNotYet 'fullSize')}}> </a> &nbsp;<br> --}}
+      <a class="nav_" id="full_size" title="{{t 'fullSize'}}" draggable="false" ondragstart="return false" {{on 'click' (fn this.doGetFullSize)}}> </a> &nbsp;<br>
 
       {{!-- PRINT doPrint  --}}
       <a class="nav_ pnav_" id="do_print" title="{{t 'printOut'}}" {{on 'click' (fn this.z.futureNotYet 'printOut')}}> </a> &nbsp;

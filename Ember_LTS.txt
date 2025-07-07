@@ -1,3 +1,28 @@
+STATUS 2025-07-07
+tore@nejlika:~/Arbeten/mish-dev
+$ pnpm outdated
+┌─────────┬─────────────┬────────┐
+│ Package │ Current     │ Latest │
+├─────────┼─────────────┼────────┤
+│ express │ 4.21.2      │ 5.1.0  │
+├─────────┼─────────────┼────────┤
+│ multer  │ 1.4.5-lts.2 │ 2.0.1  │
+└─────────┴─────────────┴────────┘
+tore@nejlika:~/Arbeten/mish-dev/mish-project
+$ pnpm outdated
+┌─────────────────────────┬─────────┬────────┐
+│ Package                 │ Current │ Latest │
+├─────────────────────────┼─────────┼────────┤
+│ @embroider/compat (dev) │ 3.9.1   │ 4.1.0  │
+├─────────────────────────┼─────────┼────────┤
+│ @embroider/core (dev)   │ 3.5.7   │ 4.1.1  │
+├─────────────────────────┼─────────┼────────┤
+│ ember-primitives        │ 0.32.0  │ 0.34.0 │
+└─────────────────────────┴─────────┴────────┘
+
+
+
+
 evo (Ember) 2025-04-10:
 
   Personally on any project I'm actively maintaining I keep my dependencies up to date including ember-source. I prefer to get rid of deprecations asap instead of waiting until the next LTS to upgrade and find a bunch of work I need to do all at once.

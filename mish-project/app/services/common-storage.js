@@ -1138,7 +1138,7 @@ export default class CommonStorageService extends Service {
     return new Promise((resolve, reject) => {
       command = command.replace (/%/g, "%25");
       var xhr = new XMLHttpRequest ();
-      xhr.open ('GET', 'execute/', true, null, null);
+      xhr.open('GET', 'execute/', true, null, null);
       this.xhrSetRequestHeader(xhr);
       xhr.setRequestHeader('command', encodeURIComponent(command));
       xhr.onload = function () {
@@ -1153,7 +1153,7 @@ export default class CommonStorageService extends Service {
         }
       };
       xhr.onerror = function() {
-        reject ({
+        reject({
           status: this.status,
           statusText: xhr.statusText
         });
@@ -1162,12 +1162,45 @@ export default class CommonStorageService extends Service {
     });
   }
 
+  //#region fullsize/
+  // Get a full size image
+  getFullSize = async (filePath) => {
+    return new Promise(async (resolve, reject) => {
+      var xhr = new XMLHttpRequest ();
+      xhr.open('GET', 'fullsize/', true, null, null);
+      this.xhrSetRequestHeader(xhr);
+      xhr.setRequestHeader('path', encodeURIComponent(filePath));
+      xhr.onload = function() {
+        if (this.status >= 200 && this.status < 300) {
+          var data = xhr.response.trim();
+          resolve(data);
+        } else {
+          reject({
+            status: this.status,
+            statusText: xhr.statusText
+          });
+        }
+      };
+      xhr.onerror = function() {
+        reject({
+          status: this.status,
+          statusText: xhr.statusText
+        });
+      };
+      xhr.send();
+    });
+  }
+
+
+
+
+
   //#region filestat/
   // Get file information
   getFilestat = async (filePath) => {
     return new Promise(async (resolve, reject) => {
       var xhr = new XMLHttpRequest ();
-      xhr.open ('GET', 'filestat/', true, null, null);
+      xhr.open('GET', 'filestat/', true, null, null);
       this.xhrSetRequestHeader(xhr);
       xhr.setRequestHeader('path', encodeURIComponent(filePath));
       xhr.setRequestHeader('intlcode', encodeURIComponent(this.intlCodeCurr));
@@ -1183,7 +1216,7 @@ export default class CommonStorageService extends Service {
         }
       };
       xhr.onerror = function() {
-        reject ({
+        reject({
           status: this.status,
           statusText: xhr.statusText
         });
@@ -1231,21 +1264,21 @@ export default class CommonStorageService extends Service {
     // Propose root directory (requestDirs)
     return new Promise ( (resolve, reject) => {
       var xhr = new XMLHttpRequest ();
-      xhr.open ('GET', 'rootdir/', true, null, null);
+      xhr.open('GET', 'rootdir/', true, null, null);
       this.xhrSetRequestHeader(xhr);
       xhr.onload = function () {
         if (this.status >= 200 && this.status < 300) {
           var dirList = xhr.response;
-          resolve (dirList);
+          resolve(dirList);
         } else {
-          reject ({
+          reject({
             status: this.status,
             statusText: xhr.statusText
           });
         }
       };
       xhr.onerror = function () {
-        reject ({
+        reject({
           status: this.status,
           statusText: xhr.statusText
         });
@@ -1372,16 +1405,16 @@ export default class CommonStorageService extends Service {
           }
 
           //userLog ('INFO received');
-          resolve (allfiles); // Return file-list object array
+          resolve(allfiles); // Return file-list object array
         } else {
-          reject ({
+          reject({
             status: this.status,
             statusText: xhr.statusText
           });
         }
       };
       xhr.onerror = function () {
-        reject ({
+        reject({
           status: this.status,
           statusText: xhr.statusText
         });
@@ -1401,7 +1434,7 @@ export default class CommonStorageService extends Service {
     // Request the sort order list of image files
     return new Promise ( (resolve, reject) => {
       var xhr = new XMLHttpRequest ();
-      xhr.open ('GET', 'sortlist/', true, null, null);
+      xhr.open('GET', 'sortlist/', true, null, null);
       this.xhrSetRequestHeader(xhr);
       xhr.onload = async function () {
         if (this.status >= 200 && this.status < 300) {
@@ -1409,19 +1442,19 @@ export default class CommonStorageService extends Service {
           if (data.slice (0, 8) === '{"error"') {
             data = "Error!"; // This error text may also be generated elsewhere
           }
-          resolve (data); // Return file-name text lines
+          resolve(data); // Return file-name text lines
           // console.log ("ORDER received");
         } else {
-          resolve ("Error!");
-          reject ({
+          resolve("Error!");
+          reject({
             status: this.status,
             statusText: xhr.statusText
           });
         }
       };
       xhr.onerror = function () {
-        resolve ("Error!");
-        reject ({
+        resolve("Error!");
+        reject({
           status: this.status,
           statusText: xhr.statusText
         });
@@ -1443,7 +1476,7 @@ export default class CommonStorageService extends Service {
     var that = this;
     return new Promise( (resolve, reject) => {
       var xhr = new XMLHttpRequest();
-      xhr.open('POST', 'saveorder/');
+      xhr.open('POST', 'saveorder/', true, null, null);
       this.xhrSetRequestHeader(xhr);
       xhr.onload = function() {
         if (this.status >= 200 && this.status < 300) {
@@ -1489,35 +1522,40 @@ export default class CommonStorageService extends Service {
   placeMess = () => {
     let textel = document.getElementById('dialogText');
     let messel = document.getElementById('dialogAlert');
+    // Copy the screen coordinates to keep them close
     messel.style.transform = textel.style.transform;
   }
   saveText = (txt) => {
     var that = this;
-    var xhr = new XMLHttpRequest ();
-    xhr.open ('POST', 'savetext/');
-    this.xhrSetRequestHeader(xhr);
-    xhr.onload = function () {
-      if (xhr.response) {
-          console.log(xhr.response);
-        that.loli('Xmp.dc metadata not saved for ' + that.picName, 'color:red');
-        let edpn = that.escapeDots(that.picName);
-        document.querySelector('#i' + edpn + ' .img_txt1').innerHTML = '';
-        document.querySelector('#i' + edpn + ' .img_txt2').innerHTML = '';
-        let mess = that.intl.t('errTxtNotSaved') + '<br><br>';
-        mess += that.intl.t('errTxtCannotSave') + '<br><br>';
-        mess += that.intl.t('errTxtRecover');
-        that.alertMess(mess, 0);
-        that.placeMess();
-      } else {
-        that.loli('Xmp.dc metadata saved for ' + that.picName);
-        let mess = that.intl.t('captionFor') + ' <b style="color:black">' + that.picName + '</b> ' + that.intl.t('captionSaved');
-        that.alertMess(mess, 1.5);
-        that.placeMess();
-        // Not used since 'server savetxt/', that is, tne SERVER will do sqlUpdate:
-        // that.sqlUpdate(txt.split(LF)[0]); ***CHECK, WHEN used?
+    return new Promise( (resolve, reject) => {
+      var xhr = new XMLHttpRequest ();
+      xhr.open('POST', 'savetext/', true, null, null);
+      this.xhrSetRequestHeader(xhr);
+      xhr.onload = function () {
+        if (xhr.response) {
+            console.log(xhr.response);
+          that.loli('Xmp.dc metadata not saved for ' + that.picName, 'color:red');
+          let edpn = that.escapeDots(that.picName);
+          document.querySelector('#i' + edpn + ' .img_txt1').innerHTML = '';
+          document.querySelector('#i' + edpn + ' .img_txt2').innerHTML = '';
+          let mess = that.intl.t('errTxtNotSaved') + '<br><br>';
+          mess += that.intl.t('errTxtCannotSave') + '<br><br>';
+          mess += that.intl.t('errTxtRecover');
+          that.alertMess(mess, 0);
+          that.placeMess();
+        } else {
+          that.loli('Xmp.dc metadata saved for ' + that.picName);
+          let mess = that.intl.t('captionFor') + ' <b style="color:black">' + that.picName + '</b> ' + that.intl.t('captionSaved');
+          that.alertMess(mess, 1.5);
+          that.placeMess();
+          // Not used since 'server savetxt/', that is, tne SERVER will do sqlUpdate:
+          // that.sqlUpdate(txt.split(LF)[0]); ***CHECK, WHEN used?
+        }
       }
-    }
-    xhr.send(txt);
+      xhr.send(txt);
+    }).catch(error => {
+      console.error(error.message);
+    });
   }
 
   //#region sqlupdate/
@@ -1529,14 +1567,14 @@ export default class CommonStorageService extends Service {
     data.append ("filepaths", picPaths);
     return new Promise ( (resolve, reject) => {
       let xhr = new XMLHttpRequest ();
-      xhr.open ('POST', 'sqlupdate/')
+      xhr.open('POST', 'sqlupdate/', true, null, null);
       this.xhrSetRequestHeader(xhr);
       xhr.onload = function () {
-        resolve (xhr.response); // empty
+        resolve(xhr.response); // empty
       };
       xhr.onerror = function () {
-        resolve (xhr.statusText);
-        reject ({
+        resolve(xhr.statusText);
+        reject({
           status: this.status,
           statusText: xhr.statusText
         });
@@ -1615,7 +1653,7 @@ export default class CommonStorageService extends Service {
         // console.log(srchData);
       return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();
-        xhr.open('POST', 'search/');
+        xhr.open('POST', 'search/', true, null, null);
         this.xhrSetRequestHeader(xhr);
         xhr.onload = function () {
           if (this.status >= 200 && this.status < 300) {
@@ -1652,9 +1690,9 @@ export default class CommonStorageService extends Service {
               }
               data = data.join("\n");
             }
-            resolve (data);
+            resolve(data);
           } else {
-            reject ({
+            reject({
               status: this.status,
               statusText: xhr.statusText
             });

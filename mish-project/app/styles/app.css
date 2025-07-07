@@ -700,7 +700,7 @@ a#do_mail,
 }
 .mainMenu {
   position: fixed;
-  top: 3.1em;
+  top: 3.2em;
   left: 2px;
   margin: 0 0 0 4px;
   padding: 0 3px;
@@ -1536,12 +1536,15 @@ div.albumTree > div:first-of-type {
 span.album:hover {
   color: #7df!important;
 }
-#albumHead, div.albumTree {display:block}
+#albumHead, div.albumTree {
+  display:block;
+  color: white;
+}
 
 @-webkit-keyframes borderBlink {
   from,
   to {
-    border-color: 2px dashed transparent;
+    border: 2px dashed transparent;
   }
   5% {
     border: 2px dashed white;

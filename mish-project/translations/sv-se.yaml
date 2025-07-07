@@ -224,7 +224,7 @@ dialog:
     green1: från annat album – miniatyrbildmenyn har en länk till originalbilden
     flebu: Knapparna till vänster
     wviva: vilka som är synliga varierar
-    mmenu: "Huvudmeny: Välj album, sökning, favoriter, albumöversikt ..."
+    mmenu: Huvudmeny med albumöversikt (”site map”) älj album att visa."
     tools: Verktyg för albumsamlingen
     find:  Finn bilder i albumsamlingen med textsökning
     qmark: Visa/dölj den här användarhandledningen
@@ -374,10 +374,10 @@ write:
   findHelpHeader: Hur man hittar bilder
   findHelpHeader1: (ej länkar)
   findResultHeader: Sammanfattning av {n} bilder, funna i <b>{c}</b>
-  findHelp0: Sök i bildtexter m.m.
+  findHelp0: Sök i bildtexter med mera
   findHelp1: <span>Sök i:</span>-raden används för att markera vilka textfält som tillsammans ska ingå i sökningen (röd = markerad).
   findHelp2: "<span>I nedersta</span> raden kan du välja ett av två alternativ:"
-  findHelp3: "<span>1</span>. Du markerar att <span>alla ska hittas...</span> och skriver sedan i textrutan ovanför till exempel (blåmarkerat):
+  findHelp3: "<span>1</span>. Du markerar att <span>alla ska hittas...</span> och skriver sedan i textrutan ovanför, några exempel (blåmarkerade):
             <br>
             &nbsp;&nbsp;&nbsp;&nbsp; <span>nils jacobss</span> (två sökbegrepp) som hittar alla bilder med text ’Nils Jacobsson’ men även andra bilder med både ’Nils’ och ’Jacobss’ i texten, till exempel ’Nils Jonasson och Bertil Jacobsson’.<br>
             &nbsp;&nbsp;&nbsp;&nbsp; <span>nils%jacobs</span> (ett sökbegrepp) som hittar bilder med till exempel ’Nils Jacobsson’ eller ’Nils Jacobsen’."

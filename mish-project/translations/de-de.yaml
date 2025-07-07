@@ -377,7 +377,7 @@ write:
   findHelp0: Suchen in Bildunterschriften usw.
   findHelp1: In der <span>Suchen in:</span>-Zeile wird markiert, welche Textfelder gemeinsam in die Suche einbezogen werden sollen (rot = markiert).
   findHelp2: "<span>In den unteren Zeilen</span> kann eine von zwei Optionen ausgewählt werden:"
-  findHelp3: "<span>1</span>. Markieren, dass <span>alle davon mussen...</span> und schreiben dann beispielsweise in das Textfeld oben (blau markiert):
+  findHelp3: "<span>1</span>. Markieren, dass <span>alle davon mussen...</span> und schreiben dann in das Textfeld oben, einige Beispiele (blau markiert):
             <br>
             &nbsp;&nbsp;&nbsp;&nbsp; <span>nils jacobss</span> (zwei Suchbegriffe) findet alle Bilder mit dem Text „Nils Jacobsson“ und auch andere Bilder, in denen sowohl „Nils“ als auch „Jacobss“ im Text vorkommen, zum Beispiel „Nils Jonasson und Bertil Jacobsson“.<br>
             &nbsp;&nbsp;&nbsp;&nbsp; <span>nils%jacobs</span> (ein Suchbegriff) findet Bilder mit zum Beispiel „Nils Jacobsson“ oder „Nils Jacobsen“."
