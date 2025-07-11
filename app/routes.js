@@ -15,7 +15,7 @@ module.exports = function(app) { // Start module.exports
 
   // const { exec } = require('node:child_process')
   const util = require("util")
-  const exec = util.promisify(require("child_process").exec)
+  const exec = util.promisify(require("child_process").exec) // modern execP
 
   app.use(bodyParser.urlencoded( {extended: false} ))
 
@@ -44,6 +44,7 @@ module.exports = function(app) { // Start module.exports
   let cmdasync = async (cmd) => {return execSync(cmd)}
   // ===== ABOUT COMMAND EXECUTION
   // ===== `execP` provides a non-blocking, promise-based approach to executing commands, which is generally preferred in Node.js applications for better performance and easier asynchronous handling.
+  // ===== 'exec' is the same but native (not Bluebird, which is a bit oldfashion>2020)
   // ===== `cmdasync`, using `execSync`, offers a synchronous alternative that blocks the event loop, which might be useful in specific scenarios but is generally not recommended for most use cases due to its blocking nature. `a = await cmdasync(cmd)` and `a = execSync(cmd)` achieve the same end result of executing a command synchronously. The usage differs based on the context (asynchronous with `await` for `cmdasync` versus direct synchronous call for `execSync`). The choice between them depends on whether you're working within an asynchronous function and your preference for error handling and code style.
 
   // 30 black, 31 red, 32 green, 33 yellow, 34 blue, 35 magenta, 36 cyan, 37 white, 0 default
@@ -290,12 +291,17 @@ module.exports = function(app) { // Start module.exports
     // Plugins missing for most browsers January 2019
     //var tmpName = execSync ('mkdjvu ' + fileName)
     // Make a temporary png file instead (much bigger, sorry!)
-    console.log('mkpng ' + IMDB + fileName, 'color:red');
-    let pwd0 = await exec('pwd');
-    console.log(pwd0.stdout);
-    var tmpName = (await exec('mkpng ' + IMDB + fileName)).stdout;
+      let pwd0 = await exec('pwd');
+      console.log(pwd0.stdout.trim());
+      console.log(WWW_ROOT)
+    // Now mkpng will deliver the file 'tmpName'
+    // into the pwd directory = WWW_ROOT
+    let cmd = 'mkpng ' + IMDB + fileName;
+      console.log(cmd);
+    var tmpName = await exec(cmd); // 'await exec' delivers both stdout and stderr
+      console.log(tmpName.stdout);
     res.location ('/')
-    res.send (tmpName)
+    res.send (tmpName.stdout)
     //res.end ()
     console.log ('Started fullsize image generation')
   })

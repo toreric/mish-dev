@@ -186,7 +186,7 @@ document.addEventListener('mouseup', async (event) => {
   // some weird unknown reason at mouseup after dragging the dialog.
   // Thus it has to be reopened, and this will do it, just in case:
   if (tgtid === 'dialogText') {
-    await new Promise (z => setTimeout (z, 9)); // welcome, mouseup
+    await new Promise (z => setTimeout (z, 6)); // welcome, mouseup
     tgt.show();
   }
   return;

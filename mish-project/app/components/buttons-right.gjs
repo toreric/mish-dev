@@ -26,7 +26,18 @@ export class ButtonsRight extends Component {
     if (i > -1) f012345 = await this.z.getFullSize(this.z.allFiles[i].linkto);
     await new Promise (z => setTimeout (z, 99));
     if (f012345) {
-      var wiName = window.open (f012345, 'w' +   f012345, 'width=916,height=600,menubar=no,popup=true,status=no,titlebar=no,toolbar=no');
+      // var wiName = window.open ('about:blank', 'w' + f012345, 'width=916,height=600,menubar=no,popup=true,status=no,titlebar=no,toolbar=no');
+      var wiName = window.open('', 'w012345', 'menubar=no,popup=true,status=no,titlebar=no,toolbar=no');
+      // wiName.document.getElementsByTagName('BODY')[0].getAttributeNode("style").value = 'margin: 0px !important;';
+      // wiName.document.getElementsByTagName('BODY')[0].style.display = 'flex';
+      for (let pic of wiName.document.getElementsByTagName('IMG')) pic.remove();
+      await new Promise (z => setTimeout (z, 99));
+      var imgObj = wiName.document.createElement('img');
+      wiName.document.getElementsByTagName('BODY')[0].append(imgObj);
+      imgObj.src = f012345;
+      imgObj.style.width = '100vw';
+      imgObj.style.height = 'auto';
+      imgObj.style.margin = '-8px';
     }
     if (wiName) wiName.focus();
     else this.z.alertMess('POPUP blocked by browser');

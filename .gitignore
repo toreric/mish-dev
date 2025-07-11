@@ -31,7 +31,7 @@ tmp
 # broccoli-debug
 /DEBUG/
 
-# image files, occational files etc.
+# image files, occasional files etc.
 012345*
 *.xmp
 _imdb*
