@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 scriptname=`basename $0`
 
@@ -7,9 +7,10 @@ if [[ $# != 1 && $# != 2 ]];	then
   echo "     Use: $scriptname <image file (TIFF, JPEG, ...)> [<tmpdir/>]"
 	echo "   Makes: a temporary png file in directory \$PWD or <tmpdir/>"
 	echo "          from the image file, renamed 012345<6 hex numbers>.png"
+#	echo "          from the image file, renamed 012345<6 hex numbers>"
   echo "          (any 012345* file in the directory is first removed)"
 	echo "  Output: the temporary <file name>"
-	echo "Requires: convert of Imagemagick"
+	echo "Requires: convert of Imagemagick and openssl"
 	exit 0
 fi
 
@@ -18,15 +19,15 @@ if [[ $# == 2 ]]; then
 	dir=$2
 fi
 
-# ta bort gamla filer
+# remove old files
 rm -f ${dir}012345*
 
-# temporärfilnamn från slumptal 0.<12 decimaler>
-#tmp=$(rand -p 12 | sed 's/^0\./012345/')
-# temporärfilnamn från 6-siffrigt hexadecimalt slumptal
+# temporary file name with 6-digit hexadecimal random number
 tmp=012345`openssl rand -hex 6`
 #touch ${dir}$tmp.err
 
 convert -strip -interlace PNG $1 -depth 8 ${dir}${tmp}.png
 echo -n $tmp.png
+#convert -strip -interlace PNG $1 -depth 8 ${dir}${tmp}
+#echo -n $tmp
 exit 0

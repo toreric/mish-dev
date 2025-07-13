@@ -139,6 +139,11 @@ albumSelectInfo: "Välj här en album-
                  förgrenar sig nedåt.
                  – Tips vid problem:
                  Ladda om webbläsaren!"
+blockCopyright: "Fullstort fönster blockerat av upphovsrättsskäl.\n
+                Vänligen kontakta upphovsrättsinnehavaren!"
+blockFirefox: "Tyvärr kan fullstora bilder ännu inte ses med Firefox-webbläsare.\n
+              Förhoppningsvis kommer det snart att kunna åtgärdas."
+blockPopup: POPUP-fönster blockerat av webbläsaren
 button:
   ok:        Ja
   backgtitle: Byt bakgrund

@@ -5,7 +5,7 @@ pwd=$PWD
 # The Mish project catalog:
 cd ~/Arbeten/mish-dev
 
-tocopy='app/ public/ _imdb_news.txt _imdb_settings.sqlite _imdb_similarity buildstamp.txt ld_imdb.js LICENSE.txt nodestamp.txt package.json robots.txt server.js'
+tocopy='app/ public/ _imdb_news.txt _imdb_settings.sqlite _imdb_similarity buildstamp.txt ld_imdb.js .htaccess LICENSE.txt nodestamp.txt package.json robots.txt server.js'
 
 # The 'a' server list should be carefully adapted:
 a=("tore@192.168.0.102:/var/www/mish" "minneadmin@192.168.1.108:/var/www/mish" "minneadmin@mish.hopto.org:/var/www/mish")

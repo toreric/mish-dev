@@ -21,6 +21,15 @@ export class ButtonsRight extends Component {
   }
 
   doGetFullSize = async () => {
+    if (!this.z.picName.search(/^vbm|^cpr/i)) {
+      this.z.alertMess(this.intl.t('blockCopyright'));
+      return;
+    }
+    if (navigator.userAgent.search(/Firefox/) > -1) {
+      this.z.alertMess(this.intl.t('blockFirefox'));
+      return;
+    }
+    document.querySelector('img.spinner').style.display = '';
     let i = this.z.picIndex;
     let f012345 = '';
     if (i > -1) f012345 = await this.z.getFullSize(this.z.allFiles[i].linkto);
@@ -28,10 +37,10 @@ export class ButtonsRight extends Component {
     if (f012345) {
       // var wiName = window.open ('about:blank', 'w' + f012345, 'width=916,height=600,menubar=no,popup=true,status=no,titlebar=no,toolbar=no');
       var wiName = window.open('', 'w012345', 'menubar=no,popup=true,status=no,titlebar=no,toolbar=no');
+      await new Promise (z => setTimeout (z, 99));
       // wiName.document.getElementsByTagName('BODY')[0].getAttributeNode("style").value = 'margin: 0px !important;';
       // wiName.document.getElementsByTagName('BODY')[0].style.display = 'flex';
       for (let pic of wiName.document.getElementsByTagName('IMG')) pic.remove();
-      await new Promise (z => setTimeout (z, 99));
       var imgObj = wiName.document.createElement('img');
       wiName.document.getElementsByTagName('BODY')[0].append(imgObj);
       imgObj.src = f012345;
@@ -39,8 +48,11 @@ export class ButtonsRight extends Component {
       imgObj.style.height = 'auto';
       imgObj.style.margin = '-8px';
     }
-    if (wiName) wiName.focus();
-    else this.z.alertMess('POPUP blocked by browser');
+    await new Promise (z => setTimeout (z, 99));
+    document.querySelector('img.spinner').style.display = 'none';
+    if (wiName) wiName.document.focus();
+    else this.z.alertMess(this.intl.t('blockPopup'));
+    // else this.z.alertMess('POPUP blocked by browser');
   }
 
   <template>

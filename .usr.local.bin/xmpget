@@ -1,21 +1,21 @@
-#!/bin/bash
+  #!/bin/bash
 #
-# Xmp.dc.<key> in         
+# Xmp.dc.<key> in
 # image metadata   GUI name
-# ---------------  ----------------------------------------
-# description      Beskrivning (var-vad-vem?) 
-# creator          Ursprung/upphovsrätt etc.
-# subject          Extra nyckelord (avdelade med semikolon)
-# title            Bildidentitet/arkivnummer
+# ---------------  --------------------------------------------
+# description      Description (where-what-who?)
+# creator          Origin/copyright etc.
+# subject          Additional keywords (separated by semicolons)
+# title            Image identity/archive number
 # rights           Copyright
-# source           Preliminär/kompletterande/osäker...
+# source           Preliminary/supplementary/uncertain...
 key=''
 keys='description creator subject title rights source'
 keyname=''
 fil=''
 txt='<text string>'
-if [ $1 ]; then key=$1; fi  
-if [ $2 ]; then fil=$2; fi  
+if [ $1 ]; then key=$1; fi
+if [ $2 ]; then fil=$2; fi
 for name in $keys; do
   if [[ $key == $name ]]; then
     keyname=$name
@@ -31,7 +31,7 @@ if [[ $keyname != '' && $# == 2 ]]; then
 # Also remove \r (CR) if any, then substitute:
 
 # Substitute line breaks into <br> tags, remove
-# the '60ch-label', and any language marker 
+# the '60ch-label', and any language marker
 exiv2 -px -g$XMP $fil 2>/dev/null \
   | sed -e ':a' -e 'N' -e '$!ba' -e's/\r//g' -e 's/\n/<br>/g' \
   | sed 's/^.\{60\}//' \
