@@ -271,7 +271,7 @@ dialog:
     text3: Du åtar dig att respektera tillämplig upphovsrättslagstiftning och att inte överlåta bilder till tredje part.
     text4: Vänligen hantera alla frågor om tillstånd för distribution eller överlåtelse genom att kontakta den som är ansvarig för albumsamlingen.
     footnote1: "¹ Inom parentes: Ännu ej implementerat"
-    footnote2: "² Begränsning för vissa bilder på grund av ofullständig upphovsrätt"
+    footnote2: "² Begränsning för vissa bilder på grund av upphovsrättsförbehåll"
     footnote3: "³ Utan denna rättighet går det inte att veta om det finns gömda album"
   text:
     header:   Bildtexter för

@@ -21,7 +21,7 @@ export class ButtonsRight extends Component {
   }
 
   doGetFullSize = async () => {
-    if (!this.z.picName.search(/^vbm|^cpr/i)) {
+    if (!this.z.picName.search(/^vbm|^cpr/i) && !this.z.allow.deleteImg) {
       this.z.alertMess(this.intl.t('blockCopyright'));
       return;
     }
