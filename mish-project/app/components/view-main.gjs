@@ -519,7 +519,7 @@ class AllImages extends Component {
           </div>
 
           {{#if this.isPicFound}}
-            <div style="text-align:left;margin:0.2rem 0 -0.2rem 0">
+            <div style="text-align:left;margin:0.2rem 0 -0.2rem 0;line-break:anywhere">
               <em style="color:#9e9;font-size:90%">{{t 'Original'}}: {{this.path2orig}}</em>
             </div>
           {{/if}}

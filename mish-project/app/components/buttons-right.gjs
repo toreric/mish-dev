@@ -50,7 +50,7 @@ export class ButtonsRight extends Component {
     }
     await new Promise (z => setTimeout (z, 99));
     document.querySelector('img.spinner').style.display = 'none';
-    if (wiName) wiName.document.focus();
+    if (wiName) wiName.focus();
     else this.z.alertMess(this.intl.t('blockPopup'));
     // else this.z.alertMess('POPUP blocked by browser');
   }

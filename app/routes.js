@@ -60,13 +60,13 @@ module.exports = function(app) { // Start module.exports
   // Max lifetime(minutes) after last access of a temporary search result album:
   const toold = 60
 
-  //#region = code regions, only for the editors's minilist in the right margin!
+  //#Region = code regions, only for the editors's minilist in the right margin!
   // ##### R O U T I N G  E N T R I E S
   // Check 'Express route tester'!
   // ##### General passing point
   //#region ROUTING
   app.all('*', async function(req, res, next) {
-    if (req.originalUrl !== '/upload') { // Upload with dropzone: 'req' used else!
+    // if (req.originalUrl !== '/upload') { // Upload with dropzone: 'req' used else!
       let tmp = req.get('imdbroot')
       if (tmp) {
         IMDB_ROOT = decodeURIComponent(tmp)
@@ -110,8 +110,7 @@ module.exports = function(app) { // Start module.exports
       // await cmdasync(cmd) // ger direktare diagnos
       await execP(cmd)
       // console.log(BYEL + cmd + RSET)
-      
-    
+
       tmp = decodeURIComponent(req.originalUrl)
       if (tmp !== '/execute/' && tmp !== '/filestat/') console.log(BGRE + tmp + RSET)
         // console.log('  WWW_ROOT:', WWW_ROOT)
@@ -130,7 +129,7 @@ module.exports = function(app) { // Start module.exports
         console.log('LIKE', req.body.like)
       }
       next() // pass control to the next handler
-    }
+    // }
   })
 
   // ##### Execute a shell command
@@ -455,10 +454,10 @@ module.exports = function(app) { // Start module.exports
           dirlabel = dirlabel.join(LF)
 
           // *********************************************************************
-          // Start with 2 extra lines to be discarded by the receiver: Node
-          // version and userDir=IMDB_HOME. This is where the IMDB_HOME server
-          // parameter is transferred to the browser!
-          dirtext = "NodeJS " + process.version.trim() + LF + IMDB_HOME + LF + dirtext
+          // Start with 3 extra lines to be discarded by the receiver: Node
+          // version, userDir=IMDB_HOME, and wwwDir=WWW_ROOT. This is where the
+          // IMDB_HOME server parameter is transferred to the browser!
+          dirtext = "NodeJS " + process.version.trim() + LF + IMDB_HOME + LF + WWW_ROOT + LF + dirtext
           // *********************************************************************
 
           res.location('/')
@@ -697,6 +696,19 @@ module.exports = function(app) { // Start module.exports
 
   })
 
+  // ##### Upload image(s)
+  //region upload
+  // ##### This must not be confused with the Multer upload which is, by now
+  // deprecated, if not abandoned (associated with Dropzone, also abandoned)
+  app.post('/upload', async (req, res) => {
+    try {
+      var files = decodeURIComponent(req.get('files'))
+      console.log(BYEL + files + RSET)
+      res.send(files)
+    } catch {
+      console.error('Upload error', err.message)
+    }
+  })
 
   //#region FUNCTIONS
 

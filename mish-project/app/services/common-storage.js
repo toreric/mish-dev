@@ -83,6 +83,7 @@ export default class CommonStorageService extends Service {
   //        userName may be changed in other ways later (e.g. logins):
   @tracked  userName = this.defaultUserName;
   @tracked  userStatus = ''; // A logged in user has a certain allowance status
+  @tracked  wwwDir = '/path/to/www';
 
   // (*) imdbCoco format is "(<npics>[+<nlinked>]) [<nsubdirs>] [<flag>]"
   // where <npics> = images, <nlinks> = linked images, <nsubdirs> = subalbums,
@@ -1107,6 +1108,7 @@ export default class CommonStorageService extends Service {
     return "";
   }
 
+
   //   #region SERVER
   //== Server tasks
 
@@ -1123,14 +1125,6 @@ export default class CommonStorageService extends Service {
     xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
     xhr.setRequestHeader('picfound', this.picFound); // All 'wihtin 255' characters
   }
-
-  // #region search/
-  // containing a server
-  // call in 'searchText'
-  // is coded in
-  // 'dialog-find.gjs'
-
-
 
   //#region execute/
   execute = async (command) => { // Execute on the server, return a promise
@@ -1488,7 +1482,7 @@ export default class CommonStorageService extends Service {
             statusText: xhr.statusText
           });
         }
-      };
+      }
       xhr.send(that.sortOrder);
     }).catch(error => {
       console.error(error.message);
@@ -1578,7 +1572,7 @@ export default class CommonStorageService extends Service {
           status: this.status,
           statusText: xhr.statusText
         });
-      };
+      }
       xhr.send (data);
     });
   }
@@ -1596,7 +1590,7 @@ export default class CommonStorageService extends Service {
   NOTE: Non-zero ´exact´ also means "Only search for image names (file 'basenames')!"
   NOTE: Negative ´exact´, -1 = called from the find? dialog, -2 = do nothing,
         else (non-negative) = called from and return to the favorites? dialog
-  */
+  **/
   searchText = (sTxt, and, searchWhere, exact) => {
     // Display the spinner
     document.querySelector('img.spinner').style.display = '';
@@ -1697,10 +1691,35 @@ export default class CommonStorageService extends Service {
               statusText: xhr.statusText
             });
           }
-        };
+        }
         xhr.send (srchData);
       });
     }
+  }
+
+  //#region upload/
+  upload = async () => {
+    var files = 'ååabcde\nÖfghijk';
+    var that = this;
+    return new Promise((resolve, reject) => {
+      let xhr = new XMLHttpRequest();
+      xhr.open('POST', 'upload/', true, null, null);
+      this.xhrSetRequestHeader(xhr);
+      xhr.setRequestHeader('files', encodeURIComponent(files));
+      xhr.onload = function () {
+        if (this.status >= 200 && this.status < 300) {
+          var data = xhr.response.trim ();
+            that.loli('data' + data, 'color:red');
+          resolve(data);
+        } else {
+          reject({
+            status: this.status,
+            statusText: xhr.statusText
+          });
+        }
+      }
+      xhr.send('');
+    });
   }
 
   //   #region MENUS
@@ -1712,7 +1731,7 @@ export default class CommonStorageService extends Service {
     var menuMain = document.getElementById('menuMain');
     menuMain.style.display = '';
     await new Promise (z => setTimeout (z, 9)); // openMainMenu
-    menuButton.style.background = "#444 url('/images/cross.png') center 0.4rem/1.3rem no-repeat";
+    menuButton.style.background = "#444 url('/images/cross.png') center 0.6rem/0.9rem no-repeat";
     // Ensure that the main menu behaves
     let ifshow = this.imdbRoot ? '' : 'none';
     document.getElementById('albumHead').style.display = ifshow;

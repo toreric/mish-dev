@@ -49,8 +49,8 @@ export class DialogUtil extends Component {
     this.tool = elRadio.id;
   }
 
-  clearInput = () => {
-    let elem = document.querySelector('#newAlbNam');
+  clearInput = (id) => {
+    let elem = document.getElementById(id);
     elem.value = '';
     elem.style.background = '#f0f0a0';
     elem.focus();
@@ -134,16 +134,6 @@ export class DialogUtil extends Component {
         return false;
       }
     }
-
-  // Common tools
-  // get okFindText() {
-  //   if (this.z.albumTools) {
-  //     return false;
-  //   } else {
-  //     this.tool = '';
-  //     return true
-  //   }
-  // }
 
   get okSeeFavorites() {
     if (this.z.albumTools) {
@@ -281,8 +271,11 @@ export class DialogUtil extends Component {
     this.z.futureNotYet('write.tool8');
   }
 
-  doUpload = () => {
-    this.z. futureNotYet('write.tool5');
+  doUpload = async () => {
+
+    this.z.futureNotYet('write.tool5'); // TO BE REMOVED
+
+    await this.z.upload();
   }
 
   // Common tools
@@ -447,13 +440,6 @@ export class DialogUtil extends Component {
 
           {{!-- Here are tools for the entire album collection --}}
           <div style="margin:0.5rem 0 0 0">{{{t 'write.tool01'}}}</div>
-
-          {{!-- {{#if this.okFindText}}
-            <span class="glue">
-              <input id="util9" {{this.addTools2}} name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
-              <label for="util9"> &nbsp;{{t 'write.tool9'}} &nbsp;<span style="font:normal .9rem Arial;border:2px solid blue;border-radius:5px">&nbsp;F&nbsp;</span></label>
-            </span>
-          {{/if}} --}}
           {{#if this.okSeeFavorites}}
             <span class="glue">
               <input id="util91" {{this.addTools2}} name="albumUtility" type="radio" {{on 'click' (fn this.detectRadio)}}>
@@ -556,8 +542,6 @@ export class DialogUtil extends Component {
           {{!-- === Upload images === --}}
           {{else if (eq this.tool 'util5')}}
 
-            <button type="button" {{on 'click' (fn this.doUpload)}}>{{t 'write.tool5'}}</button>
-
             <form style="line-height:1.35rem">
               <span class="glue">
                 <input id="util51" name="albumUtility" type="radio" checked>
@@ -569,17 +553,17 @@ export class DialogUtil extends Component {
               </span>
             </form>
 
+            <input id="newImages" type="file" class="cred user nameNew" size="36" title="" style="margin:0.2rem 0 0.5rem 0" multiple autofocus><a title={{t 'erase'}} {{on 'click' (fn this.clearInput 'newImages')}}> ×&nbsp;</a><br>
+
+            <button type="button" {{on 'click' (fn this.doUpload)}}>{{t 'write.tool5'}}</button>
+
           {{!-- === Update search data for the entire album collection === --}}
           {{else if (eq this.tool 'util6')}}
 
             <button type="button" {{on 'click' (fn this.doDbUpdate)}}>{{t 'write.tool6'}}</button>
 
-          {{!-- === Find texts in the entire album collection === --}}
-          {{!-- {{else if (eq this.tool 'util9')}}
-
-            <button type="button" {{on 'click' (fn this.doFindText)}}>{{t 'write.tool9'}}</button> --}}
-
           {{!-- === Manage personal favorites === --}}
+          {{!-- Tip: util9 is free to replace util91 --}}
           {{else if (eq this.tool 'util91')}}
 
             <button type="button" {{on 'click' (fn this.z.futureNotYet 'write.tool91')}}>{{t 'write.tool91'}}</button>

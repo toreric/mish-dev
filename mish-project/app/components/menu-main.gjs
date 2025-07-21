@@ -59,7 +59,7 @@ export class MenuMain extends Component {
       // this.z.loli(arr[1], 'color:red');
 
     // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-    // The two first lines (to be shifted off) have other content
+    // The three first lines (to be shifted off) have other content
     // First, we get some system information from the server:
     await this.z.execute('echo "' + arr.shift() + '" > nodestamp.txt');
     // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -68,6 +68,10 @@ export class MenuMain extends Component {
     // IMDB_HOME is given as an 'Express' server parameter at startup:
     this.z.userDir = arr.shift();
       // this.z.loli('userDir and imdbPath:  ' + this.z.userDir + '  ' + this.z.imdbPath, 'color:red');
+    // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+    // 3: 'IMDB_WWW' is also delivered from the server
+    this.z.wwwDir = arr.shift();
+      this.z.loli('wwwDir: ' + this.z.wwwDir, 'color:red');
     // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
     let n = arr.length/3;
@@ -139,6 +143,14 @@ export class MenuMain extends Component {
 
     this.hasHidden = anyHidden(); // if there are any hidden-but-allowed albums
     this.z.openAlbum(0); // Select the root album
+    // Copy the 'text' catalog from the album root to  the web root which
+    // makes available to be linked to within the image captions by writing
+    // <a href="text/«file name»" target="_blank">«link text»</a>, where the
+    // target attribute is important in order to avoid confusing appearance
+    // on the SPA page: Best to shift-click, which opens another browser window.
+
+    await this.z.execute('cp -f ' + this.z.imdbPath + '/text ' + this.z.wwwDir + '/text' );
+
     this.z.closeMainMenu('after opening root album'); // Close the main menu
         // this.z.loli(this.z.imdbDirs);
   }

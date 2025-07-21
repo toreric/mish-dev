@@ -22,6 +22,7 @@ if [[ $prid ]]; then
     exit
   fi
   sudo kill $prid
+  clear
 fi
 
 # Make the script usable from any directory

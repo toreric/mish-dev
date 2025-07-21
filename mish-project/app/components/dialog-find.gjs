@@ -16,11 +16,11 @@ document.addEventListener('mousedown', async (e) => {
   let tgt = e.target;
   await new Promise (z => setTimeout (z, 99)); // dialogFind
   // Position the clicked of these two at top
-  let i1 = Number(document.querySelector('#dialogFind').style.zIndex);
-  let i2 = Number(document.querySelector('#dialogFindResult').style.zIndex);
+  // let i1 = Number(document.querySelector('#dialogFind').style.zIndex);
+  // let i2 = Number(document.querySelector('#dialogFindResult').style.zIndex);
     // console.error(i1 + ' ' + i2);
-  if (tgt.closest('#dialogFind') && i1 < i2) document.querySelector('#dialogFindResult').style.zIndex = i1 - 1;
-  if (tgt.closest('#dialogFindResult') && i2 < i1) document.querySelector('#dialogFindResult').style.zIndex = i1 + 1;
+  // if (tgt.closest('#dialogFind') && i1 < i2) document.querySelector('#dialogFindResult').style.zIndex = i1 - 1;
+  // if (tgt.closest('#dialogFindResult') && i2 < i1) document.querySelector('#dialogFindResult').style.zIndex = i1 + 1;
 });
 
 document.addEventListener('keydown', (e) => {
@@ -42,7 +42,7 @@ document.addEventListener('keydown', (e) => {
 function acceptedFileName (name) {
   // This function must equal the acceptedFileName function in routes.js
   var acceptedName = 0 === name.replace (/[-_.a-zA-Z0-9]+/g, "").length
-  // Allowed file types are also set at drop-zone in the template menu-buttons.hbs
+  // Allowed file types are also set at (drop-zone in the template menu-buttons.hbs)
   var ftype = name.match (/\.(jpe?g|tif{1,2}|png|gif)$/i)
   var imtype = name.slice (0, 6) // System file prefix
   // Here more files may be filtered out depending on o/s needs etc.:
@@ -96,6 +96,7 @@ export class DialogFind extends Component {
   // openFound(-1) opens 'picFound' with all found images, while
   // openFound(i) opens 'picFound' with images found in album 'i'
   openFound = async (i) => {
+    document.querySelector('img.spinner').style.display = '';
     let lpath = this.z.imdbPath + '/' + this.z.picFound; // The path to picFound
     // Clean up picFound:
     await this.z.execute('rm -rf ' + lpath + '/*');
@@ -291,7 +292,7 @@ export class DialogFind extends Component {
     }
     this.z.closeDialog(dialogFindId);
     this.z.openDialog('dialogFindResult');
-    document.querySelector('#dialogFindResult').style.zIndex = Number(document.querySelector('#dialogFind').style.zIndex) + 1;
+    // document.querySelector('#dialogFindResult').style.zIndex = Number(document.querySelector('#dialogFind').style.zIndex) + 1;
       // this.z.loli('Ignored: ' + this.counts[chalbs.length], 'color:lime');
       // this.z.loli('N, max: ' + this.nchk + ', ' + this.z.maxWarning, 'color:lime');
     let butt = document.querySelector('#dialogFindResult button.show');
@@ -400,7 +401,7 @@ export class DialogFind extends Component {
         </footer>
       </dialog>
 
-      <dialog id="dialogFindResult" style="max-width:calc(100vw - 2rem);z-index:15">
+      <dialog id="dialogFindResult" style="max-width:calc(100vw - 2rem);z-index:13">
         <header data-dialog-draggable>
           <p>&nbsp;</p>
           <p>{{{t 'write.findResultHeader' n=this.nchk c=this.z.imdbRoot}}}</p>
