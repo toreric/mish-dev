@@ -10,7 +10,8 @@ albumcollshow: Show/hide album list
 openallalb: Show/hide subalbums
 showselected: Show selected album
 tmpalbum1: With
-tmpalbum2: "first: Temporary album for displaying found images"
+tmpalbum2: "first:"
+tmpalbum3: Temporary album for displaying found images
 needaroot: First select album collection!
 nimages: number of images
 nlinked: plus number of linked images
@@ -426,7 +427,7 @@ write:
   tool4: Find duplicate image names
   tool41: Find duplicate image names in <b>{a}</b> including all subalbums
   tool42: Find duplicate image names
-  tool5: Upload new images
+  tool5: Select image files to upload
   tool6: Update search data
   tool7: Try to find similar images
   tool8: Make text list for displayed images

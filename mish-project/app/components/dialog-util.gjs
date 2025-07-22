@@ -272,10 +272,10 @@ export class DialogUtil extends Component {
   }
 
   doUpload = async () => {
+    document.getElementById('newImages').click();
 
+    await this. z.upload();
     this.z.futureNotYet('write.tool5'); // TO BE REMOVED
-
-    await this.z.upload();
   }
 
   // Common tools
@@ -552,10 +552,12 @@ export class DialogUtil extends Component {
                 <label for="util52"> &nbsp;{{t 'placeLast'}}</label>
               </span>
             </form>
+            <br>
 
-            <input id="newImages" type="file" class="cred user nameNew" size="36" title="" style="margin:0.2rem 0 0.5rem 0" multiple autofocus><a title={{t 'erase'}} {{on 'click' (fn this.clearInput 'newImages')}}> ×&nbsp;</a><br>
+            <input id="newImages" type="file" multiple accept="image/png,image/jpeg,image/tiff,image/gif" style="display:none">
 
             <button type="button" {{on 'click' (fn this.doUpload)}}>{{t 'write.tool5'}}</button>
+            <button type="button" {{on 'click' (fn this.doUpload)}} disabled>{{t 'button.continue'}}</button>
 
           {{!-- === Update search data for the entire album collection === --}}
           {{else if (eq this.tool 'util6')}}

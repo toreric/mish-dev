@@ -69,7 +69,7 @@ export default class CommonStorageService extends Service {
         get subaIndex() {      //subalbum index array for imdbLabels
               let subindex = [];
               for (let i=this.imdbDirIndex+1;i<this.imdbDirs.length;i++) {
-                if (this.imdbDirs[i] && this.imdbDirs[i].startsWith(this.imdbDir)) {
+                if (this.imdbDirs[i] && (this.imdbDirs[i] + '/').startsWith(this.imdbDir + '/')) {
                   if (this.imdbDirs[i].slice(this.imdbDir.length + 1).split('/').length === 1) {
                     subindex.push(i);
                   }
@@ -490,7 +490,7 @@ export default class CommonStorageService extends Service {
       }
     }
     // THEN: Set color mark on picFound
-    document.querySelector('span.album.a' + this.picFoundIndex).style.color = '#909';
+    document.querySelector('span.album.a' + this.picFoundIndex).style.color = '#e0e';
     // THEN: Set color mark on the selected album name and make it visible
     // NOTE: This is the selected album in the ALBUM tree.
     document.querySelector('span.album.a' + isel).style.color = '#fd0';

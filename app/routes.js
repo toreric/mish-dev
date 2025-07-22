@@ -366,7 +366,9 @@ module.exports = function(app) { // Start module.exports
                 ignore[j] = ignore[j].replace(/^[^/]*/, '')
                 for (let i=dirlist.length-1;i>-1;i--) {
                   if (ignore[j] && ignore[j].slice(0, 1) !== '#') {
-                    if (ignore[j] && dirlist[i].startsWith(ignore[j])) {
+                      // console.log('ignore[j]', ignore[j]);
+                      // console.log('dirlist[i]', dirlist[i]);
+                    if (ignore[j] && (dirlist[i] + '/').startsWith(ignore[j] + '/')) {
                       dirlist.splice(i, 1)
                       break
                     }
@@ -407,7 +409,7 @@ module.exports = function(app) { // Start module.exports
             var subs = 0
             if (i) {
               for (let j=i+1; j<dirlist.length; j++) {
-                if ((dirlist[j]).startsWith(dirlist[i])) ++subs
+                if ((dirlist[j] + '/').startsWith(dirlist[i] + '/')) ++subs
               }
             } else {
               subs = dirlist.length - 1 // All subsubs to root
@@ -444,7 +446,7 @@ module.exports = function(app) { // Start module.exports
                 // console.log('C i dirlabel[i]',i,dirlabel[i])
                 if (ignore[j] && ignore[j].slice(0, 1) !== '#') {
                   ignore[j] = ignore[j].replace(/^[^/]*/, "")
-                  if (ignore[j] && dirlist[i].startsWith(ignore[j])) dircoco[i] += " *"
+                  if (ignore[j] && (dirlist[i] + '/').startsWith(ignore[j] + '/')) dircoco[i] += " *"
                 }
               }
             }

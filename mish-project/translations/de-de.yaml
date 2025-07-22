@@ -10,7 +10,8 @@ albumcollshow: Albumliste ein-/ausblenden
 openallalb: Unteralben zeigen/verbergen
 showselected: Gewähltes Album anzeigen
 tmpalbum1: Mit
-tmpalbum2: "zuerst: Temporäres Album zur Anzeige gefundener Bilder"
+tmpalbum2: "zuerst:"
+tmpalbum3: Temporäres Album zur Anzeige gefundener Bilder
 needaroot: Zuerst Albensammlung auswählen!
 nimages: Anzahl der Bilder
 nlinked: plus Anzahl der verlinkten Bilder
@@ -422,7 +423,7 @@ write:
   tool4: Doppelte Bildnamen finden
   tool41: Doppelte Bildnamen in <b>{a}</b> inklusive aller Unteralben finden
   tool42: Doppelte Bildnamen finden
-  tool5: Neue Bilder hochladen
+  tool5: Bilddateien hochzuladen auswählen
   tool6: Suchdaten aktualisieren
   tool7: Ähnliche Bilder finden versuchen
   tool8: Textliste für angezeigte Bilder erstellen

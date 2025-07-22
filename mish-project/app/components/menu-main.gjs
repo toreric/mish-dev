@@ -69,9 +69,9 @@ export class MenuMain extends Component {
     this.z.userDir = arr.shift();
       // this.z.loli('userDir and imdbPath:  ' + this.z.userDir + '  ' + this.z.imdbPath, 'color:red');
     // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-    // 3: 'IMDB_WWW' is also delivered from the server
+    // Thirdly, 'IMDB_WWW' also comes from the server to be stored in 'wwwDir':
     this.z.wwwDir = arr.shift();
-      this.z.loli('wwwDir: ' + this.z.wwwDir, 'color:red');
+      // this.z.loli('wwwDir: ' + this.z.wwwDir, 'color:red');
     // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
     let n = arr.length/3;
@@ -149,7 +149,7 @@ export class MenuMain extends Component {
     // target attribute is important in order to avoid confusing appearance
     // on the SPA page: Best to shift-click, which opens another browser window.
 
-    await this.z.execute('cp -f ' + this.z.imdbPath + '/text ' + this.z.wwwDir + '/text' );
+    await this.z.execute('cp -rf ' + this.z.imdbPath + '/text ' + this.z.wwwDir + '/');
 
     this.z.closeMainMenu('after opening root album'); // Close the main menu
         // this.z.loli(this.z.imdbDirs);
@@ -259,7 +259,7 @@ export class MenuMain extends Component {
         <Tree @tree={{this.tree}} />
         {{#if this.z.imdbRoot}}
           <p style="font-size:77%;vertical-align:top;line-height:1.1rem;margin:0 0.2rem 0 3rem">
-            {{t 'tmpalbum1'}} § {{t 'tmpalbum2'}}<br>
+            <span style="color:#e0e;font-size:inherit">{{t 'tmpalbum1'}} § {{t 'tmpalbum2'}}</span> {{t 'tmpalbum3'}}<br>
             (⋅) {{t 'nimages'}}, (⋅+⋅) {{t 'nlinked'}}<br>
             {{SA}} {{t 'nsubalbums'}}
             {{#if this.hasHidden}}

@@ -10,7 +10,8 @@ albumcollshow: Visa/dölj albumlistan
 openallalb: Visa/dölj underalbum
 showselected: Visa valt album
 tmpalbum1: Med
-tmpalbum2: "först: Tillfälligt album för visning av funna bilder"
+tmpalbum2: "först:"
+tmpalbum3: Tillfälligt album för visning av funna bilder
 needaroot: Välj först albumsamling!
 nimages: antal bilder
 nlinked: plus antal inlänkade bilder
@@ -423,7 +424,7 @@ write:
   tool4: Finn dubletter av bildnamn
   tool41: Finn dubletter av bildnamn i <b>{a}</b> inklusive eventuella underalbum
   tool42: Finn dubletter av bildnamn
-  tool5: Ladda upp nya bilder
+  tool5: Välj bildfiler att ladda upp
   tool6: Uppdatera sökdata
   tool7: Försök finna likadana bilder
   tool8: Gör textlista till bilder som visas
