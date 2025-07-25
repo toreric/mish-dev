@@ -1,7 +1,7 @@
 //== Mish common storage service with global properties/methods
 
 import Service from '@ember/service';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { htmlSafe } from '@ember/template';
 
@@ -55,7 +55,7 @@ export default class CommonStorageService extends Service {
         get intlCode() { return `${this.intl.t('intlcode')}`; }
   @tracked  intlCodeCurr = this.intlCode;     // language code
         get picFoundBaseName() { return `${this.intl.t('picfound')}`; }
-  // The found pics temporary catalog name is amended with a random 4-code at login:
+  // The found pics temporary directory name is amended with a random 4-code at login:
   @tracked  RID = '----';
   @tracked  picFound = this.picFoundBaseName + '.' + this.RID;
   @tracked  picFoundIndex = -1; //set in MenuMain, the index may vary by language
@@ -214,6 +214,7 @@ export default class CommonStorageService extends Service {
   //== Text utility functions
 
   // Check if an album/directory name can be accepted
+  // WHAT ABOUT THE ORDINARY SLASH? (/)
   acceptedDirName = (name) => { // Note that – (&ndash;) and Üü are accepted:
     let acceptedName = 0 === name.replace(/[/\-–@_.a-zåäöüA-ZÅÄÖÜ0-9]+/g, '').length;
     return acceptedName && name.slice(0,1) !== "." && !name.includes('/.');
@@ -556,7 +557,7 @@ export default class CommonStorageService extends Service {
     let data = [...this.imdbDirs]; // clone-copy albums
     let root = this.imdbRoot;
     for (let i=0;i<data.length;i++) {
-      data[i] = root + data[i]; // amend the root catalog name
+      data[i] = root + data[i]; // amend the root directory name
     }
         // this.loli('imdbRoot/imdbDirs ' + n + LF + data.join(LF));
         // this.loli(data);
@@ -1698,8 +1699,7 @@ export default class CommonStorageService extends Service {
   }
 
   //#region upload/
-  upload = async () => {
-    var files = 'ååabcde\nÖfghijk';
+  upload = async (files) => {
     var that = this;
     return new Promise((resolve, reject) => {
       let xhr = new XMLHttpRequest();

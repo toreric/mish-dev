@@ -1,7 +1,7 @@
 //== Mish main menu, select image root directoriy, display album tree
 
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { eq } from 'ember-truth-helpers';
@@ -87,7 +87,7 @@ export class MenuMain extends Component {
     let data = [...this.z.imdbDirs]; // clone-copy albums
     let root = this.z.imdbRoot;
     for (let i=0;i<data.length;i++) {
-      data[i] = root + data[i]; // amend the root catalog name
+      data[i] = root + data[i]; // amend the root directory name
     }
         // this.z.loli('imdbRoot/imdbDirs ' + n + LF + data.join(LF));
         // this.z.loli(data);
@@ -143,12 +143,13 @@ export class MenuMain extends Component {
 
     this.hasHidden = anyHidden(); // if there are any hidden-but-allowed albums
     this.z.openAlbum(0); // Select the root album
-    // Copy the 'text' catalog from the album root to  the web root which
+    // Copy the 'text' directory from the album root to  the web root which
     // makes available to be linked to within the image captions by writing
     // <a href="text/«file name»" target="_blank">«link text»</a>, where the
     // target attribute is important in order to avoid confusing appearance
     // on the SPA page: Best to shift-click, which opens another browser window.
 
+    await this.z.execute('touch ' + this.z.imdbPath + '/text');
     await this.z.execute('cp -rf ' + this.z.imdbPath + '/text ' + this.z.wwwDir + '/');
 
     this.z.closeMainMenu('after opening root album'); // Close the main menu

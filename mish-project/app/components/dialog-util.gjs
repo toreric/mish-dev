@@ -1,7 +1,7 @@
 //== Mish dialog for various purposes
 
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { eq } from 'ember-truth-helpers';
 import { fn } from '@ember/helper';
@@ -272,9 +272,11 @@ export class DialogUtil extends Component {
   }
 
   doUpload = async () => {
-    document.getElementById('newImages').click();
+    let inpEle = document.getElementById('newImages');
+    inpEle.click();
+    let files = inpEle.value;
+    await this.z.upload(files);
 
-    await this. z.upload();
     this.z.futureNotYet('write.tool5'); // TO BE REMOVED
   }
 
@@ -300,7 +302,7 @@ export class DialogUtil extends Component {
       await this.z.execute('touch ' + lpath + '/.imdb');
       for (let i=paths.length; i>0; i--) { // work backwards
         let linkfrom = '../' + paths[i-1].replace(/^[^/]*\//, ''); // make relative
-        let fname = paths[i-1].replace(/^.*\/([^/]+$)/, '$1'); // clean from catalogs
+        let fname = paths[i-1].replace(/^.*\/([^/]+$)/, '$1'); // clean from directories
         // Make a four character random 'intrusion' in the file name
         fname = this.z.addRandom(fname);
           // this.z.loli(fname, 'color:red');
@@ -472,13 +474,13 @@ export class DialogUtil extends Component {
 
           {{#if this.z.albumTools}}
             {{#if this.amTools}}
-              {{t 'write.chooseTool'}}<br>
+              {{!-- {{t 'write.chooseTool'}}<br> --}}
             {{else}}
               {{t 'write.tool99'}}
             {{/if}}
           {{else}}
             {{#if this.cnTools}}
-              {{t 'write.chooseTool'}}<br>
+              {{!-- {{t 'write.chooseTool'}}<br> --}}
             {{else}}
               {{t 'write.tool99'}}
             {{/if}}
@@ -503,7 +505,7 @@ export class DialogUtil extends Component {
           {{else if (eq this.tool 'util2')}}
             <b>{{t 'write.tool2'}}</b><br>
 
-            <input id="newAlbNam" type="text" class="cred user nameNew" size="36" title="" placeholder="{{t 'write.albumName'}}" style="margin:0.2rem 0 0.5rem 0" {{on 'keydown' (fn this.doSubalbum 2)}} autofocus><a title={{t 'erase'}} {{on 'click' (fn this.clearInput)}}> ×&nbsp;</a><br>
+            <input id="newAlbNam" type="text" class="cred user nameNew" size="36" title="" placeholder="{{t 'write.albumName'}}" style="margin:0.2rem 0 0.5rem 0" {{on 'keydown' (fn this.doSubalbum 2)}} autofocus autocomplete="off"><a title={{t 'erase'}} {{on 'click' (fn this.clearInput 'newAlbNam')}}> ×&nbsp;</a><br>
 
             <button type="button" {{on 'click' (fn this.doSubalbum 1)}}>{{t 'button.continue'}}</button>
             <button type="button" {{on 'click' (fn this.doSubalbum 3)}} disabled>{{t 'button.dosub'}}</button>
@@ -542,6 +544,11 @@ export class DialogUtil extends Component {
           {{!-- === Upload images === --}}
           {{else if (eq this.tool 'util5')}}
 
+            <button type="button" {{on 'click' (fn this.doUpload)}}>{{t 'write.tool5'}}</button>
+            <button type="button" {{on 'click' (fn this.doUpload)}} disabled>{{t 'button.continue'}}</button>
+
+            <input id="newImages" type="file" multiple accept="image/png,image/jpeg,image/tiff,image/gif" style="display:none">
+
             <form style="line-height:1.35rem">
               <span class="glue">
                 <input id="util51" name="albumUtility" type="radio" checked>
@@ -552,12 +559,6 @@ export class DialogUtil extends Component {
                 <label for="util52"> &nbsp;{{t 'placeLast'}}</label>
               </span>
             </form>
-            <br>
-
-            <input id="newImages" type="file" multiple accept="image/png,image/jpeg,image/tiff,image/gif" style="display:none">
-
-            <button type="button" {{on 'click' (fn this.doUpload)}}>{{t 'write.tool5'}}</button>
-            <button type="button" {{on 'click' (fn this.doUpload)}} disabled>{{t 'button.continue'}}</button>
 
           {{!-- === Update search data for the entire album collection === --}}
           {{else if (eq this.tool 'util6')}}

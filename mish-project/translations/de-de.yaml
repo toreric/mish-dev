@@ -135,7 +135,7 @@ albumSelectInfo: "Eine Albensammlung hier auswählen,
                  Möglicherweise gibt es noch mehr
                  als eine Alternative.
                  Das Eingabealbum einer Albensammlung ist
-                 auch „Album Root“ genannt, und es
+                 auch „Album Root” genannt, und es
                  verzweigt sich nach unten.
                  – Tipps bei Problemen:
                  Den Browser neuladen!"
@@ -216,7 +216,7 @@ dialog:
     imgdef1: in einem Album ist entweder ein
     imgdef2: Originalbild
     imgdef3: oder ein verlinktes Bild aus einem anderen Album in der Albensammlung
-    imgdef4: ein “Link“
+    imgdef4: ein „Link”
     login0: Wer als Gast-Benutzer⋅in (gast) angemeldet ist
     login1: hat nur beschränkte Rechte (Vorschaubilder verstecken, markieren und mit drag & drop bewegen; zum Originalbild gehen). Nach persönlichem Login (Anmeldung) erfolgen weitere Rechte (z.B. Bildunterschriften ändern und speichern). Nur Systemadministrierende können ein persönliches Login bereitstellen
     ihrcm0: Jedes Bild hat ein Menü
@@ -234,9 +234,9 @@ dialog:
     tools: Werkzeuge für die Albensammlung
     find:  Bilder in der Albensammlung finden per Textsuche
     qmark: Benutzeranweisung öffnen/schließen
-    rload: Das Album neuladen, alle nicht gespeicherten Änderungen wiederherstellen („reset-Taste“, jedoch nicht für Textänderungen)¹ ²
+    rload: Das Album neuladen, alle nicht gespeicherten Änderungen wiederherstellen („reset-Taste”, jedoch nicht für Textänderungen)¹ ²
     names: Bildnamen ein-/ausblenden (Dateiname ohne .file-Typ)
-    hide:  „Versteckte Bilder“ ein-/ausblenden (beim Bildmenü versteckt)
+    hide:  „Versteckte Bilder” ein-/ausblenden (beim Bildmenü versteckt)
     save:  Bildänderungen¹ speichern, die ansonsten temporär sind und wiederhergestellt werden können²
     uptop: Zum Seitenanfang
     note1: "¹ Änderungen sind: Verschieben von Miniaturbilder per Drag-and-Drop, Ausblenden oder Anzeigen mit Miniaturansichtsmenü"
@@ -249,7 +249,7 @@ dialog:
     F11:  Vollbildanzeige wird gestartet bzw. gestoppt
     right: <b>Rechtspfeil</b>- oder <b>Linkspfeiltaste</b> schaltet das Bild vorwärts oder rückwärts
     A:    Die <b>A</b>-Taste startet den automatischen Bildwechsel &ndash; die Esc-Taste bricht ab
-    F:    Die <b>F</b>-Taste öffnet „Bilder finden“ (das Suchfenster) &ndash; die Esc-Taste schließt es
+    F:    Die <b>F</b>-Taste öffnet „Bilder finden” (das Suchfenster) &ndash; die Esc-Taste schließt es
     Esc:  <b>Esc</b> ist die End- und Abbruchtaste zum Wechseln von Bildern, Schließen von Fenstern usw.
     F5:   <b>F5</b> oder <b>Ctrl</b>+<b>R</b> wird verwendet, um von vorne zu beginnen, beispielsweise wenn die Bildübergänge nicht in Ordnung sind
   info:
@@ -348,7 +348,7 @@ write:
               <br>Es ist eine Sicherheitsmaßnahme beim Löschen.
   chooseOne:  Soll dieses Bild
   chooseThis: "Ausgewähltes Album: <b>{a}</b>"
-  chooseTool: Werkzeug wählen
+#  chooseTool: Werkzeug wählen
   confirm: Nicht verwendet, melden!
   creator: "Herkunft: Foto Ursprung Quelle"
   description: "Beschreibung: Wann wo was welche"
@@ -385,14 +385,14 @@ write:
   findHelp2: "<span>In den unteren Zeilen</span> kann eine von zwei Optionen ausgewählt werden:"
   findHelp3: "<span>1</span>. Markieren, dass <span>alle davon mussen...</span> und schreiben dann in das Textfeld oben, einige Beispiele (blau markiert):
             <br>
-            &nbsp;&nbsp;&nbsp;&nbsp; <span>nils jacobss</span> (zwei Suchbegriffe) findet alle Bilder mit dem Text „Nils Jacobsson“ und auch andere Bilder, in denen sowohl „Nils“ als auch „Jacobss“ im Text vorkommen, zum Beispiel „Nils Jonasson und Bertil Jacobsson“.<br>
-            &nbsp;&nbsp;&nbsp;&nbsp; <span>nils%jacobs</span> (ein Suchbegriff) findet Bilder mit zum Beispiel „Nils Jacobsson“ oder „Nils Jacobsen“."
+            &nbsp;&nbsp;&nbsp;&nbsp; <span>nils jacobss</span> (zwei Suchbegriffe) findet alle Bilder mit dem Text „Nils Jacobsson” und auch andere Bilder, in denen sowohl „Nils” als auch „Jacobss” im Text vorkommen, zum Beispiel „Nils Jonasson und Bertil Jacobsson”.<br>
+            &nbsp;&nbsp;&nbsp;&nbsp; <span>nils%jacobs</span> (ein Suchbegriff) findet Bilder mit zum Beispiel „Nils Jacobsson” oder „Nils Jacobsen”."
   findHelp4: "<span>2</span>. Markieren, dass <span>mindestens einer davon...</span> und schreiben zum Beispiel:
             <br>
-            &nbsp;&nbsp;&nbsp;&nbsp; <span>nils jacobss</span> (zwei Suchbegriffe) findet alle Bilder mit dem Text „Nils Jacobsson“ und auch alle Bilder mit irgendein von „Nils“ oder „Jacobss“ im Text, zum Beispiel „Fredrik Nilson“ und/oder „Filip Jacobsson“ (aber nicht „Nisse Jacobson“).<br>
-            &nbsp;&nbsp;&nbsp;&nbsp; <span>nils%jacobs</span> (ein Suchbegriff) findet Bilder mit zum Beispiel „Nils Jacobsson“ oder „Nils Jacobsen“ (wie in <span>1</span>, weil nur ein Suchbegriff)."
+            &nbsp;&nbsp;&nbsp;&nbsp; <span>nils jacobss</span> (zwei Suchbegriffe) findet alle Bilder mit dem Text „Nils Jacobsson” und auch alle Bilder mit irgendein von „Nils” oder „Jacobss” im Text, zum Beispiel „Fredrik Nilson” und/oder „Filip Jacobsson” (aber nicht „Nisse Jacobson”).<br>
+            &nbsp;&nbsp;&nbsp;&nbsp; <span>nils%jacobs</span> (ein Suchbegriff) findet Bilder mit zum Beispiel „Nils Jacobsson” oder „Nils Jacobsen” (wie in <span>1</span>, weil nur ein Suchbegriff)."
   findHelp5: Schreiben in das Feld oben, wonach gesucht werden soll, dann die Suche starten. Das Ergebnis wird in einem temporären Album mit dem Namen <b>Gefundene Bilder</b> präsentiert. Es gibt einem Link zum Original im Menü jedes Miniaturbildes. <span style="color:#0a0;text-decoration:underline">Ein grüner Rand unter der Bildunterschrift</span> bedeutet ein verlinktes Bild.
-  findHelp6: "Tipp: Die Gesamtzahl der Bilder in der Albensammlung wird durch die Suche (in Albumnamen) nach einem „/“ angezeigt!"
+  findHelp6: "Tipp: Die Gesamtzahl der Bilder in der Albensammlung wird durch die Suche (in Albumnamen) nach einem „/” angezeigt!"
   foundNoAlbums: Keine Alben gefunden!
   isEmpty: ist leer
   imageSeveral: Die Namen von {n} Bildern, die entfernt werden sollen
@@ -414,7 +414,7 @@ write:
   setPoop: Mausklicks anzeigen
   setEraseOriginal: Original mit Link löschen (WARNUNG!)
   tool0: "Für <b>{a}</b> wählen:"
-  tool01: "Für <b>alle Alben</b> dieser Sammlung:"
+  tool01: "Für <b>alle Alben</b> dieser Sammlung wählen:"
   tool1: Das Album löschen (muss leer sein)
   tool2: Ein Unteralbum erstellen
   tool3: Die Bilder nach Namen sortieren

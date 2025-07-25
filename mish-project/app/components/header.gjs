@@ -5,7 +5,7 @@
 import Component from '@glimmer/component';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import t from 'ember-intl/helpers/t';
 
 import { dialogTextId } from './dialog-text';

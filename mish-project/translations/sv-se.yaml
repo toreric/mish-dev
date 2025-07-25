@@ -216,7 +216,7 @@ dialog:
     imgdef1: i ett album är antingen en
     imgdef2: originalbild
     imgdef3: eller en inlänkad bild från ett annat album i albumsamlingen
-    imgdef4: en “länk“
+    imgdef4: en ”länk”
     login0: Inloggad som gäst
     login1: har du bara vissa rättigheter (gömma, markera och flytta miniatyrer med dra + släpp; gå till originalbild). Med personlig inloggning kan du få fler rättigheter (till exempel göra bildtextändringar och och spara dem). Personlig inloggning kan bara fås från en systemadministratör
     ihrcm0: Varje bild har en meny
@@ -348,7 +348,7 @@ write:
               <br>Det gäller för radering som en säkerhetsåtgärd.
   chooseOne:  Ska den här bilden
   chooseThis: "Valt album: <b>{a}</b>"
-  chooseTool: Välj verktyg
+#  chooseTool: Välj verktyg
   confirm: Används inte, rapportera!
   creator: "Ursprung: Foto upphov källa"
   dbUpdated: Textsökningsdatabasen uppdaterad
@@ -415,7 +415,7 @@ write:
   setPoop: Visa musklick
   setEraseOriginal: Radera original med länk (VARNING!)
   tool0: "Välj för <b>{a}</b>:"
-  tool01: "För <b>alla album</b> i den här samlingen:"
+  tool01: "För <b>alla album</b> i den här samlingen, välj:"
   tool1: Radera albumet (måste vara tomt)
   tool2: Gör ett underalbum
   tool3: Sortera bilderna efter namn

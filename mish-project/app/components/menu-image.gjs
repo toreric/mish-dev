@@ -1,7 +1,7 @@
 //== Mish image (thumbnail) menu, replaces former context menu
 
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { eq } from 'ember-truth-helpers';
@@ -366,14 +366,14 @@ export class MenuImage extends Component {
       if (iflink) {
         this.z.chooseText += this.intl.t('write.eraseFunc1');
       }
-      this.z.chooseText += '<br><br>';
+      this.z.chooseText += '<br><br><b style="color:#df1837">';
       // State the number to erase:
       if (imgs.length > 1) {
         this.z.chooseText += this.intl.t('write.imageSeveral', {n: imgs.length});
       } else {
         this.z.chooseText += this.intl.t('write.imageSingle');
       }
-      this.z.chooseText += ':</span><br><br>';
+      this.z.chooseText += '</b>:</span><br><br>';
       this.z.chooseText += '<span style="font-weight:bold">';
 
       for (let pic of imgs) {
@@ -478,7 +478,7 @@ export class MenuImage extends Component {
           } else {
             let CSP = imgPath; // C.s.p
             let err = await this.z.execute('rm -f ' + imgPath); // Complete server path
-              this.z.loli('rm -f ' + imgPath, 'color:pink');
+              // this.z.loli('rm -f ' + imgPath, 'color:pink');
             if (err) {
               errNames.push(imgName)
             } else {
@@ -486,10 +486,10 @@ export class MenuImage extends Component {
               await this.z.sqlUpdate(imgPath); // Complete server path
               this.z.loli(imgTitle + ' deleted', 'color:red');
               img.remove();
-              await this.z.execute('rm -f ' + this.z.userDir + '/' + this.z.imdbRoot + path + '_mini_' + imgName + '.png');
-              await this.z.execute('rm -f ' + this.z.userDir + '/' + this.z.imdbRoot + path + '_show_' + imgName + '.png');
-                this.z.loli('rm -f ' + this.z.userDir + '/' + this.z.imdbRoot + path + '_mini_' + imgName + '.png', 'color:pink');
-                this.z.loli('rm -f ' + this.z.userDir + '/' + this.z.imdbRoot + path + '_show_' + imgName + '.png', 'color:pink');
+              await this.z.execute('rm -f ' + path + '_mini_' + imgName + '.png');
+              await this.z.execute('rm -f ' + path + '_show_' + imgName + '.png');
+                // this.z.loli('rm -f ' + path + '_mini_' + imgName + '.png', 'color:pink');
+                // this.z.loli('rm -f ' + path + '_show_' + imgName + '.png', 'color:pink');
             }
           }
           // If at picFound: imgName is trunchated, preparied for remove of the original

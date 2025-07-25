@@ -4,7 +4,7 @@
 //   NOTE: 'DialogSettings' ends this file
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
@@ -289,7 +289,7 @@ class Welcome extends Component {
         // this.z.loli('imdbRoot = ' + this.z.imdbRoot, 'color:red');
       this.z.allowFunc(); // SET ALLOWANCES PATTERN important!
 
-      // Get album-collection-qualified catalogs
+      // Get album-collection-qualified directories
       let roots = await this.z.getAlbumRoots();
       this.z.imdbRoots = roots.split(LF);
     }

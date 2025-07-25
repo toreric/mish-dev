@@ -1,7 +1,7 @@
 //== Mish dialog for image searches (in texts: captions etc.)
 
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
@@ -122,7 +122,7 @@ export class DialogFind extends Component {
       // for (let i=0; i<paths.length; i++) { // forwards
       for (let i=paths.length; i>0; i--) { // work backwards
         let linkfrom = '../' + paths[i-1].replace(/^[^/]*\//, ''); // make relative
-        let fname = paths[i-1].replace(/^.*\/([^/]+$)/, '$1'); // clean from catalogs
+        let fname = paths[i-1].replace(/^.*\/([^/]+$)/, '$1'); // clean from directories
         // Make a four character random 'intrusion' in the file name
         fname = this.z.addRandom(fname)
         let linkto = lpath + '/' + fname; // absolute path

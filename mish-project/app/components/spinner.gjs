@@ -1,7 +1,7 @@
 //== Spinner
 
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import t from 'ember-intl/helpers/t';
 import { on } from '@ember/modifier';
 

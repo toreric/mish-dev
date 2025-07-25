@@ -2,7 +2,7 @@
 
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { action } from '@ember/object';
 
 import { fn } from '@ember/helper';
@@ -92,9 +92,9 @@ export class DialogLogin extends Component {
 
   // Clear input field: user or password
   clearInput = (inputClass) => {
-      // this.z.loli('clearInput (' + inputClass + ')');
-    document.querySelector('input.' + inputClass).value = '';
-    document.querySelector('input.' + inputClass).focus({ focusVisible: true });
+    let elem = document.querySelector('input.' + inputClass);
+    elem.value = '';
+    elem.focus({ focusVisible: true });
   }
 
   // Detect login Enter key

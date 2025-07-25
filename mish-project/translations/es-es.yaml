@@ -136,7 +136,7 @@ albumSelectInfo: "Select here an album
                   than one alternative.
                   The entrance album to an
                   album collection is also
-                  called ”album root”,
+                  called “album root”,
                   branches downwards.
                   – Tips at problems:
                   Reload the browser!"
@@ -350,7 +350,7 @@ write:
               <br>This applies to deletion as a security measure.
   chooseOne:  Should this image
   chooseThis: "Selected album: <b>{a}</b>"
-  chooseTool: Choose tool
+#  chooseTool: Choose tool
   confirm: Not used, report!
   creator: 'Origin: Photographer Source'
   dbUpdated: Text search database updated
@@ -359,11 +359,11 @@ write:
   doEraOri:  "NOTE: Including the original images!"
   doEraOri1: "NOTE: Including the original image!"
   doErased:  Removed {n} images from “{a}”
-  doErased1: Removed an image from ”{a}”
-  doLinked:  Linked {n} images to ”{a}”
-  doLinked1: Linked an image to ”{a}”
-  doMoved:   Moved {n} images to ”{a}”
-  doMoved1:  Moved an image to ”{a}”
+  doErased1: Removed an image from “{a}”
+  doLinked:  Linked {n} images to “{a}”
+  doLinked1: Linked an image to “{a}”
+  doMoved:   Moved {n} images to “{a}”
+  doMoved1:  Moved an image to “{a}”
   eraseFunc: DELETING original images cannot be undone
   eraseFunc1: ", but deleted linked images (links) can be recreated"
   eraseOption: "OPTION and EXCEPTION: Delete original images"
@@ -415,10 +415,8 @@ write:
   setBeep: Beep at mouse clicks
   setPoop: Show mouse clicks
   setEraseOriginal: Erase original with link (WARNING!)
-  # To use 'a' instead of 'album' as parameter did HANG
-  # both FF and Chromium (UNBELIEVABLE!):
   tool0: "Choose for <b>{a}</b>:"
-  tool01: "For <b>all albums</b> in this collection:"
+  tool01: "For <b>all albums</b> in this collection, choose:"
   tool1: Delete the album (must be empty)
   tool2: Make a subalbum
   tool3: Sort the images by names

@@ -97,22 +97,24 @@ module.exports = function(app) { // Start module.exports
           try {
             var cmd = 'touch ' + IMDB + '/' + picFound
             var cmd1 = '/ && touch ' + IMDB + '/' + picFound + '/.imdb'
-            var errmsg = await exec(cmd + cmd1)
-          } catch (errmsg) { // command failed, dir not found
+            await exec(cmd + cmd1)
+          } catch (err) { // command failed, picFound dir not found
             cmd = 'mkdir ' + IMDB + '/' + picFound
             await exec(cmd + cmd1)
           }
         }
       }
       // The server automatically removes old search result temporary albums:
-      // Remove too old picFound (search result tmp) catalogs (with added random .01yz)
+      // Remove too old picFound (search result tmp) directories (with added random .01yz)
       cmd = 'find -L ' + IMDB + ' -type d -name "' + '§*" -amin +' + toold + ' | xargs rm -rf'
       // await cmdasync(cmd) // ger direktare diagnos
       await execP(cmd)
       // console.log(BYEL + cmd + RSET)
 
       tmp = decodeURIComponent(req.originalUrl)
-      if (tmp !== '/execute/' && tmp !== '/filestat/') console.log(BGRE + tmp + RSET)
+      if (tmp !== '/execute/' && tmp !== '/filestat/' && !tmp.startsWith(IMDB)) {
+        console.log(BGRE + tmp + RSET)
+      }
         // console.log('  WWW_ROOT:', WWW_ROOT)
         // console.log(' IMDB_HOME:', IMDB_HOME)
         // console.log('      IMDB:', IMDB)
@@ -1012,13 +1014,17 @@ module.exports = function(app) { // Start module.exports
     }
     var imckcmd
     imckcmd = "convert " + origpath + " -antialias -quality 80 -resize " + size + " -strip " + filepath1
-    //console.log(imckcmd)
+      // console.log('imckcmd', imckcmd)
 
     // NEW EXEC WITH util.promisify
     var errmsg = await exec(imckcmd)
-    if (errmsg) {
-      console.error(`exec error: ${errmsg}`)
-      return
+    // We have to be careful here since stderr may contain various messages and warnings
+    // regarding irregular metadata field tags, especially among tiff image files, ignore;
+    // if (errmsg.stdout || errmsg.stderr) {
+    if (errmsg.stdout) {
+      console.error('Imagemagick convert error:', errmsg)
+      // this return may prohibit PNG typing, thus remove:
+      //return
     }
     if(filepath1 !== filepath) {
       // execSync("mv " + filepath1 + " " + filepath + "&&chmod 664 " + filepath)

@@ -1,7 +1,7 @@
 //== Mish main display view
 
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 // import { action } from '@ember/object';
 import { eq } from 'ember-truth-helpers';
