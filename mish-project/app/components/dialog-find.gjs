@@ -6,6 +6,7 @@ import { tracked } from '@glimmer/tracking';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
+import { htmlSafe } from '@ember/template';
 import { Spinner } from './spinner';
 
 // Note: Dialog-functions in Header needs dialogFindId:
@@ -86,7 +87,7 @@ export class DialogFind extends Component {
   }
 
   get searchNotes() {
-    return this.z.allow.notesView ? '' : 'none';
+    return htmlSafe(this.z.allow.notesView ? '' : 'none');
   }
 
   get albumFound() {

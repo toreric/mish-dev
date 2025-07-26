@@ -218,15 +218,20 @@ class AllImages extends Component {
   //   this.z.markBorders(item.name);
   // }
 
-    // Copies 'allFiles' to 'items' by real-value duplication
-    // NOTE: the function is only called from the hidden preload button!
-    allFiles = async () => {
-      this.items = [];
-      for (let file of this.z.allFiles) {
-          // this.z.loli(file.show, 'color:red');
-        this.items.push(file);
-      }
+  // Copies 'allFiles' to 'items' by real-value duplication
+  // NOTE: the function is only called from the hidden preload button!
+  allFiles = async () => {
+    this.items = [];
+    for (let file of this.z.allFiles) {
+        // this.z.loli(file.show, 'color:red');
+      this.items.push(file);
     }
+  }
+
+  // Returns 'none' or ''
+  get ifShow() {
+    return htmlSafe(this.z.displayNames);
+  }
 
   // Are we within the temporary album?
   get isPicFound() {
@@ -423,7 +428,7 @@ class AllImages extends Component {
               <div {{on 'click' this.ediText}}>
 
                 {{!-- This is the image name, should be unique --}}
-                <div class="img_name" style="padding-right:0.7rem;display:{{this.z.displayNames}}">
+                <div class="img_name" style="padding-right:0.7rem;display:{{this.ifShow}}">
                   {{item.name}}
                 </div>
 
@@ -504,7 +509,7 @@ class AllImages extends Component {
         <div id="link_texts" class="" draggable="false" ondragstart="return false" {{on 'click' this.ediText}}>
 
           {{!-- 'picName' should be unique; 'displayNames' is 'none' or '' --}}
-          <div class="img_name" style="display:{{this.z.displayNames}}" draggable="false" ondragstart="return false" title="">
+          <div class="img_name" style="display:{{this.ifShow}}" draggable="false" ondragstart="return false" title="">
             {{this.z.picName}}
           </div>
 

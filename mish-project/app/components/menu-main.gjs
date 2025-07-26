@@ -8,6 +8,7 @@ import { eq } from 'ember-truth-helpers';
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
 import t from 'ember-intl/helpers/t';
+import { htmlSafe } from '@ember/template';
 
 import { dialogAlertId } from './dialog-alert';
 import { dialogFindId } from './dialog-find';
@@ -281,15 +282,19 @@ class Tree extends Component {
   @service intl;
 
   @tracked isOpen = true;
-  @tracked display = '';
+  @tracked disp = '';
+
+  get display() {
+    return htmlSafe(this.disp);
+  }
 
   // Open(show) or close(hide) a node in the album tree
   toggleThis = () => {
     this.isOpen = !this.isOpen;
     if (this.isOpen) {
-      this.display = '';
+      this.disp = '';
     } else {
-      this.display = 'none';
+      this.disp = 'none';
     }
   }
 
