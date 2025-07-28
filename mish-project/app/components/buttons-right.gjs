@@ -40,13 +40,17 @@ export class ButtonsRight extends Component {
       await new Promise (z => setTimeout (z, 99));
       // wiName.document.getElementsByTagName('BODY')[0].getAttributeNode("style").value = 'margin: 0px !important;';
       // wiName.document.getElementsByTagName('BODY')[0].style.display = 'flex';
-      for (let pic of wiName.document.getElementsByTagName('IMG')) pic.remove();
+      for (let div of wiName.document.getElementsByTagName('DIV')) div.remove();
+      var divObj = wiName.document.createElement('div');
       var imgObj = wiName.document.createElement('img');
-      wiName.document.getElementsByTagName('BODY')[0].append(imgObj);
       imgObj.src = f012345;
-      imgObj.style.width = '100vw';
-      imgObj.style.height = 'auto';
       imgObj.style.margin = '-8px';
+      imgObj.style.width = 'auto';
+      imgObj.style.height = 'auto';
+      wiName.document.getElementsByTagName('BODY')[0].appendChild(divObj);
+      divObj.appendChild(imgObj);
+      divObj.style.width = '100vw';
+      divObj.style.height = 'auto';
     }
     await new Promise (z => setTimeout (z, 99));
     document.querySelector('img.spinner').style.display = 'none';
