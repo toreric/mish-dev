@@ -12,7 +12,8 @@ import { Spinner } from './spinner';
 // Note: Dialog-functions in Header needs dialogFindId:
 export const dialogFindId = 'dialogFind';
 
-document.addEventListener('mousedown', async (e) => {
+// Important: ”document.body.” excludes SCROLLBARS, if any!
+document.body.addEventListener('mousedown', async (e) => {
   e.stopPropagation();
   let tgt = e.target;
   await new Promise (z => setTimeout (z, 99)); // dialogFind

@@ -14,7 +14,8 @@ export const dialogTextId = 'dialogText';
 const dialogTextNotesId = 'dialogTextNotes';
 const dialogTextKeywordsId = 'dialogTextKeywords';
 
-document.addEventListener('mousedown', (e) => {
+// Important: ”document.body.” excludes SCROLLBARS, if any!
+document.body.addEventListener('mousedown', (e) => {
   e.stopPropagation();
 });
 

@@ -117,8 +117,8 @@ const beep  =  function(vol, freq, duration){
 
 
 // ALL bubbling mousedowns are caught, even programmatical clicks!
-document.addEventListener('mousedown', async (event) => {
-  // event.preventDefault(); // Kills everything
+// Important: ”document.body.” excludes SCROLLBARS, if any!
+document.body.addEventListener('mousedown', async (event) => {
       // console.log('event:', event);
       // console.log(event.target);
   var tgt = event.target;
@@ -164,7 +164,8 @@ document.addEventListener('mousedown', async (event) => {
 });
 
 // ALL bubbling mouseups should be caught
-document.addEventListener('mouseup', async (event) => {
+// Important: ”document.body.” excludes SCROLLBARS, if any!
+document.body.addEventListener('mouseup', async (event) => {
   let tgt = event.target;
   let tgtid = tgt.id;
     // console.log('event:', event);
