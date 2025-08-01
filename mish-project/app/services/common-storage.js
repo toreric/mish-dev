@@ -1290,7 +1290,7 @@ export default class CommonStorageService extends Service {
 
   //#region imdbdirs/
   getAlbumDirs = async (getHidden) => {
-    // Get album collections or albums if thisDir is an album root
+    // Get album collections or albums if we are at an album root
     return new Promise((resolve, reject) => {
       // ===== XMLHttpRequest returning user credentials
       var xhr = new XMLHttpRequest();

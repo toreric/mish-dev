@@ -6,7 +6,7 @@ module.exports = function(app) { // Start module.exports
   const path = require('path')
   const Promise = require('bluebird')
   const fs = Promise.promisifyAll(require('fs')) // ...Async() suffix
-  const execP = Promise.promisify(require('child_process').exec)
+  // const execP = Promise.promisify(require('child_process').exec)
   const multer = require('multer')
   const upload = multer( {dest: '/tmp'} ) // tmp upload
   // const exec = require('child_process').exec
@@ -14,8 +14,8 @@ module.exports = function(app) { // Start module.exports
   const bodyParser = require('body-parser')
 
   // const { exec } = require('node:child_process')
-  const util = require("util")
-  const exec = util.promisify(require("child_process").exec) // modern execP
+  const util = require('util')
+  const exec = util.promisify(require('child_process').exec) // modern execP
 
   app.use(bodyParser.urlencoded( {extended: false} ))
 
@@ -36,14 +36,13 @@ module.exports = function(app) { // Start module.exports
   let IMDB = ''
   let USER = ''
   let picFound = '' // Name of special(temporary) search result album
-  let show_imagedir = false // For debug data(base) directories
   let allfiles = [] // For /imagelist use
-  let RID = '----'  // Random (user) identity (take from picFound)
+  let RID = '----'  // Random (user) identity (take from picFound, changed at reload)
 
   // ===== Make a synchronous shell command formally 'asynchronous'(cf. asynchronous execP)
   let cmdasync = async (cmd) => {return execSync(cmd)}
   // ===== ABOUT COMMAND EXECUTION
-  // ===== `execP` provides a non-blocking, promise-based approach to executing commands, which is generally preferred in Node.js applications for better performance and easier asynchronous handling.
+  // ===== `execP` provided a non-blocking, promise-based approach to executing commands, which is generally preferred in Node.js applications for better performance and easier asynchronous handling.
   // ===== 'exec' is the same but native (not Bluebird, which is a bit oldfashion>2020)
   // ===== `cmdasync`, using `execSync`, offers a synchronous alternative that blocks the event loop, which might be useful in specific scenarios but is generally not recommended for most use cases due to its blocking nature. `a = await cmdasync(cmd)` and `a = execSync(cmd)` achieve the same end result of executing a command synchronously. The usage differs based on the context (asynchronous with `await` for `cmdasync` versus direct synchronous call for `execSync`). The choice between them depends on whether you're working within an asynchronous function and your preference for error handling and code style.
 
@@ -52,6 +51,7 @@ module.exports = function(app) { // Start module.exports
   
   const BGRE = '\x1b[1;32m' // Bright green
   const BYEL = '\x1b[1;33m' // Bright yellow
+  const BLUE = '\x1b[1;34m' // Bright blue
   const RED  = '\x1b[31m'   // Red
   const RSET = '\x1b[0m'    // Reset
   
@@ -67,7 +67,7 @@ module.exports = function(app) { // Start module.exports
   //#region ROUTING
   app.all('*', async function(req, res, next) {
     // if (req.originalUrl !== '/upload') { // Upload with dropzone: 'req' used else!
-      let tmp = req.get('imdbroot')
+      var tmp = req.get('imdbroot')
       if (tmp) {
         IMDB_ROOT = decodeURIComponent(tmp)
         IMDB_DIR = decodeURIComponent( req.get('imdbdir') )
@@ -108,23 +108,23 @@ module.exports = function(app) { // Start module.exports
       // Remove too old picFound (search result tmp) directories (with added random .01yz)
       cmd = 'find -L ' + IMDB + ' -type d -name "' + '§*" -amin +' + toold + ' | xargs rm -rf'
       // await cmdasync(cmd) // ger direktare diagnos
-      await execP(cmd)
+      await exec(cmd)
       // console.log(BYEL + cmd + RSET)
 
       tmp = decodeURIComponent(req.originalUrl)
       if (tmp !== '/execute/' && tmp !== '/filestat/' && !tmp.startsWith(IMDB)) {
         console.log(BGRE + tmp + RSET)
       }
-        // console.log('  WWW_ROOT:', WWW_ROOT)
-        // console.log(' IMDB_HOME:', IMDB_HOME)
-        // console.log('      IMDB:', IMDB)
-        // console.log(' IMDB_ROOT:', IMDB_ROOT)
-        // console.log('  IMDB_DIR:', IMDB_DIR)
-        // console.log('  picFound:', picFound)
-      if (show_imagedir) {
-        console.log(req.params)
-        console.log(req.hostname)
-        console.log(req.originalUrl)
+      let show_imagedir = false // For debug of directories printout
+      if (show_imagedir) {     // and also each ”tmp” printout
+        console.log(BLUE + req.originalUrl + RSET)
+        // if (tmp !== '/execute/' && tmp !== '/filestat/' && !tmp.startsWith(IMDB)) console.log(req)
+        console.log('  WWW_ROOT:', WWW_ROOT)
+        console.log(' IMDB_HOME:', IMDB_HOME)
+        console.log('      IMDB:', IMDB)
+        console.log(' IMDB_ROOT:', IMDB_ROOT)
+        console.log('  IMDB_DIR:', IMDB_DIR)
+        console.log('  picFound:', picFound)
       }
       // console.log(process.memoryUsage())
       if (req.body && req.body.like) {
@@ -138,12 +138,12 @@ module.exports = function(app) { // Start module.exports
   //region execute
   app.get('/execute', async (req, res) => {
     var cmd = decodeURIComponent(req.get('command'))
-      // console.log(BYEL + cmd + RSET) // hide this to protect image paths
+      // console.log(BLUE + cmd + RSET) // hide this to protect image paths
     try {
       // NOTE: exec seems to use ``-ticks, not $()
       // Hence don't pass "`" without escape
       cmd = cmd.replace (/`/g, "\\`")
-      var resdata = await execP (cmd)
+      var resdata = (await exec (cmd)).stdout
       res.location ('/')
       res.send (resdata)
       //res.end ()
@@ -337,7 +337,7 @@ module.exports = function(app) { // Start module.exports
       let pif = IMDB + '/' + picFound
       let cmd = 'rm -rf ' + pif + ' ; mkdir ' + pif + ' && touch ' + pif + '/.imdb'
       // await cmdasync(cmd) // better diagnosis
-      await execP(cmd)
+      await exec(cmd)
       // console.log(BYEL + cmd + RSET)
       console.log('Refreshed the picFound tmp album')
     }
@@ -362,7 +362,7 @@ module.exports = function(app) { // Start module.exports
           if (allowHidden !== 'true') {
             for (let i=0; i<dirlist.length; i++) {
               // An _imdb_ignore line/path may/should start with just './'(if not #)
-              let ignore =(await execP("cat " + ignorePaths)).toString().trim().split(LF)
+              let ignore = (await exec('cat ' + ignorePaths)).stdout.toString().trim().split(LF)
               for (let j=0; j<ignore.length; j++) {
                 if (ignore[j].slice(0, 1) === '#') ignore[j] = ''
                 ignore[j] = ignore[j].replace(/^[^/]*/, '')
@@ -385,16 +385,17 @@ module.exports = function(app) { // Start module.exports
           for (let i=0; i<dirlist.length; i++) {
 
             cmd = "echo -n `find " + IMDB + dirlist[i] + " -maxdepth 1 -type l -name '_mini_*' | grep -c ''`"
-            let nlinks =(await execP(cmd))/1 // Get no of linked images
+            let nlinks = (await exec(cmd)).stdout/1 // Get no of linked images
             cmd = "echo -n `ls " + IMDB + dirlist[i] + "/_mini_* 2>/dev/null`"
-            let pics = await execP(cmd) // Get all images
-
-            // *********************************************************************
+            let pics = (await exec(cmd)).stdout // Get all images
+              // console.log(pics)
+            // **********************************************************************
             // TODO: Check this list against _mini_file 'mothers' in order to
             // eliminate the count of orphan _mini_-files: may appear by accident!
-            // AND: Perhaps 'getAlbumDirs' in 'z' should be moved to 'menu-main.gjs'
-            // in order to balance code lines more reasonably between source files?
-            // *********************************************************************
+            // AND: Do not move 'getAlbumDirs' in 'z' to 'menu-main.gjs' in order to
+            // balance code lines more reasonably between source files!  Since it is
+            // also called by 'updateTree' which is called from 'menu-image.gjs'!
+            // **********************************************************************
 
             pics = pics.toString().trim().split(" ")
             if (!pics[0]) {pics = []} // Remove a "" element
@@ -442,12 +443,12 @@ module.exports = function(app) { // Start module.exports
           // Add a mark for hidden files(if not removed already)
           if (allowHidden === 'true') {
             // An _imdb_ignore line/path may/should start with just './'(if not #)
-            let ignore =(await execP("cat " + ignorePaths)).toString().trim().split(LF)
+            let ignore = (await exec('cat ' + ignorePaths)).stdout.toString().trim().split(LF)
             for (let j=0; j<ignore.length; j++) {
               for (let i=0; i<dirlist.length; i++) {
                 // console.log('C i dirlabel[i]',i,dirlabel[i])
                 if (ignore[j] && ignore[j].slice(0, 1) !== '#') {
-                  ignore[j] = ignore[j].replace(/^[^/]*/, "")
+                  ignore[j] = ignore[j].replace(/^[^/]*/, '')
                   if (ignore[j] && (dirlist[i] + '/').startsWith(ignore[j] + '/')) dircoco[i] += " *"
                 }
               }
@@ -465,6 +466,9 @@ module.exports = function(app) { // Start module.exports
           // *********************************************************************
 
           res.location('/')
+            // console.log('dirtext:' + BYEL + LF + dirtext + RSET)
+            // console.log('dircoco:' + BYEL + LF + dircoco + RSET)
+            // console.log('dirlabel:' + BYEL + LF + dirlabel + RSET)
           res.send(dirtext + LF + dircoco + LF + dirlabel)
           //res.end()
           console.log('Directory information sent from server')
@@ -520,6 +524,7 @@ module.exports = function(app) { // Start module.exports
       await pkgfilenames(origlist).then(() => {
         if (!allfiles) {allfiles = ''}
         res.location('/')
+          // console.log(BYEL + 'allfiles:' + LF + allfiles + RSET)
         res.send(allfiles)
         //res.end()
         console.log(BYEL + RID + '@' + USER + ': ' + IMDB_ROOT + IMDB_DIR + RSET)
@@ -544,7 +549,7 @@ module.exports = function(app) { // Start module.exports
         await fs.closeAsync(fd)
         execSync('chmod 664 ' + imdbtxtpath)
       } catch(error) { // Maybe something in the path is wrong
-        console.error('Error in album path')
+        console.error(RED + 'Error in album path' + RSET)
         res.on('error', (error) => {
           // console.error(error.message) hide path to albums
           res.location('/')
@@ -558,7 +563,7 @@ module.exports = function(app) { // Start module.exports
       res.send(names) // Sent buffer arrives as text
     }).then(console.info('File order sent from server'))
     .catch(function(error) {
-      console.error('Error in album path?')
+      console.error(RED + 'Error in album path?' + RSET)
       res.location('/')
       res.send('')
     })
@@ -768,7 +773,7 @@ module.exports = function(app) { // Start module.exports
   //#region notFile
   async function notFile(path) {
     cmd = '[ -f ' + path + ' ]; echo -n $?'
-    return Number(await execP(cmd))
+    return Number((await (exec(cmd))).stdout)
   }
 
 
@@ -868,7 +873,7 @@ module.exports = function(app) { // Start module.exports
     try {
       await fs.accessAsync(IMDB + dirName)
     } catch(err) {
-      console.error('Warning: Nonexistent album')
+      console.error(RED + 'Warning: Nonexistent album' + RSET)
       return ''
     }
 

@@ -49,7 +49,7 @@ export class MenuMain extends Component {
     document.querySelector('img.spinner').style.display = '';
 
     await new Promise (z => setTimeout (z, 399)); // selectRoot, ensurance!?
-    // The await reason: Sometimes getAlbumDirs is unsuspectedly null
+    // The wait reason: Sometimes getAlbumDirs is unsuspectedly null
 
     // Retreive the albums list of this collection (root album).
     // If the argment is false, _imdb_ignore.txt in the chosen
@@ -79,10 +79,10 @@ export class MenuMain extends Component {
     this.z.imdbDirs = arr.splice(0, n); // album paths (without root)
     this.z.imdbCoco = arr.splice(0, n); // album content counts
     this.z.imdbLabels = arr.splice(0, n); // album labels (thumbnail paths)
-        // this.z.loli('imdbCoco ' + n + LF + this.z.imdbCoco.join(LF), 'color:yellow');
-        // this.z.loli('imdbDirs ' + n + LF + this.z.imdbDirs.join(LF), 'color:yellow');
-        // this.z.loli('imdbLabels ' + n + LF + this.z.imdbLabels.join(LF));
-        // this.z.loli(this.z.imdbDirs, 'color:green');
+      // this.z.loli('imdbCoco ' + n + LF + this.z.imdbCoco.join(LF), 'color:yellow');
+      // this.z.loli('imdbDirs ' + n + LF + this.z.imdbDirs.join(LF), 'color:yellow');
+      // this.z.loli('imdbLabels ' + n + LF + this.z.imdbLabels.join(LF));
+      // this.z.loli(this.z.imdbDirs, 'color:green');
 
     // let data = structuredClone(this.z.imdbDirs); // alt. clone-copy
     let data = [...this.z.imdbDirs]; // clone-copy albums
@@ -150,7 +150,7 @@ export class MenuMain extends Component {
     // target attribute is important in order to avoid confusing appearance
     // on the SPA page: Best to shift-click, which opens another browser window.
 
-    await this.z.execute('touch ' + this.z.imdbPath + '/text');
+    await this.z.execute('mkdir -p ' + this.z.imdbPath + '/text');
     await this.z.execute('cp -rf ' + this.z.imdbPath + '/text ' + this.z.wwwDir + '/');
 
     this.z.closeMainMenu('after opening root album'); // Close the main menu

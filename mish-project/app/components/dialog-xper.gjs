@@ -49,7 +49,7 @@ export class DialogXper extends Component {
     for(elem of document.querySelectorAll('.tmpHeader')) elem.style.display = disp;
   }
 
-  updateOrder = (n) => {
+  updOrder = (n) => {
     if (n === 1) {
       this.z.loli(LF + 'LOADED OR MODIFIED' + LF + this.z.sortOrder, 'color:pink');
     } else if (n === 2) {
@@ -77,10 +77,10 @@ export class DialogXper extends Component {
           Hide/show the test component ”&lt;Header /&gt;”
         </button>
         <br>
-        <button type="button" {{on 'click' (fn this.updateOrder 1)}}>
+        <button type="button" {{on 'click' (fn this.updOrder 1)}}>
           sortOrder *
         </button>
-        <button type="button" {{on 'click' (fn this.updateOrder 2)}}>
+        <button type="button" {{on 'click' (fn this.updOrder 2)}}>
           New sortOrder *
         </button>
         <br>* shown in the browser console

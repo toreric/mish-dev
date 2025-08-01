@@ -72,3 +72,10 @@ $ pnpm outdated
 │ ember-primitives        │ 0.27.2  │ 0.30.0 │
 └─────────────────────────┴─────────┴────────┘
 Everything else is updated to latest, thus Ember 6.3 now!
+
+toreric 2025-07-26 15:06
+Packages excluded so fare from update (because of compatibility problems some time ago)@embroider/compat (dev)        3.9.1   (4.1.1)
+@embroider/core (dev)          3.5.7   (4.1.3)
+ember-primitives               0.32.0  (0.36.0)
+NullVoxPopuli 2025-07-26 16:12
+If you're using embroider/webpack, you need embroider/compat and core to be on v3
