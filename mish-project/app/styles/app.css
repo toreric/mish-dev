@@ -940,7 +940,7 @@ img[alt] {
   line-height: 1rem;
   font-variant: normal;
   word-break: keep-all;
-  white-space: normal;
+  white-space: break-spaces;
   float: left;
   z-index: 22222;
 }
@@ -1317,6 +1317,16 @@ img.mark {
   padding: 0.3em 0em 0.45em 0em;
   font-family: "Arial";
   font-size: 1.5rem;
+}
+.uplFiles {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.2rem 0;
+  padding: 0 0.2rem 0 0.4rem;
+  align-items: center;
+  background: #dfd;
+  border: solid 0.5px green;
+  border-radius: 4px;
 }
 #do_print,
 #full_size,

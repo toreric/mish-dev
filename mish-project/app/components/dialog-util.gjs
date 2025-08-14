@@ -13,6 +13,8 @@ import RefreshThis from './refresh-this';
 
 export const dialogUtilId = 'dialogUtil';
 const LF = '\n';
+var fileNames;
+var passedFiles;
 
 export class DialogUtil extends Component {
   @service('common-storage') z;
@@ -24,11 +26,14 @@ export class DialogUtil extends Component {
   @tracked cnTools = 0; // common tools flag
   @tracked resRad = 0; // to trigger rerender/reset of radio buttons
 
+  @tracked nFail = 0;
+  @tracked nPass = 0;
+
   // Detect closing Esc key
   detectEscClose = (e) => {
     e.stopPropagation();
     if (e.keyCode === 27) { // Esc key
-      if (document.getElementById(dialogUtilId).open) this.z.closeDialog(dialogUtilId);
+      if (document.getElementById(dialogUtilId).open) this.closeDialogUtil();
     }
   }
 
@@ -45,8 +50,9 @@ export class DialogUtil extends Component {
   // Which tool was selected?
   detectRadio = async (e) => {
     var elRadio = e.target;
-      // this.z.loli(`${elRadio.id} ${elRadio.checked}`, 'color:red');
+      this.z.loli(`${elRadio.id} ${elRadio.checked}`, 'color:red');
     this.tool = elRadio.id;
+    if (this.tool === 'util3') this.z.displayNames = 'block'; //sort by name
   }
 
   clearInput = (id) => {
@@ -55,23 +61,6 @@ export class DialogUtil extends Component {
     elem.style.background = '#f0f0a0';
     elem.focus();
   }
-
-  // Reset all at album change. Called from okDelete, which is the first
-  // of 'ok...' checks in the template. 'imdbDir' is used for resetting
-  // before the simple return of the 1-sliced-off imdbDir value. WARNING:
-  // 'this.imdbDir' MUSTS NOT BE USE ELSEWHERE TO REPLACE 'this.z.imdbDir.slice(1)'!
-  // get imdbDir() {
-  //   this.cnTools = 0;
-  //   this.tool = '';
-  //   document.getElementById('xTools').innerHTML = '';
-  //   // document.querySelector('#dialogUtil footer').innerHTML = '';
-  //   let elRadio = document.querySelectorAll('#dialogUtil input[type="radio"]');
-  //   for (let elRa of elRadio) {
-  //     elRa.checked = false;
-  //   }
-  //   // remove initial slash (except root: already empty)
-  //   return this.z.imdbDir.slice(1);
-  // }
 
   get imdbDirName() {
   // imdbDirName = () => {
@@ -197,7 +186,7 @@ export class DialogUtil extends Component {
     for (let minisi of minis) {
       names.push(minisi.id.slice(1));
     }
-      // this.z.loli('\n' + names.join('\n'), 'color:yellow');
+      // this.z.loli(LF + names.join(LF), 'color:yellow');
     // Sort example: a.sort((a,b) => {return a.value - b.value});
     // Applied to text, exact conformity should also consider equality
     // using a more accurate function that correspondingly returns 1, 0, or -1:
@@ -210,12 +199,12 @@ export class DialogUtil extends Component {
     })
     // The id for reverse sort radio button is 'util32' (see template)
     if (document.getElementById('util32').checked) names.reverse();
-      // this.z.loli('\n' + names.join('\n'), 'color:yellow');
+      // this.z.loli(LF + names.join(LF), 'color:yellow');
 
     // When you add an element that is already in the DOM,
     // this element will be moved, not copied.
     let wrap = document.getElementById('imgWrapper');
-    for (let i=0; i<minis.length; i++) {
+    for (let i=0;i<minis.length;i++) {
       wrap.appendChild(document.getElementById('i' + names[i]));
     }
     this.z.closeDialogs(); // Why this?
@@ -237,16 +226,16 @@ export class DialogUtil extends Component {
       elem.value = name;
       if (name && this.z.acceptedDirName(name)) {
         elem.style.background = '#dfd'; // green
-        bucont.setAttribute('disabled', true);
-        bumake.removeAttribute('disabled');
+        bucont.disabled = true;
+        bumake.disabled = false;
       } else {
         elem.style.background = 'pink'; // reddish
-        bumake.setAttribute('disabled', true);
+        bumake.disabled = true;
       }
     }
     if (n > 1) { // reset
-      bucont.removeAttribute('disabled');
-      bumake.setAttribute('disabled', true);
+      bucont.disabled = false;
+      bumake.disabled = true;
       elem.style.background = '#f0f0a0'; // yellow
       if (n === 3) { // make
         let pathNew = this.z.imdbPath + this.z.imdbDir;
@@ -271,13 +260,110 @@ export class DialogUtil extends Component {
     this.z.futureNotYet('write.tool8');
   }
 
-  doUpload = async () => {
-    let inpEle = document.getElementById('newImages');
-    inpEle.click();
-    let files = inpEle.value;
-    await this.z.upload(files);
+  doUpload = async (select) => {
+    var inpEle = document.getElementById('newImages');
+    if (select) {
+      var that = this;
+      this.nPass = 0;
+      this.nFail = 0;
+      var preview = [];
+      var goodf = [];
+      var fileList = [];
+      fileNames = [];
+      var filcodi = ''; //color display
+      passedFiles = [];
+      let tmp = document.getElementById('uplCand');
+      if (tmp) tmp.innerHTML = '';
+      // await new Promise (z => setTimeout (z, 99));
+      // await new Promise (z => setTimeout (z, 549));
+      if (inpEle) {
+        inpEle.addEventListener('change', await handleFiles, false);
+        document.querySelector('img.spinner').style.display = '';
+          this.z.futureNotYet('write.tool5'); // TO BE REMOVED
+      }
 
-    this.z.futureNotYet('write.tool5'); // TO BE REMOVED
+      async function handleFiles() { // **********
+        fileList = this.files; // These are the fileList files from <input>
+        console.log(fileList);
+        for (let f of fileList) {
+          preview.push(URL.createObjectURL(f))
+          goodf.push(that.z.acceptedFileName(f.name));
+        }
+        if (fileList) {
+          for (let i=0;i<fileList.length;i++) {
+            let ifpink = goodf[i] ? '':' style="background:pink"';
+            let ifpass = goodf[i] ? ' <img src="' + preview[i] + '" height="32">':'<span>&nbsp;' + that.intl.t('nameError') + '</span>';
+            filcodi += '<div class="uplFiles"' + ifpink + '>' + fileList[i].name + ifpass + '</div>';
+
+            if (goodf[i]) {
+                // that.z.loli(fileList[i].name, 'color:#dfd');
+              passedFiles.push(fileList[i]);
+              fileNames.push(fileList[i].name);
+              that.nPass ++;
+              URL.revokeObjectURL(fileList[i]);
+              document.querySelector('button.up1').style.display = 'none';
+              document.querySelector('button.up2').style.display = '';
+            } else {
+                // that.z.loli(fileList[i].name, 'color:pink');
+              that.nFail ++;
+              URL.revokeObjectURL(fileList[i]);
+            }
+          }
+          document.getElementById('uplCand').innerHTML = filcodi;
+          document.querySelector('img.spinner').style.display = 'none';
+          if (that.nPass === 0) {
+            document.querySelector('button.up1').style.display = 'none';
+            document.querySelector('button.up2').style.display = 'none';
+            document.querySelector('button.up3').innerHTML = 'Please cancel and redo!';
+          }
+          that.z.loli('nPass=' + that.nPass + ' nFail=' + that.nFail, 'color:red');
+        }
+      } // **********
+
+      if (inpEle) inpEle.click();
+    } else {
+      document.getElementById('commonTools').click(); // closes the component
+      if (this.nPass > 0) await this.z.upload(fileNames.join(LF));
+      // File instances are also valid Blobs! (like passedFiles)
+      console.log(passedFiles);
+
+//---------------------------------------------------------------------------
+      function saveFile(url, filename) {
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename || "file-name";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+      async function downloadFile(url, filename) {
+        try {
+          const response = await fetch(url, {
+            headers: {
+              Accept:
+                "application/json, text/plain,application/zip, image/png, image/jpeg, image/*",
+            },
+          });
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const blob = await response.blob();
+          const blobUrl = URL.createObjectURL(blob);
+          saveFile(blobUrl, filename);
+          URL.revokeObjectURL(blobUrl);
+        } catch (err) {
+          console.error("Error in fetching and downloading file:", err);
+        }
+      }
+//---------------------------------------------------------------------------
+// Ends up in a download:save dialog:
+      let image0 = await downloadFile(URL.createObjectURL(passedFiles[0]), fileNames[0]);
+
+
+      if (!this.nPass) this.z.loli('no file accepted', 'color:red');
+      else if(this.nPass === 1) this.z.loli('one file accepted', 'color:lightgreen');
+      else this.z.loli(this.nPass + ' files accepted', 'color:lightgreen');
+    }
   }
 
   // Common tools
@@ -289,8 +375,8 @@ export class DialogUtil extends Component {
     let path = this.z.imdbPath; //OVERRIDE! I.e. search all albums.
     try { // Start try
       let duplist = await this.z.execute('finddupnames 2 ' + path);
-        // this.z.loli('\n' + duplist, 'color:brown');
-      let paths = duplist.toString().trim().split('\n');
+        // this.z.loli(LF + duplist, 'color:brown');
+      let paths = duplist.toString().trim().split(LF);
         // this.z.loli('"'+paths[0]+'"', 'color:red');
       if (paths.length === 1 && paths[0].length === 0) paths = [];
         // this.z.loli('paths:', 'color:deeppink');
@@ -373,6 +459,16 @@ export class DialogUtil extends Component {
     return '';
   }
 
+  // This kind of ”cross-close” by toggle-close causes, by
+  // coincidence, reset of ALL the dialog's radio buttons.
+  // NOTE: Doesn't work at direct manual ”non-cross” tool
+  // toggle if a  button is selected in between the clicks!
+  // The two variants of the tool dialog made it possible.
+  closeDialogUtil = () => {
+    if (this.z.albumTools) document.getElementById('commonTools').click();
+    else document.getElementById('albumTools').click();
+  }
+
   // NOTE, within the <template></template>:
   // *** The utility numbering is not always in sequence ***
 
@@ -393,7 +489,7 @@ export class DialogUtil extends Component {
           <p><b>{{t 'write.utilHeader0'}} <span>{{this.z.imdbRoot}}</span></b></p>
         {{/if}}
 
-        <button class="close" type="button" {{on 'click' (fn this.z.closeDialog dialogUtilId)}}>×</button>
+        <button class="close" type="button" {{on 'click' this.closeDialogUtil}}>×</button>
 
       </header>
       <main style="padding:0 0.75rem;max-height:24rem" width="99%">
@@ -512,7 +608,7 @@ export class DialogUtil extends Component {
 
           {{!-- === Sort images by names === --}}
           {{else if (eq this.tool 'util3')}}
-            {{!-- <b>{{t 'write.tool3'}}</b><br> --}}
+            <b>{{t 'write.tool3'}}</b><br>
 
             <button type="button" {{on 'click' (fn this.doSort)}}>{{t 'write.tool3'}}</button>
 
@@ -529,6 +625,7 @@ export class DialogUtil extends Component {
 
           {{!-- === Find duplicate image names === --}}
           {{else if (eq this.tool 'util4')}}
+            <b>{{t 'write.tool4'}}</b><br>
 
             {{!-- {{#if this.z.imdbDir}} subtree OVERRIDE!
               <button type="button" {{on 'click' (fn this.doDupNames)}}>{{{t 'write.tool41' a=this.imdbDirName}}}</button>
@@ -543,11 +640,17 @@ export class DialogUtil extends Component {
 
           {{!-- === Upload images === --}}
           {{else if (eq this.tool 'util5')}}
+            <span style="display:none">{{this.doUpload true}}</span>
 
-            <button type="button" {{on 'click' (fn this.doUpload)}}>{{t 'write.tool5'}}</button>
-            <button type="button" {{on 'click' (fn this.doUpload)}} disabled>{{t 'button.continue'}}</button>
+            <b title-2="{{t 'fileNameRules'}}" style="width:100%">{{t 'write.tool5'}}</b><br>
+            <span>{{t 'filesPassed' n=this.nPass}}</span><br>
+            <span>{{t 'filesFailed' n=this.nFail}}</span><br>
 
             <input id="newImages" type="file" multiple accept="image/png,image/jpeg,image/tiff,image/gif" style="display:none">
+
+            <button class="up1" type="button" {{on 'click' (fn this.doUpload true)}}>{{t 'write.tool51'}}</button>
+            <button class="up2" type="button" {{on 'click' (fn this.doUpload false)}} style="display:none">{{t 'button.continue'}} {{t 'filesProceed'}}</button>
+            <button class="up3" type="button" {{on 'click' this.closeDialogUtil}}>{{t 'button.cancel'}}</button>
 
             <form style="line-height:1.35rem">
               <span class="glue">
@@ -559,6 +662,9 @@ export class DialogUtil extends Component {
                 <label for="util52"> &nbsp;{{t 'placeLast'}}</label>
               </span>
             </form>
+
+            {{!-- List of upload-candidates --}}
+            <div id="uplCand" style="width:auto"></div>
 
           {{!-- === Update search data for the entire album collection === --}}
           {{else if (eq this.tool 'util6')}}
@@ -584,7 +690,7 @@ export class DialogUtil extends Component {
 
       </main>
       <footer data-dialog-draggable>
-        <button type="button" {{on 'click' (fn this.z.closeDialog dialogUtilId)}}>{{t 'button.close'}}</button>&nbsp;
+        <button type="button" {{on 'click' this.closeDialogUtil}}>{{t 'button.close'}}</button>&nbsp;
       </footer>
     </dialog>
 

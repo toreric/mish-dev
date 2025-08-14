@@ -59,10 +59,6 @@ export class ButtonsLeft extends Component {
     if (diaObj.hasAttribute('open')) {
       document.getElementById(id).focus();
       this.z.closeDialog(id);
-      // In the commonTools, close with albumTools: Cleans the dialog!
-      // await new Promise (z => setTimeout (z, 322));
-      // document.getElementById('commonTools').click();
-      // await new Promise (z => setTimeout (z, 322));
       return;
     }
     await this.z.openDialog(id);

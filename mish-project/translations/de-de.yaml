@@ -163,7 +163,7 @@ button:
   #the initial 0 means link==false, move==true
   moveFunc:  0Verschieben in das ausgewählte Album
   notes:     Anmerkungen
-  optchuser: Benutzer wechseln Rechteinformation
+  optchuser: "Rechteinformation Benutzer\xa0wechseln"
   restart:   "Den Browser neuladen\n
              durch hier klicken!"
   rightsinfo: Rechteinformation
@@ -287,6 +287,10 @@ erase: löschen
 fav:
   images: Bildfavoriten
   manage: Bildfavoriten verwalten
+fileNameRules: "Dateinamen die mit ’.’, ’_imdb_’, ’_mini_’ oder ’_show_’ beginnen sind nicht zulässig, ansonsten darf ein Dateiname ASCII-Buchstaben, ’.’, ’_’ und Zahlen, aber KEINE Leerzeichen enthalten."
+filesFailed: "Nicht genehmigte: {n}"
+filesPassed: "Anzahl genehmigte: {n}"
+filesProceed: mit genehmigte
 foundExplain: Gefundene Bilder
 fullSize: "Vollbild im\nneuen Fenster"
 gomini: "Zurück\n
@@ -305,7 +309,8 @@ imageLast:  letztes bild
 imageMenu: "Bild-\nmenü"
 imageNumber: bild nummer {n}
 infoHeader: Information
-loggedIn: Angemeldet
+loggedIn: Angemeldet Benutzer⋅in
+nameError: Namensfehler!
 noCollSelected: Keine Albensammlung ausgewählt
 picfound: §Gefundene_Bilder
 plusExplain: Unteralben haben auch Unteralben!
@@ -423,7 +428,8 @@ write:
   tool4: Doppelte Bildnamen finden
   tool41: Doppelte Bildnamen in <b>{a}</b> inklusive aller Unteralben finden
   tool42: Doppelte Bildnamen finden
-  tool5: Bilddateien hochzuladen auswählen
+  tool5: Bilder hochladen
+  tool51: Bilddateien hochzuladen auswählen
   tool6: Suchdaten aktualisieren
   tool7: Ähnliche Bilder finden versuchen
   tool8: Textliste für angezeigte Bilder erstellen

@@ -7,8 +7,8 @@ module.exports = function(app) { // Start module.exports
   const Promise = require('bluebird')
   const fs = Promise.promisifyAll(require('fs')) // ...Async() suffix
   // const execP = Promise.promisify(require('child_process').exec)
-  const multer = require('multer')
-  const upload = multer( {dest: '/tmp'} ) // tmp upload
+  // const multer = require('multer')
+  // const upload = multer( {dest: '/tmp'} ) // tmp upload
   // const exec = require('child_process').exec
   const execSync = require('child_process').execSync
   const bodyParser = require('body-parser')
@@ -644,7 +644,7 @@ module.exports = function(app) { // Start module.exports
 
   // ##### Update one or more database entries
   //#region sqlupdate
-  app.post('/sqlupdate', upload.none(), async function(req, res, next) {
+  app.post('/sqlupdate', async function(req, res, next) {
     //console.log (req.body)
     let filepaths = req.body.filepaths
     //console.log ('SQLUPDATE', filepaths)
@@ -660,7 +660,7 @@ module.exports = function(app) { // Start module.exports
 
   // ##### Search text, case insensitively, in _imdb_images.sqlite
   //#region search
-  app.post ('/search', upload.none(), function(req, res, next) {
+  app.post ('/search', function(req, res, next) {
     // Convert everything to lower case
     // The removeDiacritics funtion bypasses some characters (åäöüÅÄÖÜ)
     let like = removeDiacritics (req.body.like)
@@ -763,7 +763,7 @@ module.exports = function(app) { // Start module.exports
           //console.error ('filestat isSymlink', err.message)
           resolve(false)
         } else {
-          resolve(stats.isSymbolicLink ())
+          resolve(stats.isSymbolicLink())
         }
       })
     })
@@ -1055,10 +1055,9 @@ module.exports = function(app) { // Start module.exports
   }
 
   // ===== Check if an image/file name can be accepted
-  // Also, cf. 'acceptedFiles' in menu-buttons.hbs (for DropZone/drop-zone)
   //#region acceptedFileName
   function acceptedFileName(name) {
-    // This function must equal the acceptedFileName function in ...
+    // This function must equal the acceptedFileName function in common-storage.js
     var acceptedName = 0 === name.replace(/[-_.a-zA-Z0-9]+/g, "").length
     // Allowed file types are also set at drop-zone in the template menu-buttons.hbs
     var ftype = name.match(/\.(jpe?g|tif{1,2}|png|gif)$/i)
@@ -1154,7 +1153,8 @@ module.exports = function(app) { // Start module.exports
           for (let j=0; j<xmpkey.length; j++) {
             // Important NOTE: this loop must correspond in both routes.js and ld_imdb.js
             let cmd = 'xmpget ' + xmpkey[j] + ' ' + pathlist[i]
-            // The removeDiacritics function does bypass some characters: Swedish åäöÅÄÖ and German äöüÄÖÜ (not customized to each individual language)
+              // console.log(RED + cmd + RSET)
+            // The removeDiacritics function does bypass some characters: Swedish åäöÅÄÖ and German äöüÄÖÜ (not further customized to any individual language)
             // Remove diacritics and make lowercase. Remove tags and double spaces.
             xmpParams[j] = removeDiacritics(execSync(cmd).toString()).toLowerCase()
             xmpParams[j] = xmpParams[j].replace(/<[^>]+>/gm, "").replace(/  */gm, " ")

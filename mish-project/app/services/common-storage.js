@@ -223,12 +223,11 @@ export default class CommonStorageService extends Service {
   // Check if an image file name can be accepted
   acceptedFileName = (name) => {
     // This function must equal the acceptedFileName server function
-    let acceptedName = 0 === name.replace(/[-_.a-zA-Z0-9]+/g, "").length
-    // Allowed file types are also set at drop-zone in the template menu-buttons.hbs
-    let ftype = name.match(/\.(jpe?g|tif{1,2}|png|gif)$/i)
-    let imtype = name.slice(0, 6) // System file prefix
+    let acceptedName = 0 === name.replace(/[-_.a-zA-Z0-9]+/g, "").length;
+    let ftype = name.match(/\.(jpe?g|tif{1,2}|png|gif)$/i);
+    let imtype = name.slice(0, 6); // System file prefix
     // Here more files may be filtered out depending on o/s needs etc.:
-    return acceptedName && ftype && imtype !== '_mini_' && imtype !== '_show_' && imtype !== '_imdb_' && name.slice(0,1) !== "."
+    return acceptedName && ftype && imtype !== '_mini_' && imtype !== '_show_' && imtype !== '_imdb_' && name.slice(0,1) !== ".";
   }
 
   // Place a four character random 'intrusion' within a file name
@@ -779,10 +778,6 @@ export default class CommonStorageService extends Service {
     return v;
   }
 
-
-
-
-
   //#region totalOrigImg
   totalOrigImg = () => { // number of original images in total
     let n = 0;
@@ -1185,10 +1180,6 @@ export default class CommonStorageService extends Service {
       xhr.send();
     });
   }
-
-
-
-
 
   //#region filestat/
   // Get file information
@@ -1709,7 +1700,7 @@ export default class CommonStorageService extends Service {
       xhr.onload = function () {
         if (this.status >= 200 && this.status < 300) {
           var data = xhr.response.trim ();
-            that.loli('data' + data, 'color:red');
+            // that.loli('data' + LF + data, 'color:red');
           resolve(data);
         } else {
           reject({

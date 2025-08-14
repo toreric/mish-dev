@@ -147,7 +147,7 @@ blockFirefox: "Tyvärr kan fullstora bilder ännu inte ses med Firefox-webbläsa
 blockPopup: POPUP-fönster blockerat av webbläsaren
 button:
   ok:        Ja
-  backgtitle: Byt bakgrund
+  backgtitle: "Byt\xa0bakgrund"
   cancel:    Avbryt
   close:     Stäng
   confirm:   Bekräfta
@@ -164,7 +164,7 @@ button:
   #the initial 0 means link==false, move==true
   moveFunc:  0Flytta till det valda albumet
   notes:     Anteckningar
-  optchuser: Byt användare Om rättigheter
+  optchuser: "Om\xa0rättigheter Byt\xa0användare"
   restart:   "Ladda om webbläsaren\n
              genom att klicka här!"
   rights:    Om rättigheter
@@ -287,6 +287,10 @@ erase: radera
 fav:
   images: Favoritbilder
   manage: Favoritbildhantering
+fileNameRules: "Filnamn som börjar med ’.’, ’_imdb_’, ’_mini_’ eller ’_show_’ är otillåtet, men ett filnamn kan innehålla ASCII-bokstäver, ’.’, ’_’ och siffror men INTE mellanslag."
+filesFailed: "Underkända: {n}"
+filesPassed: "Antal godkända: {n}"
+filesProceed: med godkända
 foundExplain: Funna bilder
 fullSize: "Full storlek\ni nytt fönster"
 gomini: "Återgå\n
@@ -305,7 +309,8 @@ imageLast:  sista bilden
 imageNumber: bild nummer {n}
 imageMenu: "Bild-\nmeny"
 infoHeader: Information
-loggedIn: Inloggad
+loggedIn: Inloggad användare
+nameError: Namnfel!
 noCollSelected: Ingen albumsamling har valts
 picfound: §Funna_bilder
 plusExplain: Underalbum har också underalbum!
@@ -424,7 +429,8 @@ write:
   tool4: Finn dubletter av bildnamn
   tool41: Finn dubletter av bildnamn i <b>{a}</b> inklusive eventuella underalbum
   tool42: Finn dubletter av bildnamn
-  tool5: Välj bildfiler att ladda upp
+  tool5: Ladda upp bilder
+  tool51: Välj bildfiler att ladda upp
   tool6: Uppdatera sökdata
   tool7: Försök finna likadana bilder
   tool8: Gör textlista till bilder som visas

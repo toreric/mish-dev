@@ -358,7 +358,7 @@ export default class extends Welcome {
             {{/if}}
 
             {{!-- Open the Login and Rights dialog --}}
-            <button type="button" style="background:url(/images/profile.png) center 0/1.13rem no-repeat;border:0" title-2="{{t 'button.optchuser'}}" {{on 'click' (fn this.openLogIn)}}> &nbsp; &nbsp;</button>
+            <button type="button" style="background:url(/images/lawyer.png) center -0.15rem/1.6rem no-repeat;border:0" title-2="{{t 'button.optchuser'}}" {{on 'click' (fn this.openLogIn)}}> &nbsp; &nbsp;</button>
 
             {{!-- Present who's logged in with rights --}}
             {{t 'loggedIn'}}: <b>{{this.z.userName}}</b>

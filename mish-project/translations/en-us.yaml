@@ -164,7 +164,7 @@ button:
   #the initial 0 means link==false, move==true
   moveFunc:  0Transfer to the selected album
   notes:     Notes
-  optchuser: Change user About rights
+  optchuser: "About\xa0rights Change\xa0user"
   restart:   "Reload the browser\n
              by clicking here!"
   rights:    About rights
@@ -289,6 +289,10 @@ erase: erase
 fav:
   images: Favorite images
   manage: Manage favorite images
+fileNameRules: "File names beginning with ’.’, ’_imdb_’, ’_mini_’, or ’_show_’ are prohibited, but else a file name may contain ASCII letters, ’.’, ’_’, and numbers but NO spaces."
+filesFailed: "Number failed: {n}"
+filesPassed: "Number of approved: {n}"
+filesProceed: with the approved
 foundExplain: Found images
 fullSize: "Full size in\nnew window"
 gomini: "Return\n
@@ -307,7 +311,8 @@ imageLast:  last image
 imageNumber: image number {n}
 imageMenu: "Image\nmenu"
 infoHeader: Information
-loggedIn: Logged in
+loggedIn: Logged in user
+nameError: Name error!
 noCollSelected: No album collection selected
 picfound: §Found_images
 plusExplain: Subalbums also have subalbums!
@@ -427,7 +432,8 @@ write:
   tool4: Find duplicate image names
   tool41: Find duplicate image names in <b>{a}</b> including all subalbums
   tool42: Find duplicate image names
-  tool5: Select image files to upload
+  tool5: Upload images
+  tool51: Select image files to upload
   tool6: Update search data
   tool7: Try to find similar images
   tool8: Make text list for displayed images

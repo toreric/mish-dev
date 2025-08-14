@@ -41,16 +41,6 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-function acceptedFileName (name) {
-  // This function must equal the acceptedFileName function in routes.js
-  var acceptedName = 0 === name.replace (/[-_.a-zA-Z0-9]+/g, "").length
-  // Allowed file types are also set at (drop-zone in the template menu-buttons.hbs)
-  var ftype = name.match (/\.(jpe?g|tif{1,2}|png|gif)$/i)
-  var imtype = name.slice (0, 6) // System file prefix
-  // Here more files may be filtered out depending on o/s needs etc.:
-  return acceptedName && ftype && imtype !== '_mini_' && imtype !== '_show_' && imtype !== '_imdb_' && name.slice (0,1) !== "."
-}
-
 //== Component DialogFind with <dialog> tags
 export class DialogFind extends Component {
   @service('common-storage') z;
@@ -219,7 +209,7 @@ export class DialogFind extends Component {
           this.inames[idx] = (this.inames[idx] + ' ' + fname.replace(/\.[^./].*$/, '')).trim();
         }
         let linkfrom = '../' + paths[i].replace(/^[^/]*\//, '');
-        let okay1 = acceptedFileName(fname);
+        let okay1 = this.z.acceptedFileName(fname);
 
         // n0=dirpath, n1=picname, n2=extension from 'paths'
         // -- 'paths' may accidentally contain illegal image file names, normally

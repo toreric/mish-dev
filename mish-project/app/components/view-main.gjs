@@ -128,10 +128,6 @@ class SubAlbums extends Component {
     if (diaObj.hasAttribute('open')) {
       document.getElementById(id).focus();
       this.z.closeDialog(id);
-      // In the albumTools, close with commonTools: Cleans the dialog!
-      // await new Promise (z => setTimeout (z, 322));
-      // document.getElementById('albumTools').click();
-      // await new Promise (z => setTimeout (z, 322));
       return;
     }
     await this.z.openDialog(id);
@@ -147,7 +143,7 @@ class SubAlbums extends Component {
 
           {{#if this.ifTool}}
             {{!-- Open the Tools dialog --}}
-            <button id='albumTools' type="button" title-2="{{t 'tools'}}" style="border:0;background:url(/images/tool0.png) center 0/2rem no-repeat" {{on 'click' (fn this.toggDia)}}> &nbsp; &nbsp; &nbsp;</button>
+            <button id="albumTools" type="button" title-2="{{t 'tools'}}" style="border:0;background:url(/images/tool0.png) center 0/2rem no-repeat" {{on 'click' (fn this.toggDia)}}> &nbsp; &nbsp; &nbsp;</button>
           {{/if}}
 
           {{#if this.z.imdbDir}}
