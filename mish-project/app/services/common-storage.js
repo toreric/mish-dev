@@ -1311,7 +1311,7 @@ export default class CommonStorageService extends Service {
     // ('namedata') from the server. The main information (e.g. metadata) is retreived
     // from each image file. It is reordered into 'newdata' in 'sortnames' order, as
     // far as possible; 'sortnames' is cleaned from non-existent (removed) files and
-    // extended with new (added) files, in order as is. So far, the sort order is
+    // extended with new (added) files, in order as is. So far, a row of sort order is
     // 'sortnames', hideFlag, and an unused 'zero'; comma separated
     var that = this;
     return new Promise((resolve, reject) => {
@@ -1695,7 +1695,7 @@ export default class CommonStorageService extends Service {
     return new Promise((resolve, reject) => {
       let xhr = new XMLHttpRequest();
       xhr.open('POST', 'upload/', true, null, null);
-      this.xhrSetRequestHeader(xhr);
+      this.xhrSetRequestHeader(xhr); // set default headers
       xhr.setRequestHeader('files', encodeURIComponent(files));
       xhr.onload = function () {
         if (this.status >= 200 && this.status < 300) {

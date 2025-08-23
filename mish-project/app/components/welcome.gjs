@@ -119,11 +119,12 @@ const beep  =  function(vol, freq, duration){
 // ALL bubbling mousedowns are caught, even programmatical clicks!
 // Important: ”document.body.” excludes SCROLLBARS, if any!
 document.body.addEventListener('mousedown', async (event) => {
-      // console.log('event:', event);
-      // console.log(event.target);
+    // console.log('event:', event);
+    // console.log('1target:', event.target.tagName);
   var tgt = event.target;
+    // console.log('NODENAME =', tgt.nodeName);
   if (
-    event.button !== 0 ||// 0=left, 1=wheel, 2=right
+    event.button !== 0 || // 0=left, 1=wheel, 2=right
     // Within these there should be no extra 'mousedown' action,
     // since there is rather another 'click' detection:
     tgt.closest('.menu_img_list') ||
@@ -169,7 +170,7 @@ document.body.addEventListener('mouseup', async (event) => {
   let tgt = event.target;
   let tgtid = tgt.id;
     // console.log('event:', event);
-    // console.log('target:', tgtid);
+    // console.log('2target:', tgt.tagName);
   // event.stopPropagation();
   if (BEEP) beep(50, 550, 100);
   if (POOP) { // The mouse click visual popup spinner
@@ -358,7 +359,7 @@ export default class extends Welcome {
             {{/if}}
 
             {{!-- Open the Login and Rights dialog --}}
-            <button type="button" style="background:url(/images/lawyer.png) center -0.15rem/1.6rem no-repeat;border:0" title-2="{{t 'button.optchuser'}}" {{on 'click' (fn this.openLogIn)}}> &nbsp; &nbsp;</button>
+            <button type="button" style="background:url(/images/lawyer.png) center -0.125rem/1.6rem no-repeat;border:0;border-radius:0" title-2="{{t 'button.optchuser'}}" {{on 'click' (fn this.openLogIn)}}> &nbsp; &nbsp;</button>
 
             {{!-- Present who's logged in with rights --}}
             {{t 'loggedIn'}}: <b>{{this.z.userName}}</b>

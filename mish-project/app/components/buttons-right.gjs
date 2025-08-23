@@ -21,14 +21,16 @@ export class ButtonsRight extends Component {
   }
 
   doGetFullSize = async () => {
+    // !this.z.picName.search(/^vbm|^cpr/i) is !0 === true
+    // if the file name is e.g. 'Vbm_...' or 'CPR...':
     if (!this.z.picName.search(/^vbm|^cpr/i) && !this.z.allow.deleteImg) {
       this.z.alertMess(this.intl.t('blockCopyright'));
       return;
     }
-    if (navigator.userAgent.search(/Firefox/) > -1) {
-      this.z.alertMess(this.intl.t('blockFirefox'));
-      return;
-    }
+    // if (navigator.userAgent.search(/Firefox/) > -1) {
+    //   this.z.alertMess(this.intl.t('blockFirefox'));
+    //   return;
+    // }
     document.querySelector('img.spinner').style.display = '';
     let i = this.z.picIndex;
     let f012345 = '';

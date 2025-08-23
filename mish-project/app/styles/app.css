@@ -1340,13 +1340,13 @@ img.mark {
 }
 
 #do_print {
-  height: 2.6rem;
-  width: 1.8rem;
+  height: 2.4rem;
+  width: 1.6rem;
   background-image: url(/images/icons8-print-96.png);
 }
 #full_size {
-  height: 1.6rem;
-  width: 2.6rem;
+  height: 1.5rem;
+  width: 2.5rem;
   background-image: url(/images/icons8-expand-96.png);
 }
 #go_back {

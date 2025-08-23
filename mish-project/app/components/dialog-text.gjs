@@ -17,6 +17,7 @@ const dialogTextKeywordsId = 'dialogTextKeywords';
 // Important: ”document.body.” excludes SCROLLBARS, if any!
 document.body.addEventListener('mousedown', (e) => {
   e.stopPropagation();
+    // console.log('dialog-text', e.target.tagName);
 });
 
 document.addEventListener('keydown', (e) => {

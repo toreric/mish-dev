@@ -15,6 +15,7 @@ export const dialogFindId = 'dialogFind';
 // Important: ”document.body.” excludes SCROLLBARS, if any!
 document.body.addEventListener('mousedown', async (e) => {
   e.stopPropagation();
+    // console.log('dialog-find', e.target.tagName);
   let tgt = e.target;
   await new Promise (z => setTimeout (z, 99)); // dialogFind
   // Position the clicked of these two at top

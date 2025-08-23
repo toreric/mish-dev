@@ -13,6 +13,7 @@ import RefreshThis from './refresh-this';
 
 export const dialogUtilId = 'dialogUtil';
 const LF = '\n';
+var fileList;
 var fileNames;
 var passedFiles;
 
@@ -261,105 +262,80 @@ export class DialogUtil extends Component {
   }
 
   doUpload = async (select) => {
-    var inpEle = document.getElementById('newImages');
     if (select) {
       var that = this;
       this.nPass = 0;
       this.nFail = 0;
       var preview = [];
       var goodf = [];
-      var fileList = [];
+      fileList = [];
       fileNames = [];
-      var filcodi = ''; //color display
       passedFiles = [];
+      var filcodi = ''; //color display
       let tmp = document.getElementById('uplCand');
-      if (tmp) tmp.innerHTML = '';
-      // await new Promise (z => setTimeout (z, 99));
       // await new Promise (z => setTimeout (z, 549));
-      if (inpEle) {
-        inpEle.addEventListener('change', await handleFiles, false);
-        document.querySelector('img.spinner').style.display = '';
-          this.z.futureNotYet('write.tool5'); // TO BE REMOVED
-      }
+      if (tmp) { // when the dialog is rendered
+        tmp.innerHTML = '';
+        let imUpLd;
+        imUpLd = document.createElement('input');
+        imUpLd.type = 'file';
+        imUpLd.multiple = true;
+        imUpLd.accept = 'image/png,image/jpeg,image/tiff,image/gif';
 
-      async function handleFiles() { // **********
-        fileList = this.files; // These are the fileList files from <input>
-        console.log(fileList);
-        for (let f of fileList) {
-          preview.push(URL.createObjectURL(f))
-          goodf.push(that.z.acceptedFileName(f.name));
-        }
-        if (fileList) {
-          for (let i=0;i<fileList.length;i++) {
-            let ifpink = goodf[i] ? '':' style="background:pink"';
-            let ifpass = goodf[i] ? ' <img src="' + preview[i] + '" height="32">':'<span>&nbsp;' + that.intl.t('nameError') + '</span>';
-            filcodi += '<div class="uplFiles"' + ifpink + '>' + fileList[i].name + ifpass + '</div>';
-
-            if (goodf[i]) {
-                // that.z.loli(fileList[i].name, 'color:#dfd');
-              passedFiles.push(fileList[i]);
-              fileNames.push(fileList[i].name);
-              that.nPass ++;
-              URL.revokeObjectURL(fileList[i]);
-              document.querySelector('button.up1').style.display = 'none';
-              document.querySelector('button.up2').style.display = '';
-            } else {
-                // that.z.loli(fileList[i].name, 'color:pink');
-              that.nFail ++;
-              URL.revokeObjectURL(fileList[i]);
+        let handleFiles = () => {
+          fileList = imUpLd.files;
+            console.log(fileList);
+            this.z.loli(' After download', 'color:red');
+            for (let f of fileList) {
+              preview.push(URL.createObjectURL(f))
+              // Initial 'vbm' or 'cpr' (case ignored) in
+              // file names MUST NOT be investigated here:
+              goodf.push(that.z.acceptedFileName(f.name));
             }
-          }
-          document.getElementById('uplCand').innerHTML = filcodi;
-          document.querySelector('img.spinner').style.display = 'none';
-          if (that.nPass === 0) {
-            document.querySelector('button.up1').style.display = 'none';
-            document.querySelector('button.up2').style.display = 'none';
-            document.querySelector('button.up3').innerHTML = 'Please cancel and redo!';
-          }
-          that.z.loli('nPass=' + that.nPass + ' nFail=' + that.nFail, 'color:red');
+            if (fileList) {
+              for (let i=0;i<fileList.length;i++) {
+                let ifpink = goodf[i] ? '':' style="background:pink"';
+                let ifpass = goodf[i] ? ' <img src="' + preview[i] + '" height="32">':'<span>&nbsp;' + that.intl.t('nameError') + '</span>';
+                filcodi += '<div class="uplFiles"' + ifpink + '>' + fileList[i].name + ifpass + '</div>';
+                if (goodf[i]) {
+                    // that.z.loli(fileList[i].name, 'color:#dfd');
+                  passedFiles.push(fileList[i]);
+                  fileNames.push(fileList[i].name);
+                  that.nPass ++;
+                  URL.revokeObjectURL(fileList[i]);
+                  document.querySelector('button.up1').style.display = 'none';
+                  document.querySelector('button.up2').style.display = '';
+                } else {
+                    // that.z.loli(fileList[i].name, 'color:pink');
+                  that.nFail ++;
+                  URL.revokeObjectURL(fileList[i]);
+                }
+              }
+              document.getElementById('uplCand').innerHTML = filcodi;
+              document.querySelector('img.spinner').style.display = 'none';
+              if (that.nPass === 0) {
+                document.querySelector('button.up1').style.display = 'none';
+                document.querySelector('button.up2').style.display = 'none';
+                document.querySelector('button.up3').innerHTML = 'Please cancel and redo!';
+              }
+              that.z.loli('nPass=' + that.nPass + ' nFail=' + that.nFail, 'color:red');
+            }
         }
-      } // **********
+        await new Promise (z => setTimeout (z, 99)); // doUpload
 
-      if (inpEle) inpEle.click();
+        imUpLd.addEventListener('change', handleFiles, false);
+        imUpLd.click();
+        document.querySelector('img.spinner').style.display = '';
+          this.z.loli('Before download', 'color:red');
+        imUpLd.remove();
+        for (const f of fileList) URL.revokeObjectURL(f);
+          // this.  z.futureNotYet('write.tool5'); // TO BE REMOVED
+      }
     } else {
+        // File instances are also valid Blobs! (like passedFiles)
+        console.log(passedFiles);
       document.getElementById('commonTools').click(); // closes the component
       if (this.nPass > 0) await this.z.upload(fileNames.join(LF));
-      // File instances are also valid Blobs! (like passedFiles)
-      console.log(passedFiles);
-
-//---------------------------------------------------------------------------
-      function saveFile(url, filename) {
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = filename || "file-name";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      }
-      async function downloadFile(url, filename) {
-        try {
-          const response = await fetch(url, {
-            headers: {
-              Accept:
-                "application/json, text/plain,application/zip, image/png, image/jpeg, image/*",
-            },
-          });
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const blob = await response.blob();
-          const blobUrl = URL.createObjectURL(blob);
-          saveFile(blobUrl, filename);
-          URL.revokeObjectURL(blobUrl);
-        } catch (err) {
-          console.error("Error in fetching and downloading file:", err);
-        }
-      }
-//---------------------------------------------------------------------------
-// Ends up in a download:save dialog:
-      let image0 = await downloadFile(URL.createObjectURL(passedFiles[0]), fileNames[0]);
-
-
       if (!this.nPass) this.z.loli('no file accepted', 'color:red');
       else if(this.nPass === 1) this.z.loli('one file accepted', 'color:lightgreen');
       else this.z.loli(this.nPass + ' files accepted', 'color:lightgreen');
@@ -646,7 +622,7 @@ export class DialogUtil extends Component {
             <span>{{t 'filesPassed' n=this.nPass}}</span><br>
             <span>{{t 'filesFailed' n=this.nFail}}</span><br>
 
-            <input id="newImages" type="file" multiple accept="image/png,image/jpeg,image/tiff,image/gif" style="display:none">
+            {{!-- <input id="imUpLd" type="file" multiple accept="image/png,image/jpeg,image/tiff,image/gif" style="display:none"> --}}
 
             <button class="up1" type="button" {{on 'click' (fn this.doUpload true)}}>{{t 'write.tool51'}}</button>
             <button class="up2" type="button" {{on 'click' (fn this.doUpload false)}} style="display:none">{{t 'button.continue'}} {{t 'filesProceed'}}</button>

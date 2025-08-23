@@ -38,17 +38,17 @@ const selMinImgs = (picName) => {
   else return document.querySelectorAll('#i' + picName.replace(/\./g, '\\.'));
 }
 
+// NOTE: MenuImage is the menu OF an image!
 export class MenuImage extends Component {
   @service('common-storage') z;
   @service intl;
 
-  albums = new TrackedArray([]);
-
-  // Detect closing Esc key
+ // Detect closing Esc key
   detectClose = (e) => {
     e.stopPropagation();
-    if (e.type === 'keydown' && e.keyCode === 27 || e.type === 'click') { // Esc key
-      // Close any open image menu
+    // Detect Esc key, or mouse click in the uppermost × line of this menu:
+    if (e.type === 'keydown' && e.keyCode === 27 || e.type === 'click') {
+      // Close any open image menu (still if probably one single is open):
       for (let list of document.querySelectorAll('.menu_img_list')) list.style.display = 'none';
       // Sorry, no loli message!
     }
@@ -57,9 +57,6 @@ export class MenuImage extends Component {
 
   // A single image sometimes doesn't have this choice
   get chooseText() {
-    // if (this.z.numMarked === 0) {
-    //   return this.intl.t('write.chosenNone');
-    // } else
     if (this.z.numMarked === 1) {
       return this.intl.t('write.chooseOne');
     } else if (this.z.numMarked === 2) {
@@ -189,13 +186,13 @@ export class MenuImage extends Component {
   }
 
   // Move (within the screen) one, or some checked, thumbnail image(s),
-  // if (isTrue === true): to the beginning,     placeFirst
-  // if (isTrue === false): to the end,          placeLast
+  // if (isTrue === true): to the beginning, placeFirst
+  // if (isTrue === false):  to   the   end, placeLast
   placeFirst = async (isTrue) => { // NOTE: 'placeLast()' is 'placeFirst(false)'!
 
     // begin local function ---------
     const perform = async () => {
-      await new Promise (z => setTimeout (z, 99)); // placeFirst 1
+      await new Promise (z => setTimeout (z, 99)); // placeFirst1
       // When you add an element that is already in the DOM,
       // this element will be moved, not copied.
       for (let pic of imgs) {
@@ -216,10 +213,10 @@ export class MenuImage extends Component {
       this.z.chooseText = this.chooseText + '<br>' + addline;
       this.z.infoHeader = this.intl.t('write.chooseHeader');
       this.z.buttonNumber = 0;
-      await new Promise (z => setTimeout (z, 99)); // placeFirst 2
+      await new Promise (z => setTimeout (z, 99)); // placeFirst2
       this.z.openModalDialog(dialogChooseId);
       while (!this.z.buttonNumber) {
-        await new Promise (z => setTimeout (z, 199)); // placeFirst 3
+        await new Promise (z => setTimeout (z, 199)); // placeFirst3
         if (this.z.buttonNumber === 1) { // first button confirms
           await perform();
           this.z.toggleMenuImg(0); //close image menu
@@ -235,6 +232,34 @@ export class MenuImage extends Component {
     this.z.closeDialog(dialogChooseId);
     this.z.countNumbers();
     this.z.sortOrder = this.z.updateOrder();
+  }
+
+  downLoad = async () => {
+    // var that = this;
+    var path = this.z.imdbPath + this.z.allFiles[this.z.picIndex].linkto;
+      this.z.loli('DOWNLOAD ' + path, 'color:red');
+    var fileName = path.replace(/^\/(.*\/)*/, '');
+      this.z.loli(fileName, 'color:red');
+      this.z.loli(!fileName.search(/^vbm|^cpr/i), 'color:red');
+      this.z.loli(this.z.allow.deleteImg, 'color:red');
+    // !fileName.search(/^vbm|^cpr/i) is !0 === true
+    // if the file name is e.g. 'Vbm_...' or 'CPR...':
+    if (!fileName.search(/^vbm|^cpr/i) && !this.z.allow.deleteImg) {
+      this.z.alertMess(this.intl.t('blockCopyright'));
+      return;
+    }
+      var urletal = this.z.allFiles[this.z.picIndex]; //debug
+      console.log(urletal);
+    let file = await fetch(path).then(r => r.blob()).then(blobFile => new File([blobFile],  fileName, { type: blobFile.type, lastModified: blobFile.lastModified }));
+      console.log(file);
+    let imDnLd;
+    imDnLd = document.createElement('a');
+    imDnLd.href = URL.createObjectURL(file);
+    // imDnLd.href = 'https://google.com';
+    imDnLd.download = fileName;
+    imDnLd.click();
+    imDnLd.remove();
+    URL.revokeObjectURL(file);
   }
 
   get albname() {
@@ -266,15 +291,11 @@ export class MenuImage extends Component {
     return !this.symlink;
   }
 
-  getAlbum = (i) => {
-    return this.albums[i];
-  }
-
   // Link (into another album within the collection)
   // a single image, or a number of checked images.
   linkFunc = async () => {
     let imgs = selMinImgs(this.z.picName);
-    await new Promise (z => setTimeout (z, 29)); // linkFunc 1
+    await new Promise (z => setTimeout (z, 29)); // linkFunc1
     let sym = false;
     for (let img of imgs) {
       if (img.classList.contains('symlink')) sym = true;
@@ -290,11 +311,11 @@ export class MenuImage extends Component {
       this.z.buttonNumber = 0;
       // this.z.buttonNumber is set with this.z.selectChoice
       // to 1 or 2 when a DialogChoose button is clicked:
-      await new Promise (z => setTimeout (z, 29)); // linkFunc 2
+      await new Promise (z => setTimeout (z, 29)); // linkFunc2
       this.z.openModalDialog(dialogChooseId);
       while (!this.z.buttonNumber) {
-        await new Promise (z => setTimeout (z, 29)); // linkFunc 3
-        if (this.z.buttonNumber === 1) {
+        await new Promise (z => setTimeout (z, 29)); // linkFunc3
+        if (this.z.buttonNumber === 1) { // 1 confirms
           this.z.closeDialog(dialogChooseId);
           this.z.chooseText = this.intl.t('button.linkFunc');
           this.z.openModalDialog('chooseAlbum'); // 1 confirms
@@ -549,9 +570,7 @@ export class MenuImage extends Component {
 
       <li><p style="text-align:right;color:deeppink;
         font-size:120%;line-height:80%;padding-bottom:0.125rem"
-        {{!-- {{on 'click' this.closeMenuImg}}> --}}
-        {{on 'click' this.detectClose}}>
-        × </p>
+        {{on 'click' this.detectClose}}> × </p>
       </li>
 
       {{!-- Go-to-origin of linked image --}}
@@ -615,7 +634,8 @@ export class MenuImage extends Component {
 
       {{!-- Download images from this album --}}
       {{#if this.z.allow.imgOriginal}}
-        <li><p {{on 'click' (fn this.z.futureNotYet 'download')}}>
+        {{!-- <li><p {{on 'click' (fn this.z.futureNotYet 'download')}}> --}}
+        <li><p {{on 'click' this.downLoad}}>
           {{t 'download'}}</p></li>
       {{/if}}
       <li><hr style="margin:0.25rem 0.5rem"></li>

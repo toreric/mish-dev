@@ -712,9 +712,14 @@ module.exports = function(app) { // Start module.exports
   app.post('/upload', async (req, res) => {
     try {
       var files = decodeURIComponent(req.get('files'))
-      console.log(BYEL + files + RSET)
+        console.log(BYEL + files + RSET)
+      files = files.split(LF)
+      // for (i=0;i<files.length;i++) {
+      //   files[i] = IMDB + IMDB_DIR + files[i]
+      //     console.log(BYEL + files[i] + RSET)
+      // }
       res.send(files)
-    } catch {
+    } catch (err) {
       console.error('Upload error', err.message)
     }
   })
