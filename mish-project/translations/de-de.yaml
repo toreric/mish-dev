@@ -141,6 +141,8 @@ albumSelectInfo: "Eine Albensammlung hier auswählen,
                  Den Browser neuladen!"
 blockCopyright: "Vollbildfenster aus urheberrechtlichen Gründen gesperrt.\n
                 Bitte an den Urheberrechtsinhaber wenden!"
+blockCopyright1: "Herunterladen aus urheberrechtlichen Gründen gesperrt.\n
+                Bitte an den Urheberrechtsinhaber wenden!"
 blockFirefox: "Leider können Bilder in voller Größe derzeit nicht mit Firefox-\n
               Browsern angezeigt werden. Hoffentlich wird dies bald behoben."
 blockPopup: POPUP-Fenster wird vom Browser blockiert

@@ -308,8 +308,8 @@ export class DialogUtil extends Component {
                 } else {
                     // that.z.loli(fileList[i].name, 'color:pink');
                   that.nFail ++;
-                  URL.revokeObjectURL(fileList[i]);
                 }
+                URL.revokeObjectURL(fileList[i]);
               }
               document.getElementById('uplCand').innerHTML = filcodi;
               document.querySelector('img.spinner').style.display = 'none';
@@ -398,10 +398,10 @@ export class DialogUtil extends Component {
   doDbUpdate = async () => {
     document.querySelector('img.spinner').style.display = '';
     let cmd = './ld_imdb.js -e ' + this.z.imdbPath;
-      // this.z.loli(cmd, 'color:red');
+      this.z.loli(cmd, 'color:red');
     await this.z.execute(cmd);
     document.querySelector('img.spinner').style.display = 'none';
-    this.z.loli('uppdated text database');
+    this.z.loli('updated text database');
     this.z.alertMess(this.intl.t('write.dbUpdated'));
   }
 
@@ -437,12 +437,19 @@ export class DialogUtil extends Component {
 
   // This kind of ”cross-close” by toggle-close causes, by
   // coincidence, reset of ALL the dialog's radio buttons.
-  // NOTE: Doesn't work at direct manual ”non-cross” tool
-  // toggle if a  button is selected in between the clicks!
-  // The two variants of the tool dialog made it possible.
+  // NOTE: Doesn't work formally at direct manual ”non-cross”
+  // tool toggle when a radio button is selected.
+  // The two variants of the tool dialog made this possible.
   closeDialogUtil = () => {
-    if (this.z.albumTools) document.getElementById('commonTools').click();
-    else document.getElementById('albumTools').click();
+    // It is an 'reset-radio-buttons' advantage to toggle(close)
+    // with the other alternative button, if avaliable:
+    let album = document.getElementById('albumTools');
+    let common = document.getElementById('commonTools');
+    if (this.z.albumTools && common) common.click();
+    else if (album) album.click();
+    // If still open (may happen with an absent button) then the
+    // last used will, but'only formally', remain selected):
+    this.z.closeDialog('dialogUtil');
   }
 
   // NOTE, within the <template></template>:

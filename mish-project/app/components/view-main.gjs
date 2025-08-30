@@ -128,11 +128,10 @@ class SubAlbums extends Component {
     if (diaObj.hasAttribute('open')) {
       document.getElementById(id).focus();
       this.z.closeDialog(id);
-      return;
+    } else {
+      await this.z.openDialog(id);
+      await new Promise (z => setTimeout (z, 322));
     }
-    await this.z.openDialog(id);
-    await new Promise (z => setTimeout (z, 322));
-    // this.z.albumTools = undefined;
   }
 
   <template>
@@ -351,8 +350,8 @@ class AllImages extends Component {
 
       {{/if}}
 
-      {{!-- The album's div with thumnail images --}}
-      {{!-- ================================================ --}}
+      {{!-- The album's div with its 'random' thumnail images --}}
+      {{!-- ==================================dialogAlertId=============== --}}
       <div class="miniImgs imgs" style="display:flex;flex-wrap:wrap">
 
         {{!-- The heading of the thumbnails' presentation --}}

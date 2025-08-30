@@ -7,8 +7,8 @@ module.exports = function(app) { // Start module.exports
   const Promise = require('bluebird')
   const fs = Promise.promisifyAll(require('fs')) // ...Async() suffix
   // const execP = Promise.promisify(require('child_process').exec)
-  // const multer = require('multer')
-  // const upload = multer( {dest: '/tmp'} ) // tmp upload
+  const multer = require('multer')
+  const upload = multer( {dest: '/tmp'} ) // tmp upload
   // const exec = require('child_process').exec
   const execSync = require('child_process').execSync
   const bodyParser = require('body-parser')
@@ -66,6 +66,7 @@ module.exports = function(app) { // Start module.exports
   // ##### General passing point
   //#region ROUTING
   app.all('*', async function(req, res, next) {
+          // console.log("original req.body =", req.body)
     // if (req.originalUrl !== '/upload') { // Upload with dropzone: 'req' used else!
       var tmp = req.get('imdbroot')
       if (tmp) {
@@ -114,6 +115,7 @@ module.exports = function(app) { // Start module.exports
       tmp = decodeURIComponent(req.originalUrl)
       if (tmp !== '/execute/' && tmp !== '/filestat/' && !tmp.startsWith(IMDB)) {
         console.log(BGRE + tmp + RSET)
+          console.log("***nearest req.body =", req.body)
       }
       let show_imagedir = false // For debug of directories printout
       if (show_imagedir) {     // and also each ”tmp” printout
@@ -292,8 +294,8 @@ module.exports = function(app) { // Start module.exports
     // Plugins missing for most browsers January 2019
     //var tmpName = execSync ('mkdjvu ' + fileName)
     // Make a temporary png file instead (much bigger, sorry!)
-      let pwd0 = await exec('pwd');
-      console.log(pwd0.stdout.trim());
+      let pwd0 = await exec('pwd')
+      console.log(pwd0.stdout.trim())
       console.log(WWW_ROOT)
     // Now mkpng will deliver the file 'tmpName'
     // into the pwd directory = WWW_ROOT
@@ -571,7 +573,7 @@ module.exports = function(app) { // Start module.exports
 
   // ##### Save the _imdb_order.txt file
   //#region saveorder
-  app.post('/saveorder', function (req, res, next) {
+  app.post('/saveorder', upload.none(), function(req, res, next) {
     var file = IMDB + IMDB_DIR + '/_imdb_order.txt'
     execSync('touch ' + file + '&&chmod 664 ' + file) // In case not yet created
     var body = []
@@ -598,7 +600,7 @@ module.exports = function(app) { // Start module.exports
 
   // ##### Save Xmp.dc.description and Xmp.dc.creator using exiv2
   //#region savetext
-  app.post('/savetext', function (req, res, next) {
+  app.post('/savetext', upload.none(), function(req, res, next) {
     var body = []
     req.on('data', (chunk) => {
       body.push(chunk)
@@ -607,7 +609,7 @@ module.exports = function(app) { // Start module.exports
       // Here `body` has the entire request body stored in it as a string
       var tmp = body.split('\n')
       var fileName = IMDB_HOME + '/' + tmp[0].trim() // All path included here @***
-      var msgName = '.' + fileName.slice(IMDB_HOME.length)
+      var msgName = fileName.slice(IMDB_HOME.length)
 
       let okay = fs.constants.W_OK | fs.constants.R_OK
       fs.access(fileName, okay, async err => {
@@ -621,6 +623,7 @@ module.exports = function(app) { // Start module.exports
           // The set_xmp_... command strings will be single quoted, avoiding
           // most Bash shell interpretation. Thus slice out 's (single quotes)
           // within 's (cannot be escaped just simply); makes Bash happy :)
+          // NEEDS better explanation?!:
           body = body.replace(/'/g, "'\\''")
           //console.log(fileName + " '" + body + "'")
           var mtime = fs.statSync(fileName).mtime // Object
@@ -644,7 +647,7 @@ module.exports = function(app) { // Start module.exports
 
   // ##### Update one or more database entries
   //#region sqlupdate
-  app.post('/sqlupdate', async function(req, res, next) {
+  app.post('/sqlupdate', upload.none(), async function(req, res, next) {
     //console.log (req.body)
     let filepaths = req.body.filepaths
     //console.log ('SQLUPDATE', filepaths)
@@ -660,13 +663,16 @@ module.exports = function(app) { // Start module.exports
 
   // ##### Search text, case insensitively, in _imdb_images.sqlite
   //#region search
-  app.post ('/search', function(req, res, next) {
+  app.post ('/search', upload.none(), async function(req, res, next) {
+      console.log("req.body =", req.body)
     // Convert everything to lower case
     // The removeDiacritics funtion bypasses some characters (åäöüÅÄÖÜ)
+    // await new Promise(z => setTimeout(z, 277))
     let like = removeDiacritics (req.body.like)
     if (req.body.info != "exact") like = like.toLowerCase() // if not e.g. file name compare
       // console.log("like",like);
     let cols = eval ("[" + req.body.cols + "]")
+    // Table columns:
     let taco = ["description", "creator", "source", "album", "name"]
     let columns = ""
     for (let i=0; i<cols.length; i++) {

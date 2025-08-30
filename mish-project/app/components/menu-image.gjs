@@ -237,21 +237,21 @@ export class MenuImage extends Component {
   downLoad = async () => {
     // var that = this;
     var path = this.z.imdbPath + this.z.allFiles[this.z.picIndex].linkto;
-      this.z.loli('DOWNLOAD ' + path, 'color:red');
+      // this.z.loli('DOWNLOAD ' + path, 'color:red');
     var fileName = path.replace(/^\/(.*\/)*/, '');
-      this.z.loli(fileName, 'color:red');
-      this.z.loli(!fileName.search(/^vbm|^cpr/i), 'color:red');
-      this.z.loli(this.z.allow.deleteImg, 'color:red');
-    // !fileName.search(/^vbm|^cpr/i) is !0 === true
-    // if the file name is e.g. 'Vbm_...' or 'CPR...':
+      // this.z.loli(fileName, 'color:red');
+      // this.z.loli(!fileName.search(/^vbm|^cpr/i), 'color:red');
+      // this.z.loli(this.z.allow.deleteImg, 'color:red');
+    // If the file name begins with e.g. 'Vbm' or 'CPR'
+    // then !fileName.search(/^vbm|^cpr/i) is !0 === true:
     if (!fileName.search(/^vbm|^cpr/i) && !this.z.allow.deleteImg) {
-      this.z.alertMess(this.intl.t('blockCopyright'));
+      this.z.alertMess(this.intl.t('blockCopyright1'));
       return;
     }
-      var urletal = this.z.allFiles[this.z.picIndex]; //debug
-      console.log(urletal);
+      // var urletal = this.z.allFiles[this.z.picIndex]; //debug
+      // console.log(urletal);
     let file = await fetch(path).then(r => r.blob()).then(blobFile => new File([blobFile],  fileName, { type: blobFile.type, lastModified: blobFile.lastModified }));
-      console.log(file);
+      // console.log(file);
     let imDnLd;
     imDnLd = document.createElement('a');
     imDnLd.href = URL.createObjectURL(file);

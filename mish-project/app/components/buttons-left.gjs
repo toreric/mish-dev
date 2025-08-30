@@ -63,7 +63,6 @@ export class ButtonsLeft extends Component {
     }
     await this.z.openDialog(id);
     await new Promise (z => setTimeout (z, 322));
-    // this.z.albumTools = undefined;
   }
 
   <template>

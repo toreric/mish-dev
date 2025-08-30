@@ -142,6 +142,8 @@ albumSelectInfo: "Select here an album
                   Reload the browser!"
 blockCopyright: "Fullsize window blocked for copyright reasons.\n
                 Please contact the copyright owner!"
+blockCopyright1: "Download blocked for copyright reasons.\n
+                Please contact the copyright owner!"
 blockFirefox: "Unfortunately, full-size images cannot yet be viewed with\n
               Firefox browsers. Hopefully this will be fixed soon."
 blockPopup: POPUP window blocked by the browser

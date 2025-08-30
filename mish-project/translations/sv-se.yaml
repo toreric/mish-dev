@@ -142,6 +142,8 @@ albumSelectInfo: "Välj här en album-
                  Ladda om webbläsaren!"
 blockCopyright: "Fullstort fönster blockerat av upphovsrättsskäl.\n
                 Vänligen kontakta upphovsrättsinnehavaren!"
+blockCopyright1: "Nedladdning blockerad av upphovsrättsskäl.\n
+                Vänligen kontakta upphovsrättsinnehavaren!"
 blockFirefox: "Tyvärr kan fullstora bilder ännu inte ses med Firefox-webbläsare.\n
               Förhoppningsvis kommer det snart att kunna åtgärdas."
 blockPopup: POPUP-fönster blockerat av webbläsaren

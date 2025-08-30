@@ -11,12 +11,12 @@ import he from 'he';
 // USE: <div title={{he.decode 'text'}}></div> ['he' = HTML entities]
 // or  txt = he.decode('text')  or  txt = he.encode('text')
 
-const LF = '\n'   // Line Feed == New Line
-const BR = '<br>' // HTML line break
-const BGRE = '\x1b[1;32m' // Bright green
-const BYEL = '\x1b[1;33m' // Bright yellow
-const RED  = '\x1b[31m'   // Red
-const RSET = '\x1b[0m'    // Reset
+const LF = '\n';   // Line Feed == New Line
+const BR = '<br>'; // HTML line break
+const BGRE = '\x1b[1;32m'; // Bright green
+const BYEL = '\x1b[1;33m'; // Bright yellow
+const RED  = '\x1b[31m';   // Red
+const RSET = '\x1b[0m';    // Reset
 
 export default class CommonStorageService extends Service {
   @service intl;
@@ -1511,7 +1511,7 @@ export default class CommonStorageService extends Service {
     // Copy the screen coordinates to keep them close
     messel.style.transform = textel.style.transform;
   }
-  saveText = (txt) => {
+  saveText = async (txt) => {
     var that = this;
     return new Promise( (resolve, reject) => {
       var xhr = new XMLHttpRequest ();
@@ -1534,8 +1534,6 @@ export default class CommonStorageService extends Service {
           let mess = that.intl.t('captionFor') + ' <b style="color:black">' + that.picName + '</b> ' + that.intl.t('captionSaved');
           that.alertMess(mess, 1.5);
           that.placeMess();
-          // Not used since 'server savetxt/', that is, tne SERVER will do sqlUpdate:
-          // that.sqlUpdate(txt.split(LF)[0]); ***CHECK, WHEN used?
         }
       }
       xhr.send(txt);
@@ -1546,16 +1544,16 @@ export default class CommonStorageService extends Service {
 
   //#region sqlupdate/
   // Update the sqlite text database (symlinked pictures auto-omitted)
-  // Called from eraseFunc(),  in menu-image.gjs
+  // Called from eraseFunc and doLinkMove in menu-image.gjs
   sqlUpdate = (picPaths) => { // Must be complete server paths (LF-joined)
     if (!picPaths) return;
-    let data = new FormData ();
+    let data = new FormData();
     data.append ("filepaths", picPaths);
     return new Promise ( (resolve, reject) => {
       let xhr = new XMLHttpRequest ();
       xhr.open('POST', 'sqlupdate/', true, null, null);
       this.xhrSetRequestHeader(xhr);
-      xhr.onload = function () {
+      xhr.onload = function() {
         resolve(xhr.response); // empty
       };
       xhr.onerror = function () {
@@ -1583,7 +1581,7 @@ export default class CommonStorageService extends Service {
   NOTE: Negative ´exact´, -1 = called from the find? dialog, -2 = do nothing,
         else (non-negative) = called from and return to the favorites? dialog
   **/
-  searchText = (sTxt, and, searchWhere, exact) => {
+  searchText = async (sTxt, and, searchWhere, exact) => {
     // Display the spinner
     document.querySelector('img.spinner').style.display = '';
     // close all dialogs is unneccessary
@@ -1631,19 +1629,19 @@ export default class CommonStorageService extends Service {
         // this.loli(str, 'color:orange  ');
         // this.loli(str.replace(/%/g, '*'), 'color:yellow');
         // console.log(searchWhere);
-      let srchData = new FormData ();
-      srchData.append ("like", str);
-      srchData.append ("cols", searchWhere);
-      if (exact !== 0) srchData.append ("info", "exact");
-      else srchData.append ("info", "");
-        // console.log(srchData);
+      var srchData = new FormData();
+      srchData.append("like", str);
+      srchData.append("cols", searchWhere);
+      if (exact !== 0) srchData.append("info", "exact");
+      else srchData.append("info", "");
+        console.log(srchData);
       return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();
         xhr.open('POST', 'search/', true, null, null);
         this.xhrSetRequestHeader(xhr);
-        xhr.onload = function () {
+        xhr.onload = function() {
           if (this.status >= 200 && this.status < 300) {
-            var data = xhr.response.trim ();
+            var data = xhr.response.trim();
             if (exact !== 0) { // reorder like sTxt
               var datArr = data.split("\n");
                 // console.log("searchText datArr.length",datArr.length);
@@ -1652,24 +1650,24 @@ export default class CommonStorageService extends Service {
               var tmpArr = [];
               var albArr = [];
               for (let i=0; i<datArr.length; i++) {
-                namArr [i] = datArr [i].replace(/^(.*\/)*(.*)(\.[^.]*)$/,"$2");
-                tmpArr [i] = namArr [i]; // Just in case
-                albArr [i] = datArr [i].replace (/^(.*\/)*(.*)(\.[^.]*)$/,"$1").slice (1, -1);
+                namArr[i] = datArr[i].replace(/^(.*\/)*(.*)(\.[^.]*)$/,"$2");
+                tmpArr[i] = namArr[i]; // Just in case
+                albArr[i] = datArr[i].replace(/^(.*\/)*(.*)(\.[^.]*)$/,"$1").slice(1, -1);
               }
-              sTxt = sTxt.replace (/ +/g, " ");
-              if (arr.length > 0) seaArr = sTxt.split (" ");
+              sTxt = sTxt.replace(/ +/g, " ");
+              if (arr.length > 0) seaArr = sTxt.split(" ");
               // The 'reordering template' (seaArr) depends on this special switch set in altFind:
-              if (seaArr [0] === "dupName/") seaArr = tmpArr.sort ();
-              else if (seaArr [0] === "dupImage/") seaArr.splice (0, 1);
-              else if (seaArr [0] === "actualDups/") seaArr.splice (0, 1);
-              else if (seaArr [0] === "subAlbDups/") seaArr.splice (0, 1);
+              if (seaArr[0] === "dupName/") seaArr = tmpArr.sort();
+              else if (seaArr[0] === "dupImage/") seaArr.splice(0, 1);
+              else if (seaArr[0] === "actualDups/") seaArr.splice(0, 1);
+              else if (seaArr[0] === "subAlbDups/") seaArr.splice(0, 1);
 
               data = [];
               for (let i=0; i<seaArr.length; i++) {
                 for (let j=0; j<namArr.length; j++) {
-                  if (seaArr [i] === namArr [j]) {
-                    data [i] = datArr [j];
-                    namArr [j] = "###";
+                  if (seaArr[i] === namArr[j]) {
+                    data[i] = datArr[j];
+                    namArr[j] = "###";
                     break;
                   }
                 }
@@ -1684,7 +1682,8 @@ export default class CommonStorageService extends Service {
             });
           }
         }
-        xhr.send (srchData);
+          console.log(srchData);
+        xhr.send(srchData);
       });
     }
   }
@@ -1886,7 +1885,7 @@ export default class CommonStorageService extends Service {
       path = this.imdbRoot + path.replace(/^\.*(\/\.+)*/, '');
         // this.loli(path, 'color:red');
       if (!gif) {
-        this.saveText(path + LF + txt1 + LF + txt2);
+        await this.saveText(path + LF + txt1 + LF + txt2);
         // this.loli('saved ' + dialogId); // is confirmed by 'saveText'
         return;
       }

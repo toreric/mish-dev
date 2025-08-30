@@ -4,6 +4,8 @@
 // thus preparing to be searched case-insensitively (can eventually be
 // rewritten to make the uppercase part below superfluous)
 
+const { log } = require("console");
+
 // Data for the removeDiacritics function (see below)
 // is modified to not affect these characters: ÅÄÖÜåäöü which remain 'decorated'
 const defaultDiacriticsRemovalMap = [
@@ -125,7 +127,9 @@ if (process.argv [2] == "-e") {
   console.log ("Note: This program is assumed to run in the album collection (album")
   console.log ("  root) directory if <absolute path to albumroot> is omitted")
 }
+
 function loadImageMetadata () {
+  
   const sqlite = require ("better-sqlite3")
   let execSync = require ('child_process').execSync
   let albumRoot = './' // Default path
@@ -134,17 +138,37 @@ function loadImageMetadata () {
     if (arg3.slice (-1) !== '/') arg3 += '/' // Ascertain a trailing slash
     albumRoot = arg3
   }
-
+  
   //    This Bash script line (cmd) is subdivided (by |) into 4 tasks:
   // 1. Find all '.imdb' file paths (with album directories)
   // 2. Remove all file names ('.imdb') from that path list, leaving the directories
   // 3. Use the list entries as arguments to find all non-"_*|.*" files in each directory (using depth=1)
   // 4. Accept only files having supported image file endings
   let cmd = 'find ' + albumRoot + ' -type f -name ".imdb" | sed "s/.imdb$//" | xargs -Ipath find path -maxdepth 1 -type f -not -name "_imdb_*" -not -name "_show_*" -not -name "_mini_*" -not -name ".*" | egrep -i "(JPE?G|TIF{1,2}|PNG|GIF)$"'
-
+  
   let pathlist = execSync (cmd)
   //console.log ("  pathlist:\n" + pathlist)
   pathlist = pathlist.toString ().trim ().split ("\n")
+  
+  // Check if an image file name can be accepted (copied from common-storage)
+  function acceptedFileName (name) {
+    // This function must equal the acceptedFileName server function
+    let acceptedName = 0 === name.replace(/[-_.a-zA-Z0-9]+/g, "").length;
+    let ftype = name.match(/\.(jpe?g|tif{1,2}|png|gif)$/i);
+    let imtype = name.slice(0, 6); // System file prefix
+    // Here more files may be filtered out depending on o/s needs etc.:
+    return acceptedName && ftype && imtype !== '_mini_' && imtype !== '_show_' && imtype !== '_imdb_' && name.slice(0,1) !== ".";
+  }
+
+  let paths = []
+  // Check the file names and remove illegals (may be fatal if e.g. space(s))
+  for (let p of pathlist) {
+    let name = p.replace(/^\/([^/]*\/)*/, '')
+    if (acceptedFileName(name)) paths.push(p)
+      // console.log(name)
+  }
+  pathlist = paths
+
   execSync ('rm -f ' + albumRoot + '_imdb_images.sqlite')
   const db = new sqlite (albumRoot + '_imdb_images.sqlite')
 
@@ -152,10 +176,10 @@ function loadImageMetadata () {
   db.prepare ('CREATE TABLE imginfo (id INTEGER PRIMARY KEY, filepath TEXT UNIQUE, name TEXT, album TEXT, description TEXT, creator TEXT, source TEXT, subject TEXT, tcreated TEXT, tchanged TEXT)').run ()
 
   for (let i=0; i<pathlist.length; i++) {
-    let filePath = pathlist [i]
+    let filePath = pathlist[i]
     // The path saved in the database:
-    pathlist [i] = './' + pathlist [i].slice (albumRoot.length) // albumRoot includes a trailing slash
-    let tmp = pathlist [i].split ("/")
+    pathlist[i] = './' + pathlist[i].slice (albumRoot.length) // albumRoot includes a trailing slash
+    let tmp = pathlist[i].split ("/")
     let param = []
     let xmpkey = ['description', 'creator', 'source']
     for (let j=0; j<xmpkey.length; j++) {
@@ -167,9 +191,9 @@ function loadImageMetadata () {
       param [j] = param [j].replace(/<[^>]+>/g, " ").replace (/  */g, " ").trim ()
     }
     db.prepare ('INSERT INTO imginfo (filepath,name,album,description,creator,source,subject,tcreated,tchanged) VALUES ($filepath,$name,$album,$description,$creator,$source,$subject,$tcreated,$tchanged)').run ( {
-      filepath: pathlist [i],
+      filepath: pathlist[i],
       name:     tmp [tmp.length -1].replace (/\.[^.]+$/, ""),
-      album:    removeDiacritics (pathlist [i].replace (/^[^/]*(\/(.*\/)*)[^/]*$/, "$1")).toLowerCase (),
+      album:    removeDiacritics (pathlist[i].replace (/^[^/]*(\/(.*\/)*)[^/]*$/, "$1")).toLowerCase (),
       description: param [0],
       creator:  param [1],
       source:   param [2],

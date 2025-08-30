@@ -21,7 +21,39 @@ export class ButtonsRight extends Component {
   }
 
   doGetFullSize = async () => {
-    // !this.z.picName.search(/^vbm|^cpr/i) is !0 === true
+    var fileName = this.z.allFiles[this.z.picIndex].linkto;
+    // If the file name begins with e.g. 'Vbm' or 'CPR'
+    // then !fileName.search(/^vbm|^cpr/i) is !0 === true:
+    if (!fileName.search(/^vbm|^cpr/i) && !this.z.allow.deleteImg) {
+      this.z.alertMess(this.intl.t('blockCopyright'));
+      return;
+    }
+    document.querySelector('img.spinner').style.display = '';
+    var path = this.z.imdbPath + fileName;
+    let file = await fetch(path).then(r => r.blob()).then(blobFile => new File([blobFile],  fileName, { type: blobFile.type, lastModified: blobFile.lastModified }));
+    var url = URL.createObjectURL(file);
+    var wiName = window.open('', 'w012345', 'menubar=no,popup=true,status=no,titlebar=no,toolbar=no');
+    for (let div of wiName.document.getElementsByTagName('DIV')) div.remove();
+    var divObj = wiName.document.createElement('div');
+    var imgObj = wiName.document.createElement('img');
+
+
+
+
+    imgObj.src = url;
+
+    imgObj.style.margin = '-8px';
+    imgObj.style.width = 'auto';
+    imgObj.style.height = 'auto';
+    wiName.document.getElementsByTagName('BODY')[0].appendChild(divObj);
+    divObj.appendChild(imgObj);
+    divObj.style.width = '100vw';
+    divObj.style.height = 'auto';
+    await new Promise (z => setTimeout (z, 199));
+    document.querySelector('img.spinner').style.display = 'none';
+    URL.revokeObjectURL(file);
+
+    /*/ !this.z.picName.search(/^vbm|^cpr/i) is !0 === true
     // if the file name is e.g. 'Vbm_...' or 'CPR...':
     if (!this.z.picName.search(/^vbm|^cpr/i) && !this.z.allow.deleteImg) {
       this.z.alertMess(this.intl.t('blockCopyright'));
@@ -58,7 +90,7 @@ export class ButtonsRight extends Component {
     document.querySelector('img.spinner').style.display = 'none';
     if (wiName) wiName.focus();
     else this.z.alertMess(this.intl.t('blockPopup'));
-    // else this.z.alertMess('POPUP blocked by browser');
+    // else this.z.alertMess('POPUP blocked by browser');*/
   }
 
   <template>
