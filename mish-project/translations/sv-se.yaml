@@ -43,7 +43,7 @@ and: och
 captionFor: Bildtext för
 captionSaved: sparad
 checkuncheck: Markera/avmarkera alla
-chooseShow: Välj att visa i <b>{f}</b>
+chooseShow: "Välj att visa i <b>{f}</b> eller i sitt egna album:"
 created: skapat
 createfail: INTE SKAPAT
 deleted: raderat

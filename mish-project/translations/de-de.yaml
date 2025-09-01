@@ -43,7 +43,7 @@ and: und
 captionFor: Bildunterschrift für
 captionSaved: gespeichert
 checkuncheck: Alle markieren/abmarkieren
-chooseShow: Zum Anzeigen in <b>{f}</b> auswählen
+chooseShow: "Zur Anzeige in <b>{f}</b> oder im eigenen Album:"
 created: erstellt
 createfail: NICHT ERSTELLT
 deleted: gelöscht

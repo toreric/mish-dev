@@ -213,8 +213,8 @@ export class DialogFind extends Component {
         // this.z.loli('nameOrder:\n' + nameOrder, 'color:pink');
         // this.z.loli('commands:\n' + this.commands.join('\n'), 'color:pink');
         // this.z.loli('albs:\n' + albs.join('\n'), 'color:pink');
-        // console.log('counts:\n', this.counts);
-        console.log('inames:', this.inames);
+        // console.log('counts:', this.counts);
+        // console.log('inames:', this.inames);
 
       // Prepare the alternative album list 'countAlbs' for the 'filesFound > nLimit' case:
       this.countAlbs = [];
@@ -281,7 +281,7 @@ export class DialogFind extends Component {
       // Don't! Hide the spinner
       // document.querySelector('img.spinner').style.display = 'none';
       let paths = data.trim ().split ('\n');
-        console.log(paths);
+        // console.log(paths);
       // for (let i=0; i<paths.length; i++) { // forwards
       for (let i=paths.length; i>0; i--) { // work backwards
         let linkfrom = '../' + paths[i-1].replace(/^[^/]*\//, ''); // make relative
@@ -417,7 +417,7 @@ export class DialogFind extends Component {
         </header>
         <main style="line-height:180%;border-bottom:1px solid black;padding-left:1rem">
           {{#if this.nchk}}
-            <span>{{{t 'chooseShow' f=this.albumFound}}}:<br></span>
+            <span>{{{t 'chooseShow' f=this.albumFound}}}<br></span>
           {{else}}
             <span style="color:blue"><b>{{t 'write.noneFound'}}</b></span>
           {{/if}}

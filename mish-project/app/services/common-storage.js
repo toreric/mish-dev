@@ -1636,7 +1636,6 @@ export default class CommonStorageService extends Service {
       srchData.append("cols", searchWhere);
       if (exact !== 0) srchData.append("info", "exact");
       else srchData.append("info", "");
-        console.log(srchData);
       return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();
         xhr.open('POST', 'search/', true, null, null);
@@ -1684,7 +1683,7 @@ export default class CommonStorageService extends Service {
             });
           }
         }
-          console.log(srchData);
+          // console.log(srchData);
         xhr.send(srchData);
       });
     }
