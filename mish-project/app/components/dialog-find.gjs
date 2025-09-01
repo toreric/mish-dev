@@ -12,19 +12,19 @@ import { Spinner } from './spinner';
 // Note: Dialog-functions in Header needs dialogFindId:
 export const dialogFindId = 'dialogFind';
 
-// Important: ”document.body.” excludes SCROLLBARS, if any!
-document.body.addEventListener('mousedown', async (e) => {
-  e.stopPropagation();
-    // console.log('dialog-find', e.target.tagName);
-  let tgt = e.target;
-  await new Promise (z => setTimeout (z, 99)); // dialogFind
-  // Position the clicked of these two at top
-  // let i1 = Number(document.querySelector('#dialogFind').style.zIndex);
-  // let i2 = Number(document.querySelector('#dialogFindResult').style.zIndex);
-    // console.error(i1 + ' ' + i2);
-  // if (tgt.closest('#dialogFind') && i1 < i2) document.querySelector('#dialogFindResult').style.zIndex = i1 - 1;
-  // if (tgt.closest('#dialogFindResult') && i2 < i1) document.querySelector('#dialogFindResult').style.zIndex = i1 + 1;
-});
+// // Important: ”document.body.” excludes SCROLLBARS, if any!
+// document.body.addEventListener('mousedown', async (e) => {
+//   e.stopPropagation();
+//     // console.log('dialog-find', e.target.tagName);
+//   let tgt = e.target;
+//   await new Promise (z => setTimeout (z, 99)); // dialogFind
+//   // Position the clicked of these two at top
+//   // let i1 = Number(document.querySelector('#dialogFind').style.zIndex);
+//   // let i2 = Number(document.querySelector('#dialogFindResult').style.zIndex);
+//     // console.error(i1 + ' ' + i2);
+//   // if (tgt.closest('#dialogFind') && i1 < i2) document.querySelector('#dialogFindResult').style.zIndex = i1 - 1;
+//   // if (tgt.closest('#dialogFindResult') && i2 < i1) document.querySelector('#dialogFindResult').style.zIndex = i1 + 1;
+// });
 
 document.addEventListener('keydown', (e) => {
   if (e.keyCode === 27) {
@@ -86,48 +86,6 @@ export class DialogFind extends Component {
     return this.z.handsomize2sp(this.z.picFound);
   }
 
-  // openFound(-1) opens 'picFound' with all found images, while
-  // openFound(i) opens 'picFound' with images found in album 'i'
-  openFound = async (i) => {
-    document.querySelector('img.spinner').style.display = '';
-    let lpath = this.z.imdbPath + '/' + this.z.picFound; // The path to picFound
-    // Clean up picFound:
-    await this.z.execute('rm -rf ' + lpath + '/*');
-    await this.z.execute('touch ' + lpath + '/.imdb');
-    // await this.z.execute('touch ' + lpath + '/_imdb_order.txt');
-    if (i < 0) {
-      // Create links to all found images
-      // for (let j=0; j<this.commands.length; j++) { // forwards
-      for (let j=this.commands.length; j>0; j--) { // work backwards
-        await this.z.execute(this.commands[j-1]);
-      }
-    } else {
-      let sWhr = [false, false, false, false, true];
-      // NOTE: The names and uses are mostly copied from 'doFindText' below.
-      // 'this.inames[i]' are pic names, now to be found with exact match.
-      // Simultaneously, will we find duplicate names, if any?
-      // NO! WE WON'T! WHY DON'T WE FIND DUPLICATE NAMES???
-      // The function 'z.searchText' code is in '#region search/' of z.
-      let data = await this.z.searchText(this.inames[i], false, sWhr, -1);
-      // Don't! Hide the spinner
-      // document.querySelector('img.spinner').style.display = 'none';
-      let paths = data.trim ().split ('\n');
-      // for (let i=0; i<paths.length; i++) { // forwards
-      for (let i=paths.length; i>0; i--) { // work backwards
-        let linkfrom = '../' + paths[i-1].replace(/^[^/]*\//, ''); // make relative
-        let fname = paths[i-1].replace(/^.*\/([^/]+$)/, '$1'); // clean from directories
-        // Make a four character random 'intrusion' in the file name
-        fname = this.z.addRandom(fname)
-        let linkto = lpath + '/' + fname; // absolute path
-        // Create a link to this found image
-        let command = 'ln -sf ' + linkfrom + ' ' + linkto;
-        await this.z.execute(command);
-      }
-    }
-    this.z.closeDialog(dialogFindId);
-    this.z.openAlbum(this.ixFound);
-  }
-
   // ''/_imdb_order.txt'' finds texts in the database (file _imdb_images.sqlite)
   // and populates the 'picFound' album with the corresponding images
   doFindText = async () => {
@@ -168,7 +126,7 @@ export class DialogFind extends Component {
       return '';
     }
 
-    this.commands = [];
+    this.commands = []; // Commands to create links in picFound
     let paths = []; // The found paths
     let albs = [];  // The list of found albums
     let lpath = this.z.imdbPath + '/' + this.z.picFound; // The path to picFound
@@ -256,7 +214,7 @@ export class DialogFind extends Component {
         // this.z.loli('commands:\n' + this.commands.join('\n'), 'color:pink');
         // this.z.loli('albs:\n' + albs.join('\n'), 'color:pink');
         // console.log('counts:\n', this.counts);
-        // console.log('inames:\n', this.inames);
+        console.log('inames:', this.inames);
 
       // Prepare the alternative album list 'countAlbs' for the 'filesFound > nLimit' case:
       this.countAlbs = [];
@@ -295,6 +253,63 @@ export class DialogFind extends Component {
     } else if (this.nchk) butt.removeAttribute('disabled');
     if (!this.nchk) butt.setAttribute('disabled', '');
 
+  }
+
+  // openFound(-1) opens 'picFound' with all found images, while
+  // openFound(i) opens 'picFound' with images found in album 'i'
+  openFound = async (i) => {
+    document.querySelector('img.spinner').style.display = '';
+    let lpath = this.z.imdbPath + '/' + this.z.picFound; // The path to picFound
+    // Clean up picFound:
+    await this.z.execute('rm -rf ' + lpath + '/*');
+    await this.z.execute('touch ' + lpath + '/.imdb');
+    // await this.z.execute('touch ' + lpath + '/_imdb_order.txt');
+    if (i < 0) {
+      // Create links to all found images
+      // for (let j=0; j<this.commands.length; j++) { // forwards
+      for (let j=this.commands.length; j>0; j--) { // work backwards
+        await this.z.execute(this.commands[j-1]);
+      }
+    } else {
+      let sWhr = [false, false, false, false, true];
+      // NOTE: The names and uses are mostly copied from 'doFindText' below.
+      // 'this.inames[i]' are pic names, now to be found with exact match.
+      // Simultaneously, will we find duplicate names, if any?
+      // NO! WE WON'T! WHY DON'T WE FIND DUPLICATE NAMES???
+      // The function 'z.searchText' code is in '#region search/' of z.
+      let data = await this.z.searchText(this.inames[i], false, sWhr, -1);
+      // Don't! Hide the spinner
+      // document.querySelector('img.spinner').style.display = 'none';
+      let paths = data.trim ().split ('\n');
+        console.log(paths);
+      // for (let i=0; i<paths.length; i++) { // forwards
+      for (let i=paths.length; i>0; i--) { // work backwards
+        let linkfrom = '../' + paths[i-1].replace(/^[^/]*\//, ''); // make relative
+        let fname = paths[i-1].replace(/^.*\/([^/]+$)/, '$1'); // clean from directories
+        // Make a four character random 'intrusion' in the file name
+        fname = this.z.addRandom(fname)
+        let linkto = lpath + '/' + fname; // absolute path
+        // Create a link to this found image
+        let command = 'ln -sf ' + linkfrom + ' ' + linkto;
+        await this.z.execute(command);
+      }
+    }
+    this.z.closeDialog(dialogFindId);
+    this.z.openAlbum(this.ixFound);
+  }
+
+  openAlbumMark = async (i) => {
+    this.z.openAlbum(i);
+
+    // Allow for the rendering of mini images and preload of view images
+    let size = this.z.albumAllImg(i);
+    await new Promise (z => setTimeout (z, size*120 + 100));
+
+    let names = this.inames[i].split(' ');
+    for (let j=0;j<names.length;j++) {
+      // this.z.markBorders(names[j]);
+      this.z.gotoMinipic(names[j]);
+    }
   }
 
   <template>
@@ -418,7 +433,7 @@ export class DialogFind extends Component {
               </a> &nbsp;&nbsp;&nbsp;&nbsp;
 
               <a class="hoverDark" style="font-family:Arial,Helvetica,sans-serif;font-size:70%;font-variant:small-caps;text-decoration:none"
-              {{on 'click' (fn this.z.openAlbum i)}}>
+              {{on 'click' (fn this.openAlbumMark i)}}>
                 {{t 'allInAlbum'}}
               </a><br>
 

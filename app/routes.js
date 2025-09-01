@@ -66,7 +66,7 @@ module.exports = function(app) { // Start module.exports
   // ##### General passing point
   //#region ROUTING
   app.all('*', async function(req, res, next) {
-          // console.log("original req.body =", req.body)
+          // console.log("original req.body =", req.body) undefined
     // if (req.originalUrl !== '/upload') { // Upload with dropzone: 'req' used else!
       var tmp = req.get('imdbroot')
       if (tmp) {
@@ -115,7 +115,7 @@ module.exports = function(app) { // Start module.exports
       tmp = decodeURIComponent(req.originalUrl)
       if (tmp !== '/execute/' && tmp !== '/filestat/' && !tmp.startsWith(IMDB)) {
         console.log(BGRE + tmp + RSET)
-          console.log("***nearest req.body =", req.body)
+          // console.log("***nearest req.body =", req.body) undefined
       }
       let show_imagedir = false // For debug of directories printout
       if (show_imagedir) {     // and also each ”tmp” printout
@@ -129,9 +129,6 @@ module.exports = function(app) { // Start module.exports
         console.log('  picFound:', picFound)
       }
       // console.log(process.memoryUsage())
-      if (req.body && req.body.like) {
-        console.log('LIKE', req.body.like)
-      }
       next() // pass control to the next handler
     // }
   })
@@ -646,9 +643,11 @@ module.exports = function(app) { // Start module.exports
   })
 
   // ##### Update one or more database entries
+  // NOTE: 'req.body' handlings depend on bluebird/multer, unclear how?
+  // THUS: Please modify carefully! (a sipmle remove caused crossdomain trouble)
   //#region sqlupdate
   app.post('/sqlupdate', upload.none(), async function(req, res, next) {
-    //console.log (req.body)
+      console.log("req.body =", req.body)
     let filepaths = req.body.filepaths
     //console.log ('SQLUPDATE', filepaths)
     let files = filepaths.trim().split(LF)

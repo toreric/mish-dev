@@ -249,6 +249,7 @@ export default class CommonStorageService extends Service {
   // Neutralize dots for CSS, e.g. in the querySelector() argument
   escapeDots = (textString) => { // Cf. CSS.escape()
     // Used for file names when used in CSS, #<id> etc.
+    // await new Promise (z => setTimeout (z,99));
     return textString.replace (/\./g, "\\.");
   }
 
@@ -818,6 +819,7 @@ export default class CommonStorageService extends Service {
   // Position to a minipic and highlight its border
   //#region gotoMinipic
   gotoMinipic = async (namepic) => {
+      // this.loli('>' + namepic, 'color:red');
     if (!namepic) return;
       // this.loli(namepic, 'color:red');
     await new Promise (z => setTimeout (z, 39)); // gotoMinipic
@@ -831,17 +833,17 @@ export default class CommonStorageService extends Service {
     let y = p.offsetTop ? p.offsetTop : 0;
       // this.loli('y=' + y, 'color:red');
     y = p.offsetHeight ? y + p.offsetHeight/2 : y;
-    // this.loli('y=' + y, 'color:red');
+      // this.loli('y=' + y, 'color:red');
     let t = document.getElementById('highUp').offsetTop;
-    // this.loli('top=' + t, 'color:red');
+      // this.loli('top=' + t, 'color:red');
     let b = document.getElementById('lowDown').offsetTop;
-    // this.loli('bottom=' + b, 'color:red');
+      // this.loli('bottom=' + b, 'color:red');
     y -= h2 - 150;
-    // this.loli('y-h2=' + y, 'color:red');
+      // this.loli('y-h2=' + y, 'color:red');
     if (y < t) y = t;
-    // if (y > b - hs) y = b - hs;
+      // if (y > b - hs) y = b - hs;
     scrollTo(null, y);
-    this.resetBorders(); // Reset all borders
+      // this.resetBorders(); // Reset all borders
     this.markBorders(namepic, 'z.gotoMinipic'); // Mark this one
   }
 
@@ -1029,9 +1031,9 @@ export default class CommonStorageService extends Service {
     }
 
     if (nextName) {
-      // console.log(allFiles);
+        // console.log(allFiles);
       let i = allFiles.findIndex(all => {return all.name === nextName;});
-      // this.loli('index=' + i);
+        // this.loli('index=' + i);
       let path = '';
       if (i > -1) {
         this.picName = nextName;
@@ -1214,7 +1216,7 @@ export default class CommonStorageService extends Service {
   //#region login/
   getCredentials = async (username) => {
     username = username.trim();
-    // this.loli(this.userName);
+      // this.loli(this.userName);
     if (username === 'Get user name') { // Welcome, initiation
       username = this.userName; // Default log in
       // this.imdbRoot = ''; // Empty it

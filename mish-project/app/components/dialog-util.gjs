@@ -51,7 +51,7 @@ export class DialogUtil extends Component {
   // Which tool was selected?
   detectRadio = async (e) => {
     var elRadio = e.target;
-      this.z.loli(`${elRadio.id} ${elRadio.checked}`, 'color:red');
+      // this.z.loli(`${elRadio.id} ${elRadio.checked}`, 'color:red');
     this.tool = elRadio.id;
     if (this.tool === 'util3') this.z.displayNames = 'block'; //sort by name
   }
@@ -398,7 +398,7 @@ export class DialogUtil extends Component {
   doDbUpdate = async () => {
     document.querySelector('img.spinner').style.display = '';
     let cmd = './ld_imdb.js -e ' + this.z.imdbPath;
-      this.z.loli(cmd, 'color:red');
+      // this.z.loli(cmd, 'color:red');
     await this.z.execute(cmd);
     document.querySelector('img.spinner').style.display = 'none';
     this.z.loli('updated text database');
