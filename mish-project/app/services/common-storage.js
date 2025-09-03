@@ -1282,6 +1282,9 @@ export default class CommonStorageService extends Service {
   }
 
   //#region imdbdirs/
+  // Do not move 'getAlbumDirs' to 'menu-main.gjs' in order to balance
+  // code lines more reasonably between source files! Since it is also
+  // called by 'updateTree' which is called from 'menu-image.gjs'!
   getAlbumDirs = async (getHidden) => {
     // Get album collections or albums if we are at an album root
     return new Promise((resolve, reject) => {
@@ -1903,7 +1906,8 @@ export default class CommonStorageService extends Service {
   }
 
   saveCloseDialog = async (dialogId) => {
-    await this.saveDialog(dialogId);
+    this.saveDialog(dialogId);
+    await new Promise (z => setTimeout (z, 123)); // saveCloseDialog
     this.closeDialog(dialogId);
   }
 

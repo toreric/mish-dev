@@ -48,13 +48,13 @@ module.exports = function(app) { // Start module.exports
 
   // 30 black, 31 red, 32 green, 33 yellow, 34 blue, 35 magenta, 36 cyan, 37 white, 0 default
   // Add '1;' for bright, e.g. '\x1b[1;33m' is bright yellow, while '\x1b[31m' is red, etc.
-  
+
   const BGRE = '\x1b[1;32m' // Bright green
   const BYEL = '\x1b[1;33m' // Bright yellow
   const BLUE = '\x1b[1;34m' // Bright blue
   const RED  = '\x1b[31m'   // Red
   const RSET = '\x1b[0m'    // Reset
-  
+
   const LF = '\n'   // Line Feed == New Line
   const BR = '<br>' // HTML line break
   // Max lifetime(minutes) after last access of a temporary search result album:
@@ -94,7 +94,7 @@ module.exports = function(app) { // Start module.exports
           // }
           //   // console.log(BYEL + cmd + cmd1 + RSET) // Does reveal paths!
 
-          // NEW ATTEMPT WITH AWAIT BY util.promisify
+          // NEW ATTEMPT WITH AWAIT BY util.promisify,seems OK
           try {
             var cmd = 'touch ' + IMDB + '/' + picFound
             var cmd1 = '/ && touch ' + IMDB + '/' + picFound + '/.imdb'
@@ -328,11 +328,17 @@ module.exports = function(app) { // Start module.exports
   // ##### Get IMDB(image 'data base') directories list,
   //       i.e. get all possible album directories, recursive
   //#region imdbdirs
+
+  // *********************************************************************
+  // NOTE Do not move 'getAlbumDirs' in 'z' to 'menu-main.gjs' in order to
+  // balance code lines more reasonably between source files!  Since it is
+  // also called by 'updateTree' which is called from 'menu-image.gjs'!
+  // *********************************************************************
   app.get('/imdbdirs', async function(req, res) {
     await new Promise(z => setTimeout(z, 200))
     let allowHidden = req.get('hidden')
     if (IMDB_DIR.indexOf(picFound) === -1) {
-      // Refresh picFound: the shell commands must execute in sequence
+      // Refresh picFound: the shell commands must execute in sequence (don't split cmd)
       let pif = IMDB + '/' + picFound
       let cmd = 'rm -rf ' + pif + ' ; mkdir ' + pif + ' && touch ' + pif + '/.imdb'
       // await cmdasync(cmd) // better diagnosis
@@ -342,7 +348,7 @@ module.exports = function(app) { // Start module.exports
     }
     setTimeout(function() {
       allDirs().then(dirlist => { // dirlist entries start with the root album
-        areAlbums(dirlist).then(async dirlist => {
+        areAlbums(dirlist).then(async (dirlist) => {
           // dirlist = dirlist.sort()
           var albumLabel
           let dircoco = [] // directory content counters
@@ -378,24 +384,40 @@ module.exports = function(app) { // Start module.exports
               }
             }
           }
-
-          // Get all thumbnails and select randomly
-          // one to be used as "subdirectory label"
+          // First check the file lists against _mini_file 'mothers' in order to
+          // eliminate (the count) of orphan _mini_-files: may appear by accident!
           for (let i=0; i<dirlist.length; i++) {
-
+              // console.log(RED + dirlist[i] + RSET)
+            cmd = "echo -n `ls " + IMDB + dirlist[i] + "/_mini_* 2>/dev/null`"
+            let pics = (await exec(cmd)).stdout
+              // console.log(RED + 'pics:\n' + pics.toString().trim() + RSET)
+            if (pics) { // don't check empty albums
+              pics = pics.toString().trim().split(' ')
+              for (let j=0;j<pics.length;j++) {
+                let iname = pics[j].replace(/^.*\/_mini_/, '').replace(/\.[^.]+$/, '.')
+                  // console.log(BGRE + i + ' ' + iname + RSET)
+                try {
+                  cmd = 'ls ' + IMDB + dirlist[i] + '/' + iname + '*'
+                    // console.log(BYEL + cmd + RSET)
+                  let file = (await exec(cmd)).stdout.toString().trim()
+                    // console.log(BYEL + file + RSET)
+                } catch {
+                    // console.log('rm -f ' + IMDB + dirlist[i] + '/_mini_' + iname + '*')
+                  await exec('rm -f ' + IMDB + dirlist[i] + '/_mini_' + iname + '*')
+                    // console.log('rm -f ' + IMDB + dirlist[i] + '/_show_' + iname + '*')
+                  await exec('rm -f ' + IMDB + dirlist[i] + '/_show_' + iname + '*')
+                }
+              }
+            }
+          }
+         // Count images by thumbnails and select one randomly
+         // to be used as subdirectory label image
+         for (let i=0; i<dirlist.length; i++) {
             cmd = "echo -n `find " + IMDB + dirlist[i] + " -maxdepth 1 -type l -name '_mini_*' | grep -c ''`"
             let nlinks = (await exec(cmd)).stdout/1 // Get no of linked images
             cmd = "echo -n `ls " + IMDB + dirlist[i] + "/_mini_* 2>/dev/null`"
-            let pics = (await exec(cmd)).stdout // Get all images
+            pics = (await exec(cmd)).stdout // Get all images
               // console.log(pics)
-            // **********************************************************************
-            // TODO: Check this list against _mini_file 'mothers' in order to
-            // eliminate the count of orphan _mini_-files: may appear by accident!
-            // AND: Do not move 'getAlbumDirs' in 'z' to 'menu-main.gjs' in order to
-            // balance code lines more reasonably between source files!  Since it is
-            // also called by 'updateTree' which is called from 'menu-image.gjs'!
-            // **********************************************************************
-
             pics = pics.toString().trim().split(" ")
             if (!pics[0]) {pics = []} // Remove a "" element
             let npics = pics.length // No of images in the album
@@ -423,7 +445,9 @@ module.exports = function(app) { // Start module.exports
             }
             if (subs) {npics += ' ' + subs + '‡'} // text!
             dircoco.push(npics)
+              // console.log(RED + i + ' ' + albumLabel + RSET)
             dirlabel.push(albumLabel)
+
           }
           for (let i=0; i<dirlist.length; i++) {
             // console.log('A i dirlabel[i]',i,dirlabel[i])
@@ -480,7 +504,7 @@ module.exports = function(app) { // Start module.exports
   })
 
   // ##### Get all images in IMDB_DIR using 'findFiles' with readdirAsync,
-  //       Bluebird support  
+  //       Bluebird support
   //#region imagelist
   app.get('/imagelist', function(req, res) {
     // NOTE: Reset allfiles here, since it isn't refreshed by an empty album!
@@ -647,7 +671,7 @@ module.exports = function(app) { // Start module.exports
   // THUS: Please modify carefully! (a sipmle remove caused crossdomain trouble)
   //#region sqlupdate
   app.post('/sqlupdate', upload.none(), async function(req, res, next) {
-      console.log("req.body =", req.body)
+      // console.log("req.body =", req.body)
     let filepaths = req.body.filepaths
     //console.log ('SQLUPDATE', filepaths)
     let files = filepaths.trim().split(LF)
@@ -694,7 +718,7 @@ module.exports = function(app) { // Start module.exports
               // console.log("row.filepath",row.filepath.trim());
             // In certain situations, dotted directories may
             // appear here and urgently need to be left out!
-            if (!row.filepath.includes ('/.')) {
+            if (!row.filepath.includes('/.')) {
               foundpaths += row.filepath.trim() + "\n"
               n++
             }
@@ -1156,7 +1180,7 @@ module.exports = function(app) { // Start module.exports
         //row = await db.get(sqlGetId)
         let recId = -1
         if (row) {recId = row['id']}
-  
+
         // Get metadata from the picture, 'lowercased':
         function getSqlParams() {
           let xmpkey = ['description', 'creator', 'source']

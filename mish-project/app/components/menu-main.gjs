@@ -48,7 +48,7 @@ export class MenuMain extends Component {
     // Display the spinner already (will be hidden somewhere else)
     document.querySelector('img.spinner').style.display = '';
 
-    await new Promise (z => setTimeout (z, 399)); // selectRoot, ensurance!?
+    await new Promise (z => setTimeout (z, 699)); // selectRoot, ensurance!?
     // The wait reason: Sometimes getAlbumDirs is unsuspectedly null
 
     // Retreive the albums list of this collection (root album).
@@ -126,7 +126,8 @@ export class MenuMain extends Component {
     this.z.imdbTree = result;
       // this.z.loli(this.z.imdbTree);
       // this.z.loli(this.z.imdbDirs);
-      // this.z.loli('imdbTree ' + n + LF + JSON.stringify(result, null, 2)); //human readable
+      // JSON.stringify makes the album tree human readable:
+      // this.z.loli('imdbTree ' + n + LF + JSON.stringify(result, null, 2), 'color:yellow');
       // this.z.loli(this.z.imdbCoco.length, 'color:red');
     // await new Promise (z => setTimeout (z, 33*this.z.imdbCoco.length)); // selectRoot Wait for album tree
     await new Promise (z => setTimeout (z, 333)); // selectRoot Wait for album tree
@@ -141,20 +142,19 @@ export class MenuMain extends Component {
       }
       return hidden;
     }
-
     this.hasHidden = anyHidden(); // if there are any hidden-but-allowed albums
     this.z.openAlbum(0); // Select the root album
+
     // Copy the 'text' directory from the album root to  the web root which
     // makes available to be linked to within the image captions by writing
     // <a href="text/«file name»" target="_blank">«link text»</a>, where the
     // target attribute is important in order to avoid confusing appearance
     // on the SPA page: Best to shift-click, which opens another browser window.
-
     await this.z.execute('mkdir -p ' + this.z.imdbPath + '/text');
     await this.z.execute('cp -rf ' + this.z.imdbPath + '/text ' + this.z.wwwDir + '/');
 
     this.z.closeMainMenu('after opening root album'); // Close the main menu
-        // this.z.loli(this.z.imdbDirs);
+      // this.z.loli(this.z.imdbDirs);
   }
 
   // The @tree argument for Tree component
