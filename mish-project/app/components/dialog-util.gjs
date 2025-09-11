@@ -285,45 +285,71 @@ export class DialogUtil extends Component {
         let handleFiles = () => {
           fileList = imUpLd.files;
             console.log(fileList);
-            this.z.loli(' After download', 'color:red');
-            for (let f of fileList) {
-              preview.push(URL.createObjectURL(f))
-              // Initial 'vbm' or 'cpr' (case ignored) in
-              // file names MUST NOT be investigated here:
-              goodf.push(that.z.acceptedFileName(f.name));
+            const selectedFiles = [...imUpLd.files];
+            console.log(selectedFiles);
+          this.z.loli(' After download', 'color:red');
+          for (let i=0;i<fileList.length;i++) {
+            let f = fileList[i];
+            // this.z.loli(f.type, 'color:pink');
+            if (fileList[i].type === 'image/tiff') {
+              this.z.loli(f.name + ' ' + f.type, 'color:pink');
+              const canvas = document.createElement('canvas');
+              canvas.toBlob((f) => {
+                var newImg = document.createElement("img");
+                var url = URL.createObjectURL(f);
+                newImg.src = url;
+                preview[i] = url;
+                // document.body.appendChild(newImg);
+              });
+            } else {
+              preview[i] = URL.createObjectURL(f);
             }
-            if (fileList) {
-              for (let i=0;i<fileList.length;i++) {
-                let ifpink = goodf[i] ? '':' style="background:pink"';
-                let ifpass = goodf[i] ? ' <img src="' + preview[i] + '" height="32">':'<span>&nbsp;' + that.intl.t('nameError') + '</span>';
-                filcodi += '<div class="uplFiles"' + ifpink + '>' + fileList[i].name + ifpass + '</div>';
-                if (goodf[i]) {
-                    // that.z.loli(fileList[i].name, 'color:#dfd');
-                  passedFiles.push(fileList[i]);
-                  fileNames.push(fileList[i].name);
-                  that.nPass ++;
-                  URL.revokeObjectURL(fileList[i]);
-                  document.querySelector('button.up1').style.display = 'none';
-                  document.querySelector('button.up2').style.display = '';
-                } else {
-                    // that.z.loli(fileList[i].name, 'color:pink');
-                  that.nFail ++;
-                }
+            // Initial 'vbm' or 'cpr' (case ignored) in
+            // file names MUST NOT be investigated here:
+            goodf.push(that.z.acceptedFileName(f.name)); // boolean
+          }
+          if (fileList) {
+            for (let i=0;i<fileList.length;i++) {
+              let back = goodf[i] ? '':' style="background:pink"';
+              let mipi = goodf[i] ? ' <img src="' + preview[i] + '" height="32">':'<span>&nbsp;' + that.intl.t('nameError') + '</span>';
+              // TIFF special:
+              if (goodf[i] && fileList[i].type === 'image/tiff') {
+                back = ' style="background:#ffc"';
+                mipi = '&nbsp;<span>Tiff special</span>';
+              }
+              filcodi += '<div class="uplFiles"' + back + '>' + fileList[i].name + mipi + '</div>';
+              if (goodf[i]) {
+                  // that.z.loli(fileList[i].name, 'color:#dfd');
+                passedFiles.push(fileList[i]);
+                fileNames.push(fileList[i].name);
+                that.nPass ++;
                 URL.revokeObjectURL(fileList[i]);
-              }
-              document.getElementById('uplCand').innerHTML = filcodi;
-              document.querySelector('img.spinner').style.display = 'none';
-              if (that.nPass === 0) {
                 document.querySelector('button.up1').style.display = 'none';
-                document.querySelector('button.up2').style.display = 'none';
-                document.querySelector('button.up3').innerHTML = 'Please cancel and redo!';
+                document.querySelector('button.up2').style.display = '';
+              } else {
+                  // that.z.loli(fileList[i].name, 'color:pink');
+                that.nFail ++;
               }
-              that.z.loli('nPass=' + that.nPass + ' nFail=' + that.nFail, 'color:red');
+              URL.revokeObjectURL(fileList[i]);
             }
+            document.getElementById('uplCand').innerHTML = filcodi;
+            document.querySelector('img.spinner').style.display = 'none';
+            if (that.nPass === 0) {
+              document.querySelector('button.up1').style.display = 'none';
+              document.querySelector('button.up2').style.display = 'none';
+              document.querySelector('button.up3').innerHTML = 'Please cancel and redo!';
+            }
+            that.z.loli('nPass=' + that.nPass + ' nFail=' + that.nFail, 'color:red');
+          }
+        }
+        let cancelUpload = () => {
+          document.querySelector('img.spinner').style.display = 'none';
+          return;
         }
         await new Promise (z => setTimeout (z, 99)); // doUpload
 
         imUpLd.addEventListener('change', handleFiles, false);
+        imUpLd.addEventListener('cancel', cancelUpload, false);
         imUpLd.click();
         document.querySelector('img.spinner').style.display = '';
           this.z.loli('Before download', 'color:red');
@@ -332,7 +358,7 @@ export class DialogUtil extends Component {
           // this.  z.futureNotYet('write.tool5'); // TO BE REMOVED
       }
     } else {
-        // File instances are also valid Blobs! (like passedFiles)
+        // File instances are also valid Blobs! (e.g. passedFiles)
         console.log(passedFiles);
       document.getElementById('commonTools').click(); // closes the component
       if (this.nPass > 0) await this.z.upload(fileNames.join(LF));
@@ -647,6 +673,7 @@ export class DialogUtil extends Component {
             </form>
 
             {{!-- List of upload-candidates --}}
+
             <div id="uplCand" style="width:auto"></div>
 
           {{!-- === Update search data for the entire album collection === --}}

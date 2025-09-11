@@ -291,7 +291,7 @@ erase: erase
 fav:
   images: Favorite images
   manage: Manage favorite images
-fileNameRules: "File names beginning with ’.’, ’_imdb_’, ’_mini_’, or ’_show_’ are prohibited, but else a file name may contain ASCII letters, ’.’, ’_’, and numbers but NO spaces."
+fileNameRules: "A file name may only contain »A« to »Z«, »a« to »z«, ».«, »_« and »0« to »9« but not blanks/spaces, and it may not start with ».«, »_imdb_«, »_mini_« or »_show_«."
 filesFailed: "Number failed: {n}"
 filesPassed: "Number of approved: {n}"
 filesProceed: with the approved
@@ -314,7 +314,7 @@ imageNumber: image number {n}
 imageMenu: "Image\nmenu"
 infoHeader: Information
 loggedIn: Logged in user
-nameError: Name error!
+nameError: Name error
 noCollSelected: No album collection selected
 picfound: §Found_images
 plusExplain: Subalbums also have subalbums!

@@ -1,6 +1,6 @@
 // app/routes.js
 
-const { statfs } = require('fs/promises')
+// const { statfs } = require('fs/promises') EC
 
 module.exports = function(app) { // Start module.exports
   const path = require('path')
@@ -52,7 +52,7 @@ module.exports = function(app) { // Start module.exports
   const BGRE = '\x1b[1;32m' // Bright green
   const BYEL = '\x1b[1;33m' // Bright yellow
   const BLUE = '\x1b[1;34m' // Bright blue
-  const RED  = '\x1b[31m'   // Red
+  const RED  = '\x1b[1;31m' // Red
   const RSET = '\x1b[0m'    // Reset
 
   const LF = '\n'   // Line Feed == New Line
@@ -741,13 +741,13 @@ module.exports = function(app) { // Start module.exports
   app.post('/upload', async (req, res) => {
     try {
       var files = decodeURIComponent(req.get('files'))
-        console.log(BYEL + files + RSET)
+        console.log(RED + files + RSET)
       files = files.split(LF)
       // for (i=0;i<files.length;i++) {
       //   files[i] = IMDB + IMDB_DIR + files[i]
       //     console.log(BYEL + files[i] + RSET)
       // }
-      res.send(files)
+      res.send(files.join(LF))
     } catch (err) {
       console.error('Upload error', err.message)
     }

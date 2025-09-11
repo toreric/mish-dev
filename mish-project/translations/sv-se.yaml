@@ -289,7 +289,7 @@ erase: radera
 fav:
   images: Favoritbilder
   manage: Favoritbildhantering
-fileNameRules: "Filnamn som börjar med ’.’, ’_imdb_’, ’_mini_’ eller ’_show_’ är otillåtet, men ett filnamn kan innehålla ASCII-bokstäver, ’.’, ’_’ och siffror men INTE mellanslag."
+fileNameRules: "Ett filnamn får bara innehålla »A« till »Z«, »a« till »z«, ».«, »_« och »0« till »9« men inte blank/mellanslag, och det får inte börja med ».«, »_imdb_«, »_mini_« eller »_show_«."
 filesFailed: "Underkända: {n}"
 filesPassed: "Antal godkända: {n}"
 filesProceed: med godkända
@@ -312,7 +312,7 @@ imageNumber: bild nummer {n}
 imageMenu: "Bild-\nmeny"
 infoHeader: Information
 loggedIn: Inloggad användare
-nameError: Namnfel!
+nameError: Namnfel
 noCollSelected: Ingen albumsamling har valts
 picfound: §Funna_bilder
 plusExplain: Underalbum har också underalbum!

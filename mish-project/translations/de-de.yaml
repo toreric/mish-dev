@@ -289,7 +289,7 @@ erase: löschen
 fav:
   images: Bildfavoriten
   manage: Bildfavoriten verwalten
-fileNameRules: "Dateinamen die mit ’.’, ’_imdb_’, ’_mini_’ oder ’_show_’ beginnen sind nicht zulässig, ansonsten darf ein Dateiname ASCII-Buchstaben, ’.’, ’_’ und Zahlen, aber KEINE Leerzeichen enthalten."
+fileNameRules: "Ein Dateiname darf nur »A« bis »Z«, »a« bis »z«, ».«, »_« und »0« bis »9« enthalten, jedoch keine Leerzeichen und darf nicht mit ».«, »_imdb_«, »_mini_« oder »_show_« beginnen."
 filesFailed: "Nicht genehmigte: {n}"
 filesPassed: "Anzahl genehmigte: {n}"
 filesProceed: mit genehmigte
@@ -312,7 +312,7 @@ imageMenu: "Bild-\nmenü"
 imageNumber: bild nummer {n}
 infoHeader: Information
 loggedIn: Angemeldet Benutzer⋅in
-nameError: Namensfehler!
+nameError: Namensfehler
 noCollSelected: Keine Albensammlung ausgewählt
 picfound: §Gefundene_Bilder
 plusExplain: Unteralben haben auch Unteralben!

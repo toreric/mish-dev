@@ -1705,6 +1705,7 @@ export default class CommonStorageService extends Service {
           var data = xhr.response.trim ();
             // that.loli('data' + LF + data, 'color:red');
           resolve(data);
+          that.loli(LF + data, 'color:red');
         } else {
           reject({
             status: this.status,
