@@ -1320,6 +1320,8 @@ img.mark {
 }
 .uplFiles {
   display: flex;
+  flex-wrap: wrap;
+  overflow-wrap:break-word;
   justify-content: space-between;
   margin: 0.2rem 0;
   padding: 0 0.2rem 0 0.4rem;
@@ -1327,6 +1329,9 @@ img.mark {
   background: #dfd;
   border: solid 0.5px green;
   border-radius: 4px;
+}
+.flexEnd {
+  align-self: flex-end;
 }
 #do_print,
 #full_size,

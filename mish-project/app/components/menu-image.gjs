@@ -257,6 +257,7 @@ export class MenuImage extends Component {
     imDnLd.href = URL.createObjectURL(file);
     // imDnLd.href = 'https://google.com';
     imDnLd.download = fileName;
+      console.log(imDnLd);
     imDnLd.click();
     imDnLd.remove();
     URL.revokeObjectURL(file);

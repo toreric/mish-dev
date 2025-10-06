@@ -1699,13 +1699,13 @@ export default class CommonStorageService extends Service {
       let xhr = new XMLHttpRequest();
       xhr.open('POST', 'upload/', true, null, null);
       this.xhrSetRequestHeader(xhr); // set default headers
-      xhr.setRequestHeader('files', encodeURIComponent(files));
+      xhr.setRequestHeader('body', files);
       xhr.onload = function () {
         if (this.status >= 200 && this.status < 300) {
           var data = xhr.response.trim ();
-            // that.loli('data' + LF + data, 'color:red');
+            /*that.loli('data' + LF + data, 'color:red');
           resolve(data);
-          that.loli(LF + data, 'color:red');
+          that.loli(LF + data, 'color:red');*/
         } else {
           reject({
             status: this.status,

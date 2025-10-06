@@ -8,14 +8,42 @@ module.exports = function(app) { // Start module.exports
   const fs = Promise.promisifyAll(require('fs')) // ...Async() suffix
   // const execP = Promise.promisify(require('child_process').exec)
   const multer = require('multer')
-  const upload = multer( {dest: '/tmp'} ) // tmp upload
   // const exec = require('child_process').exec
   const execSync = require('child_process').execSync
   const bodyParser = require('body-parser')
-
+  
   // const { exec } = require('node:child_process')
   const util = require('util')
   const exec = util.promisify(require('child_process').exec) // modern execP
+  
+  
+  // const storage = multer.diskStorage({})
+  
+  // // const upload = multer( {dest: ''} ) // upload
+  // const upload = multer({ storage: storage });
+  
+  
+  
+  // Configure storage engine and filename
+  const storage = multer.diskStorage({
+    destination: './uploads/',
+    filename: function(req, file, cb) {
+      cb(null, path.basename(file.originalname).replace(/\.[^.]*$/, '') + '-' + Date.now() + path.extname(file.originalname));
+    }
+  });
+  
+  
+  
+  // Initialize upload middleware and add file size limit
+  const upload = multer({
+    storage: storage,
+    limits: { fileSize: 12000000 } // 11.44MiB file size limit
+  })
+  // .single('myFiles'); // 'myFiles' is the name attribute of the file input field  
+
+  const cpUpload = upload.fields([{ name: 'fileKey' }]);
+
+
 
   app.use(bodyParser.urlencoded( {extended: false} ))
 
@@ -65,9 +93,12 @@ module.exports = function(app) { // Start module.exports
   // Check 'Express route tester'!
   // ##### General passing point
   //#region ROUTING
-  app.all('*', async function(req, res, next) {
+  app.all('/*anykey', async function(req, res, next) {
           // console.log("original req.body =", req.body) undefined
     // if (req.originalUrl !== '/upload') { // Upload with dropzone: 'req' used else!
+      // if (req.originalUrl === '/uploads') {
+      //   next()
+      // }
       var tmp = req.get('imdbroot')
       if (tmp) {
         IMDB_ROOT = decodeURIComponent(tmp)
@@ -594,7 +625,7 @@ module.exports = function(app) { // Start module.exports
 
   // ##### Save the _imdb_order.txt file
   //#region saveorder
-  app.post('/saveorder', upload.none(), function(req, res, next) {
+  app.post('/saveorder', function(req, res, next) {
     var file = IMDB + IMDB_DIR + '/_imdb_order.txt'
     execSync('touch ' + file + '&&chmod 664 ' + file) // In case not yet created
     var body = []
@@ -621,7 +652,7 @@ module.exports = function(app) { // Start module.exports
 
   // ##### Save Xmp.dc.description and Xmp.dc.creator using exiv2
   //#region savetext
-  app.post('/savetext', upload.none(), function(req, res, next) {
+  app.post('/savetext', function(req, res, next) {
     var body = []
     req.on('data', (chunk) => {
       body.push(chunk)
@@ -670,7 +701,7 @@ module.exports = function(app) { // Start module.exports
   // NOTE: 'req.body' handlings depend on bluebird/multer, unclear how?
   // THUS: Please modify carefully! (a sipmle remove caused crossdomain trouble)
   //#region sqlupdate
-  app.post('/sqlupdate', upload.none(), async function(req, res, next) {
+  app.post('/sqlupdate', async function(req, res, next) {
       // console.log("req.body =", req.body)
     let filepaths = req.body.filepaths
     //console.log ('SQLUPDATE', filepaths)
@@ -686,7 +717,7 @@ module.exports = function(app) { // Start module.exports
 
   // ##### Search text, case insensitively, in _imdb_images.sqlite
   //#region search
-  app.post ('/search', upload.none(), async function(req, res, next) {
+  app.post ('/search', async function(req, res, next) {
       console.log("req.body =", req.body)
     // Convert everything to lower case
     // The removeDiacritics funtion bypasses some characters (åäöüÅÄÖÜ)
@@ -740,21 +771,60 @@ module.exports = function(app) { // Start module.exports
   // deprecated, if not abandoned (associated with Dropzone, also abandoned)
   app.post('/upload', async (req, res) => {
     try {
-      var files = decodeURIComponent(req.get('files'))
-        console.log(RED + files + RSET)
-      files = files.split(LF)
+      var files = req.get('body')
+        console.log(BLUE + files + RSET)
+        // for (let f of files) {
+        //   console.log(f)
+        //   console.log(RED + f.name + ' ' + f.type + RSET)
+        // }
+
+      //files = files.split(LF)
       // for (i=0;i<files.length;i++) {
       //   files[i] = IMDB + IMDB_DIR + files[i]
       //     console.log(BYEL + files[i] + RSET)
       // }
-      res.send(files.join(LF))
+      //res.send(files.join(LF))
     } catch (err) {
       console.error('Upload error', err.message)
     }
   })
 
-  //#region FUNCTIONS
+  /*/ ##### Upload image(s)
+  //region uploads
+  app.post('/uploads', async (req, res) => {
+    // res.location('/')
+    // res.send('')
+    res.end()
+  })*/
+ 
+  // app.post("/uploads", cpUpload, async function(req,res) {
+  //   let return_token = req.body.return_token
+  //   console.log(return_token)
+  //   let file_that_was_uploaded = req.files
+  //   console.log(file_that_was_uploaded)
+  //   return res.json("thanks")
+  // });
 
+
+
+
+// File upload route
+app.post('/uploads', cpUpload, async (req, res, err) => {
+     if (err) {
+       console.error(err);
+       return res.status(500).json({ error: err });
+      }
+     if (!req.files) {
+        return res.status(400).json({ error: 'Please send file' });
+      }
+      console.log(req.files);
+      res.send('File uploaded!');
+  });
+
+
+
+
+  //#region FUNCTIONS
 
 
 

@@ -36,10 +36,6 @@ export class ButtonsRight extends Component {
     for (let div of wiName.document.getElementsByTagName('DIV')) div.remove();
     var divObj = wiName.document.createElement('div');
     var imgObj = wiName.document.createElement('img');
-
-
-
-
     imgObj.src = url;
 
     imgObj.style.margin = '-8px';
