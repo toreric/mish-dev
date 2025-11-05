@@ -258,7 +258,7 @@ dialog:
     filename: Dateiname
     header: Information zum Originalbild
   login:
-    header:   Anmelden/Login
+    header:   Anmelden/Login und Nutzerrechte
     user:     Benutzer
     name:     Name
     password: Passwort

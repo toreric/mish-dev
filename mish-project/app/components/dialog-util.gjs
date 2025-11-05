@@ -18,14 +18,16 @@ import fileQueue from 'ember-file-upload/helpers/file-queue';
 
 export const dialogUtilId = 'dialogUtil';
 const LF = '\n';
-var fileList;
-var fileNames;
-var passedFiles;
+// var fileList;
+// var fileNames;
+// var passedFiles;
+
+// const queue = this.fileQueue.find('your-queue-name');
 
 export class DialogUtil extends Component {
   @service('common-storage') z;
   @service intl;
-  // @service fileQueue;
+  @service fileQueue;
 
   @tracked tool = ''; // utility tool id
   @tracked countImgs = 0; // duplicate image name counter
@@ -38,14 +40,30 @@ export class DialogUtil extends Component {
 
   // @action
   // async uploadPhoto(file) {
-  uploadPhoto = async (file) => {
-    try {
-      const response = await file.upload('/uploads', {accepts: ['image/png', 'image/jpeg', 'image/tiff', 'image/gif'], fileKey: 'fileKey'});
-    } catch (res) {
-      console.log(res);
-      console.error(`File upload failed: ${res}`);
-    }
+uploadPhoto = async (file) => {
+  try {
+    const response = await file.upload('/uploads/', {accepts: ['image/png', 'image/jpeg', 'image/tiff', 'image/gif'], fileKey: 'file'});
+  } catch (res) {
+    console.log(res);
+    console.error(`File upload failed: ${res}`);
   }
+}
+
+// uplFiles = async (queue) => {
+//   console.log(queue.files[0]);
+//   let i = 0;
+//   // await Promise.all(queue.files.map((file) => {
+//   if (queue.length > 0) {
+//     let file = queue.files[0];
+//     console.log(i, queue.files[0]);
+//     file.upload('/uploads', {accepts: ['image/png', 'image/jpeg', 'image/tiff', 'image/gif'], fileKey: 'file'}); // fileKey default is 'file'
+//     queue.files[0].remove;
+//     i++
+//   };
+// }
+// const results = await Promise.all(queue.files.map((file) => {
+//   return file.upload('/path/to/your/upload/endpoint/', { YourOptions });
+// })) ?? [];
 
   // get queue() {
   //   return this.fileQueue.findOrCreate('photos');
@@ -684,15 +702,23 @@ export class DialogUtil extends Component {
           {{else if (eq this.tool 'util5')}}
             {{!-- <span style="display:none">{{this.doUpload true}}</span> --}}
 
-            <b title-2="{{t 'fileNameRules'}}" style="width:100%">{{t 'write.tool5'}}</b><br>
+            <b title-2="{{t 'fileNameRules'}}" style="width:100%">{{t 'write.tool5'}}</b> <br><br><br><br><br>
 
             {{#let (fileQueue name='photos' onFileAdded=this.uploadPhoto) as |queue|}}
+
+            {{!-- {{#let (fileQueue name='photos') as |queue|}} --}}
+
+            {{!-- <form action="/uploads/" enctype="multipart/form-data" method="post" onsubmit="return false"> --}}
+              <label>Choose files
+                <input id="imUpLd" type="file" multiple name="uploaded_file">
+                {{!-- <input id="imUpLd" type="file" name="uploaded_file"> --}}
+              </label><br>
               Files in queue: {{queue.files.length}}<br>
               {{t 'filesPassed' n=this.nPass}}<br>
               {{t 'filesFailed' n=this.nFail}}<br>
-                <label>Choose files
-                  <input id="imUpLd" type="file" multiple {{queue.selectFile}}>
-                </label>
+              <button type="submit">upload</button>
+            {{!-- </form> --}}
+
             {{/let}}
 
             {{!-- <button class="up1" type="button" {{on 'click' (fn this.doUpload true)}}>{{t 'write.tool51'}}</button>

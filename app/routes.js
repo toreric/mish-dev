@@ -1,53 +1,70 @@
 // app/routes.js
 
 // const { statfs } = require('fs/promises') EC
+import path from 'node:path'
+import ProMise from 'bluebird'
+// const path = require('path')
+// const ProMise = require('bluebird')
+// import fisy from 'fs'
+import { access, writeFile, readFile, readdir, open } from 'node:fs/promises'
+import fs from 'node:fs'
 
-module.exports = function(app) { // Start module.exports
-  const path = require('path')
-  const Promise = require('bluebird')
-  const fs = Promise.promisifyAll(require('fs')) // ...Async() suffix
-  // const execP = Promise.promisify(require('child_process').exec)
-  const multer = require('multer')
-  // const exec = require('child_process').exec
-  const execSync = require('child_process').execSync
-  const bodyParser = require('body-parser')
-  
-  // const { exec } = require('node:child_process')
-  const util = require('util')
-  const exec = util.promisify(require('child_process').exec) // modern execP
-  
-  
-  // const storage = multer.diskStorage({})
-  
-  // // const upload = multer( {dest: ''} ) // upload
-  // const upload = multer({ storage: storage });
-  
-  
-  
-  // Configure storage engine and filename
-  const storage = multer.diskStorage({
-    destination: './uploads/',
-    filename: function(req, file, cb) {
-      cb(null, path.basename(file.originalname).replace(/\.[^.]*$/, '') + '-' + Date.now() + path.extname(file.originalname));
-    }
-  });
-  
-  
-  
-  // Initialize upload middleware and add file size limit
-  const upload = multer({
-    storage: storage,
-    limits: { fileSize: 12000000 } // 11.44MiB file size limit
-  })
-  // .single('myFiles'); // 'myFiles' is the name attribute of the file input field  
+import multer from 'multer'
+import { execSync } from 'child_process'
+import bodyParser from 'body-parser'
+import util from 'util'
+// const multer = require('multer')
+// const execSync = require('child_process').execSync
+// const bodyParser = require('body-parser')
+// const util = require('util')
+import { exec as execute } from 'child_process'
 
-  const cpUpload = upload.fields([{ name: 'fileKey' }]);
+import SQLite from 'better-sqlite3'
+// const SQLite = require('better-sqlite3')
+
+// Configure storage engine and filename
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'uploads/')
+//   },
+//   filename: (req, file, cb) => {
+//     // cb(null, path.basename(file.originalname).replace(/\.[^.]*$/, '') + '-' + Date.now() + path.extname(file.originalname))
+//     cb(null, path.basename(file.originalname))
+//   }
+// })
+
+const fileFilter = (req, file, cb) => {
+  if (!file.originalname.match(/\.(jpe?g|tif{1,2}|png|gif)$/)) {
+    return cb(new Error('Only image files are allowed!'), false);
+  }
+  cb(null, true);
+}
+
+// Initialize upload middleware and with file size limit
+const upload = () => multer({
+  storage: storage,
+  limits: { fileSize: 16000000, files: 1 }, // 15.25MiB file size limit
+  fileFilter: fileFilter
+})
+
+export { upload }
+
+export default function(app) { // Start module.exports
+  // const fs = ProMise.promisifyAll(require('fs')) // ...Async() suffix
+  // const fs = ProMise.promisifyAll(fisy) // sets ...Async() suffix
+  // const execP = ProMise.promisify(require('child_process').exec)
+  const exec = util.promisify(execute) // modern exec replaces execP
+  
+// const cpUpload = upload.fields([{ name: 'file' }]) // default fileKey name
+// Error handler for file filter rejections
+app.use((err, req, res, next) => {
+  res.status(400).send(err.message);
+})
+
+  app.use(bodyParser.urlencoded({extended: false}))
+  app.use(bodyParser.json());
 
 
-
-  app.use(bodyParser.urlencoded( {extended: false} ))
-
-  const SQLite = require('better-sqlite3')
 
   // This row should be moved to the 'login' and there followed at end by 'setdb.close'
   // in order to free it for construction of an admin gui for settings management:
@@ -70,7 +87,7 @@ module.exports = function(app) { // Start module.exports
   // ===== Make a synchronous shell command formally 'asynchronous'(cf. asynchronous execP)
   let cmdasync = async (cmd) => {return execSync(cmd)}
   // ===== ABOUT COMMAND EXECUTION
-  // ===== `execP` provided a non-blocking, promise-based approach to executing commands, which is generally preferred in Node.js applications for better performance and easier asynchronous handling.
+  // ===== `execP` provided a non-blocking, ProMise-based approach to executing commands, which is generally preferred in Node.js applications for better performance and easier asynchronous handling.
   // ===== 'exec' is the same but native (not Bluebird, which is a bit oldfashion>2020)
   // ===== `cmdasync`, using `execSync`, offers a synchronous alternative that blocks the event loop, which might be useful in specific scenarios but is generally not recommended for most use cases due to its blocking nature. `a = await cmdasync(cmd)` and `a = execSync(cmd)` achieve the same end result of executing a command synchronously. The usage differs based on the context (asynchronous with `await` for `cmdasync` versus direct synchronous call for `execSync`). The choice between them depends on whether you're working within an asynchronous function and your preference for error handling and code style.
 
@@ -99,6 +116,7 @@ module.exports = function(app) { // Start module.exports
       // if (req.originalUrl === '/uploads') {
       //   next()
       // }
+
       var tmp = req.get('imdbroot')
       if (tmp) {
         IMDB_ROOT = decodeURIComponent(tmp)
@@ -339,21 +357,32 @@ module.exports = function(app) { // Start module.exports
 
   // ##### Find subdirs which are album roots
   //#region rootdir
-  app.get('/rootdir', function(req, res) {
-    readSubdir(IMDB_HOME).then(dirlist => {
+  app.get('/rootdir', async function(req, res) {
+    // try {
+      var dirlist = await readSubdir(IMDB_HOME)
+        console.log(dirlist)
       dirlist = dirlist.join(LF)
-      // var tmp = execSync("echo $IMDB_ROOT").toString().trim()
-      // if (dirlist.indexOf(tmp) < 0) {tmp = ""}
-      // dirlist = tmp + LF + dirlist
       res.location('/')
       res.send(dirlist)
-      //res.end()
-    })
-    .catch((err) => {
-      console.error("RRR", err.message)
-      res.location('/')
-      res.send(err.message)
-    })
+    // } catch(err) {
+    //         console.error("RRR", err.message)
+    //   res.location('/')
+    //   res.send(err.message)
+    // }
+    // readSubdir(IMDB_HOME).then(dirlist => {
+    //   dirlist = dirlist.join(LF)
+    //   // var tmp = execSync("echo $IMDB_ROOT").toString().trim()
+    //   // if (dirlist.indexOf(tmp) < 0) {tmp = ""}
+    //   // dirlist = tmp + LF + dirlist
+    //   res.location('/')
+    //   res.send(dirlist)
+    //   //res.end()
+    // })
+    // .catch((err) => {
+    //   console.error("RRR", err.message)
+    //   res.location('/')
+    //   res.send(err.message)
+    // })
   })
 
   // ##### Get IMDB(image 'data base') directories list,
@@ -388,11 +417,15 @@ module.exports = function(app) { // Start module.exports
           // Hidden albums are listed in _imdb_ignore.txt, create if missing
           let fd, ignorePaths = IMDB + "/_imdb_ignore.txt"
           try {
-            fd = await fs.openAsync(ignorePaths, 'r')
-            await fs.closeAsync(fd)
+            const fd = await open(ignorePaths, 'r')
+              console.log(fd)
+            // fs.close(fd)
+            fd.close()
           } catch(err) {
-            fd = await fs.openAsync(ignorePaths, 'w') // created
-            await fs.closeAsync(fd)
+            fd = await open(ignorePaths, 'w') // created
+              console.log(fd)
+            // fs.close(fd.fd)
+            fd.close()
           }
           // Remove hidden albums from the list if allowHidden is 'false'
           if (allowHidden !== 'true') {
@@ -419,7 +452,7 @@ module.exports = function(app) { // Start module.exports
           // eliminate (the count) of orphan _mini_-files: may appear by accident!
           for (let i=0; i<dirlist.length; i++) {
               // console.log(RED + dirlist[i] + RSET)
-            cmd = "echo -n `ls " + IMDB + dirlist[i] + "/_mini_* 2>/dev/null`"
+            let cmd = "echo -n `ls " + IMDB + dirlist[i] + "/_mini_* 2>/dev/null`"
             let pics = (await exec(cmd)).stdout
               // console.log(RED + 'pics:\n' + pics.toString().trim() + RSET)
             if (pics) { // don't check empty albums
@@ -444,10 +477,10 @@ module.exports = function(app) { // Start module.exports
          // Count images by thumbnails and select one randomly
          // to be used as subdirectory label image
          for (let i=0; i<dirlist.length; i++) {
-            cmd = "echo -n `find " + IMDB + dirlist[i] + " -maxdepth 1 -type l -name '_mini_*' | grep -c ''`"
+            let cmd = "echo -n `find " + IMDB + dirlist[i] + " -maxdepth 1 -type l -name '_mini_*' | grep -c ''`"
             let nlinks = (await exec(cmd)).stdout/1 // Get no of linked images
             cmd = "echo -n `ls " + IMDB + dirlist[i] + "/_mini_* 2>/dev/null`"
-            pics = (await exec(cmd)).stdout // Get all images
+            let pics = (await exec(cmd)).stdout // Get all images
               // console.log(pics)
             pics = pics.toString().trim().split(" ")
             if (!pics[0]) {pics = []} // Remove a "" element
@@ -529,26 +562,28 @@ module.exports = function(app) { // Start module.exports
         })
       }).catch(function(error) {
         res.location('/')
-        res.sloadend(error.message)
+        res.send(error.message)
       })
     }, 500) // Was 1000
   })
 
-  // ##### Get all images in IMDB_DIR using 'findFiles' with readdirAsync,
-  //       Bluebird support
+  // ##### Get all images in IMDB_DIR using 'findFiles' with readdir,
+  //       Was Bluebird support
   //#region imagelist
   app.get('/imagelist', function(req, res) {
     // NOTE: Reset allfiles here, since it isn't refreshed by an empty album!
     allfiles = undefined
     //OLD: IMDB_DIR = req.params.imagedir.replace(/@/g, "/")
-
     // console.log('IMAGELIST')
-
+      console.log('IMDB_ROOT = "' + IMDB_ROOT + '"')
+      console.log('IMDB_DIR = "' + IMDB_DIR + '"')
     findFiles(IMDB_DIR).then(async function(files) {
 
       // console.log('files from FINDFILES:', files)
 
+      files ??= [] // 
       if (!files) {files = []}
+
       var origlist = ''
       //files.forEach(function(file) { not recommended
       for (var i=0; i<files.length; i++) {
@@ -593,35 +628,47 @@ module.exports = function(app) { // Start module.exports
   // ##### Get sorted file name list (= get order)
   //#region sortlist
   app.get('/sortlist', async function(req, res) {
-    var imdbtxtpath = IMDB + IMDB_DIR + '/_imdb_order.txt'
+    const imdbtxtpath = IMDB + IMDB_DIR + '/_imdb_order.txt'
     try { // Open _imdb_order.txt
-      fd = await fs.openAsync(imdbtxtpath, 'r') // check
-      await fs.closeAsync(fd)
-    } catch(err) { // Create _imdb_order.txt if missing
+      const fd = await open(imdbtxtpath, 'r') // check
+      // fs.close(fd)
+      fd.close()
+    } catch { // Create _imdb_order.txt if missing
       try {
-        fd = await fs.openAsync(imdbtxtpath, 'w') // create
-        await fs.closeAsync(fd)
+        const fd = await open(imdbtxtpath, 'w') // create
+        // fs.close(fd)
+        fd.close()
         execSync('chmod 664 ' + imdbtxtpath)
-      } catch(error) { // Maybe something in the path is wrong
-        console.error(RED + 'Error in album path' + RSET)
-        res.on('error', (error) => {
-          // console.error(error.message) hide path to albums
-          res.location('/')
-          res.send('Error!')
-        })
+      } catch { // Maybe something in the path is wrong
+        // console.error(error.message) hide path to albums
+        // console.error(RED + 'Error in album path' + RSET)
+        console.error(RED + 'Error in album path' + RSET + ' ' + imdbtxtpath)
+        res.location('/')
+        return res.send('Error!')
       }
     }
-    fs.readFileAsync (imdbtxtpath)
-    .then(names => {
-        // console.log ('/sortlist/:names' +'\n'+ names) // names <buffer> here converts to <text>
-      res.send(names) // Sent buffer arrives as text
-    }).then(console.info('File order sent from server'))
-    .catch(function(error) {
-      console.error(RED + 'Error in album path?' + RSET)
+    try {
+      const names = await readFile(imdbtxtpath, 'utf8')
+      res.send(names)
+      console.info('File order sent from server')
+    } catch {
+      console.error(`${RED}Error in album path?${RSET}`)
       res.location('/')
       res.send('')
-    })
+    }
   })
+
+  //   readFile (imdbtxtpath)
+  //   .then(names => {
+  //       // console.log ('/sortlist/:names' +'\n'+ names) // names <buffer> here converts to <text>
+  //     res.send(names) // Sent buffer arrives as text
+  //   }).then(console.info('File order sent from server'))
+  //   .catch(function(error) {
+  //     console.error(RED + 'Error in album path?' + RSET)
+  //     res.location('/')
+  //     res.send('')
+  //   })
+  // })
 
   // ##### Save the _imdb_order.txt file
   //#region saveorder
@@ -636,7 +683,7 @@ module.exports = function(app) { // Start module.exports
       // Concatenate; then change the Buffer into String
       body = Buffer.concat (body).toString ()
       // At this point, do whatever with the request body (now a string)
-      fs.writeFileAsync (file, body).then (function () {
+      writeFile (file, body).then (function () {
         console.log ("Saved file order ")
         //console.log ('\n'+body+'\n')
       })
@@ -664,7 +711,7 @@ module.exports = function(app) { // Start module.exports
       var msgName = fileName.slice(IMDB_HOME.length)
 
       let okay = fs.constants.W_OK | fs.constants.R_OK
-      fs.access(fileName, okay, async err => {
+      access(fileName, okay, async err => {
         if (err) {
           res.send("Cannot write to " + msgName)
           console.log(err, 'ERROR', err.length)
@@ -684,12 +731,12 @@ module.exports = function(app) { // Start module.exports
           body = tmp [2].trim() // These trimmings are probably superfluous
           body = body.replace(/'/g, "'\\''")
           //console.log (fileName + " '" + body + "'")
-          if (fs.open)
+          if (open)
           execSync('set_xmp_creator ' + fileName + " '" + body + "'") // for txt2
           // Reset modification time, this was metadata only:
           execSync('touch -d "' + mtime + '" "' + fileName + '"')
           res.send('')
-          await new Promise (z => setTimeout (z, 888))
+          await new Promise(z => setTimeout (z, 888))
           await sqlUpdate (fileName) // with path @***
         }
       })
@@ -809,17 +856,32 @@ module.exports = function(app) { // Start module.exports
 
 
 // File upload route
-app.post('/uploads', cpUpload, async (req, res, err) => {
-     if (err) {
-       console.error(err);
-       return res.status(500).json({ error: err });
-      }
-     if (!req.files) {
-        return res.status(400).json({ error: 'Please send file' });
-      }
-      console.log(req.files);
-      res.send('File uploaded!');
-  });
+app.post('/uploads', (req, res, next) => {
+  upload(req, res, function(err) {
+    if (err) {
+      console.log(err.message)
+      res.send(err.message)
+      return
+    }
+    res.send('')
+    console.log('hallåhallå')
+    console.log(req.files)
+    console.log('path:', req.files.path, 'size:', req.files.file[0].size)
+    return
+  })
+  /*try {
+    console.log('hallåhallå')
+    console.log(req.files)
+    console.log('path:', req.files.path, 'size:', req.files.file[0].size)
+    let size = req.files.file[0].size
+    await new Promise(z => setTimeout(z, size/1000))
+    res.send('File uploaded!')
+  } catch(err) {
+    console.log(err.message)
+    res.location('/')
+    res.send(err.message)
+  }*/
+})
 
 
 
@@ -855,7 +917,7 @@ app.post('/uploads', cpUpload, async (req, res, err) => {
     } else {
       return "NA"
     }
-    // NOTE: An async function returns a promise!
+    // NOTE: An async function returns a Promise!
   }
 
   // ===== Check if a file is a symbolic link
@@ -876,25 +938,55 @@ app.post('/uploads', cpUpload, async (req, res, err) => {
   // ===== Check if a file does not exist
   //#region notFile
   async function notFile(path) {
-    cmd = '[ -f ' + path + ' ]; echo -n $?'
+    let cmd = '[ -f ' + path + ' ]; echo -n $?'
     return Number((await (exec(cmd))).stdout)
   }
 
 
   // ===== Read the dir's content of album sub-dirs(not recursively)
   //#region readSubdir
-  readSubdir = async (dir, files = []) => {
-    let items = await fs.readdirAsync(dir) // items are file || dir names
-    return Promise.map(items, async (name) => { // Cannot use mapSeries here(why?)
+  const readSubdir = async (dir) => {
+    var items = await readdir(dir) // items are file || dir names
+    var files = []
+      console.log(dir, items)
+    // try {
+      for (let i=0;i<items.length;i++) {
+        var name = items[i]
+        var item = path.join(dir, name) // Relative path
+        if (acceptedDirName(name) && !brokenLink(item)) {
+          let stat = fs.statSync(item) // stat requires cb function
+          if (stat.isDirectory()) {
+            var flagFile = path.join(item, '.imdb')
+            console.log(i, name, item, acceptedDirName(name), !!brokenLink(item), flagFile)
+            try {
+              await access(flagFile, fs.constants.F_OK)
+              files.push(name)
+              console.log('   Accepted  ', stat.isDirectory())
+            } catch {
+              console.log('   Ignored ', stat.isDirectory())
+            }
+          }
+        }
+      }
+      console.log(dir, files)
+      return files
+    // } catch (err) {
+    //   console.error("€ARG", err.message)
+    //   return err.toString()
+    // }
+  }
+    /*readSubdir = async (dir, files = []) => {
+      return ProMise.map(items, async (name) => { // Cannot use mapSeries here(why?)
       //let apitem = path.resolve(dir, name) // Absolute path
       let item = path.join(dir, name) // Relative path
       if (acceptedDirName(name) && !brokenLink(item)) {
-        let stat = await fs.statAsync(item)
+        let stat = await fs.stat(item)
         if (stat.isDirectory()) {
           let flagFile = path.join(item, '.imdb')
-          let fd = await fs.openAsync(flagFile, 'r')
+          let fd = await open(flagFile, 'r')
           if (fd > -1) {
-            await fs.closeAsync(fd)
+            // fs.close(fd)
+            fd.close()
             files.push(name)
           }
         }
@@ -907,7 +999,7 @@ app.post('/uploads', cpUpload, async (req, res, err) => {
       console.error("€ARG", err.message)
       return err.toString()
     })
-  }
+  } */
 
   // ===== Check if an album/directory name can be accepted
   //#region acceptedDirName
@@ -919,7 +1011,7 @@ app.post('/uploads', cpUpload, async (req, res, err) => {
   // ===== Is this file/directory a broken link? Returns its name or false
   // NOTE: Broken links may cause severe problems if not taken care of properly!
   //#region brokenLink
-  brokenLink = item => {
+  const brokenLink = item => {
     return execSync("find '" + item + "' -maxdepth 0 -xtype l 2>/dev/null").toString()
   }
 
@@ -945,10 +1037,11 @@ app.post('/uploads', cpUpload, async (req, res, err) => {
   //#region areAlbums
   let areAlbums = async (dirlist) => {
     let fd, albums = []
-    return Promise.mapSeries(dirlist, async(album) => { //(*) CAN use mapSeries here but don't understand why!?
+    return ProMise.mapSeries(dirlist, async (album) => { //(*) CAN use mapSeries here but don't understand why!?
       try {
-        fd = await fs.openAsync(IMDB + album + '/.imdb', 'r')
-        await fs.closeAsync(fd)
+        const fd = await open(IMDB + album + '/.imdb', 'r')
+        // fs.close(fd)
+        fd.close()
         // Exclude dotted, and not actual picFound files
         if (album.includes('/.') || album.includes('§') && album.indexOf(picFound) === -1) {
           // Ignore 'dotted' directory paths
@@ -971,16 +1064,47 @@ app.post('/uploads', cpUpload, async (req, res, err) => {
   // ===== Read a directory's file content; also remove broken links
   //#region findFiles
   async function findFiles(dirName) {
-    // NOTE: Here we have to prove thar 'dirName' exists, since it may be
+    // NOTE: Here we have to prove that 'dirName' exists, since it may be
     // the 'picFound' directory which is rather volatile (temporay, sometimes
     // cleaned away). If it occasionally doesn't exist, return '':
     try {
-      await fs.accessAsync(IMDB + dirName)
+      await access(IMDB + dirName)
     } catch(err) {
-      console.error(RED + 'Warning: Nonexistent album' + RSET)
+      console.error(RED + 'Warning: Nonexistent album ' + dirName + RSET)
       return ''
     }
-
+    var items = await readdir(IMDB + dirName) // items are file || dir names
+    var files = []
+    console.log(items)
+    await new Promise(z => setTimeout(z, 5222)) // so log is written before catch
+    try {
+      for (let i=0;i<items.length;i++) {
+        filename = items[i]
+          console.log(filename)
+          await new Promise(z => setTimeout(z, 2222)) // so log is written before catch
+        var filepath = path.join(IMDB + dirName, fileName)
+        var brli = brokenLink(filepath) // refers to server root
+        if (brli) {
+          rmPic(filepath) // may hopefully also work for removing any single file ...
+          files.push(path.join(path.dirname(filepath), '.ignore')) // fake dotted file
+        } else { // Check if this is a regular file:
+          let stat = fs.stat(filepath)
+          if (stat.mode & 0o100000) {
+            // See 'man 2 stat': S_IFREG bitmask for 'Regular file', and google more!
+            files.push(filepath)
+          } else {
+            files.push(path.join(path.dirname(filepath), '.ignore')) // fake dotted file
+          }
+        }
+      }
+      console.log(files)
+      return files
+    } catch(err) {
+      console.error(RED + 'Error in findFiles in "' + dirName + '"'+ RSET)
+      console.log(RED + err.toString() + RSET)
+      return ''
+    }
+    /*****************************old code***************************************
     return fs.readdirAsync(IMDB + dirName).map(function(fileName) { // Cannot use mapSeries here(why?)
         var filepath = path.join(IMDB + dirName, fileName)
 
@@ -991,7 +1115,7 @@ app.post('/uploads', cpUpload, async (req, res, err) => {
         rmPic(filepath) // may hopefully also work for removing any single file ...
         return path.join(path.dirname(filepath), '.ignore') // fake dotted file
       }
-      return fs.statAsync(filepath).then(function(stat) {
+      return fs.stat(filepath).then(function(stat) {
         if (stat.mode & 0o100000) {
           // See 'man 2 stat': S_IFREG bitmask for 'Regular file', and google more!
           return filepath
@@ -1002,12 +1126,12 @@ app.post('/uploads', cpUpload, async (req, res, err) => {
     })
     .reduce(function(a, b) {
       //return a.concat(b)
-      if (b) {a = a.concat(b)} // Discard undefined, probably from brokenLink check(?)
+      if (b) {a = a.concat(b)} // Discard undefined, from brokenLink check!
       return a
     }, [])
     .catch(err => {
       console.log("£RR", err.toString())
-    })
+    })**********/
   }
 
   // ===== Make a package of orig, show, mini, and plain filenames, metadata, and symlink flag=origin
@@ -1047,8 +1171,8 @@ app.post('/uploads', cpUpload, async (req, res, err) => {
     let showfile = path.join(fileObj.dir, '_show_' + namefile + '.png')
     let minifile = path.join(fileObj.dir, '_mini_' + namefile + '.png')
     if (symlink === '&') {
-      resizefileAsync(origfile, showfile, "'640x640>'")
-      .then(resizefileAsync(origfile, minifile, "'150x150>'")).then()
+      resizefile(origfile, showfile, "'640x640>'")
+      .then(resizefile(origfile, minifile, "'150x150>'")).then()
     } else {
       //let linkto = await cmdasync("readlink " + origfile).then().toString().trim() // NOTE: Buggy, links badly, why, wrong syntax?
       let linkto = execSync("readlink " + origfile).toString().trim()
@@ -1087,11 +1211,11 @@ app.post('/uploads', cpUpload, async (req, res, err) => {
 
   // ===== Create minifile or showfile (note: size!), if non-existing
   // origpath = the file to be resized, filepath = the resized file
-  //#region resizefileAsync
-  async function resizefileAsync(origpath, filepath, size) {
-    // Check if the file exists, then continue, but note (!): This openAsync will
+  //#region resizefile
+  async function resizefile(origpath, filepath, size) {
+    // Check if the file exists, then continue, but note (!): This open will
     // fail if filepath is absolute. Needs web-rel-path to work ...
-    fs.openAsync(filepath, 'r').then(async () => { // async!
+    open(filepath, 'r').then(async () => { // async!
       if (Number(fs.statSync(filepath).mtime) < Number(fs.statSync(origpath).mtime)) {
         await rzFile(origpath, filepath, size) // await!
       }
@@ -1101,7 +1225,7 @@ app.post('/uploads', cpUpload, async (req, res, err) => {
       if (error.code === "ENOENT") {
         await rzFile(origpath, filepath, size) // await!
       } else {
-        console.error('resizefileAsync', error.message)
+        console.error('resizefile', error.message)
         throw error
       }
     })
@@ -1180,10 +1304,10 @@ app.post('/uploads', cpUpload, async (req, res, err) => {
     let IMDB_PATH = (IMDB + IMDB_DIR)
     let tmp = 'Directory mismatch when "' + fileName.slice(IMDB.length) + '" is deleted'
     if (imdbImdbDir !== IMDB_PATH) console.log('INFO: ' + RED + tmp + RSET)
-    fs.unlinkAsync(imdbImdbDir + '/' + picfile) // File not found isn't caught!
+    fs.unlink(imdbImdbDir + '/' + picfile) // File not found isn't caught!
     .then(sqlUpdate(fileName))
-    .then(fs.unlinkAsync(imdbImdbDir +'/_mini_'+ pngname)) // File not found isn't caught!
-    .then(fs.unlinkAsync(imdbImdbDir +'/_show_'+ pngname)) // File not found isn't caught!
+    .then(fs.unlink(imdbImdbDir +'/_mini_'+ pngname)) // File not found isn't caught!
+    .then(fs.unlink(imdbImdbDir +'/_show_'+ pngname)) // File not found isn't caught!
     .then()
     .catch(function(error) {
       if (error.code === "ENOENT") {
@@ -1200,7 +1324,7 @@ app.post('/uploads', cpUpload, async (req, res, err) => {
   // ===== Return a symlink flag value, value = & or source file
   //#region symlinkFlag
   function symlinkFlag (file) {
-    return new Promise (function (resolve, reject) {
+    return new Promise(function (resolve, reject) {
       fs.lstat (file, function (err, stats) {
         if (err) {
           console.error ('symlinkFlag', err.message)

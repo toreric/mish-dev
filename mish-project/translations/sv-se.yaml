@@ -258,7 +258,7 @@ dialog:
     filename: Filnamn
     header: Information om originalbilden
   login:
-    header:   Inloggning
+    header:   Inloggning och rättigheter
     user:     Användare
     name:     Namn
     password: Nyckelord

@@ -47,7 +47,11 @@ if [[ $1 ]]; then
   fi
 fi
 echo IMDB_HOME = $IMDB_HOME
-echo IMDB_ROOT = $IMDB_ROOT
+if [[ $IMDB_ROOT != '""' ]]; then
+  echo IMDB_ROOT = $IMDB_ROOT
+else
+  echo "IMDB_ROOT = [user choice]"
+fi
 echo -n "##### Starting the Node server "`date`
 
 # Note that Node JS may be installed as either 'node', 'nodejs', or both

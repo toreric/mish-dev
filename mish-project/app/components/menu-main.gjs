@@ -303,7 +303,7 @@ class Tree extends Component {
     if (tgt.tagName === 'IMG') { // if 'A IMG' is clicked, rather than 'A'
       tgt = tgt.parentElement;
     }
-    // This button is unvisible:
+    // Below is where the invisible button is used:
     let button = tgt.parentElement.querySelector('button');
     button.click();
     if (tgt.innerText.includes(OP)) {
@@ -315,7 +315,7 @@ class Tree extends Component {
 
   <template>
 
-    {{!-- This button is used! --}}
+    {{!-- The button is invisible but still used! --}}
     <button style="display:none" {{on 'click' this.toggleThis}}>
       {{if this.isOpen 'Close' 'Open'}}
     </button>

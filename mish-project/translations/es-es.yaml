@@ -260,7 +260,7 @@ dialog:
     filename: File name
     header: Information about the original image
   login:
-    header:   Log in
+    header:   Log in and user rights
     user:     User
     name:     Name
     password: Password

@@ -526,9 +526,9 @@ export default class CommonStorageService extends Service {
     // Display the spinner already (will be hidden somewhere else)
     document.querySelector('img.spinner').style.display = '';
 
-    await new Promise (z => setTimeout (z,399)); // selectRoot, ensurance!?
+    await new Promise (z => setTimeout (z, 799)); // selectRoot, ensurance!?
     // The await reason: Sometimes getAlbumDirs is unsuspectedly null
-    // The await values history: 199, 399,
+    // The await values history: 199, 399, 799
 
     // Retreive the albums list of this collection (root album).
     // If the argment is false, _imdb_ignore.txt in the chosen
@@ -1272,7 +1272,7 @@ export default class CommonStorageService extends Service {
         });
       };
       xhr.send ();
-    }).catch (error => {
+    }).catch(error => {
       if (error.status !== 404) {
         console.error (error.message);
       } else {
@@ -1413,7 +1413,7 @@ export default class CommonStorageService extends Service {
       xhr.send ();
     })
     .then ()
-    .catch (error => {
+    .catch(error => {
       console.error ("In getImages:", error.message);
     });
   }
@@ -1451,7 +1451,7 @@ export default class CommonStorageService extends Service {
         });
       };
       xhr.send ();
-    }).catch (error => {
+    }).catch(error => {
       console.error (error.message);
     });
   }
@@ -1703,9 +1703,9 @@ export default class CommonStorageService extends Service {
       xhr.onload = function () {
         if (this.status >= 200 && this.status < 300) {
           var data = xhr.response.trim ();
-            /*that.loli('data' + LF + data, 'color:red');
+          that.loli('data' + LF + data, 'color:red');
           resolve(data);
-          that.loli(LF + data, 'color:red');*/
+          that.loli(LF + data, 'color:red');
         } else {
           reject({
             status: this.status,
