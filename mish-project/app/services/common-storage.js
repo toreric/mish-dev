@@ -1363,8 +1363,9 @@ export default class CommonStorageService extends Service {
               f.symlink = '';
             } else {
               let tmp = f.symlink;
-              // HOW this missing slash?
-              f.orig = '/' + tmp; // The actual path in this context
+                  // HOW this missing slash??????????misunderstnding
+                  // f.orig = '/' + tmp; // The actual path in this context
+              f.orig = tmp; // The actual path in this context
               f.symlink = 'symlink';
               tmp = tmp.replace(/^([.]*\/)+/, that.imdbRoot + "/").replace(/^([^/]*\/)*([^/]+)\/[^/]+$/, "$2");
               f.albname = that.removeUnderscore(tmp, true);

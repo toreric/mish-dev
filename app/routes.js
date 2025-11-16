@@ -1,7 +1,7 @@
 // app/routes.js
 
 // const { statfs } = require('fs/promises') EC
-import path from 'node:path'
+import path, { dirname } from 'node:path'
 import ProMise from 'bluebird'
 // const path = require('path')
 // const ProMise = require('bluebird')
@@ -85,7 +85,7 @@ app.use((err, req, res, next) => {
   let RID = '----'  // Random (user) identity (take from picFound, changed at reload)
 
   // ===== Make a synchronous shell command formally 'asynchronous'(cf. asynchronous execP)
-  let cmdasync = async (cmd) => {return execSync(cmd)}
+  // let cmdasync = async (cmd) => {return execSync(cmd)}
   // ===== ABOUT COMMAND EXECUTION
   // ===== `execP` provided a non-blocking, ProMise-based approach to executing commands, which is generally preferred in Node.js applications for better performance and easier asynchronous handling.
   // ===== 'exec' is the same but native (not Bluebird, which is a bit oldfashion>2020)
@@ -155,21 +155,21 @@ app.use((err, req, res, next) => {
         }
       }
       // The server automatically removes old search result temporary albums:
-      // Remove too old picFound (search result tmp) directories (with added random .01yz)
-      cmd = 'find -L ' + IMDB + ' -type d -name "' + '§*" -amin +' + toold + ' | xargs rm -rf'
+      // Remove too old picFound directories (with added random .01yz)
+      cmd = 'find -L ' + IMDB + ' -type d -name "§*" -amin +' + toold + ' | xargs rm -rf'
       // await cmdasync(cmd) // ger direktare diagnos
       await exec(cmd)
       // console.log(BYEL + cmd + RSET)
 
-      tmp = decodeURIComponent(req.originalUrl)
-      if (tmp !== '/execute/' && tmp !== '/filestat/' && !tmp.startsWith(IMDB)) {
-        console.log(BGRE + tmp + RSET)
-          // console.log("***nearest req.body =", req.body) undefined
-      }
+      // tmp = decodeURIComponent(req.originalUrl)
+      // if (tmp !== '/execute/' && tmp !== '/filestat/' && !tmp.startsWith(IMDB)) {
+      //   console.log(BGRE + tmp + RSET)
+      //     // console.log("***nearest req.body =", req.body) undefined
+      // }
+
       let show_imagedir = false // For debug of directories printout
       if (show_imagedir) {     // and also each ”tmp” printout
         console.log(BLUE + req.originalUrl + RSET)
-        // if (tmp !== '/execute/' && tmp !== '/filestat/' && !tmp.startsWith(IMDB)) console.log(req)
         console.log('  WWW_ROOT:', WWW_ROOT)
         console.log(' IMDB_HOME:', IMDB_HOME)
         console.log('      IMDB:', IMDB)
@@ -185,6 +185,7 @@ app.use((err, req, res, next) => {
   // ##### Execute a shell command
   //region execute
   app.get('/execute', async (req, res) => {
+    // console.log(BGRE + '/execute' + RSET)
     var cmd = decodeURIComponent(req.get('command'))
       // console.log(BLUE + cmd + RSET) // hide this to protect image paths
     try {
@@ -206,6 +207,7 @@ app.use((err, req, res, next) => {
   // ##### Return file information
   //#region filestat
   app.get('/filestat', async (req, res) => {
+    // console.log(BGRE + '/filestat' + RSET)
     var file = decodeURIComponent(req.get('path'))
     file = IMDB + file
     // This is an emergency solution, which was necessary since the 'filstat'
@@ -270,8 +272,9 @@ app.use((err, req, res, next) => {
   //       all available user statuses and their allowances
   //#region login
   app.get('/login', (req, res) => {
+    // console.log(BGRE + '/login' + RSET)
     USER = decodeURIComponent(req.get('username'))
-        var password = ''
+    var password = ''
     var status = ''
     var allow = ''
     try {
@@ -332,6 +335,7 @@ app.use((err, req, res, next) => {
   // ##### Get full-size (djvu?) file   CHECK path
   //#region fullsize
   app.get('/fullsize', async function(req, res) {
+    console.log(BGRE + '/fullsize' + RSET)
     var fileName = decodeURIComponent(req.get('path'))
     // var fileName = req.get('path') // with path but servers may remove first `/`:
     if (fileName.slice (0, 1) !== "/") fileName = "/" + fileName;
@@ -358,45 +362,26 @@ app.use((err, req, res, next) => {
   // ##### Find subdirs which are album roots
   //#region rootdir
   app.get('/rootdir', async function(req, res) {
-    // try {
+    console.log(BGRE + '/rootdir' + RSET)
       var dirlist = await readSubdir(IMDB_HOME)
-        console.log(dirlist)
+        console.log(IMDB_HOME, dirlist)
       dirlist = dirlist.join(LF)
       res.location('/')
       res.send(dirlist)
-    // } catch(err) {
-    //         console.error("RRR", err.message)
-    //   res.location('/')
-    //   res.send(err.message)
-    // }
-    // readSubdir(IMDB_HOME).then(dirlist => {
-    //   dirlist = dirlist.join(LF)
-    //   // var tmp = execSync("echo $IMDB_ROOT").toString().trim()
-    //   // if (dirlist.indexOf(tmp) < 0) {tmp = ""}
-    //   // dirlist = tmp + LF + dirlist
-    //   res.location('/')
-    //   res.send(dirlist)
-    //   //res.end()
-    // })
-    // .catch((err) => {
-    //   console.error("RRR", err.message)
-    //   res.location('/')
-    //   res.send(err.message)
-    // })
   })
 
   // ##### Get IMDB(image 'data base') directories list,
   //       i.e. get all possible album directories, recursive
   //#region imdbdirs
-
   // *********************************************************************
   // NOTE Do not move 'getAlbumDirs' in 'z' to 'menu-main.gjs' in order to
   // balance code lines more reasonably between source files!  Since it is
   // also called by 'updateTree' which is called from 'menu-image.gjs'!
   // *********************************************************************
   app.get('/imdbdirs', async function(req, res) {
+    console.log(BGRE + '/imdbdirs' + RSET)
     await new Promise(z => setTimeout(z, 200))
-    let allowHidden = req.get('hidden')
+    var allowHidden = req.get('hidden')
     if (IMDB_DIR.indexOf(picFound) === -1) {
       // Refresh picFound: the shell commands must execute in sequence (don't split cmd)
       let pif = IMDB + '/' + picFound
@@ -411,27 +396,26 @@ app.use((err, req, res, next) => {
         areAlbums(dirlist).then(async (dirlist) => {
           // dirlist = dirlist.sort()
           var albumLabel
-          let dircoco = [] // directory content counters
-          let dirlabel = [] // album label thumbnail paths
+          var dircoco = [] // directory content counters
+          var dirlabel = [] // album label thumbnail paths
 
           // Hidden albums are listed in _imdb_ignore.txt, create if missing
-          let fd, ignorePaths = IMDB + "/_imdb_ignore.txt"
+          var fd
+          var ignorePaths = IMDB + "/_imdb_ignore.txt"
           try {
             const fd = await open(ignorePaths, 'r')
-              console.log(fd)
-            // fs.close(fd)
             fd.close()
           } catch(err) {
             fd = await open(ignorePaths, 'w') // created
-              console.log(fd)
-            // fs.close(fd.fd)
             fd.close()
           }
           // Remove hidden albums from the list if allowHidden is 'false'
           if (allowHidden !== 'true') {
+            // An _imdb_ignore line/path may/should start with just './'(if not #)
+              console.log(await exec('cat ' + ignorePaths))
+            var ignore = (await exec('cat ' + ignorePaths)).stdout.toString().trim().split(LF)
+              console.log('ignore:', ignore)
             for (let i=0; i<dirlist.length; i++) {
-              // An _imdb_ignore line/path may/should start with just './'(if not #)
-              let ignore = (await exec('cat ' + ignorePaths)).stdout.toString().trim().split(LF)
               for (let j=0; j<ignore.length; j++) {
                 if (ignore[j].slice(0, 1) === '#') ignore[j] = ''
                 ignore[j] = ignore[j].replace(/^[^/]*/, '')
@@ -570,22 +554,20 @@ app.use((err, req, res, next) => {
   // ##### Get all images in IMDB_DIR using 'findFiles' with readdir,
   //       Was Bluebird support
   //#region imagelist
-  app.get('/imagelist', function(req, res) {
+  app.get('/imagelist', async function(req, res) {
+    console.log(BGRE + '/imagelist' + RSET)
     // NOTE: Reset allfiles here, since it isn't refreshed by an empty album!
-    allfiles = undefined
+    // allfiles = undefined
     //OLD: IMDB_DIR = req.params.imagedir.replace(/@/g, "/")
     // console.log('IMAGELIST')
       console.log('IMDB_ROOT = "' + IMDB_ROOT + '"')
       console.log('IMDB_DIR = "' + IMDB_DIR + '"')
-    findFiles(IMDB_DIR).then(async function(files) {
 
-      // console.log('files from FINDFILES:', files)
-
-      files ??= [] // 
+    var files = await findFiles(IMDB_DIR)
+      files ??= [] // equals
       if (!files) {files = []}
-
+        // console.log('files from FINDFILES:', files)
       var origlist = ''
-      //files.forEach(function(file) { not recommended
       for (var i=0; i<files.length; i++) {
         var file = files [i]
         // Check the file name and that it is not a broken link: !`find <filename> xtype l`
@@ -594,26 +576,26 @@ app.use((err, req, res, next) => {
         }
       }
       origlist = origlist.trim()
-      ////////////////////////////////////////////////////////
+      //////////////////////////////////////////////////////////
       // Get, check and package quadruple file names:
-      //    [ 3 x relative-path, and simple-name ]   of
-      //    [ origfile(without root-link-name, nov 2014),
-      //               showfile, minifile, nameonly ]
-      // where the corresponding images will be sized(e.g.)
-      //    [ full, 640x640, 150x150, -- ]   with file type
-      //    [ image/*, png, png, -- ]   *(see application.hbs)
-      // Four text lines represents an image's names
-      ////////////////////////////////////////////////////////
+      // 1 path from album root of full size origin in the album
+      // 2 server absolute path of 640x640 show png "
+      // 3 server absolute path of 150x150 mini png "
+      // 4 the image name = the file name except extension
+      // Note: png is hiding a jpg or gif, resized from original
+      //////////////////////////////////////////////////////////
       // Next to them, two '\n-free' metadata lines follow:
       // 5 Xmp.dc.description
       // 6 Xmp.dc.creator
-      // 7 Last is '&' or the path to the origin if this is a symlink
-      ////////////////////////////////////////////////////////
+      // 7 A '&' or the path to the origin if it is a symlink
+      // In case of symlink, files 2 and 3 are also symlinks
+      //////////////////////////////////////////////////////////
+        console.log('files to PKGFILENAMES:' +LF+ origlist)
       // pkgfilenames prints initial console.log message
-      await pkgfilenames(origlist).then(() => {
+      pkgfilenames(origlist).then(() => { // Will make 'allfiles'
         if (!allfiles) {allfiles = ''}
         res.location('/')
-          // console.log(BYEL + 'allfiles:' + LF + allfiles + RSET)
+          console.log(BYEL + 'allfiles:', allfiles + RSET)
         res.send(allfiles)
         //res.end()
         console.log(BYEL + RID + '@' + USER + ': ' + IMDB_ROOT + IMDB_DIR + RSET)
@@ -622,12 +604,13 @@ app.use((err, req, res, next) => {
         res.location('/')
         res.send(error.message)
       })
-    })
+    // })
   })
 
   // ##### Get sorted file name list (= get order)
   //#region sortlist
   app.get('/sortlist', async function(req, res) {
+    console.log(BGRE + '/sortlist' + RSET)
     const imdbtxtpath = IMDB + IMDB_DIR + '/_imdb_order.txt'
     try { // Open _imdb_order.txt
       const fd = await open(imdbtxtpath, 'r') // check
@@ -673,6 +656,7 @@ app.use((err, req, res, next) => {
   // ##### Save the _imdb_order.txt file
   //#region saveorder
   app.post('/saveorder', function(req, res, next) {
+    console.log(BGRE + '/saveorder' + RSET)
     var file = IMDB + IMDB_DIR + '/_imdb_order.txt'
     execSync('touch ' + file + '&&chmod 664 ' + file) // In case not yet created
     var body = []
@@ -700,6 +684,7 @@ app.use((err, req, res, next) => {
   // ##### Save Xmp.dc.description and Xmp.dc.creator using exiv2
   //#region savetext
   app.post('/savetext', function(req, res, next) {
+    console.log(BGRE + '/savetext' + RSET)
     var body = []
     req.on('data', (chunk) => {
       body.push(chunk)
@@ -749,6 +734,7 @@ app.use((err, req, res, next) => {
   // THUS: Please modify carefully! (a sipmle remove caused crossdomain trouble)
   //#region sqlupdate
   app.post('/sqlupdate', async function(req, res, next) {
+    console.log(BGRE + '/sqlupdate' + RSET)
       // console.log("req.body =", req.body)
     let filepaths = req.body.filepaths
     //console.log ('SQLUPDATE', filepaths)
@@ -765,6 +751,7 @@ app.use((err, req, res, next) => {
   // ##### Search text, case insensitively, in _imdb_images.sqlite
   //#region search
   app.post ('/search', async function(req, res, next) {
+    console.log(BGRE + '/search' + RSET)
       console.log("req.body =", req.body)
     // Convert everything to lower case
     // The removeDiacritics funtion bypasses some characters (åäöüÅÄÖÜ)
@@ -817,6 +804,7 @@ app.use((err, req, res, next) => {
   // ##### This must not be confused with the Multer upload which is, by now
   // deprecated, if not abandoned (associated with Dropzone, also abandoned)
   app.post('/upload', async (req, res) => {
+    console.log(BGRE + '/upload' + RSET)
     try {
       var files = req.get('body')
         console.log(BLUE + files + RSET)
@@ -857,6 +845,7 @@ app.use((err, req, res, next) => {
 
 // File upload route
 app.post('/uploads', (req, res, next) => {
+  console.log(BGRE + '/uploads' + RSET)
   upload(req, res, function(err) {
     if (err) {
       console.log(err.message)
@@ -910,10 +899,12 @@ app.post('/uploads', (req, res, next) => {
   async function imgErr (file) {
     var extn = file.replace (/.*(\.[^. ]+)$/, "$1")
     if ( /\.jpe?g$/i.test (extn) ) {
-      return await cmdasync("finderrimg 1 " + file)
+      // return await cmdasync("finderrimg 1 " + file)
+      return await exec("finderrimg 1 " + file)
     } else
     if ( /\.tiff?$/i.test (extn) ) {
-      return await cmdasync("finderrimg 2 " + file)
+      // return await cmdasync("finderrimg 2 " + file)
+      return await exec("finderrimg 2 " + file)
     } else {
       return "NA"
     }
@@ -948,7 +939,7 @@ app.post('/uploads', (req, res, next) => {
   const readSubdir = async (dir) => {
     var items = await readdir(dir) // items are file || dir names
     var files = []
-      console.log(dir, items)
+      // console.log(dir, items)
     // try {
       for (let i=0;i<items.length;i++) {
         var name = items[i]
@@ -957,18 +948,18 @@ app.post('/uploads', (req, res, next) => {
           let stat = fs.statSync(item) // stat requires cb function
           if (stat.isDirectory()) {
             var flagFile = path.join(item, '.imdb')
-            console.log(i, name, item, acceptedDirName(name), !!brokenLink(item), flagFile)
-            try {
+            // console.log(i, name, item, acceptedDirName(name), !!brokenLink(item))
+            try { // albums only
               await access(flagFile, fs.constants.F_OK)
               files.push(name)
-              console.log('   Accepted  ', stat.isDirectory())
+              // console.log('   Accepted')
             } catch {
-              console.log('   Ignored ', stat.isDirectory())
+              // console.log('   Ignored')
             }
           }
         }
       }
-      console.log(dir, files)
+      // console.log(dir, files)
       return files
     // } catch (err) {
     //   console.error("€ARG", err.message)
@@ -1022,7 +1013,8 @@ app.post('/uploads', (req, res, next) => {
   // Returns directories formatted like imdbDirs,(first "", then /... etc.)
   //region allDirs
   let allDirs = async () => {
-    let dirlist = await cmdasync('find -L ' + IMDB + ' -type d|sort')
+    // let dirlist = await cmdasync('find -L ' + IMDB + ' -type d|sort')
+    let dirlist = await exec('find -L ' + IMDB + ' -type d|sort')
     dirlist = dirlist.toString().trim() // Formalise string
     dirlist = dirlist.split(LF)
     for (let i=0; i<dirlist.length; i++) {
@@ -1063,44 +1055,56 @@ app.post('/uploads', (req, res, next) => {
 
   // ===== Read a directory's file content; also remove broken links
   //#region findFiles
-  async function findFiles(dirName) {
+  // async function findFiles
+  const findFiles = async (dirName) => {
     // NOTE: Here we have to prove that 'dirName' exists, since it may be
     // the 'picFound' directory which is rather volatile (temporay, sometimes
     // cleaned away). If it occasionally doesn't exist, return '':
     try {
       await access(IMDB + dirName)
     } catch(err) {
-      console.error(RED + 'Warning: Nonexistent album ' + dirName + RSET)
-      return ''
+      console.error(RED + 'Warning: Nonexistent album in findFiles: ' + dirName + RSET)
     }
-    var items = await readdir(IMDB + dirName) // items are file || dir names
-    var files = []
-    console.log(items)
-    await new Promise(z => setTimeout(z, 5222)) // so log is written before catch
+    const items = await readdir(IMDB + dirName) // items are file || dir names
+      // console.log('items:', items.length,items)
+    let files = []
+    // await new Promise(z => setTimeout(z, 5222)) // so log is written before catch
     try {
       for (let i=0;i<items.length;i++) {
-        filename = items[i]
-          console.log(filename)
-          await new Promise(z => setTimeout(z, 2222)) // so log is written before catch
-        var filepath = path.join(IMDB + dirName, fileName)
-        var brli = brokenLink(filepath) // refers to server root
+          // await new Promise(z => setTimeout(z, 2222)) //log is written before catch
+        var filepath = path.join(IMDB + dirName, items[i]) //refers to server (not web) root
+        files[i] = filepath
+          // console.log('filepath:', i, files[i])
+        var brli = brokenLink(filepath)
         if (brli) {
           rmPic(filepath) // may hopefully also work for removing any single file ...
-          files.push(path.join(path.dirname(filepath), '.ignore')) // fake dotted file
+          files[i] = path.join(path.dirname(filepath), '.ignore') // fake dotted file
+            // console.log('    >>>>', i, files[i])
         } else { // Check if this is a regular file:
-          let stat = fs.stat(filepath)
+          fs.stat(filepath, (err, stat) => {
+            // if (stat.mode & 0o100000) {
+            if (stat.mode & fs.constants.S_IFREG) {
+              // See 'man 2 stat': S_IFREG bitmask for 'Regular file', and google more!
+            } else {
+              files[i] = path.join(path.dirname(filepath), '.ignore') // fake dotted file
+                // console.log('    >>>>', i, files[i])
+            }
+          })
+         /*let stat = fs.stat(filepath)
           if (stat.mode & 0o100000) {
             // See 'man 2 stat': S_IFREG bitmask for 'Regular file', and google more!
             files.push(filepath)
           } else {
             files.push(path.join(path.dirname(filepath), '.ignore')) // fake dotted file
-          }
+          }*/
         }
       }
-      console.log(files)
+        // console.log('return:', files)
       return files
     } catch(err) {
-      console.error(RED + 'Error in findFiles in "' + dirName + '"'+ RSET)
+      const tmp = IMDB_ROOT + dirName
+      console.error(RED + 'Error in findFiles, dirName = "' + tmp + '"'+ RSET)
+      // console.error(RED + 'Error in findFiles, filepath = "' + filepath + '"'+ RSET)
       console.log(RED + err.toString() + RSET)
       return ''
     }
@@ -1178,9 +1182,10 @@ app.post('/uploads', (req, res, next) => {
       let linkto = execSync("readlink " + origfile).toString().trim()
       let linkObj = path.parse(linkto)
 
-      await cmdasync("ln -sfn " + linkObj.dir + "/" +"_show_"+ linkObj.name + ".png " + showfile)
-      .then(
-      await cmdasync("ln -sfn " + linkObj.dir + "/" +"_mini_"+ linkObj.name + ".png " + minifile))
+      // cmdasync("ln -sfn " + linkObj.dir + "/" +"_show_"+ linkObj.name + ".png " + showfile)
+      exec("ln -sfn " + linkObj.dir + "/" +"_show_"+ linkObj.name + ".png " + showfile)
+      // .then(cmdasync("ln -sfn " + linkObj.dir + "/" +"_mini_"+ linkObj.name + ".png " + minifile))
+      .then(exec("ln -sfn " + linkObj.dir + "/" +"_mini_"+ linkObj.name + ".png " + minifile))
       .then()
     }
     let cmd = []
@@ -1194,7 +1199,8 @@ app.post('/uploads', (req, res, next) => {
     for (let _i = 0; _i< cmd.length; _i++) {
       tmp = "?" // Should never show up
       //tmp = execSync(cmd[_i])
-      tmp = await cmdasync(cmd[_i])
+      // tmp = await cmdasync(cmd[_i])
+      tmp = (await exec(cmd[_i])).stdout
       tmp = tmp.toString().trim() // Formalise string
       if (tmp.length === 0) tmp = "-" // Insert fill character
       tmp = tmp.replace(/\n/g," ").trim() // Remove embedded \n(s)
