@@ -72,7 +72,7 @@ class SubAlbums extends Component {
   }
 
   get nadd() { // No of addititonal subsub...albums to this album
-    // this.z.loli(this.z.imdbDirIndex);
+      // this.z.loli(this.z.imdbDirIndex);
     let coco = '';
     if (this.z.imdbCoco) coco = this.z.imdbCoco[this.z.imdbDirIndex];
     let plus= '';
@@ -241,7 +241,7 @@ class AllImages extends Component {
     if (i < 0) return a; //important
     let b = this.z.allFiles[i];
     if (b) a = b.orig; //path to home album
-    return this.z.imdbRoot + a.slice(3);
+    return this.z.imdbRoot + a.slice(2);
   }
 
   // The image caption texts (from metadata)

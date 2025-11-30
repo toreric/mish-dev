@@ -3,13 +3,15 @@
 
 // ESM modules
 import express from 'express'
-import routes from './app/routes.js'
 
 // 1 configure our routes
 const app = express()
+app.use(express.json())
+
 // 3 expose app
 export default app
 
+import routes from './app/routes.js'
 routes(app)
 // require('./app/routes').default(app) // CJS module
 

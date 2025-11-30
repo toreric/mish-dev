@@ -548,10 +548,10 @@ export default class CommonStorageService extends Service {
     this.imdbDirs = arr.splice(0, n); // album paths (without root)
     this.imdbCoco = arr.splice(0, n); // album content counts
     this.imdbLabels = arr.splice(0, n); // album labels (thumbnail paths)
-        // this.loli('imdbCoco ' + n + LF + this.imdbCoco.join(LF), 'color:yellow');
-        // this.loli('imdbDirs ' + n + LF + this.imdbDirs.join(LF), 'color:yellow');
-        // this.loli('imdbLabels ' + n + LF + this.imdbLabels.join(LF));
-        // this.loli(this.imdbDirs, 'color:green');
+      this.loli('imdbCoco ' + n + LF + this.imdbCoco.join(LF), 'color:yellow');
+      this.loli('imdbDirs ' + n + LF + this.imdbDirs.join(LF), 'color:yellow');
+      this.loli('imdbLabels ' + n + LF + this.imdbLabels.join(LF));
+      this.loli(this.imdbDirs, 'color:green');
 
     // let data = structuredClone(this.imdbDirs); // alt. clone-copy
     let data = [...this.imdbDirs]; // clone-copy albums
@@ -1635,14 +1635,21 @@ export default class CommonStorageService extends Service {
         // this.loli(str, 'color:orange  ');
         // this.loli(str.replace(/%/g, '*'), 'color:yellow');
         // console.log(searchWhere);
-      var srchData = new FormData();
-      srchData.append("like", str);
-      srchData.append("cols", searchWhere);
-      if (exact !== 0) srchData.append("info", "exact");
-      else srchData.append("info", "");
+      // var srchData = new FormData();
+      // srchData.append("like", str);
+      // srchData.append("cols", searchWhere);
+      // if (exact !== 0) srchData.append("info", "exact");
+      // else srchData.append("info", "");
+      var srchData = JSON.stringify({
+        like: str,
+        cols: searchWhere,
+        info: exact === 0 ? '' : 'exact'
+      });
+        console.log(srchData);
       return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();
         xhr.open('POST', 'search/', true, null, null);
+        xhr.setRequestHeader('content-type', 'application/json');
         this.xhrSetRequestHeader(xhr);
         xhr.onload = function() {
           if (this.status >= 200 && this.status < 300) {
@@ -1687,7 +1694,7 @@ export default class CommonStorageService extends Service {
             });
           }
         }
-          // console.log(srchData);
+          console.log(srchData);
         xhr.send(srchData);
       });
     }

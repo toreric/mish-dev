@@ -1,5 +1,8 @@
 // app/routes.js
 
+// import express from 'express' // duplicated from server.js
+// const app = express()         // duplicated from server.js
+
 // const { statfs } = require('fs/promises') EC
 import path, { dirname } from 'node:path'
 import ProMise from 'bluebird'
@@ -55,15 +58,16 @@ export default function(app) { // Start module.exports
   // const execP = ProMise.promisify(require('child_process').exec)
   const exec = util.promisify(execute) // modern exec replaces execP
   
-// const cpUpload = upload.fields([{ name: 'file' }]) // default fileKey name
-// Error handler for file filter rejections
-app.use((err, req, res, next) => {
-  res.status(400).send(err.message);
-})
+  // app.use(express.json()) // duplicated from server.js
 
-  app.use(bodyParser.urlencoded({extended: false}))
+  // const cpUpload = upload.fields([{ name: 'file' }]) // default fileKey name
+  // Error handler for file filter rejections
+  app.use((err, req, res, next) => {
+    res.status(400).send(err.message);
+  })
+
+  app.use(bodyParser.urlencoded({extended: false}));
   app.use(bodyParser.json());
-
 
 
   // This row should be moved to the 'login' and there followed at end by 'setdb.close'
@@ -110,7 +114,7 @@ app.use((err, req, res, next) => {
   // Check 'Express route tester'!
   // ##### General passing point
   //#region ROUTING
-  app.all('/*anykey', async function(req, res, next) {
+  app.all('/*anykey', async (req, res, next) => {
           // console.log("original req.body =", req.body) undefined
     // if (req.originalUrl !== '/upload') { // Upload with dropzone: 'req' used else!
       // if (req.originalUrl === '/uploads') {
@@ -271,7 +275,7 @@ app.use((err, req, res, next) => {
   // ##### Return a user's credentials for login, or return
   //       all available user statuses and their allowances
   //#region login
-  app.get('/login', (req, res) => {
+  app.get('/login', async (req, res) => {
     // console.log(BGRE + '/login' + RSET)
     USER = decodeURIComponent(req.get('username'))
     var password = ''
@@ -334,7 +338,7 @@ app.use((err, req, res, next) => {
 
   // ##### Get full-size (djvu?) file   CHECK path
   //#region fullsize
-  app.get('/fullsize', async function(req, res) {
+  app.get('/fullsize', async (req, res) => {
     console.log(BGRE + '/fullsize' + RSET)
     var fileName = decodeURIComponent(req.get('path'))
     // var fileName = req.get('path') // with path but servers may remove first `/`:
@@ -393,8 +397,10 @@ app.use((err, req, res, next) => {
     }
     setTimeout(function() {
       allDirs().then(dirlist => { // dirlist entries start with the root album
+          console.log('dirlist 1:', dirlist)
         areAlbums(dirlist).then(async (dirlist) => {
           // dirlist = dirlist.sort()
+            console.log('dirlist 2:', dirlist)
           var albumLabel
           var dircoco = [] // directory content counters
           var dirlabel = [] // album label thumbnail paths
@@ -412,7 +418,7 @@ app.use((err, req, res, next) => {
           // Remove hidden albums from the list if allowHidden is 'false'
           if (allowHidden !== 'true') {
             // An _imdb_ignore line/path may/should start with just './'(if not #)
-              console.log(await exec('cat ' + ignorePaths))
+              // console.log(await exec('cat ' + ignorePaths))
             var ignore = (await exec('cat ' + ignorePaths)).stdout.toString().trim().split(LF)
               console.log('ignore:', ignore)
             for (let i=0; i<dirlist.length; i++) {
@@ -655,7 +661,7 @@ app.use((err, req, res, next) => {
 
   // ##### Save the _imdb_order.txt file
   //#region saveorder
-  app.post('/saveorder', function(req, res, next) {
+  app.post('/saveorder', async function(req, res, next) {
     console.log(BGRE + '/saveorder' + RSET)
     var file = IMDB + IMDB_DIR + '/_imdb_order.txt'
     execSync('touch ' + file + '&&chmod 664 ' + file) // In case not yet created
@@ -683,7 +689,7 @@ app.use((err, req, res, next) => {
 
   // ##### Save Xmp.dc.description and Xmp.dc.creator using exiv2
   //#region savetext
-  app.post('/savetext', function(req, res, next) {
+  app.post('/savetext', async function(req, res, next) {
     console.log(BGRE + '/savetext' + RSET)
     var body = []
     req.on('data', (chunk) => {
@@ -750,9 +756,11 @@ app.use((err, req, res, next) => {
 
   // ##### Search text, case insensitively, in _imdb_images.sqlite
   //#region search
+  // This (with multer().none()) can even take Formdata:
+  // app.post ('/search', multer().none(), async function(req, res, next) {
   app.post ('/search', async function(req, res, next) {
     console.log(BGRE + '/search' + RSET)
-      console.log("req.body =", req.body)
+      console.log(BYEL + "req.body =" + RSET, req.body)
     // Convert everything to lower case
     // The removeDiacritics funtion bypasses some characters (åäöüÅÄÖÜ)
     // await new Promise(z => setTimeout(z, 277))
@@ -797,7 +805,7 @@ app.use((err, req, res, next) => {
       console.error("€RR", err.message)
     } // End try ----------
 
-  })
+      })
 
   // ##### Upload image(s)
   //region upload
@@ -843,34 +851,34 @@ app.use((err, req, res, next) => {
 
 
 
-// File upload route
-app.post('/uploads', (req, res, next) => {
-  console.log(BGRE + '/uploads' + RSET)
-  upload(req, res, function(err) {
-    if (err) {
-      console.log(err.message)
-      res.send(err.message)
+  // File upload route
+  app.post('/uploads', async (req, res, next) => {
+    console.log(BGRE + '/uploads' + RSET)
+    upload(req, res, function(err) {
+      if (err) {
+        console.log(err.message)
+        res.send(err.message)
+        return
+      }
+      res.send('')
+      console.log('hallåhallå')
+      console.log(req.files)
+      console.log('path:', req.files.path, 'size:', req.files.file[0].size)
       return
-    }
-    res.send('')
-    console.log('hallåhallå')
-    console.log(req.files)
-    console.log('path:', req.files.path, 'size:', req.files.file[0].size)
-    return
+    })
+    /*try {
+      console.log('hallåhallå')
+      console.log(req.files)
+      console.log('path:', req.files.path, 'size:', req.files.file[0].size)
+      let size = req.files.file[0].size
+      await new Promise(z => setTimeout(z, size/1000))
+      res.send('File uploaded!')
+    } catch(err) {
+      console.log(err.message)
+      res.location('/')
+      res.send(err.message)
+    }*/
   })
-  /*try {
-    console.log('hallåhallå')
-    console.log(req.files)
-    console.log('path:', req.files.path, 'size:', req.files.file[0].size)
-    let size = req.files.file[0].size
-    await new Promise(z => setTimeout(z, size/1000))
-    res.send('File uploaded!')
-  } catch(err) {
-    console.log(err.message)
-    res.location('/')
-    res.send(err.message)
-  }*/
-})
 
 
 
@@ -1014,12 +1022,13 @@ app.post('/uploads', (req, res, next) => {
   //region allDirs
   let allDirs = async () => {
     // let dirlist = await cmdasync('find -L ' + IMDB + ' -type d|sort')
-    let dirlist = await exec('find -L ' + IMDB + ' -type d|sort')
+    let dirlist = (await exec('find -L ' + IMDB + ' -type d|sort')).stdout
     dirlist = dirlist.toString().trim() // Formalise string
     dirlist = dirlist.split(LF)
     for (let i=0; i<dirlist.length; i++) {
       dirlist[i] = dirlist[i].slice(IMDB.length)
     }
+      console.log('dirlist 0:', dirlist)
     return dirlist
   }
 
@@ -1221,10 +1230,11 @@ app.post('/uploads', (req, res, next) => {
   async function resizefile(origpath, filepath, size) {
     // Check if the file exists, then continue, but note (!): This open will
     // fail if filepath is absolute. Needs web-rel-path to work ...
-    open(filepath, 'r').then(async () => { // async!
+    open(filepath, 'r').then(async (fd) => { // async!
       if (Number(fs.statSync(filepath).mtime) < Number(fs.statSync(origpath).mtime)) {
         await rzFile(origpath, filepath, size) // await!
       }
+      fd.close() // Don't leave open!
     })
     .catch(async function(error) { // async!
       // Else if it doesn't exist, make the resized file:

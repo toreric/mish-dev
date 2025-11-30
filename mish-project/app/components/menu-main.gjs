@@ -56,8 +56,8 @@ export class MenuMain extends Component {
     // root album is read by the server, and mentioned albums
     // with subalbums are removed from the list:
     let tmp = await this.z.getAlbumDirs(allow.textEdit);
+      this.z.loli('getAlbumDirs:' + LF + tmp, 'color:red');
     let arr = tmp.split(LF);
-      // this.z.loli(arr[1], 'color:red');
 
     // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
     // The three first lines (to be shifted off) have other content
@@ -79,10 +79,10 @@ export class MenuMain extends Component {
     this.z.imdbDirs = arr.splice(0, n); // album paths (without root)
     this.z.imdbCoco = arr.splice(0, n); // album content counts
     this.z.imdbLabels = arr.splice(0, n); // album labels (thumbnail paths)
-      // this.z.loli('imdbCoco ' + n + LF + this.z.imdbCoco.join(LF), 'color:yellow');
-      // this.z.loli('imdbDirs ' + n + LF + this.z.imdbDirs.join(LF), 'color:yellow');
-      // this.z.loli('imdbLabels ' + n + LF + this.z.imdbLabels.join(LF));
-      // this.z.loli(this.z.imdbDirs, 'color:green');
+      this.z.loli('imdbCoco ' + n + LF + this.z.imdbCoco.join(LF), 'color:yellow');
+      this.z.loli('imdbDirs ' + n + LF + this.z.imdbDirs.join(LF), 'color:yellow');
+      this.z.loli('imdbLabels ' + n + LF + this.z.imdbLabels.join(LF), 'color:yellow');
+      this.z.loli(this.z.imdbDirs, 'color:green');
 
     // let data = structuredClone(this.z.imdbDirs); // alt. clone-copy
     let data = [...this.z.imdbDirs]; // clone-copy albums
@@ -90,7 +90,7 @@ export class MenuMain extends Component {
     for (let i=0;i<data.length;i++) {
       data[i] = root + data[i]; // amend the root directory name
     }
-        // this.z.loli('imdbRoot/imdbDirs ' + n + LF + data.join(LF));
+        this.z.loli('imdbRoot/imdbDirs ' + n + LF + data.join(LF), 'color:yellow');
         // this.z.loli(data);
         // this.z.loli(this.z.imdbDirs, 'color:red');
 
@@ -127,10 +127,10 @@ export class MenuMain extends Component {
       // this.z.loli(this.z.imdbTree);
       // this.z.loli(this.z.imdbDirs);
       // JSON.stringify makes the album tree human readable:
-      // this.z.loli('imdbTree ' + n + LF + JSON.stringify(result, null, 2), 'color:yellow');
+      this.z.loli('imdbTree ' + n + LF + JSON.stringify(result, null, 2), 'color:yellow');
       // this.z.loli(this.z.imdbCoco.length, 'color:red');
     // await new Promise (z => setTimeout (z, 33*this.z.imdbCoco.length)); // selectRoot Wait for album tree
-    await new Promise (z => setTimeout (z, 333)); // selectRoot Wait for album tree
+    await new Promise (z => setTimeout (z, 3333)); // selectRoot Wait for album tree
     this.toggleTree(CL); // fold all nodes except 0
 
     let anyHidden = () => { // flags any hidden-without-allowance album
