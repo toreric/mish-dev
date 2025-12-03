@@ -229,7 +229,6 @@ export default function(app) { // Start module.exports
     if (LT === 'en-us') LT = 'en-uk' // European date order
       // console.log('fileStat',LT)
     var missing = 'NA'
-    // var file = req.params.path.replace (/@/g, "/").trim ()
     var stat = fs.statSync(file)
       // console.log('fileStat',stat)
     // linkto is relative path to the original file
@@ -318,7 +317,6 @@ export default function(app) { // Start module.exports
         let al = rows[0].allow.length
         for (let i=0;i<al;i++) {
           for (let j=0;j<rows.length;j++) {
-            // allowances += '     ' +(rows[j].allow)[i].replace)(/0/g, '⋅').replace(/1/g, '@') // overkill
             if (j) { var space = '     ' } else { space = '    ' }
             allowances += space +(rows[j].allow)[i].replace('0', '.').replace('1', 'x')
           }
@@ -368,7 +366,7 @@ export default function(app) { // Start module.exports
   app.get('/rootdir', async function(req, res) {
     console.log(BGRE + '/rootdir' + RSET)
       var dirlist = await readSubdir(IMDB_HOME)
-        console.log(IMDB_HOME, dirlist)
+        // console.log(IMDB_HOME, dirlist)
       dirlist = dirlist.join(LF)
       res.location('/')
       res.send(dirlist)
@@ -397,10 +395,10 @@ export default function(app) { // Start module.exports
     }
     setTimeout(function() {
       allDirs().then(dirlist => { // dirlist entries start with the root album
-          console.log('dirlist 1:', dirlist)
+          // console.log('dirlist 1:', dirlist)
         areAlbums(dirlist).then(async (dirlist) => {
           // dirlist = dirlist.sort()
-            console.log('dirlist 2:', dirlist)
+            // console.log('dirlist 2:', dirlist)
           var albumLabel
           var dircoco = [] // directory content counters
           var dirlabel = [] // album label thumbnail paths
@@ -420,7 +418,7 @@ export default function(app) { // Start module.exports
             // An _imdb_ignore line/path may/should start with just './'(if not #)
               // console.log(await exec('cat ' + ignorePaths))
             var ignore = (await exec('cat ' + ignorePaths)).stdout.toString().trim().split(LF)
-              console.log('ignore:', ignore)
+              // console.log('ignore:', ignore)
             for (let i=0; i<dirlist.length; i++) {
               for (let j=0; j<ignore.length; j++) {
                 if (ignore[j].slice(0, 1) === '#') ignore[j] = ''
@@ -564,10 +562,8 @@ export default function(app) { // Start module.exports
     console.log(BGRE + '/imagelist' + RSET)
     // NOTE: Reset allfiles here, since it isn't refreshed by an empty album!
     // allfiles = undefined
-    //OLD: IMDB_DIR = req.params.imagedir.replace(/@/g, "/")
-    // console.log('IMAGELIST')
-      console.log('IMDB_ROOT = "' + IMDB_ROOT + '"')
-      console.log('IMDB_DIR = "' + IMDB_DIR + '"')
+      // console.log('IMDB_ROOT = "' + IMDB_ROOT + '"')
+      // console.log('IMDB_DIR = "' + IMDB_DIR + '"')
 
     var files = await findFiles(IMDB_DIR)
       files ??= [] // equals
@@ -596,16 +592,17 @@ export default function(app) { // Start module.exports
       // 7 A '&' or the path to the origin if it is a symlink
       // In case of symlink, files 2 and 3 are also symlinks
       //////////////////////////////////////////////////////////
-        console.log('files to PKGFILENAMES:' +LF+ origlist)
-      // pkgfilenames prints initial console.log message
+        // console.log('files to PKGFILENAMES:' + LF + origlist)
       pkgfilenames(origlist).then(() => { // Will make 'allfiles'
+        // pkgfilenames prints an initial console.log message,
+        // which is completed a few lines below this 
         if (!allfiles) {allfiles = ''}
         res.location('/')
-          console.log(BYEL + 'allfiles:', allfiles + RSET)
+          // console.log(BYEL + 'allfiles:', allfiles + RSET)
         res.send(allfiles)
         //res.end()
-        console.log(BYEL + RID + '@' + USER + ': ' + IMDB_ROOT + IMDB_DIR + RSET)
-        console.log('...file information sent from server') // Remaining message
+        // console.log(BYEL + RID + '@' + USER + ': ' + IMDB_ROOT + IMDB_DIR + RSET)
+        console.log(`...information for ${BYEL}${IMDB_ROOT}${IMDB_DIR}${RSET} sent from server`) // completed message
       }).catch(function(error) {
         res.location('/')
         res.send(error.message)
@@ -757,10 +754,10 @@ export default function(app) { // Start module.exports
   // ##### Search text, case insensitively, in _imdb_images.sqlite
   //#region search
   // This (with multer().none()) can even take Formdata:
-  // app.post ('/search', multer().none(), async function(req, res, next) {
-  app.post ('/search', async function(req, res, next) {
+  // app.post('/search', multer().none(), async function(req, res, next) {
+  app.post('/search', async function(req, res, next) {
     console.log(BGRE + '/search' + RSET)
-      console.log(BYEL + "req.body =" + RSET, req.body)
+      // console.log(BYEL + "req.body =" + RSET, req.body)
     // Convert everything to lower case
     // The removeDiacritics funtion bypasses some characters (åäöüÅÄÖÜ)
     // await new Promise(z => setTimeout(z, 277))
@@ -779,7 +776,6 @@ export default function(app) { // Start module.exports
     try { // Start try ----------
       if (like === '') {
         res.send ('')
-        console.log('Found: 0')
       } else {
         // better-sqlite3:
         const db = new SQLite(IMDB + "/_imdb_images.sqlite")
@@ -787,6 +783,7 @@ export default function(app) { // Start module.exports
         const rows = db.prepare('SELECT id, filepath, ' + columns + ' AS txtstr FROM imginfo WHERE ' + like).all()
         setTimeout(() => {
           var foundpaths = "", n = 0
+            // console.log(rows)
           rows.forEach((row) => {
               // console.log("row.filepath",row.filepath.trim());
             // In certain situations, dotted directories may
@@ -796,7 +793,7 @@ export default function(app) { // Start module.exports
               n++
             }
           })
-          console.log('Found: ' + n)
+          console.log('Gross count found: ' + n) // Iincludes images from hidden albums etc.
           res.send(foundpaths.trim())
         }, 1000)
         db.close()
@@ -1028,7 +1025,7 @@ export default function(app) { // Start module.exports
     for (let i=0; i<dirlist.length; i++) {
       dirlist[i] = dirlist[i].slice(IMDB.length)
     }
-      console.log('dirlist 0:', dirlist)
+      // console.log('dirlist 0:', dirlist)
     return dirlist
   }
 
