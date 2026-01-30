@@ -4,9 +4,6 @@
 #project=/home/tore/Arbeten/mish
 project=/home/tore/Arbeten/mish-dev
 
-# If in autostart, wait a little
-sleep 1
-
 port=3000
 
 prid=`lsof -t -i:$port`
@@ -53,7 +50,9 @@ else
   echo "IMDB_ROOT = [user choice]"
 fi
 echo -n "##### Starting the Node server "`date`
-
 # Note that Node JS may be installed as either 'node', 'nodejs', or both
 # Start the Express server. NOTE: server.js contains `... require ('express')`
-node server.js $IMDB_HOME $IMDB_ROOT $port
+logger "EXPRESS starting"
+logger `echo $PATH`
+logger `whereis node`
+/usr/bin/node server.js $IMDB_HOME $IMDB_ROOT $port

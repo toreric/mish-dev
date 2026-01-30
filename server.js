@@ -16,7 +16,7 @@ routes(app)
 // require('./app/routes').default(app) // CJS module
 
 if (process.argv[2] !== '' && !process.argv[2]) {
-  console.log('Usage: ' + process.argv[1] + ' home[ root[port] ]')
+  console.log('Usage: ' + process.argv[1] + ' home[ root [port] ]')
   console.log("  home = albums' home directory (default /home/<user>)")
   console.log('  root = chosen album root (within the home dirctory; default = not chosen)')
   console.log('  port = server port (default 3000)')
@@ -24,9 +24,9 @@ if (process.argv[2] !== '' && !process.argv[2]) {
 } else {
 
   //process.argv.forEach (function (val, index, array) {
-  //  console.log (index + ': ' + val);    
+  //  console.log (index + ': ' + val);
   //});
- 
+
   // Image databases home directory and default album
   process.env.IMDB_HOME = process.argv[2] // albums' home
   process.env.IMDB_ROOT = process.argv[3] // album root

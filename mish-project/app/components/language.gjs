@@ -9,14 +9,19 @@ import t from 'ember-intl/helpers/t';
 // NOTE: Default language is primarily set in 'routes/application.js'
 // The set-by-user language will be preserved in the 'mish_lang' cookie
 
+export const SUPPORTED_LOCALES = ['de-de', 'en-us', 'es-es', 'sv-se'];
+
 export class Language extends Component {
   @service('common-storage') z;
   @service intl;
-  selections = this.intl.get('locales').sort();
 
-
+  get selections() {
+      this.z.loli('SUPPORTED_LOCALES = ' + SUPPORTED_LOCALES, 'color:red');
+    return SUPPORTED_LOCALES;
+  }
 
   changeLocale = async (newLoc) => {
+      this.z.loli('locales = ' + this.selections, 'color:red');
       // console.log('selections', this.selections);
     if (newLoc === this.z.intlCodeCurr) return;
     let defaultUser = this.z.userName === this.z.defaultUserName;
@@ -28,22 +33,22 @@ export class Language extends Component {
       this.z.userName = this.z.defaultUserName;
       this.z.loli('userName is ' + this.z.userName);
     }
-    // Not rational to change the picFound name just for a temporary language change!
+    // Irrational to change the picFound name just for a temporary language change!
         // this.z.picFound = this.z.picFoundBaseName +"."+ Math.random().toString(36)
         //   .slice(2,6); // Each language must update it's found pics name
   }
 
-  changeLanguage = async (event) => {
-    this.changeLocale(event.target.value);
-  }
+  // changeLanguage = async (event) => {
+  //   this.changeLocale(event.target.value);
+  // }
 
   isActive = (locale) => {
     return this.intl.primaryLocale === locale;
   }
 
-  langText = (locale) => {
-    return this.intl.getTranslation("select.languagetext", locale);
-  }
+  // langText = (locale) => {
+  //   return this.intl.getTranslation("select.languagetext", locale);
+  // }
 
   <template>
     <div style="display:inline-block">

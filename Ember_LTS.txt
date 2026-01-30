@@ -1,3 +1,24 @@
+STATUS 2026-01-30
+tore@nejlika:~/Arbeten/mish-dev
+$ pnpm outdated
+tore@nejlika:~/Arbeten/mish-dev/mish-project
+$ pnpm outdated
+┌─────────────────────────────────┬─────────┬────────┐
+│ Package                         │ Current │ Latest │
+├─────────────────────────────────┼─────────┼────────┤
+│ @embroider/compat (dev)         │ 3.9.3   │ 4.1.12 │ red
+├─────────────────────────────────┼─────────┼────────┤
+│ @embroider/core (dev)           │ 3.5.9   │ 4.4.2  │ red
+├─────────────────────────────────┼─────────┼────────┤
+│ @embroider/webpack (dev)        │ 3.2.3   │ 4.1.2  │ red
+├─────────────────────────────────┼─────────┼────────┤ 
+│ stylelint (dev)                 │ 16.26.1 │ 17.1.0 │
+├─────────────────────────────────┼─────────┼────────┤
+│ stylelint-config-standard (dev) │ 39.0.1  │ 40.0.0 │
+├─────────────────────────────────┼─────────┼────────┤
+│ ember-primitives                │ 0.51.0  │ 0.53.0 │
+└─────────────────────────────────┴─────────┴────────┘
+
 STATUS 2025-07-07
 tore@nejlika:~/Arbeten/mish-dev
 $ pnpm outdated

@@ -29,7 +29,6 @@ export default class CommonStorageService extends Service {
   @tracked  allFiles = [];     // Image file information objects, changes with 'imdbDir'
   @tracked  bkgrColor = '#111';   //default background color
   @tracked  credentials = '';     //user credentials: \n-string from db
-        get defaultUserName() { return `${this.intl.t('guest')}`; }
   @tracked  freeUsers = 'guest...'; //user names without passwords (set by DialogLogin)
   @tracked  imdbCoco = '';    //content counters etc. for 'imdbDirs', see (*) below
   @tracked  imdbDir = '';     //actual/current (sub)album directory (IMDB_DIR)
@@ -47,17 +46,17 @@ export default class CommonStorageService extends Service {
               return this.userDir + '/' + this.imdbRoot;
             }
   @tracked  imdbRoot = '';          //chosen album root directory (= collection)
-        get imdbRootsPrep() { return `${this.intl.t('reloadApp')}`; } // advice!
-  @tracked  imdbRoots = [this.imdbRootsPrep]; //available album root directories
+  @tracked  imdbRoots = null; //[this.imdbRootsPrep]; //available album root directories
+        get imdbRootsPrep() { return this.intl.t('reloadApp'); } // advice!
   @tracked  imdbTree = null;                  //will have the 'imdbDirs' object tree
   @tracked  infoHeader = 'Header text';       //for DialogAlert and DialogChoose
   @tracked  infoMessage = 'No information';   //for dialog texts (e.g. DialogAlert)
-        get intlCode() { return `${this.intl.t('intlcode')}`; }
-  @tracked  intlCodeCurr = this.intlCode;     // language code
-        get picFoundBaseName() { return `${this.intl.t('picfound')}`; }
-  // The found pics temporary directory name is amended with a random 4-code at login:
+  @tracked  intlCodeCurr = null; //this.intlCode;     // language code
+        get intlCode() { return this.intl.t('intlcode'); }
+        // The found pics temporary directory name is amended with a random 4-code at login:
   @tracked  RID = '----';
-  @tracked  picFound = this.picFoundBaseName + '.' + this.RID;
+  @tracked  picFound = null; //this.picFoundBaseName + '.' + this.RID;
+        get picFoundBaseName() { return this.intl.t('picfound'); }
   @tracked  picFoundIndex = -1; //set in MenuMain, the index may vary by language
   @tracked  picName = ''; //actual/current image name
         get picIndex() { //the index of picName's file information object in allFiles
@@ -81,7 +80,8 @@ export default class CommonStorageService extends Service {
   //        Maybe your home dir., server start argument IMDB_HOME:
   @tracked  userDir = '/path/to/albums';
   //        userName may be changed in other ways later (e.g. logins):
-  @tracked  userName = this.defaultUserName;
+  @tracked  userName = null; //this.defaultUserName;
+        get defaultUserName() { return this.intl.t('guest'); }
   @tracked  userStatus = ''; // A logged in user has a certain allowance status
   @tracked  wwwDir = '/path/to/www';
 
@@ -90,6 +90,14 @@ export default class CommonStorageService extends Service {
   // and <flag> is empty or "*". The <flag> indicates a hidden album,
   // which needs permission for access
 
+  initialize = async () => {
+    // idempotent: safe to call multiple times, but should be called ONCE
+    if (this.imdbRoots === null) this.imdbRoots = this.imdbRootsPrep;
+    if (this.intlCodeCurr === null) this.intlCodeCurr = this.intlCode;
+    if (this.picFound === null) this.picFound = this.picFoundBaseName + '.' + this.RID;
+    await new Promise (z => setTimeout (z,999));
+    if (this.userName === null) this.userName = this.defaultUserName;
+  }
 
   //   #region VIEW VARS
   //== Miniature and show images etc. information
@@ -1131,7 +1139,12 @@ export default class CommonStorageService extends Service {
       command = command.replace (/%/g, "%25");
       var xhr = new XMLHttpRequest ();
       xhr.open('GET', 'execute/', true, null, null);
-      this.xhrSetRequestHeader(xhr);
+      // this.xhrSetRequestHeader(xhr);
+      // Do not use xhrSetRequestHeader here, perhaps bad user name timing?
+      xhr.setRequestHeader('username', encodeURIComponent(this.userName));
+      xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
+      xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
+      xhr.setRequestHeader('picfound', this.picFound); // All 'widhtin 255' characters
       xhr.setRequestHeader('command', encodeURIComponent(command));
       xhr.onload = function () {
         if (this.status >= 200 && this.status < 300) {
@@ -1216,7 +1229,7 @@ export default class CommonStorageService extends Service {
   //#region login/
   getCredentials = async (username) => {
     username = username.trim();
-      // this.loli(this.userName);
+      this.loli(this.userName, 'color:yellow');
     if (username === 'Get user name') { // Welcome, initiation
       username = this.userName; // Default log in
       // this.imdbRoot = ''; // Empty it
@@ -1253,7 +1266,12 @@ export default class CommonStorageService extends Service {
     return new Promise ( (resolve, reject) => {
       var xhr = new XMLHttpRequest ();
       xhr.open('GET', 'rootdir/', true, null, null);
-      this.xhrSetRequestHeader(xhr);
+      // this.xhrSetRequestHeader(xhr);
+      // Do not use xhrSetRequestHeader here, perhaps bad user name timing?
+      xhr.setRequestHeader('username', encodeURIComponent(this.userName));
+      xhr.setRequestHeader('imdbdir', encodeURIComponent(this.imdbDir));
+      xhr.setRequestHeader('imdbroot', encodeURIComponent(this.imdbRoot));
+      xhr.setRequestHeader('picfound', this.picFound); // All 'widhtin 255' characters
       xhr.onload = function () {
         if (this.status >= 200 && this.status < 300) {
           var dirList = xhr.response;
@@ -1649,8 +1667,8 @@ export default class CommonStorageService extends Service {
       return new Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();
         xhr.open('POST', 'search/', true, null, null);
-        xhr.setRequestHeader('content-type', 'application/json');
         this.xhrSetRequestHeader(xhr);
+        xhr.setRequestHeader('content-type', 'application/json');
         xhr.onload = function() {
           if (this.status >= 200 && this.status < 300) {
             var data = xhr.response.trim();

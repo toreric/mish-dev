@@ -1,10 +1,8 @@
 // app/routes.js
 
-// import express from 'express' // duplicated from server.js
-// const app = express()         // duplicated from server.js
-
 // const { statfs } = require('fs/promises') EC
-import path, { dirname } from 'node:path'
+// import path, { dirname } from 'node:path'
+import path from 'node:path'
 import ProMise from 'bluebird'
 // const path = require('path')
 // const ProMise = require('bluebird')
@@ -26,15 +24,15 @@ import SQLite from 'better-sqlite3'
 // const SQLite = require('better-sqlite3')
 
 // Configure storage engine and filename
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, 'uploads/')
-//   },
-//   filename: (req, file, cb) => {
-//     // cb(null, path.basename(file.originalname).replace(/\.[^.]*$/, '') + '-' + Date.now() + path.extname(file.originalname))
-//     cb(null, path.basename(file.originalname))
-//   }
-// })
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/')
+  },
+  filename: (req, file, cb) => {
+    // cb(null, path.basename(file.originalname).replace(/\.[^.]*$/, '') + '-' + Date.now() + path.extname(file.originalname))
+    cb(null, path.basename(file.originalname))
+  }
+})
 
 const fileFilter = (req, file, cb) => {
   if (!file.originalname.match(/\.(jpe?g|tif{1,2}|png|gif)$/)) {
@@ -58,8 +56,6 @@ export default function(app) { // Start module.exports
   // const execP = ProMise.promisify(require('child_process').exec)
   const exec = util.promisify(execute) // modern exec replaces execP
   
-  // app.use(express.json()) // duplicated from server.js
-
   // const cpUpload = upload.fields([{ name: 'file' }]) // default fileKey name
   // Error handler for file filter rejections
   app.use((err, req, res, next) => {
@@ -171,7 +167,7 @@ export default function(app) { // Start module.exports
       //     // console.log("***nearest req.body =", req.body) undefined
       // }
 
-      let show_imagedir = false // For debug of directories printout
+      let show_imagedir = true // For debug of directories printout
       if (show_imagedir) {     // and also each ”tmp” printout
         console.log(BLUE + req.originalUrl + RSET)
         console.log('  WWW_ROOT:', WWW_ROOT)
@@ -180,6 +176,7 @@ export default function(app) { // Start module.exports
         console.log(' IMDB_ROOT:', IMDB_ROOT)
         console.log('  IMDB_DIR:', IMDB_DIR)
         console.log('  picFound:', picFound)
+        console.log('      USER:', USER)
       }
       // console.log(process.memoryUsage())
       next() // pass control to the next handler
@@ -395,10 +392,10 @@ export default function(app) { // Start module.exports
     }
     setTimeout(function() {
       allDirs().then(dirlist => { // dirlist entries start with the root album
-          // console.log('dirlist 1:', dirlist)
+          console.log('dirlist 1:', dirlist)
         areAlbums(dirlist).then(async (dirlist) => {
           // dirlist = dirlist.sort()
-            // console.log('dirlist 2:', dirlist)
+            console.log('dirlist 2:', dirlist)
           var albumLabel
           var dircoco = [] // directory content counters
           var dirlabel = [] // album label thumbnail paths
@@ -628,7 +625,7 @@ export default function(app) { // Start module.exports
       } catch { // Maybe something in the path is wrong
         // console.error(error.message) hide path to albums
         // console.error(RED + 'Error in album path' + RSET)
-        console.error(RED + 'Error in album path' + RSET + ' ' + imdbtxtpath)
+        console.error(RED + 'Error in album path: ' + RSET + imdbtxtpath)
         res.location('/')
         return res.send('Error!')
       }
@@ -918,7 +915,12 @@ export default function(app) { // Start module.exports
 
   // ===== Check if a file is a symbolic link
   //#region isSymlink
-  function isSymlink(file) {
+  async function isSymlink(file) {
+    // This precaution is taken for rare exceptions
+    if (await notFile(file)) {
+        // console.error('Illegal isSymlink call, file =', file)
+      return
+    }
     return new Promise(function(resolve, reject) {
       fs.lstat (file, function(err, stats) {
         if (err) {
@@ -1025,7 +1027,7 @@ export default function(app) { // Start module.exports
     for (let i=0; i<dirlist.length; i++) {
       dirlist[i] = dirlist[i].slice(IMDB.length)
     }
-      // console.log('dirlist 0:', dirlist)
+      console.log('dirlist 0:', dirlist)
     return dirlist
   }
 
@@ -1069,7 +1071,7 @@ export default function(app) { // Start module.exports
     try {
       await access(IMDB + dirName)
     } catch(err) {
-      console.error(RED + 'Warning: Nonexistent album in findFiles: ' + dirName + RSET)
+      console.error(RED + 'Warning: Nonexistent album in findFiles: ' + RSET + dirName)
     }
     const items = await readdir(IMDB + dirName) // items are file || dir names
       // console.log('items:', items.length,items)
@@ -1336,7 +1338,12 @@ export default function(app) { // Start module.exports
 
   // ===== Return a symlink flag value, value = & or source file
   //#region symlinkFlag
-  function symlinkFlag (file) {
+  async function symlinkFlag (file) {
+    // This precaution is taken for rare exceptions
+    if (await notFile(file)) {
+        // console.error('Illegal symlinkFlag call, file =', file)
+      return
+    }
     return new Promise(function (resolve, reject) {
       fs.lstat (file, function (err, stats) {
         if (err) {

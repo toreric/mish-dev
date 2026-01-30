@@ -56,7 +56,7 @@ export class MenuMain extends Component {
     // root album is read by the server, and mentioned albums
     // with subalbums are removed from the list:
     let tmp = await this.z.getAlbumDirs(allow.textEdit);
-      // this.z.loli('getAlbumDirs:' + LF + tmp, 'color:red');
+      this.z.loli('getAlbumDirs:' + LF + tmp, 'color:red'); // $$$$$$$$$$RED
     let arr = tmp.split(LF);
 
     // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––

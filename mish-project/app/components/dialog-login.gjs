@@ -18,7 +18,6 @@ const LF = '\n';
 export class DialogLogin extends Component {
   @service('common-storage') z;
   @service intl;
-  // @tracked 2;
 
   get picName() { // this.picName may replace this.z.picName, a code example.
     return this.z.picName;
