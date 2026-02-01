@@ -95,7 +95,6 @@ export default class CommonStorageService extends Service {
     if (this.imdbRoots === null) this.imdbRoots = this.imdbRootsPrep;
     if (this.intlCodeCurr === null) this.intlCodeCurr = this.intlCode;
     if (this.picFound === null) this.picFound = this.picFoundBaseName + '.' + this.RID;
-    await new Promise (z => setTimeout (z,999));
     if (this.userName === null) this.userName = this.defaultUserName;
   }
 
